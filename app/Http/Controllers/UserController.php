@@ -12,7 +12,7 @@ class UserController extends Controller
 
 
     public function login(){
-        return view('user.login');
+
     }
 
     public function index()
@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.register');
+
     }
 
     /**

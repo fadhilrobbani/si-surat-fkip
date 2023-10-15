@@ -10,7 +10,7 @@
     <title>Login | E-surat FKIP</title>
 </head>
 
-<body class="bg-slate-50 h-screen flex flex-col items-center justify-center ">
+<body class="relative bg-slate-50 h-screen flex flex-col items-center justify-center ">
     <x-notification />
     <main class=" py-6 w-[400px] bg-white shadow-xl rounded-lg justify-center items-center flex flex-col">
         <div class="flex flex-col justify-center items-center gap-2">
@@ -27,7 +27,8 @@
 
         </div>
 
-        <form action="{{ route('login') }}" class="flex justify-center mx-auto flex-col px-12  w-full" method="POST">
+        <form action="{{ route('authLogin') }}" class="flex justify-center mx-auto flex-col px-12  w-full"
+            method="POST">
             @csrf
             <div class="mb-6">
                 <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username
@@ -54,21 +55,7 @@
         </form>
 
     </main>
-    @php
-        $type = 'error';
-        $messages = $errors->all();
-    @endphp
-    @if ($errors->any())
-        <x-notification :type='$type' :messages='$messages' />
-    @endif
 
-    @php
-        $type = 'success';
-        $messages = session('success');
-    @endphp
-    @if (session()->has('success'))
-        <x-notification :type='$type' :messages='$messages' />
-    @endif
 </body>
 
 </html>
