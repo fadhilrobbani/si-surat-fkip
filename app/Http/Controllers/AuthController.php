@@ -26,7 +26,17 @@ class AuthController extends Controller
 
         if(auth()->attempt($credentials)){
           $request->session()->regenerate();
-            return redirect('/admin')->with('success', 'Anda berhasil login');
+          if(auth()->user()->role_id == 1){
+              return redirect('/admin')->with('success', 'Anda berhasil login');
+          }elseif(auth()->user()->role_id == 2){
+            return redirect('/mahasiswa')->with('success', 'Anda berhasil login');
+          }elseif(auth()->user()->role_id == 3){
+            return redirect('/staff')->with('success', 'Anda berhasil login');
+          }elseif(auth()->user()->role_id == 4){
+            return redirect('/kaprodi')->with('success', 'Anda berhasil login');
+          }elseif(auth()->user()->role_id == 5){
+            return redirect('/wd')->with('success', 'Anda berhasil login');
+          }
         }
 
         return back()->withErrors('Username dan password yang dimasukkan tidak sesuai')->withInput();

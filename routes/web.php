@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\KaprodiController;
+use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\WDController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +31,10 @@ Route::middleware('auth')->group(function(){
 
     Route::get('/logout',[AuthController::class, 'logout'])->name('logout');
     Route::get('/admin',[AdminController::class,'index']);
+    Route::get('/mahasiswa',[MahasiswaController::class,'index']);
+    Route::get('/staff',[StaffController::class,'index']);
+    Route::get('/kaprodi',[KaprodiController::class,'index']);
+    Route::get('/wd',[WDController::class,'index']);
 });
 Route::get('/home', function(){
     return redirect('/admin');

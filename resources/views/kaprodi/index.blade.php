@@ -3,6 +3,6 @@
 @endphp
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Admin | Dashboard
+        Kaprodi | Dashboard
     </x-slot:title>
 </x-layout>
