@@ -30,11 +30,17 @@ Route::middleware('guest')->group(function() {
 Route::middleware('auth')->group(function(){
 
     Route::get('/logout',[AuthController::class, 'logout'])->name('logout');
-    Route::get('/admin',[AdminController::class,'index'])->middleware('userAccess:1');
-    Route::get('/mahasiswa',[MahasiswaController::class,'index']);
-    Route::get('/staff',[StaffController::class,'index'])->middleware('userAccess:3');
-    Route::get('/kaprodi',[KaprodiController::class,'index']);
-    Route::get('/wd',[WDController::class,'index']);
+    // Route::get('/admin',[AdminController::class,'dashboard'])->middleware('userAccess:1');
+    // Route::get('/admin/mahasiswa',[AdminController::class,'mahasiswa'])->middleware('userAccess:1');
+    Route::prefix('admin')->group(function() {
+        Route::get('/', [AdminController::class, 'dashboard'])->middleware('userAccess:1');
+        Route::get('/mahasiswa', [AdminController::class, 'mahasiswa'])->middleware('userAccess:1')->name('mahasiswa');
+
+    });
+    Route::get('/mahasiswa',[MahasiswaController::class,'dashboard'])->middleware('userAccess:2');
+    Route::get('/staff',[StaffController::class,'dashboard'])->middleware('userAccess:3');
+    Route::get('/kaprodi',[KaprodiController::class,'dashboard'])->middleware('userAccess:4');
+    Route::get('/wd',[WDController::class,'dashboard'])->middleware('userAccess:5');
 });
 Route::get('/home', function(){
     return redirect('/admin');

@@ -82,132 +82,16 @@
             </div>
         </div>
     </nav>
-    @php
-        $listsData1 = [
-            [
-                'link' => 'admin',
-                'title' => 'Dashboard',
-                'icon' => asset('svg/piechart.svg'),
-                'dropdown' => [],
-            ],
-            [
-                'link' => 'admin/users',
-                'title' => 'Daftar Akun',
-                'icon' => asset('svg/user.svg'),
-                'dropdown' => [
-                    [
-                        'title' => 'Mahasiswa',
-                        'link' => 'admin/mahasiswa',
-                    ],
-                    [
-                        'title' => 'Staff',
-                        'link' => 'admin/staff',
-                    ],
-                    [
-                        'title' => 'Kaprodi',
-                        'link' => 'admin/kaprodi',
-                    ],
-                    [
-                        'title' => 'Wakil Dekan',
-                        'link' => 'admin/wd',
-                    ],
-                ],
-            ],
-            [
-                'link' => 'admin/letters',
-                'title' => 'Daftar Surat',
-                'icon' => asset('svg/letter.svg'),
-                'dropdown' => [],
-            ],
-            [
-                'link' => 'logout',
-                'title' => 'Logout',
-                'icon' => asset('svg/signout.svg'),
-                'dropdown' => [],
-            ],
-        ];
-
-        $listsData2 = [
-            [
-                'link' => 'dashboard',
-                'title' => 'Dashboard',
-                'icon' => asset('svg/piechart.svg'),
-            ],
-            [
-                'link' => 'letters',
-                'title' => 'Daftar Surat',
-                'icon' => asset('svg/user.svg'),
-            ],
-            [
-                'link' => 'logout',
-                'title' => 'Logout',
-                'icon' => asset('svg/signout.svg'),
-            ],
-        ];
-        $listsData3 = [
-            [
-                'link' => 'dashboard',
-                'title' => 'Dashboard',
-                'icon' => asset('svg/piechart.svg'),
-            ],
-            [
-                'link' => 'letters',
-                'title' => 'Daftar Surat',
-                'icon' => asset('svg/user.svg'),
-            ],
-            [
-                'link' => 'logout',
-                'title' => 'Logout',
-                'icon' => asset('svg/signout.svg'),
-            ],
-        ];
-
-        $listsData4 = [
-            [
-                'link' => 'dashboard',
-                'title' => 'Dashboard',
-                'icon' => asset('svg/piechart.svg'),
-            ],
-            [
-                'link' => 'letters',
-                'title' => 'Daftar Surat',
-                'icon' => asset('svg/user.svg'),
-            ],
-            [
-                'link' => 'logout',
-                'title' => 'Logout',
-                'icon' => asset('svg/signout.svg'),
-            ],
-        ];
-
-        $listsData5 = [
-            [
-                'link' => 'dashboard',
-                'title' => 'Dashboard',
-                'icon' => asset('svg/piechart.svg'),
-            ],
-            [
-                'link' => 'letters',
-                'title' => 'Daftar Surat',
-                'icon' => asset('svg/user.svg'),
-            ],
-            [
-                'link' => 'logout',
-                'title' => 'Logout',
-                'icon' => asset('svg/signout.svg'),
-            ],
-        ];
-    @endphp
     @if ($authUser->role_id == 1)
-        <x-sidebar :listsData='$listsData1' />
+        <x-sidebar :listsData="config('sidebarmenu.admin')" />
     @elseif ($authUser->role_id == 2)
-        <x-sidebar :listsData='$listsData2' />
+        <x-sidebar :listsData="config('sidebarmenu.mahasiswa')" />
     @elseif ($authUser->role_id == 3)
-        <x-sidebar :listsData='$listsData3' />
+        <x-sidebar :listsData="config('sidebarmenu.staff')" />
     @elseif ($authUser->role_id == 4)
-        <x-sidebar :listsData='$listsData4' />
+        <x-sidebar :listsData="config('sidebarmenu.kaprodi')" />
     @elseif ($authUser->role_id == 5)
-        <x-sidebar :listsData='$listsData5' />
+        <x-sidebar :listsData="config('sidebarmenu.wd')" />
     @endif
 
 
