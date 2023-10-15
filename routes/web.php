@@ -30,9 +30,9 @@ Route::middleware('guest')->group(function() {
 Route::middleware('auth')->group(function(){
 
     Route::get('/logout',[AuthController::class, 'logout'])->name('logout');
-    Route::get('/admin',[AdminController::class,'index']);
+    Route::get('/admin',[AdminController::class,'index'])->middleware('userAccess:1');
     Route::get('/mahasiswa',[MahasiswaController::class,'index']);
-    Route::get('/staff',[StaffController::class,'index']);
+    Route::get('/staff',[StaffController::class,'index'])->middleware('userAccess:3');
     Route::get('/kaprodi',[KaprodiController::class,'index']);
     Route::get('/wd',[WDController::class,'index']);
 });

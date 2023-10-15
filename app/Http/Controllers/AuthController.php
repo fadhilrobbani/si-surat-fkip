@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -19,8 +20,12 @@ class AuthController extends Controller
         return redirect('/');
     }
     public function authenticate(Request $request){
+        $user = User::where('username', $request->input('username'))->first();
+        if(!$user){
+            return back()->withErrors(['username' => 'Username/NPM salah atau tidak terdaftar'])->withInput();
+        }
         $credentials = $request->validate([
-            'username' => 'required',
+            'username' => 'required|exists:users,username',
             'password' => 'required'
         ]);
 
@@ -39,7 +44,7 @@ class AuthController extends Controller
           }
         }
 
-        return back()->withErrors('Username dan password yang dimasukkan tidak sesuai')->withInput();
+        return back()->withErrors('Gagal Login')->withInput();
 }
 
 

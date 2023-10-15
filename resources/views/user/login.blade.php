@@ -11,7 +11,7 @@
 </head>
 
 <body class="relative bg-slate-50 h-screen flex flex-col items-center justify-center ">
-    <x-notification />
+
     <main class=" py-6 w-[400px] bg-white shadow-xl rounded-lg justify-center items-center flex flex-col">
         <div class="flex flex-col justify-center items-center gap-2">
             <img class="w-28" src="{{ asset('images/logounib.png') }}" alt="logounib" />
@@ -35,16 +35,28 @@
                 </label>
                 <input type="text" id="username" name="username"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Masukkan NPM atau username" required>
+                    placeholder="Masukkan NPM atau username" value="{{ old('username') }}" required>
+                @error('username')
+                    <span
+                        class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+                        {{ $message }}
+                    </span>
+                @enderror
             </div>
 
 
             <div class="mb-6">
                 <label for="password"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                <input type="password" id="password" name="password"
+                <input type="password" id="password" name="password" value="{{ old('password') }}"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="•••••••••" required>
+                @error('password')
+                    <span
+                        class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+                        {{ $message }}
+                    </span>
+                @enderror
             </div>
             <label for="register">Not have account?
                 <a href="/register" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Register

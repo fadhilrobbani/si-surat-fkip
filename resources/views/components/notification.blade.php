@@ -27,7 +27,7 @@
 
 @if (session()->has('deleted'))
     <div id="toast-danger" x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
-        class=" flex items-center  max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+        class="fixed top-0 left-1/2 z-[100] flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
         role="alert">
         <div
             class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
@@ -55,7 +55,7 @@
 @if ($errors->any())
     @foreach ($errors->all() as $message)
         <div id="toast-warning" x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
-            class="fixed top-6 right-2  flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+            class="fixed top-0 left-1/2 z-[100] flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
             role="alert">
             <div
                 class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-orange-500 bg-orange-100 rounded-lg dark:bg-orange-700 dark:text-orange-200">

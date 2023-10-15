@@ -13,8 +13,11 @@ class UserAccess
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, $role_id): Response
     {
-        return $next($request);
+        if(auth()->user()->role_id == $role_id){
+            return $next($request);
+        }
+        return redirect()->back()->with('deleted','Anda tidak bisa mengakses halaman yang dituju');
     }
 }
