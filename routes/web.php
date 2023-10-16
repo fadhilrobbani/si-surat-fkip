@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KaprodiController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\SuratController;
 use App\Http\Controllers\WDController;
 
 /*
@@ -30,11 +31,13 @@ Route::middleware('guest')->group(function() {
 Route::middleware('auth')->group(function(){
 
     Route::get('/logout',[AuthController::class, 'logout'])->name('logout');
-    // Route::get('/admin',[AdminController::class,'dashboard'])->middleware('userAccess:1');
-    // Route::get('/admin/mahasiswa',[AdminController::class,'mahasiswa'])->middleware('userAccess:1');
     Route::prefix('admin')->group(function() {
         Route::get('/', [AdminController::class, 'dashboard'])->middleware('userAccess:1');
-        Route::get('/mahasiswa', [AdminController::class, 'mahasiswa'])->middleware('userAccess:1')->name('mahasiswa');
+        Route::get('/users/mahasiswa', [MahasiswaController::class,'index'])->middleware('userAccess:1')->name('admin-mahasiswa');
+        Route::get('/users/staff', [StaffController::class,'index'])->middleware('userAccess:1')->name('admin-staff');
+        Route::get('/users/kaprodi', [KaprodiController::class,'index'])->middleware('userAccess:1')->name('admin-kaprodi');
+        Route::get('/users/wd', [WDController::class,'index'])->middleware('userAccess:1')->name('admin-wd');
+        Route::get('/surat', [SuratController::class, 'index'])->middleware('userAccess:1');
 
     });
     Route::get('/mahasiswa',[MahasiswaController::class,'dashboard'])->middleware('userAccess:2');

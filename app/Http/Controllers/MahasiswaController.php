@@ -10,7 +10,7 @@ class MahasiswaController extends Controller
         return view('mahasiswa.dashboard');
     }
 
-    public function getMahasiswa(){
-
+    public function index(){
+        return view('admin.users.mahasiswa.index');
     }
 }

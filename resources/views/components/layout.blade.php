@@ -82,16 +82,143 @@
             </div>
         </div>
     </nav>
+    @php
+        $listsData = [
+            'admin' => [
+                [
+                    'link' => 'admin',
+                    'title' => 'Dashboard',
+                    'icon' => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => '',
+                    'title' => 'Daftar Akun',
+                    'icon' => asset('svg/user.svg'),
+                    'dropdown' => [
+                        [
+                            'title' => 'Mahasiswa',
+                            'link' => route('admin-mahasiswa'),
+                        ],
+                        [
+                            'title' => 'Staff',
+                            'link' => route('admin-staff'),
+                        ],
+                        [
+                            'title' => 'Kaprodi',
+                            'link' => route('admin-kaprodi'),
+                        ],
+                        [
+                            'title' => 'Wakil Dekan',
+                            'link' => route('admin-wd'),
+                        ],
+                    ],
+                ],
+                [
+                    'link' => 'admin/surat',
+                    'title' => 'Daftar Surat',
+                    'icon' => asset('svg/letter.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Logout',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
+            'mahasiswa' => [
+                [
+                    'link' => 'mahasiswa',
+                    'title' => 'Dashboard',
+                    'icon' => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'letters',
+                    'title' => 'Daftar Surat',
+                    'icon' => asset('svg/user.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Logout',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
+            'staff' => [
+                [
+                    'link' => 'staff',
+                    'title' => 'Dashboard',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'letters',
+                    'title' => 'Daftar Surat',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Logout',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
+            'kaprodi' => [
+                [
+                    'link' => 'kaprodi',
+                    'title' => 'Dashboard',
+                    'icon' => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'letters',
+                    'title' => 'Daftar Surat',
+                    'icon' => asset('svg/user.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Logout',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
+            'wd' => [
+                [
+                    'link' => 'wd',
+                    'title' => 'Dashboard',
+                    'icon' => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'letters',
+                    'title' => 'Daftar Surat',
+                    'icon' => asset('svg/user.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Logout',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
+        ];
+    @endphp
     @if ($authUser->role_id == 1)
-        <x-sidebar :listsData="config('sidebarmenu.admin')" />
+        <x-sidebar :listsData="$listsData['admin']" />
     @elseif ($authUser->role_id == 2)
-        <x-sidebar :listsData="config('sidebarmenu.mahasiswa')" />
+        <x-sidebar :listsData="$listsData['mahasiswa']" />
     @elseif ($authUser->role_id == 3)
-        <x-sidebar :listsData="config('sidebarmenu.staff')" />
+        <x-sidebar :listsData="$listsData['staff']" />
     @elseif ($authUser->role_id == 4)
-        <x-sidebar :listsData="config('sidebarmenu.kaprodi')" />
+        <x-sidebar :listsData="$listsData['kaprodi']" />
     @elseif ($authUser->role_id == 5)
-        <x-sidebar :listsData="config('sidebarmenu.wd')" />
+        <x-sidebar :listsData="$listsData['wd']" />
     @endif
 
 

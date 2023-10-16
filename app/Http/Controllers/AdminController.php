@@ -10,7 +10,5 @@ class AdminController extends Controller
         return view('admin.dashboard');
     }
 
-    public function mahasiswa(){
-        return view('admin.users.mahasiswa.index');
-    }
+
 }

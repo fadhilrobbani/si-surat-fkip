@@ -9,4 +9,8 @@ class StaffController extends Controller
     public function dashboard(){
         return view('staff.dashboard');
     }
+
+    public function index(){
+        return view('admin.users.staff.index');
+    }
 }
