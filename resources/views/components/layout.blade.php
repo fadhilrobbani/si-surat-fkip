@@ -36,7 +36,7 @@
                     </a>
                 </div>
                 <div class="flex justify-center items-center">
-                    <x-bell />
+                    <x-bell :authUser='$authUser' />
                     <div class="flex items-center">
                         <div class="flex items-center ml-3">
 

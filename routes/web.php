@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function(){
     Route::prefix('admin')->group(function() {
         Route::get('/', [AdminController::class, 'dashboard'])->middleware('userAccess:1');
         Route::get('/users/mahasiswa', [MahasiswaController::class,'index'])->middleware('userAccess:1')->name('admin-mahasiswa');
+        Route::get('/users/mahasiswa/new', [MahasiswaController::class,'create'])->middleware('userAccess:1')->name('admin-mahasiswa-create');
         Route::get('/users/staff', [StaffController::class,'index'])->middleware('userAccess:1')->name('admin-staff');
         Route::get('/users/kaprodi', [KaprodiController::class,'index'])->middleware('userAccess:1')->name('admin-kaprodi');
         Route::get('/users/wd', [WDController::class,'index'])->middleware('userAccess:1')->name('admin-wd');
