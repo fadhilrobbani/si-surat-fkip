@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\JenisSuratController;
 use App\Http\Controllers\KaprodiController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\StaffController;
@@ -52,8 +53,9 @@ Route::middleware('auth')->group(function(){
     Route::prefix('mahasiswa')->group(function(){
         Route::get('/',[MahasiswaController::class,'dashboard'])->middleware('userAccess:2');
         Route::get('/pengajuan-surat',[MahasiswaController::class,'pengajuanSurat'])->middleware('userAccess:2');
+        Route::get('/pengajuan-surat/{jenisSurat}',[JenisSuratController::class,'show'])->middleware('userAccess:2');
+        Route::post('/pengajuan-surat',[JenisSuratController::class,'redirectToFormSurat'])->middleware('userAccess:2')->name('redirect-form-surat');
         Route::get('/riwayat-pengajuan-surat',[MahasiswaController::class,'riwayatPengajuanSurat'])->middleware('userAccess:2');
-        Route::get('/riwayat-pengajuan-surat/{jenisSurat}',[MahasiswaController::class,'riwayatPengajuanSurat'])->middleware('userAccess:2');
         Route::get('/lacak-surat',[MahasiswaController::class,'lacakSurat'])->middleware('userAccess:2');
 
     });
