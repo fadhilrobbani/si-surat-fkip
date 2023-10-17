@@ -9,6 +9,7 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\SuratController;
 use App\Http\Controllers\WDController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,13 @@ use App\Http\Controllers\WDController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+//test surat doang
+Route::get('/surat-aktif', function(){
+    return view('template.surat-aktif-kuliah',[
+    'mahasiswa' =>  User::where('username', 'G1A020036')->first()
+    ]);
+});
 
 
 Route::middleware('guest')->group(function() {
@@ -41,7 +49,13 @@ Route::middleware('auth')->group(function(){
         Route::get('/surat', [SuratController::class, 'index'])->middleware('userAccess:1');
 
     });
-    Route::get('/mahasiswa',[MahasiswaController::class,'dashboard'])->middleware('userAccess:2');
+    Route::prefix('mahasiswa')->group(function(){
+        Route::get('/',[MahasiswaController::class,'dashboard'])->middleware('userAccess:2');
+        Route::get('/pengajuan-surat',[MahasiswaController::class,'pengajuanSurat'])->middleware('userAccess:2');
+        Route::get('/riwayat-pengajuan-surat',[MahasiswaController::class,'riwayatPengajuanSurat'])->middleware('userAccess:2');
+        Route::get('/lacak-surat',[MahasiswaController::class,'lacakSurat'])->middleware('userAccess:2');
+
+    });
     Route::get('/staff',[StaffController::class,'dashboard'])->middleware('userAccess:3');
     Route::get('/kaprodi',[KaprodiController::class,'dashboard'])->middleware('userAccess:4');
     Route::get('/wd',[WDController::class,'dashboard'])->middleware('userAccess:5');

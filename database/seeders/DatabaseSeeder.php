@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\JenisSurat;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -78,5 +79,54 @@ class DatabaseSeeder extends Seeder
                 ]
                 );
         };
+
+        $daftarJenisSurat = [
+            [
+                'name' => 'Surat Keterangan Aktif Kuliah'
+            ],
+            [
+                'name' => 'Surat Permohonan Izin Cuti Akademik'
+            ],
+            [
+                'name' => 'Surat Permohonan Seminar Proposal / Seminar Hasil / Ujian Komprehensif / Ujian Skripsi'
+            ],
+            [
+                'name' => 'Surat Aktif Kembali Setelah Non-aktif'
+            ],
+            [
+                'name' => 'Surat Permohonan Perbaikan Data PDDikti'
+            ],
+            [
+                'name' => 'Surat Keterangan Alumni'
+            ],
+            [
+                'name' => 'Surat Keterangan Pernah Kuliah'
+            ],
+            [
+                'name' => 'Surat Keterangan Lulus'
+            ],
+            [
+                'name' => 'Surat Keterangan Kesalahan Nama di Ijazah'
+            ],
+            [
+                'name' => 'Surat Permohonan Sinkronisasi SK Homebase Dosen dengan Forlap PDDikti'
+            ],
+            [
+                'name' => 'Surat Permohonan Izin Pra-Penelitian Mahasiswa'
+            ],
+            [
+                'name' => 'Surat Permohonan Izin Penelitian Mahasiswa'
+            ],
+            [
+                'name' => 'Surat Keterangan Eligible PIN'
+            ],
+            [
+                'name' => 'Surat Usulan Bebas UKT'
+            ],
+        ];
+
+        foreach ($daftarJenisSurat as $jenisSurat) {
+            JenisSurat::create(['name' => $jenisSurat['name']]);
+        }
     }
 }

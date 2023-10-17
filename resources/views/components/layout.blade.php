@@ -145,9 +145,21 @@
                     'dropdown' => [],
                 ],
                 [
-                    'link' => 'letters',
-                    'title' => 'Daftar Surat',
-                    'icon' => asset('svg/user.svg'),
+                    'link' => 'mahasiswa/pengajuan-surat',
+                    'title' => 'Pengajuan Surat',
+                    'icon' => asset('svg/letter.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'mahasiswa/riwayat-pengajuan-surat',
+                    'title' => 'Riwayat Pengajuan',
+                    'icon' => asset('svg/letter.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'mahasiswa/lacak-surat',
+                    'title' => 'Lacak Surat',
+                    'icon' => asset('svg/letter.svg'),
                     'dropdown' => [],
                 ],
                 [
