@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function(){
         Route::get('/',[MahasiswaController::class,'dashboard'])->middleware('userAccess:2');
         Route::get('/pengajuan-surat',[MahasiswaController::class,'pengajuanSurat'])->middleware('userAccess:2');
         Route::get('/riwayat-pengajuan-surat',[MahasiswaController::class,'riwayatPengajuanSurat'])->middleware('userAccess:2');
+        Route::get('/riwayat-pengajuan-surat/{jenisSurat}',[MahasiswaController::class,'riwayatPengajuanSurat'])->middleware('userAccess:2');
         Route::get('/lacak-surat',[MahasiswaController::class,'lacakSurat'])->middleware('userAccess:2');
 
     });

@@ -7,7 +7,6 @@
     </x-slot:title>
     <x-breadcumb />
     <form class="mt-4" method="POST">
-
         <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih opsi
             surat</label>
         <select id="countries"
