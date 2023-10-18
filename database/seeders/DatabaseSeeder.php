@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\JenisSurat;
+use App\Models\ProgramStudi;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -30,41 +31,61 @@ class DatabaseSeeder extends Seeder
             ]);
         };
 
+        $daftarProgramStudi = [
+            'D3 Bahasa Inggris','Pendidikan Profesi Guru (PPG)','S1 Bimbingan dan Konseling','S1 Pendidikan Bahasa Indonesia',
+            'S1 Pendidikan Bahasa Inggris','S1 Pendidikan Biologi','S1 Pendidikan Fisika','S1 Pendidikan Guru PAUD',
+            'S1 Pendidikan Guru Sekolah Dasar', 'S1 Pendidikan Jasmani','S1 Pendidikan Kimia','S1 Pendidikan Non Formal',
+            'S1 Pendidikan Matematika', 'S1 Pendidikan IPA','S2 Administrasi Pendidikan','S2 Pendidikan Bahasa Indonesia',
+            'S2 Pendidikan Bahasa Inggris','S2 Pendidikan Dasar','S2 Pendidikan IPA','S2 Pendidikan Matematika', "S2 Teknologi Pendidikan",
+            'S3 Pendidikan', 'S3 Linguistik Terapan'
+        ];
+
+        foreach($daftarProgramStudi as $programStudi){
+            ProgramStudi::create([
+                'name'=>$programStudi
+            ]);
+        };
         $users = [
             [
                 'username' => 'admin',
                 'name' => 'admin',
                 'email' => 'norepyl@gmail.com',
                 'password'=> bcrypt('admin'),
-                'role_id' => 1
+                'role_id' => 1,
+                'program_studi_id' => null,
+
             ],
             [
                 'username' => 'G1A020036',
                 'name' => 'mahasiswa1',
                 'email' => 'norepyl2@gmail.com',
                 'password'=> bcrypt('password'),
-                'role_id' => 2
+                'role_id' => 2,
+                'program_studi_id' => 3,
             ],
             [
                 'username' => 'idstaff',
                 'name' => 'staff',
                 'email' => 'norepyl3@gmail.com',
                 'password'=> bcrypt('password'),
-                'role_id' => 3
+                'role_id' => 3,
+                'program_studi_id' => null,
             ],
             [
                 'username' => 'idkaprodi',
                 'name' => 'kaprodi1',
                 'email' => 'norepy4@gmail.com',
                 'password'=> bcrypt('password'),
-                'role_id'=>4
+                'role_id'=>4,
+                'program_studi_id' => 3,
             ],
             [
                 'username' => 'idwd1',
                 'name' => 'wd1',
                 'email' => 'norepy5@gmail.com',
                 'password'=> bcrypt('password'),
-                'role_id'=>5
+                'role_id'=>5,
+                'program_studi_id' => null,
             ],
         ];
 
@@ -75,7 +96,8 @@ class DatabaseSeeder extends Seeder
                     'name'=> $user['name'],
                     'email' => $user['email'],
                     'password' => $user['password'],
-                    'role_id' => $user['role_id']
+                    'role_id' => $user['role_id'],
+                    'program_studi_id' => $user['program_studi_id'],
                 ]
                 );
         };
