@@ -53,8 +53,9 @@ Route::middleware('auth')->group(function(){
     Route::prefix('mahasiswa')->group(function(){
         Route::get('/',[MahasiswaController::class,'dashboard'])->middleware('userAccess:2');
         Route::get('/pengajuan-surat',[MahasiswaController::class,'pengajuanSurat'])->middleware('userAccess:2');
-        Route::get('/pengajuan-surat/{jenisSurat}',[JenisSuratController::class,'show'])->middleware('userAccess:2')->name('show-form-surat');
+        Route::get('/pengajuan-surat/{jenisSurat}',[SuratController::class,'create'])->middleware('userAccess:2')->name('show-form-surat');
         Route::post('/pengajuan-surat',[JenisSuratController::class,'redirectToFormSurat'])->middleware('userAccess:2')->name('redirect-form-surat');
+        Route::post('/pengajuan-surat/new',[SuratController::class,'store'])->middleware('userAccess:2')->name('create-surat');
         Route::get('/riwayat-pengajuan-surat',[MahasiswaController::class,'riwayatPengajuanSurat'])->middleware('userAccess:2');
         Route::get('/lacak-surat',[MahasiswaController::class,'lacakSurat'])->middleware('userAccess:2');
 
