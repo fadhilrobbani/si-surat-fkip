@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Surat;
+use App\Models\Approval;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -66,6 +67,11 @@ class User extends Authenticatable
     public function suratDiterima(){
         return $this->hasMany(Surat::class,'penerima_id','id');
     }
+
+    public function approvals(){
+        return $this->hasMany(Approval::class,'user_id','id');
+    }
+
 
 
 }

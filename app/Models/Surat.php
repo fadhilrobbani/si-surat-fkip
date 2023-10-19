@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Approval;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -25,5 +26,9 @@ class Surat extends Model
 
     public function jenisSurat(){
         return $this->belongsTo(JenisSurat::class,'jenis_surat_id','id');
+    }
+
+    public function approvals(){
+        return $this->hasMany(Approval::class,'surat_id','id');
     }
 }
