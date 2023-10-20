@@ -17,8 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('surat_id');
             $table->boolean('isApproved');
             $table->text('note');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('surat_id')->references('id')->on('surat_tables');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('surat_id')->references('id')->on('surat_tables')->onDelete('cascade');
             $table->timestamps();
         });
     }

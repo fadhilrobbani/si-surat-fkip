@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\JenisSurat;
+use App\Models\Jurusan;
 use App\Models\ProgramStudi;
 use App\Models\Role;
 use App\Models\User;
@@ -17,12 +18,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
 
         $roles = ['admin','mahasiswa','staff','kaprodi','wd1'];
         foreach($roles as $role){
@@ -31,18 +26,53 @@ class DatabaseSeeder extends Seeder
             ]);
         };
 
+        // $daftarProgramStudi = [
+        //     'D3 Bahasa Inggris','Pendidikan Profesi Guru (PPG)','S1 Bimbingan dan Konseling','S1 Pendidikan Bahasa Indonesia',
+        //     'S1 Pendidikan Bahasa Inggris','S1 Pendidikan Biologi','S1 Pendidikan Fisika','S1 Pendidikan Guru PAUD',
+        //     'S1 Pendidikan Guru Sekolah Dasar', 'S1 Pendidikan Jasmani','S1 Pendidikan Kimia','S1 Pendidikan Non Formal',
+        //     'S1 Pendidikan Matematika', 'S1 Pendidikan IPA','S2 Administrasi Pendidikan','S2 Pendidikan Bahasa Indonesia',
+        //     'S2 Pendidikan Bahasa Inggris','S2 Pendidikan Dasar','S2 Pendidikan IPA','S2 Pendidikan Matematika', "S2 Teknologi Pendidikan",
+        //     'S3 Pendidikan', 'S3 Linguistik Terapan'
+        // ];
+
+        $daftarJurusan = ['Jurusan Ilmu Pendidikan', 'Jurusan Pendidikan MIPA','Jurusan Pendidikan Bahasa dan Seni', 'Pascasarjana','Pendidikan Profesi Guru'];
+
+        foreach ($daftarJurusan as $jurusan) {
+            Jurusan::create([
+                'name' => $jurusan,
+            ]);
+        }
+
         $daftarProgramStudi = [
-            'D3 Bahasa Inggris','Pendidikan Profesi Guru (PPG)','S1 Bimbingan dan Konseling','S1 Pendidikan Bahasa Indonesia',
-            'S1 Pendidikan Bahasa Inggris','S1 Pendidikan Biologi','S1 Pendidikan Fisika','S1 Pendidikan Guru PAUD',
-            'S1 Pendidikan Guru Sekolah Dasar', 'S1 Pendidikan Jasmani','S1 Pendidikan Kimia','S1 Pendidikan Non Formal',
-            'S1 Pendidikan Matematika', 'S1 Pendidikan IPA','S2 Administrasi Pendidikan','S2 Pendidikan Bahasa Indonesia',
-            'S2 Pendidikan Bahasa Inggris','S2 Pendidikan Dasar','S2 Pendidikan IPA','S2 Pendidikan Matematika', "S2 Teknologi Pendidikan",
-            'S3 Pendidikan', 'S3 Linguistik Terapan'
+            ['name' => 'D3 Bahasa Inggris', 'jurusan_id' => 3],
+            ['name' => 'Pendidikan Profesi Guru (PPG)', 'jurusan_id' => 5],
+            ['name' => 'S1 Bimbingan dan Konseling', 'jurusan_id' => 1],
+            ['name' => 'S1 Pendidikan Bahasa Indonesia', 'jurusan_id' => 3],
+            ['name' => 'S1 Pendidikan Bahasa Inggris', 'jurusan_id' => 3],
+            ['name' => 'S1 Pendidikan Biologi', 'jurusan_id' => 2],
+            ['name' => 'S1 Pendidikan Fisika', 'jurusan_id' => 2],
+            ['name' => 'S1 Pendidikan Guru PAUD', 'jurusan_id' => 1],
+            ['name' => 'S1 Pendidikan Guru Sekolah Dasar', 'jurusan_id' => 1],
+            ['name' => 'S1 Pendidikan Jasmani', 'jurusan_id' => 1],
+            ['name' => 'S1 Pendidikan Kimia', 'jurusan_id' => 2],
+            ['name' => 'S1 Pendidikan Non Formal', 'jurusan_id' => 1],
+            ['name' => 'S1 Pendidikan Matematika', 'jurusan_id' => 2],
+            ['name' => 'S1 Pendidikan IPA', 'jurusan_id' => 2],
+            ['name' => 'S2 Administrasi Pendidikan', 'jurusan_id' => 4],
+            ['name' => 'S2 Pendidikan Bahasa Indonesia', 'jurusan_id' => 4],
+            ['name' => 'S2 Pendidikan Bahasa Inggris', 'jurusan_id' => 4],
+            ['name' => 'S2 Pendidikan Dasar', 'jurusan_id' => 4],
+            ['name' => 'S2 Pendidikan IPA', 'jurusan_id' => 4],
+            ['name' => 'S2 Pendidikan Matematika', 'jurusan_id' => 4],
+            ['name' => 'S2 Teknologi Pendidikan', 'jurusan_id' => 4],
+            ['name' => 'S3 Pendidikan', 'jurusan_id' => 4],
+            ['name' => 'S3 Linguistik Terapan', 'jurusan_id' => 4]
         ];
 
         foreach($daftarProgramStudi as $programStudi){
             ProgramStudi::create([
-                'name'=>$programStudi
+                'name'=>$programStudi['name'],
+                'jurusan_id'=> $programStudi['jurusan_id']
             ]);
         };
         $users = [

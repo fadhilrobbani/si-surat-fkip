@@ -19,10 +19,10 @@ return new class extends Migration
             $table->enum('status',['on_process','finished','denied']);
             $table->unsignedBigInteger('jenis_surat_id');
             $table->json('data')->nullable();
-            $table->foreign('pengaju_id')->references('id')->on('users');
-            $table->foreign('current_user_id')->references('id')->on('users');
-            $table->foreign('penerima_id')->references('id')->on('users');
-            $table->foreign('jenis_surat_id')->references('id')->on('jenis_surat_tables');
+            $table->foreign('pengaju_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('current_user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('penerima_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('jenis_surat_id')->references('id')->on('jenis_surat_tables')->onDelete('cascade');
             $table->timestamps();
         });
     }

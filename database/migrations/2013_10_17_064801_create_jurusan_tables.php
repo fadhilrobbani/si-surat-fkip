@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('program_studi_tables', function (Blueprint $table) {
+        Schema::create('jurusan_tables', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('jurusan_id');
-            $table->foreign('jurusan_id')->references('id')->on('jurusan_tables')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('program_studi_tables');
+        Schema::dropIfExists('jurusan_tables');
     }
 };

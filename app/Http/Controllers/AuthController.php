@@ -44,7 +44,7 @@ class AuthController extends Controller
           }
         }
 
-        return back()->withErrors('Gagal Login')->withInput();
+        return back()->withErrors('Username atau password tidak sesuai, silahkan coba lagi')->withInput();
 }
 
 
