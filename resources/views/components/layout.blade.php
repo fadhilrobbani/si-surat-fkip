@@ -173,13 +173,19 @@
                 [
                     'link' => 'staff',
                     'title' => 'Dashboard',
-                    'icon' => asset('svg/signout.svg'),
+                    'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
                 [
-                    'link' => 'letters',
-                    'title' => 'Daftar Surat',
-                    'icon' => asset('svg/signout.svg'),
+                    'link' => 'staff/surat-masuk',
+                    'title' => 'Surat Masuk',
+                    'icon' => asset('svg/letter.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'staff/surat-disetujui',
+                    'title' => 'Surat Disetujui',
+                    'icon' => asset('svg/letter.svg'),
                     'dropdown' => [],
                 ],
                 [

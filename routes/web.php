@@ -58,7 +58,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/riwayat-pengajuan-surat', [MahasiswaController::class, 'riwayatPengajuanSurat'])->middleware('userAccess:2');
         Route::get('/lacak-surat', [MahasiswaController::class, 'lacakSurat'])->middleware('userAccess:2');
     });
-    Route::get('/staff', [StaffController::class, 'dashboard'])->middleware('userAccess:3');
+    Route::prefix('staff')->group(function () {
+
+        Route::get('/', [StaffController::class, 'dashboard'])->middleware('userAccess:3');
+        Route::get('/surat-masuk', [StaffController::class, 'suratMasuk'])->middleware('userAccess:3');
+        Route::get('/surat-disetujui', [StaffController::class, 'suratDisetujui'])->middleware('userAccess:3');
+        Route::put('/surat-disetujui/{surat}', [StaffController::class, 'setujuiSurat'])->middleware('userAccess:3')->name('setujui-surat');
+    });
     Route::get('/kaprodi', [KaprodiController::class, 'dashboard'])->middleware('userAccess:4');
     Route::get('/wd', [WDController::class, 'dashboard'])->middleware('userAccess:5');
 });
