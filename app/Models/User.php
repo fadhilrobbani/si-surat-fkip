@@ -72,6 +72,10 @@ class User extends Authenticatable
         return $this->hasMany(Approval::class,'user_id','id');
     }
 
+    public function jurusan(){
+        return $this->belongsTo(Jurusan::class,'jurusan_id','id');
+    }
+
 
 
 }

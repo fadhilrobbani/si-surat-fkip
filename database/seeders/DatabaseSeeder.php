@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        $roles = ['admin','mahasiswa','staff','kaprodi','wd1'];
+        $roles = ['admin','mahasiswa','staff','kaprodi','wd1','akademik'];
         foreach($roles as $role){
             Role::create([
                 'name'=>$role
@@ -82,39 +82,62 @@ class DatabaseSeeder extends Seeder
                 'email' => 'norepyl@gmail.com',
                 'password'=> bcrypt('admin'),
                 'role_id' => 1,
+                'jurusan_id' => null,
                 'program_studi_id' => null,
 
             ],
             [
-                'username' => 'G1A020036',
-                'name' => 'mahasiswa1',
-                'email' => 'norepyl2@gmail.com',
+                'username' => 'mahasiswa_bk',
+                'name' => 'mahasiswa_bk',
+                'email' => 'norepyl23@gmail.com',
                 'password'=> bcrypt('password'),
                 'role_id' => 2,
+                'jurusan_id' => null,
                 'program_studi_id' => 3,
             ],
             [
                 'username' => 'idstaff',
                 'name' => 'staff',
-                'email' => 'norepyl3@gmail.com',
+                'email' => 'norepyl6@gmail.com',
                 'password'=> bcrypt('password'),
                 'role_id' => 3,
+                'jurusan_id' => null,
                 'program_studi_id' => null,
             ],
             [
-                'username' => 'idkaprodi',
-                'name' => 'kaprodi1',
-                'email' => 'norepy4@gmail.com',
+                'username' => 'staff_bk',
+                'name' => 'staff_bk',
+                'email' => 'norepyl1@gmail.com',
                 'password'=> bcrypt('password'),
-                'role_id'=>4,
+                'role_id' => 3,
+                'jurusan_id' => null,
                 'program_studi_id' => 3,
             ],
             [
-                'username' => 'idwd1',
+                'username' => 'kaprodi_bk',
+                'name' => 'kaprodi_bk',
+                'email' => 'norepy3@gmail.com',
+                'password'=> bcrypt('password'),
+                'role_id'=>4,
+                'jurusan_id' => null,
+                'program_studi_id' => 3,
+            ],
+            [
+                'username' => 'wd1',
                 'name' => 'wd1',
                 'email' => 'norepy5@gmail.com',
                 'password'=> bcrypt('password'),
                 'role_id'=>5,
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+            ],
+            [
+                'username' => 'akademik_jip',
+                'name' => 'akademik_jip',
+                'email' => 'norepy4@gmail.com',
+                'password'=> bcrypt('password'),
+                'role_id'=>5,
+                'jurusan_id' => 1,
                 'program_studi_id' => null,
             ],
         ];
@@ -128,6 +151,7 @@ class DatabaseSeeder extends Seeder
                     'password' => $user['password'],
                     'role_id' => $user['role_id'],
                     'program_studi_id' => $user['program_studi_id'],
+                    'jurusan_id' => $user['jurusan_id']
                 ]
                 );
         };

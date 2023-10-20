@@ -24,50 +24,47 @@ use App\Models\User;
 */
 
 //test surat doang
-Route::get('/surat-aktif', function(){
-    return view('template.surat-aktif-kuliah',[
-    'mahasiswa' =>  User::where('username', 'G1A020036')->first()
+Route::get('/surat-aktif', function () {
+    return view('template.surat-aktif-kuliah', [
+        'mahasiswa' =>  User::where('username', 'G1A020036')->first()
     ]);
 });
 
 
-Route::middleware('guest')->group(function() {
+Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'login'])->name('login');
     Route::get('/register', [AuthController::class, 'create']);
-    Route::post('/login',[AuthController::class, 'authenticate'])->name('authLogin');
+    Route::post('/login', [AuthController::class, 'authenticate'])->name('authLogin');
 });
 
-Route::middleware('auth')->group(function(){
+Route::middleware('auth')->group(function () {
 
-    Route::get('/logout',[AuthController::class, 'logout'])->name('logout');
-    Route::prefix('admin')->group(function() {
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->middleware('userAccess:1');
-        Route::get('/users/mahasiswa', [MahasiswaController::class,'index'])->middleware('userAccess:1')->name('admin-mahasiswa');
-        Route::get('/users/mahasiswa/new', [MahasiswaController::class,'create'])->middleware('userAccess:1')->name('admin-mahasiswa-create');
-        Route::get('/users/staff', [StaffController::class,'index'])->middleware('userAccess:1')->name('admin-staff');
-        Route::get('/users/kaprodi', [KaprodiController::class,'index'])->middleware('userAccess:1')->name('admin-kaprodi');
-        Route::get('/users/wd', [WDController::class,'index'])->middleware('userAccess:1')->name('admin-wd');
+        Route::get('/users/mahasiswa', [MahasiswaController::class, 'index'])->middleware('userAccess:1')->name('admin-mahasiswa');
+        Route::get('/users/mahasiswa/new', [MahasiswaController::class, 'create'])->middleware('userAccess:1')->name('admin-mahasiswa-create');
+        Route::get('/users/staff', [StaffController::class, 'index'])->middleware('userAccess:1')->name('admin-staff');
+        Route::get('/users/kaprodi', [KaprodiController::class, 'index'])->middleware('userAccess:1')->name('admin-kaprodi');
+        Route::get('/users/wd', [WDController::class, 'index'])->middleware('userAccess:1')->name('admin-wd');
         Route::get('/surat', [SuratController::class, 'index'])->middleware('userAccess:1');
-
     });
-    Route::prefix('mahasiswa')->group(function(){
-        Route::get('/',[MahasiswaController::class,'dashboard'])->middleware('userAccess:2');
-        Route::get('/pengajuan-surat',[MahasiswaController::class,'pengajuanSurat'])->middleware('userAccess:2');
-        Route::get('/pengajuan-surat/{jenisSurat}',[SuratController::class,'create'])->middleware('userAccess:2')->name('show-form-surat');
-        Route::post('/pengajuan-surat',[JenisSuratController::class,'redirectToFormSurat'])->middleware('userAccess:2')->name('redirect-form-surat');
-        Route::post('/pengajuan-surat/new',[SuratController::class,'store'])->middleware('userAccess:2')->name('create-surat');
-        Route::get('/riwayat-pengajuan-surat',[MahasiswaController::class,'riwayatPengajuanSurat'])->middleware('userAccess:2');
-        Route::get('/lacak-surat',[MahasiswaController::class,'lacakSurat'])->middleware('userAccess:2');
-
+    Route::prefix('mahasiswa')->group(function () {
+        Route::get('/', [MahasiswaController::class, 'dashboard'])->middleware('userAccess:2');
+        Route::get('/pengajuan-surat', [MahasiswaController::class, 'pengajuanSurat'])->middleware('userAccess:2');
+        Route::get('/pengajuan-surat/{jenisSurat}', [SuratController::class, 'create'])->middleware('userAccess:2')->name('show-form-surat');
+        Route::post('/pengajuan-surat/store/6', [SuratController::class, 'storeSuratKeteranganAlumni'])->middleware('userAccess:2')->name('store-surat-alumni');
+        Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->middleware('userAccess:2')->name('redirect-form-surat');
+        Route::get('/riwayat-pengajuan-surat', [MahasiswaController::class, 'riwayatPengajuanSurat'])->middleware('userAccess:2');
+        Route::get('/lacak-surat', [MahasiswaController::class, 'lacakSurat'])->middleware('userAccess:2');
     });
-    Route::get('/staff',[StaffController::class,'dashboard'])->middleware('userAccess:3');
-    Route::get('/kaprodi',[KaprodiController::class,'dashboard'])->middleware('userAccess:4');
-    Route::get('/wd',[WDController::class,'dashboard'])->middleware('userAccess:5');
+    Route::get('/staff', [StaffController::class, 'dashboard'])->middleware('userAccess:3');
+    Route::get('/kaprodi', [KaprodiController::class, 'dashboard'])->middleware('userAccess:4');
+    Route::get('/wd', [WDController::class, 'dashboard'])->middleware('userAccess:5');
 });
-Route::get('/home', function(){
+Route::get('/home', function () {
     return redirect('/admin');
 });
-Route::get('/login', function(){
+Route::get('/login', function () {
     return redirect('/');
 });
-

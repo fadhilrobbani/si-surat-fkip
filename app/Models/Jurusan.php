@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\ProgramStudi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,5 +15,9 @@ class Jurusan extends Model
 
     public function programStudi(){
         return $this->hasMany(ProgramStudi::class,'jurusan_id','id');
+    }
+
+    public function users(){
+        return $this->hasMany(User::class, 'jurusan_id','id');
     }
 }
