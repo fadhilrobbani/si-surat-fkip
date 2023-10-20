@@ -36,7 +36,7 @@ class SuratController extends Controller
         // dd($jenisSurat);
 
 
-        $validateSurat = $request->validate([
+        $request->validate([
             'name' => 'required',
             'username' => 'required',
             'program-studi' => 'required',
@@ -46,6 +46,7 @@ class SuratController extends Controller
             'email' => 'required|email'
         ]);
 
+        $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
 
         // $staff = DB::select('SELECT*FROM users WHERE role_id =? AND program_studi_id  = ?', [3,3]);
         $staff = User::select('id')
@@ -85,7 +86,7 @@ class SuratController extends Controller
         $surat->data = [
             'name' => $request->input('name'),
             'username' => $request->input('name'),
-            'programStudi' => $request->input('program-studi'),
+            'programStudi' => $programStudi->name,
             'noIjazah' => $request->input('no-ijazah'),
             'birthplace' => $request->input('birthplace'),
             'birthdate' => $request->input('birthdate'),
