@@ -1,7 +1,18 @@
 @php
     $authUser = auth()->user();
     $step = [];
+    $avatar = 'https://ui-avatars.com/api/?name=' . $surat->data['name'] . '&background=random';
+
+    // Tanggal kadaluarsa dari surat (contoh)
+    $expiredAt = Illuminate\Support\Carbon::parse($surat->expired_at); // Gantilah dengan tanggal kadaluarsa yang sesuai
+
+    // Waktu saat ini
+    $now = Illuminate\Support\Carbon::now();
+
+    // Hitung sisa waktu kadaluarsa dalam hari
+    $masaAktif = $now->diffInDays($expiredAt);
 @endphp
+
 <x-layout :authUser='$authUser'>
     <x-slot:title>
         Mahasiswa | Detail Surat
@@ -24,8 +35,8 @@
                 <td>{{ formatTimestampToIndonesian($surat->created_at) }}</td>
             </tr>
             <tr>
-                <td class="font-semibold">Masa Aktif:&nbsp;</td>
-                <td>{{ $surat->expired_at }}</td>
+                <td class="font-semibold">Masa Aktif Tersisa:&nbsp;</td>
+                <td>{{ $masaAktif }} hari</td>
             </tr>
             @foreach ($surat->data as $key => $value)
                 <tr>
