@@ -20,16 +20,13 @@
                 $sisaHari = $now->diffInDays($expiredAt);
             @endphp
 
-            <p>{{ $surat->data['name'] }}</p>
+            <p>{{ $surat->pengaju->name }}</p>
+            <p>{{ $surat->pengaju->id }}</p>
             <p>{{ $surat->data['programStudi'] }}</p>
             <p>{{ $surat->jenis_surat_id }}</p>
             <p>{{ $surat->status }}</p>
             <p>Kadaluarsa dalam {{ $sisaHari }}</p>
-            {{-- <p>Catatan: {{ $surat->data['note'] ? $surat->data['note'] : '' }}</p> --}}
-            @php
-                $currentUser = App\Models\User::find($surat->current_user_id);
-            @endphp
-            <p>Menunggu: {{ $currentUser->name }}</p>
+            <p>Menunggu: {{ $surat->current_user->name }}</p>
         </div>
     @endforeach
 </x-layout>
