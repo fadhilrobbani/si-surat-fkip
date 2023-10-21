@@ -25,7 +25,7 @@
             <p>{{ $surat->jenis_surat_id }}</p>
             <p>{{ $surat->status }}</p>
             <p>Kadaluarsa dalam {{ $sisaHari }}</p>
-            <p>Catatan: {{ $surat->data['note'] ? $surat->data['note'] : '' }}</p>
+            {{-- <p>Catatan: {{ $surat->data['note'] ? $surat->data['note'] : '' }}</p> --}}
             @php
                 $currentUser = App\Models\User::find($surat->current_user_id);
             @endphp

@@ -19,10 +19,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        $roles = ['admin','mahasiswa','staff','kaprodi','wd1','akademik'];
-        foreach($roles as $role){
+        $roles = ['admin', 'mahasiswa', 'staff', 'kaprodi', 'wd1', 'akademik'];
+        foreach ($roles as $role) {
             Role::create([
-                'name'=>$role
+                'name' => $role
             ]);
         };
 
@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         //     'S3 Pendidikan', 'S3 Linguistik Terapan'
         // ];
 
-        $daftarJurusan = ['Jurusan Ilmu Pendidikan', 'Jurusan Pendidikan MIPA','Jurusan Pendidikan Bahasa dan Seni', 'Pascasarjana','Pendidikan Profesi Guru'];
+        $daftarJurusan = ['Jurusan Ilmu Pendidikan', 'Jurusan Pendidikan MIPA', 'Jurusan Pendidikan Bahasa dan Seni', 'Pascasarjana', 'Pendidikan Profesi Guru'];
 
         foreach ($daftarJurusan as $jurusan) {
             Jurusan::create([
@@ -69,10 +69,10 @@ class DatabaseSeeder extends Seeder
             ['name' => 'S3 Linguistik Terapan', 'jurusan_id' => 4]
         ];
 
-        foreach($daftarProgramStudi as $programStudi){
+        foreach ($daftarProgramStudi as $programStudi) {
             ProgramStudi::create([
-                'name'=>$programStudi['name'],
-                'jurusan_id'=> $programStudi['jurusan_id']
+                'name' => $programStudi['name'],
+                'jurusan_id' => $programStudi['jurusan_id']
             ]);
         };
         $users = [
@@ -80,7 +80,7 @@ class DatabaseSeeder extends Seeder
                 'username' => 'admin',
                 'name' => 'admin',
                 'email' => 'norepyl@gmail.com',
-                'password'=> bcrypt('admin'),
+                'password' => bcrypt('admin'),
                 'role_id' => 1,
                 'jurusan_id' => null,
                 'program_studi_id' => null,
@@ -90,7 +90,7 @@ class DatabaseSeeder extends Seeder
                 'username' => 'mahasiswa_bk',
                 'name' => 'mahasiswa_bk',
                 'email' => 'norepyl23@gmail.com',
-                'password'=> bcrypt('password'),
+                'password' => bcrypt('password'),
                 'role_id' => 2,
                 'jurusan_id' => null,
                 'program_studi_id' => 3,
@@ -99,7 +99,7 @@ class DatabaseSeeder extends Seeder
                 'username' => 'idstaff',
                 'name' => 'staff',
                 'email' => 'norepyl6@gmail.com',
-                'password'=> bcrypt('password'),
+                'password' => bcrypt('password'),
                 'role_id' => 3,
                 'jurusan_id' => null,
                 'program_studi_id' => null,
@@ -108,7 +108,7 @@ class DatabaseSeeder extends Seeder
                 'username' => 'staff_bk',
                 'name' => 'staff_bk',
                 'email' => 'norepyl1@gmail.com',
-                'password'=> bcrypt('password'),
+                'password' => bcrypt('password'),
                 'role_id' => 3,
                 'jurusan_id' => null,
                 'program_studi_id' => 3,
@@ -117,8 +117,8 @@ class DatabaseSeeder extends Seeder
                 'username' => 'kaprodi_bk',
                 'name' => 'kaprodi_bk',
                 'email' => 'norepy3@gmail.com',
-                'password'=> bcrypt('password'),
-                'role_id'=>4,
+                'password' => bcrypt('password'),
+                'role_id' => 4,
                 'jurusan_id' => null,
                 'program_studi_id' => 3,
             ],
@@ -126,8 +126,8 @@ class DatabaseSeeder extends Seeder
                 'username' => 'wd1',
                 'name' => 'wd1',
                 'email' => 'norepy5@gmail.com',
-                'password'=> bcrypt('password'),
-                'role_id'=>5,
+                'password' => bcrypt('password'),
+                'role_id' => 5,
                 'jurusan_id' => null,
                 'program_studi_id' => null,
             ],
@@ -135,25 +135,25 @@ class DatabaseSeeder extends Seeder
                 'username' => 'akademik_jip',
                 'name' => 'akademik_jip',
                 'email' => 'norepy4@gmail.com',
-                'password'=> bcrypt('password'),
-                'role_id'=>5,
+                'password' => bcrypt('password'),
+                'role_id' => 6,
                 'jurusan_id' => 1,
                 'program_studi_id' => null,
             ],
         ];
 
-        foreach($users as $user){
+        foreach ($users as $user) {
             User::create(
                 [
                     'username' => $user['username'],
-                    'name'=> $user['name'],
+                    'name' => $user['name'],
                     'email' => $user['email'],
                     'password' => $user['password'],
                     'role_id' => $user['role_id'],
                     'program_studi_id' => $user['program_studi_id'],
                     'jurusan_id' => $user['jurusan_id']
                 ]
-                );
+            );
         };
 
         $daftarJenisSurat = [

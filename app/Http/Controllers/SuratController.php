@@ -51,13 +51,13 @@ class SuratController extends Controller
         // $staff = DB::select('SELECT*FROM users WHERE role_id =? AND program_studi_id  = ?', [3,3]);
         $staff = User::select('id')
             ->where('role_id', '=', 3)
-            ->where('program_studi_id', '=', 3)
+            ->where('program_studi_id', '=', auth()->user()->program_studi_id)
             ->first();
         // dd($staff);
 
         $kaprodi = User::select('id')
             ->where('role_id', '=', 4)
-            ->where('program_studi_id', '=', 3)
+            ->where('program_studi_id', '=',  auth()->user()->program_studi_id)
             ->first();
         // $surat = [
         //     'pengaju_id' => auth()->user()->id,
