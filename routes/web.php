@@ -1,16 +1,17 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WDController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\JenisSuratController;
-use App\Http\Controllers\KaprodiController;
-use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\SuratController;
-use App\Http\Controllers\WDController;
-use App\Models\User;
+use App\Http\Controllers\KaprodiController;
+use App\Http\Controllers\AkademikController;
+use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\JenisSuratController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/users/staff', [StaffController::class, 'index'])->middleware('userAccess:1')->name('admin-staff');
         Route::get('/users/kaprodi', [KaprodiController::class, 'index'])->middleware('userAccess:1')->name('admin-kaprodi');
         Route::get('/users/wd', [WDController::class, 'index'])->middleware('userAccess:1')->name('admin-wd');
+        Route::get('/users/akademik', [AkademikController::class, 'index'])->middleware('userAccess:1')->name('admin-akademik');
         Route::get('/surat', [SuratController::class, 'index'])->middleware('userAccess:1');
     });
     Route::prefix('mahasiswa')->group(function () {
@@ -77,13 +79,20 @@ Route::middleware('auth')->group(function () {
         Route::put('/surat-ditolak/{surat}', [KaprodiController::class, 'tolakSurat'])->middleware('userAccess:4')->name('tolak-surat-kaprodi');
     });
     Route::prefix('wd')->group(function () {
-
         Route::get('/', [WDController::class, 'dashboard'])->middleware('userAccess:5');
         Route::get('/surat-masuk', [WDController::class, 'suratMasuk'])->middleware('userAccess:5');
         Route::get('/surat-disetujui', [WDController::class, 'suratDisetujui'])->middleware('userAccess:5');
         Route::put('/surat-disetujui/{surat}', [WDController::class, 'setujuiSurat'])->middleware('userAccess:5')->name('setujui-surat-wd');
         Route::get('/surat-ditolak/{surat}', [WDController::class, 'confirmTolakSurat'])->middleware('userAccess:5')->name('confirm-tolak-surat-wd');
         Route::put('/surat-ditolak/{surat}', [WDController::class, 'tolakSurat'])->middleware('userAccess:5')->name('tolak-surat-wd');
+    });
+    Route::prefix('akademik')->group(function () {
+        Route::get('/', [AkademikController::class, 'dashboard'])->middleware('userAccess:6');
+        Route::get('/surat-masuk', [AkademikController::class, 'suratMasuk'])->middleware('userAccess:6');
+        Route::get('/surat-disetujui', [AkademikController::class, 'suratDisetujui'])->middleware('userAccess:6');
+        Route::put('/surat-disetujui/{surat}', [AkademikController::class, 'setujuiSurat'])->middleware('userAccess:6')->name('setujui-surat-akademik');
+        Route::get('/surat-ditolak/{surat}', [AkademikController::class, 'confirmTolakSurat'])->middleware('userAccess:6')->name('confirm-tolak-surat-akademik');
+        Route::put('/surat-ditolak/{surat}', [AkademikController::class, 'tolakSurat'])->middleware('userAccess:6')->name('tolak-surat-akademik');
     });
 });
 Route::get('/home', function () {

@@ -15,9 +15,10 @@ class UserAccess
      */
     public function handle(Request $request, Closure $next, $role_id): Response
     {
-        if(auth()->user()->role_id == $role_id){
+        // dd('user yg login' . auth()->user()->role_id . ' | hakakses yg boleh:' . $role_id);
+        if (auth()->user()->role_id == $role_id) {
             return $next($request);
         }
-        return redirect()->back()->with('deleted','Anda tidak bisa mengakses halaman yang dituju');
+        return redirect()->back()->with('deleted', 'Anda tidak bisa mengakses halaman yang dituju');
     }
 }

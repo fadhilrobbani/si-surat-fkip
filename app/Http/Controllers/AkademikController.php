@@ -8,16 +8,16 @@ use App\Models\Approval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
-class WDController extends Controller
+class AkademikController extends Controller
 {
     public function dashboard()
     {
-        return view('wd.dashboard');
+        return view('akademik.dashboard');
     }
 
     public function index()
     {
-        return view('admin.users.wd.index');
+        return view('admin.users.akademik.index');
     }
 
     public function suratMasuk()
@@ -26,7 +26,7 @@ class WDController extends Controller
             $now = Carbon::now();
             $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
         })->get();
-        return view('wd.surat-masuk', [
+        return view('akademik.surat-masuk', [
             'daftarSuratMasuk' => $daftarSuratMasuk
         ]);
     }
@@ -34,7 +34,7 @@ class WDController extends Controller
     public function suratDisetujui()
     {
         $daftarSuratMasuk = Surat::where('current_user_id', '=', auth()->user()->id)->get();
-        return view('wd.surat-disetujui', [
+        return view('akademik.surat-disetujui', [
             'daftarSuratMasuk' => $daftarSuratMasuk
         ]);
     }
@@ -44,19 +44,12 @@ class WDController extends Controller
         // SELECT jt.id FROM users u
         // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
         // JOIN jurusan_tables jt ON jt.id = pst.jurusan_id ;
-        $jurusan = User::select('jurusan_tables.id')
-            ->join('program_studi_tables as program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
-            ->join('jurusan_tables as jurusan_tables', 'jurusan_tables.id', '=', 'program_studi_tables.jurusan_id')
-            ->first();
-        $akademik = User::select('id')
-            ->where('role_id', '=', 6)
-            ->where('jurusan_id', '=', $jurusan->id)
-            ->first();
 
-        //kita buat wd1 bisa memilih penerimanya selain di data misal dari request wd1, tapi sementara manual dulu
-        $surat->current_user_id = $akademik->id;
-        // $surat->current_user_id = $surat->penerima_id;
+
+        $surat->current_user_id = $surat->pengaju_id;
         $surat->penerima_id = $surat->pengaju_id;
+        $surat->expired_at = null;
+        $surat->status = 'finished';
         $surat->save();
 
         Approval::create([
@@ -71,7 +64,7 @@ class WDController extends Controller
 
     public function confirmTolakSurat(Surat $surat)
     {
-        return view('wd.confirm-tolak', [
+        return view('akademik.confirm-tolak', [
             'surat' => $surat
         ]);
     }
@@ -87,6 +80,6 @@ class WDController extends Controller
             'isApproved' => false,
             'note' => $request->input('note'),
         ]);
-        return redirect('/wd/surat-masuk')->with('success', 'Surat berhasil ditolak');
+        return redirect('/akademik/surat-masuk')->with('success', 'Surat berhasil ditolak');
     }
 }

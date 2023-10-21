@@ -122,6 +122,10 @@
                             'title' => 'Wakil Dekan',
                             'link' => route('admin-wd'),
                         ],
+                        [
+                            'title' => 'Akademik',
+                            'link' => route('admin-akademik'),
+                        ],
                     ],
                 ],
                 [
@@ -247,6 +251,32 @@
                     'dropdown' => [],
                 ],
             ],
+            'akademik' => [
+                [
+                    'link' => 'akademik',
+                    'title' => 'Dashboard',
+                    'icon' => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'akademik/surat-masuk',
+                    'title' => 'Surat Masuk',
+                    'icon' => asset('svg/letter.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'akademik/surat-disetujui',
+                    'title' => 'Surat Disetujui',
+                    'icon' => asset('svg/letter.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Logout',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
         ];
     @endphp
     @if ($authUser->role_id == 1)
@@ -259,7 +289,10 @@
         <x-sidebar :listsData="$listsData['kaprodi']" />
     @elseif ($authUser->role_id == 5)
         <x-sidebar :listsData="$listsData['wd']" />
+    @elseif ($authUser->role_id == 6)
+        <x-sidebar :listsData="$listsData['akademik']" />
     @endif
+
 
 
     <div class="p-4 sm:ml-64">
