@@ -31,6 +31,13 @@ class WDController extends Controller
         ]);
     }
 
+    public function showSuratMasuk(Surat $surat)
+    {
+        return view('wd.show-surat-masuk', [
+            'surat' => $surat
+        ]);
+    }
+
     public function suratDisetujui()
     {
         $daftarSuratMasuk = Surat::where('current_user_id', '=', auth()->user()->id)->get();

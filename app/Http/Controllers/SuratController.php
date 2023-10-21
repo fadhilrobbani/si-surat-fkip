@@ -97,4 +97,10 @@ class SuratController extends Controller
         $surat->save();
         return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
     }
+
+    public function destroy(Surat $surat)
+    {
+        Surat::destroy($surat->id);
+        return redirect()->back()->with('success', 'Berhasil membatalkan pengajuan surat');
+    }
 }

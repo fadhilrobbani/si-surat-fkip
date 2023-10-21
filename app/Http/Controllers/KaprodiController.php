@@ -44,13 +44,14 @@ class KaprodiController extends Controller
         // SELECT jt.id FROM users u
         // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
         // JOIN jurusan_tables jt ON jt.id = pst.jurusan_id ;
-        $jurusan = User::select('jurusan_tables.id')
-            ->join('program_studi_tables as program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
-            ->join('jurusan_tables as jurusan_tables', 'jurusan_tables.id', '=', 'program_studi_tables.jurusan_id')
+        $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
+            ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
+            ->where('users.id', $surat->pengaju->id)
+            ->select('jt.id')
             ->first();
         $akademik = User::select('id')
             ->where('role_id', '=', 6)
-            ->where('jurusan_id', '=', $jurusan->id)
+            ->where('jurusan_id', '=', $idJurusan->id)
             ->first();
 
         $surat->current_user_id = $surat->penerima_id;

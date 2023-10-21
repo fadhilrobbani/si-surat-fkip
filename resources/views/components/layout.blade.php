@@ -161,12 +161,6 @@
                     'dropdown' => [],
                 ],
                 [
-                    'link' => 'mahasiswa/lacak-surat',
-                    'title' => 'Lacak Surat',
-                    'icon' => asset('svg/letter.svg'),
-                    'dropdown' => [],
-                ],
-                [
                     'link' => 'logout',
                     'title' => 'Logout',
                     'icon' => asset('svg/signout.svg'),

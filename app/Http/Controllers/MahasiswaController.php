@@ -28,14 +28,16 @@ class MahasiswaController extends Controller
         // $test2 = Surat::all();
         // dd($test->data);
         return view('mahasiswa.riwayat-pengajuan', [
-            'daftarPengajuan' => Surat::where('pengaju_id', '=', auth()->user()->id)->get(),
+            'daftarPengajuan' => Surat::where('pengaju_id', '=', auth()->user()->id)->latest()->get(),
 
         ]);
     }
 
-    public function lacakSurat()
+    public function lihatSurat(Surat $surat)
     {
-        return view('mahasiswa.lacak-surat');
+        return view('mahasiswa.show-surat', [
+            'surat' => $surat
+        ]);
     }
 
     public function index()

@@ -47,7 +47,7 @@
 
                             <div
                                 class="hover:bg-blue-800 cursor-pointer rounded-lg text-center bg-blue-600 p-2 text-white m-2">
-                                <a href="#">Lihat</a>
+                                <a href="{{ route('show-surat-masuk-wd', $surat->id) }}">Lihat</a>
 
                             </div>
                             <form

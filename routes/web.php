@@ -56,9 +56,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/pengajuan-surat', [MahasiswaController::class, 'pengajuanSurat'])->middleware('userAccess:2');
         Route::get('/pengajuan-surat/{jenisSurat}', [SuratController::class, 'create'])->middleware('userAccess:2')->name('show-form-surat');
         Route::post('/pengajuan-surat/store/6', [SuratController::class, 'storeSuratKeteranganAlumni'])->middleware('userAccess:2')->name('store-surat-alumni');
+        Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->middleware('userAccess:2')->name('destroy-surat');
         Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->middleware('userAccess:2')->name('redirect-form-surat');
         Route::get('/riwayat-pengajuan-surat', [MahasiswaController::class, 'riwayatPengajuanSurat'])->middleware('userAccess:2');
-        Route::get('/lacak-surat', [MahasiswaController::class, 'lacakSurat'])->middleware('userAccess:2');
+        Route::get('/riwayat-pengajuan-surat/show/{surat}', [MahasiswaController::class, 'lihatSurat'])->middleware('userAccess:2')->name('lihat-surat-mahasiswa');
     });
     Route::prefix('staff')->group(function () {
 
@@ -82,6 +83,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [WDController::class, 'dashboard'])->middleware('userAccess:5');
         Route::get('/surat-masuk', [WDController::class, 'suratMasuk'])->middleware('userAccess:5');
         Route::get('/surat-disetujui', [WDController::class, 'suratDisetujui'])->middleware('userAccess:5');
+        Route::get('/surat-masuk/{surat}', [WDController::class, 'showSuratMasuk'])->middleware('userAccess:5')->name('show-surat-masuk-wd');
         Route::put('/surat-disetujui/{surat}', [WDController::class, 'setujuiSurat'])->middleware('userAccess:5')->name('setujui-surat-wd');
         Route::get('/surat-ditolak/{surat}', [WDController::class, 'confirmTolakSurat'])->middleware('userAccess:5')->name('confirm-tolak-surat-wd');
         Route::put('/surat-ditolak/{surat}', [WDController::class, 'tolakSurat'])->middleware('userAccess:5')->name('tolak-surat-wd');
