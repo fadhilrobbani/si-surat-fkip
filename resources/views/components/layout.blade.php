@@ -229,9 +229,15 @@
                     'dropdown' => [],
                 ],
                 [
-                    'link' => 'letters',
-                    'title' => 'Daftar Surat',
-                    'icon' => asset('svg/user.svg'),
+                    'link' => 'wd/surat-masuk',
+                    'title' => 'Surat Masuk',
+                    'icon' => asset('svg/letter.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'wd/surat-disetujui',
+                    'title' => 'Surat Disetujui',
+                    'icon' => asset('svg/letter.svg'),
                     'dropdown' => [],
                 ],
                 [

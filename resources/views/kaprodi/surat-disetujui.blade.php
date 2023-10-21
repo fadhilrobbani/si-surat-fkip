@@ -5,4 +5,5 @@
     <x-slot:title>
         Kaprodi | Surat Disetujui
     </x-slot:title>
+    surat setuju
 </x-layout>

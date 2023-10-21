@@ -76,7 +76,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/surat-ditolak/{surat}', [KaprodiController::class, 'confirmTolakSurat'])->middleware('userAccess:4')->name('confirm-tolak-surat-kaprodi');
         Route::put('/surat-ditolak/{surat}', [KaprodiController::class, 'tolakSurat'])->middleware('userAccess:4')->name('tolak-surat-kaprodi');
     });
-    Route::get('/wd', [WDController::class, 'dashboard'])->middleware('userAccess:5');
+    Route::prefix('wd')->group(function () {
+
+        Route::get('/', [WDController::class, 'dashboard'])->middleware('userAccess:5');
+        Route::get('/surat-masuk', [WDController::class, 'suratMasuk'])->middleware('userAccess:5');
+        Route::get('/surat-disetujui', [WDController::class, 'suratDisetujui'])->middleware('userAccess:5');
+        Route::put('/surat-disetujui/{surat}', [WDController::class, 'setujuiSurat'])->middleware('userAccess:5')->name('setujui-surat-wd');
+        Route::get('/surat-ditolak/{surat}', [WDController::class, 'confirmTolakSurat'])->middleware('userAccess:5')->name('confirm-tolak-surat-wd');
+        Route::put('/surat-ditolak/{surat}', [WDController::class, 'tolakSurat'])->middleware('userAccess:5')->name('tolak-surat-wd');
+    });
 });
 Route::get('/home', function () {
     return redirect('/admin');
