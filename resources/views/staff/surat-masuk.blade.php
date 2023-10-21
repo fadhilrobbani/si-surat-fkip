@@ -60,7 +60,7 @@
                             </form>
                             <div
                                 class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
-                                <a href="#">Tolak</a>
+                                <a href="{{ route('confirm-tolak-surat', $surat->id) }}">Tolak</a>
 
                             </div>
 

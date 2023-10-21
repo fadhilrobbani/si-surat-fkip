@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Approval;
 use App\Models\User;
 use App\Models\Surat;
+use App\Models\Approval;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class StaffController extends Controller
 {
@@ -16,7 +17,10 @@ class StaffController extends Controller
 
     public function suratMasuk()
     {
-        $daftarSuratMasuk = Surat::where('current_user_id', '=', auth()->user()->id)->get();
+        $daftarSuratMasuk = Surat::where('current_user_id', '=', auth()->user()->id)->where('status', 'on_process')->where(function ($query) {
+            $now = Carbon::now();
+            $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
+        })->get();
         return view('staff.surat-masuk', [
             'daftarSuratMasuk' => $daftarSuratMasuk
         ]);
@@ -52,5 +56,27 @@ class StaffController extends Controller
     public function index()
     {
         return view('admin.users.staff.index');
+    }
+
+
+    public function confirmTolakSurat(Surat $surat)
+    {
+        return view('staff.confirm-tolak', [
+            'surat' => $surat
+        ]);
+    }
+
+    public function tolakSurat(Request $request, Surat $surat)
+    {
+        $surat->status = 'denied';
+        $surat->expired_at = null;
+        $surat->save();
+        Approval::create([
+            'user_id' => auth()->user()->id,
+            'surat_id' => $surat->id,
+            'isApproved' => false,
+            'note' => $request->input('note'),
+        ]);
+        return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil ditolak');
     }
 }

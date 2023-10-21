@@ -14,15 +14,15 @@
         <div class="grid gap-6 mb-6 md:grid-cols-2">
             <div>
                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
-                <input type="text" id="name" name="name"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                <input type="text" id="disabled-input-2" aria-label="disabled input 2" readonly name="name"
+                    class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Masukkan Nama Lengkap" value="{{ $authUser->name }}" required>
             </div>
             <div>
                 <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NPM</label>
                 <input type="text" id="username" name="username"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Masukkan NPM Anda" value="{{ $authUser->username }}" required>
+                    class=" cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Masukkan NPM Anda" value="{{ $authUser->username }}" readonly required>
             </div>
             <div>
                 <label for="program-studi" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih

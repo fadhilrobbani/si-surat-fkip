@@ -64,6 +64,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/surat-masuk', [StaffController::class, 'suratMasuk'])->middleware('userAccess:3');
         Route::get('/surat-disetujui', [StaffController::class, 'suratDisetujui'])->middleware('userAccess:3');
         Route::put('/surat-disetujui/{surat}', [StaffController::class, 'setujuiSurat'])->middleware('userAccess:3')->name('setujui-surat');
+        Route::get('/surat-ditolak/{surat}', [StaffController::class, 'confirmTolakSurat'])->middleware('userAccess:3')->name('confirm-tolak-surat');
+        Route::put('/surat-ditolak/{surat}', [StaffController::class, 'tolakSurat'])->middleware('userAccess:3')->name('tolak-surat');
     });
     Route::get('/kaprodi', [KaprodiController::class, 'dashboard'])->middleware('userAccess:4');
     Route::get('/wd', [WDController::class, 'dashboard'])->middleware('userAccess:5');

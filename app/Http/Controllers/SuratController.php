@@ -83,6 +83,7 @@ class SuratController extends Controller
         $surat->penerima_id = $kaprodi->id;
         $surat->status = 'on_process';
         $surat->jenis_surat_id = $jenisSurat;
+        $surat->expired_at = now()->addDays(30);
         $surat->data = [
             'name' => $request->input('name'),
             'username' => $request->input('name'),

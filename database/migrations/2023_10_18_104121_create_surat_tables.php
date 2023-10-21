@@ -16,9 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('pengaju_id');
             $table->unsignedBigInteger('current_user_id');
             $table->unsignedBigInteger('penerima_id');
-            $table->enum('status',['on_process','finished','denied']);
+            $table->enum('status', ['on_process', 'finished', 'denied']);
             $table->unsignedBigInteger('jenis_surat_id');
             $table->json('data')->nullable();
+            $table->timestamp('expired_at')->nullable();
             $table->foreign('pengaju_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('current_user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('penerima_id')->references('id')->on('users')->onDelete('cascade');
