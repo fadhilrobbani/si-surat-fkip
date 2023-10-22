@@ -54,20 +54,22 @@
         <button type="button"
             class="text-white p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button>
 
-        <div class="flex flex-col sm:flex-row">
+        @if ($surat->current_user_id == auth()->user()->id)
+            <div class="flex flex-col sm:flex-row">
 
-            <form class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
-                action="{{ route('setujui-surat', $surat->id) }}" method="POST">
-                @csrf
-                @method('put')
-                <button type="submit">
-                    Setuju </button>
-            </form>
-            <div class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
-                <a href="{{ route('confirm-tolak-surat', $surat->id) }}">Tolak</a>
+                <form class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
+                    action="{{ route('setujui-surat', $surat->id) }}" method="POST">
+                    @csrf
+                    @method('put')
+                    <button type="submit">
+                        Setuju </button>
+                </form>
+                <div class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
+                    <a href="{{ route('confirm-tolak-surat', $surat->id) }}">Tolak</a>
 
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 
 </x-layout>

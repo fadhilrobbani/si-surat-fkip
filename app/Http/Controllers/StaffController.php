@@ -28,20 +28,20 @@ class StaffController extends Controller
 
     public function showSuratMasuk(Surat $surat)
     {
-        if ($surat->current_user_id == auth()->user()->id) {
+        // if ($surat->current_user_id == auth()->user()->id) {
 
-            return view('staff.show-surat', [
-                'surat' => $surat
-            ]);
-        }
-        return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil disetujui');
+        return view('staff.show-surat', [
+            'surat' => $surat
+        ]);
+        // }
+        // return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 
-    public function suratDisetujui()
+    public function riwayatPersetujuan()
     {
-        $daftarSuratMasuk = Surat::where('current_user_id', '=', auth()->user()->id)->get();
-        return view('staff.surat-disetujui', [
-            'daftarSuratMasuk' => $daftarSuratMasuk
+        $daftarRiwayatSurat = Approval::where('user_id', '=', auth()->user()->id)->latest()->get();
+        return view('staff.riwayat-persetujuan', [
+            'daftarRiwayatSurat' => $daftarRiwayatSurat
         ]);
     }
 
@@ -61,7 +61,7 @@ class StaffController extends Controller
             'isApproved' => true,
             'note' => 'setuju',
         ]);
-        return redirect()->back()->with('success', 'Surat berhasil disetujui');
+        return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 
     public function index()

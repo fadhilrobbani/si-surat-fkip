@@ -3,9 +3,8 @@
 @endphp
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Staff | Surat Masuk
+        Staff | Surat Disetujui
     </x-slot:title>
-
     <div class="overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -15,6 +14,8 @@
                     <th scope="col" class="px-4 py-3">NPM</th>
                     <th scope="col" class="px-4 py-3">Email</th>
                     <th scope="col" class="px-4 py-3">Surat yang Diajukan</th>
+                    <th scope="col" class="px-4 py-3">Tanggal disetujui/ditolak</th>
+                    <th scope="col" class="px-4 py-3">Status</th>
                     <th scope="col" class="px-4 py-3">
                         Actions
                         <span class="sr-only">Actions</span>
@@ -22,9 +23,9 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($daftarSuratMasuk as $surat)
+                @foreach ($daftarRiwayatSurat as $riwayatSurat)
                     @php
-                        $avatar = 'https://ui-avatars.com/api/?name=' . $surat->data['name'] . '&background=random';
+                        $avatar = 'https://ui-avatars.com/api/?name=' . $riwayatSurat->user->name . '&background=random';
                     @endphp
                     <tr class=" border-b dark:border-gray-700 hover:bg-slate-100">
                         <th scope="row"
@@ -33,35 +34,20 @@
                         </th>
                         <th scope="row"
                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $surat->data['name'] }}
+                            {{ $riwayatSurat->surat->pengaju->name }}
                         </th>
 
-                        <td class="px-4 py-3">{{ $surat->data['username'] }}</td>
-                        <td class="px-4 py-3">{{ $surat->data['email'] }}</td>
-                        @php
-                            $jenisSurat = App\Models\JenisSurat::find($surat->jenis_surat_id);
-                        @endphp
-                        <td class="px-4 py-3">{{ $jenisSurat->name }}</td>
-                        <td class="px-4 py-3 flex ">
+                        <td class="px-4 py-3">{{ $riwayatSurat->surat->data['username'] }}</td>
+                        <td class="px-4 py-3">{{ $riwayatSurat->surat->data['email'] }}</td>
 
+                        <td class="px-4 py-3">{{ $riwayatSurat->surat->jenisSurat->name }}</td>
+                        <td class="px-4 py-3">{{ formatTimestampToIndonesian($riwayatSurat->created_at) }}</td>
+                        <td class="px-4 py-3">{{ $riwayatSurat->isApproved == 1 ? 'Disetujui' : 'Ditolak' }}</td>
+                        <td class="px-4 py-3 flex ">
 
                             <div
                                 class="hover:bg-blue-800 cursor-pointer rounded-lg text-center bg-blue-600 p-2 text-white m-2">
-                                <a href="{{ route('show-surat-staff', $surat->id) }}">Lihat</a>
-
-                            </div>
-
-                            <form
-                                class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
-                                action="{{ route('setujui-surat', $surat->id) }}" method="POST">
-                                @csrf
-                                @method('put')
-                                <button type="submit">
-                                    Setuju </button>
-                            </form>
-                            <div
-                                class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
-                                <a href="{{ route('confirm-tolak-surat', $surat->id) }}">Tolak</a>
+                                <a href="{{ route('show-surat-staff', $riwayatSurat->surat->id) }}">Lihat</a>
 
                             </div>
 

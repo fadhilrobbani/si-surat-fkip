@@ -181,8 +181,8 @@
                     'dropdown' => [],
                 ],
                 [
-                    'link' => 'staff/surat-disetujui',
-                    'title' => 'Surat Disetujui',
+                    'link' => 'staff/riwayat-persetujuan',
+                    'title' => 'Riwayat Persetujuan',
                     'icon' => asset('svg/letter.svg'),
                     'dropdown' => [],
                 ],
