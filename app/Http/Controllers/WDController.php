@@ -33,9 +33,13 @@ class WDController extends Controller
 
     public function showSuratMasuk(Surat $surat)
     {
-        return view('wd.show-surat-masuk', [
-            'surat' => $surat
-        ]);
+        if ($surat->current_user_id == auth()->user()->id) {
+
+            return view('wd.show-surat', [
+                'surat' => $surat
+            ]);
+        }
+        return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
     }
 
     public function suratDisetujui()
@@ -78,7 +82,26 @@ class WDController extends Controller
             'isApproved' => true,
             'note' => 'setuju',
         ]);
-        return redirect()->back()->with('success', 'Surat berhasil disetujui');
+        return redirect('wd/surat-masuk')->with('success', 'Surat berhasil disetujui');
+    }
+    public function riwayatPersetujuan()
+    {
+        $daftarRiwayatSurat = Approval::where('user_id', '=', auth()->user()->id)->latest()->get();
+        return view('wd.riwayat-persetujuan', [
+            'daftarRiwayatSurat' => $daftarRiwayatSurat
+        ]);
+    }
+
+
+    public function showApproval(Approval $approval)
+    {
+        // if ($surat->current_user_id == auth()->user()->id) {
+
+        return view('wd.show-approval', [
+            'approval' => $approval
+        ]);
+        // }
+        // return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 
 

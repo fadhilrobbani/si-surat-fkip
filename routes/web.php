@@ -86,8 +86,9 @@ Route::middleware('auth')->group(function () {
     Route::prefix('wd')->group(function () {
         Route::get('/', [WDController::class, 'dashboard'])->middleware('userAccess:5');
         Route::get('/surat-masuk', [WDController::class, 'suratMasuk'])->middleware('userAccess:5');
-        Route::get('/surat-disetujui', [WDController::class, 'suratDisetujui'])->middleware('userAccess:5');
-        Route::get('/surat-masuk/{surat}', [WDController::class, 'showSuratMasuk'])->middleware('userAccess:5')->name('show-surat-masuk-wd');
+        Route::get('/riwayat-persetujuan', [WDController::class, 'riwayatPersetujuan'])->middleware('userAccess:5');
+        Route::get('/riwayat-persetujuan/show/{approval}', [WDController::class, 'showApproval'])->middleware('userAccess:5')->name('show-approval-wd');
+        Route::get('/surat-masuk/show/{surat}', [WDController::class, 'showSuratMasuk'])->middleware('userAccess:5')->name('show-surat-wd');
         Route::put('/surat-disetujui/{surat}', [WDController::class, 'setujuiSurat'])->middleware('userAccess:5')->name('setujui-surat-wd');
         Route::get('/surat-ditolak/{surat}', [WDController::class, 'confirmTolakSurat'])->middleware('userAccess:5')->name('confirm-tolak-surat-wd');
         Route::put('/surat-ditolak/{surat}', [WDController::class, 'tolakSurat'])->middleware('userAccess:5')->name('tolak-surat-wd');

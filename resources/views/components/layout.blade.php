@@ -233,8 +233,8 @@
                     'dropdown' => [],
                 ],
                 [
-                    'link' => 'wd/surat-disetujui',
-                    'title' => 'Surat Disetujui',
+                    'link' => 'wd/riwayat-persetujuan',
+                    'title' => 'Riwayat Persetujuan',
                     'icon' => asset('svg/letter.svg'),
                     'dropdown' => [],
                 ],
