@@ -26,6 +26,17 @@ class StaffController extends Controller
         ]);
     }
 
+    public function showSuratMasuk(Surat $surat)
+    {
+        if ($surat->current_user_id == auth()->user()->id) {
+
+            return view('staff.show-surat', [
+                'surat' => $surat
+            ]);
+        }
+        return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil disetujui');
+    }
+
     public function suratDisetujui()
     {
         $daftarSuratMasuk = Surat::where('current_user_id', '=', auth()->user()->id)->get();
