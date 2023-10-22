@@ -27,9 +27,50 @@
                 <td>{{ $surat->status }}</td>
             </tr>
             <tr>
-                <td class="font-semibold">Menunggu:&nbsp;</td>
+                @php
+                    $recentStatus = 'user';
+                    if ($surat->status == 'on_process') {
+                        $recentStatus = 'Menunggu';
+                    } elseif ($surat->status == 'denied') {
+                        $recentStatus = 'Ditolak';
+                    } elseif ($surat->status == 'finished') {
+                        $recentStatus = 'Diterima';
+                    }
+                @endphp
+                <td class="font-semibold">{{ $recentStatus }}:&nbsp;</td>
                 <td>{{ $surat->current_user->name }}</td>
             </tr>
+            @php
+                $riwayatPenolakan = App\Models\Approval::where('surat_id', '=', $surat->id)
+                    ->where('isApproved', '=', 0)
+                    ->first();
+            @endphp
+
+            @if ($surat->status == 'denied')
+                <tr>
+                    <td class="font-semibold">Catatan Penolakan:&nbsp;</td>
+                    <td>{{ $riwayatPenolakan->note }}</td>
+                </tr>
+                <tr>
+                    <td class="font-semibold">Tanggal Penolakan:&nbsp;</td>
+                    <td>{{ formatTimestampToIndonesian($riwayatPenolakan->created_at) }}</td>
+                </tr>
+            @endif
+            {{-- @php
+                $riwayatSelesai = App\Models\Approval::where('surat_id', '=', $surat->id)
+                    ->where('isApproved', '=', 1)
+                    ->where('su.status', '=', 'finished')
+                    ->where('su.pengaju_id', '=', $surat->pengaju_id)
+                    ->join('surat_tables as su', 'approvals.surat_id', '=', 'su.id')
+                    ->first();
+            @endphp --}}
+            @if ($surat->status == 'finished' && isset($surat->data['tanggal_selesai']))
+                <tr>
+                    <td class="font-semibold">Tanggal Disetujui:&nbsp;</td>
+                    <td>{{ formatTimestampToIndonesian($surat->data['tanggal_selesai']) }}
+                    </td>
+                </tr>
+            @endif
             <tr>
                 <td class="font-semibold">Tanggal Diajukan:&nbsp;</td>
                 <td>{{ formatTimestampToIndonesian($surat->created_at) }}</td>

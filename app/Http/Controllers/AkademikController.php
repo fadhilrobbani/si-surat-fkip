@@ -49,6 +49,9 @@ class AkademikController extends Controller
         $surat->current_user_id = $surat->pengaju_id;
         $surat->penerima_id = $surat->pengaju_id;
         $surat->expired_at = null;
+        $data = $surat->data;
+        $data['tanggal_selesai'] = Carbon::now();
+        $surat->data = $data;
         $surat->status = 'finished';
         $surat->save();
 
