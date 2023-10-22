@@ -30,14 +30,17 @@ class AkademikController extends Controller
             'daftarSuratMasuk' => $daftarSuratMasuk
         ]);
     }
-
-    public function suratDisetujui()
+    public function showSuratMasuk(Surat $surat)
     {
-        $daftarSuratMasuk = Surat::where('current_user_id', '=', auth()->user()->id)->get();
-        return view('akademik.surat-disetujui', [
-            'daftarSuratMasuk' => $daftarSuratMasuk
-        ]);
+        if ($surat->current_user_id == auth()->user()->id) {
+
+            return view('akademik.show-surat', [
+                'surat' => $surat
+            ]);
+        }
+        return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
     }
+
 
     public function setujuiSurat(Surat $surat)
     {
@@ -59,8 +62,30 @@ class AkademikController extends Controller
             'isApproved' => true,
             'note' => 'setuju',
         ]);
-        return redirect()->back()->with('success', 'Surat berhasil disetujui');
+        return redirect('/akademik/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
+
+    public function riwayatPersetujuan()
+    {
+        $daftarRiwayatSurat = Approval::where('user_id', '=', auth()->user()->id)->latest()->get();
+        return view('akademik.riwayat-persetujuan', [
+            'daftarRiwayatSurat' => $daftarRiwayatSurat
+        ]);
+    }
+
+
+    public function showApproval(Approval $approval)
+    {
+        // if ($surat->current_user_id == auth()->user()->id) {
+
+        return view('akademik.show-approval', [
+            'approval' => $approval
+        ]);
+        // }
+        // return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil disetujui');
+    }
+
+
 
 
     public function confirmTolakSurat(Surat $surat)

@@ -42,14 +42,6 @@ class WDController extends Controller
         return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
     }
 
-    public function suratDisetujui()
-    {
-        $daftarSuratMasuk = Surat::where('current_user_id', '=', auth()->user()->id)->get();
-        return view('wd.surat-disetujui', [
-            'daftarSuratMasuk' => $daftarSuratMasuk
-        ]);
-    }
-
     public function setujuiSurat(Surat $surat)
     {
         // SELECT jt.id FROM users u

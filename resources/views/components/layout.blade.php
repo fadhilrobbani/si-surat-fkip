@@ -259,8 +259,8 @@
                     'dropdown' => [],
                 ],
                 [
-                    'link' => 'akademik/surat-disetujui',
-                    'title' => 'Surat Disetujui',
+                    'link' => 'akademik/riwayat-persetujuan',
+                    'title' => 'Riwayat Persetujuan',
                     'icon' => asset('svg/letter.svg'),
                     'dropdown' => [],
                 ],

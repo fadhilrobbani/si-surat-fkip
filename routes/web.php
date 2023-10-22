@@ -96,7 +96,9 @@ Route::middleware('auth')->group(function () {
     Route::prefix('akademik')->group(function () {
         Route::get('/', [AkademikController::class, 'dashboard'])->middleware('userAccess:6');
         Route::get('/surat-masuk', [AkademikController::class, 'suratMasuk'])->middleware('userAccess:6');
-        Route::get('/surat-disetujui', [AkademikController::class, 'suratDisetujui'])->middleware('userAccess:6');
+        Route::get('/riwayat-persetujuan', [AkademikController::class, 'riwayatPersetujuan'])->middleware('userAccess:6');
+        Route::get('/riwayat-persetujuan/show/{approval}', [AkademikController::class, 'showApproval'])->middleware('userAccess:6')->name('show-approval-akademik');
+        Route::get('/surat-masuk/show/{surat}', [AkademikController::class, 'showSuratMasuk'])->middleware('userAccess:6')->name('show-surat-akademik');
         Route::put('/surat-disetujui/{surat}', [AkademikController::class, 'setujuiSurat'])->middleware('userAccess:6')->name('setujui-surat-akademik');
         Route::get('/surat-ditolak/{surat}', [AkademikController::class, 'confirmTolakSurat'])->middleware('userAccess:6')->name('confirm-tolak-surat-akademik');
         Route::put('/surat-ditolak/{surat}', [AkademikController::class, 'tolakSurat'])->middleware('userAccess:6')->name('tolak-surat-akademik');

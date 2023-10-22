@@ -5,7 +5,6 @@
     <x-slot:title>
         Akademik | Surat Masuk
     </x-slot:title>
-    ini akademik
     <div class="overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -15,6 +14,7 @@
                     <th scope="col" class="px-4 py-3">NPM</th>
                     <th scope="col" class="px-4 py-3">Email</th>
                     <th scope="col" class="px-4 py-3">Surat yang Diajukan</th>
+                    <th scope="col" class="px-4 py-3">Masa Aktif</th>
                     <th scope="col" class="px-4 py-3">
                         Actions
                         <span class="sr-only">Actions</span>
@@ -42,12 +42,13 @@
                             $jenisSurat = App\Models\JenisSurat::find($surat->jenis_surat_id);
                         @endphp
                         <td class="px-4 py-3">{{ $jenisSurat->name }}</td>
+                        <td class="px-4 py-3">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
                         <td class="px-4 py-3 flex ">
 
 
                             <div
                                 class="hover:bg-blue-800 cursor-pointer rounded-lg text-center bg-blue-600 p-2 text-white m-2">
-                                <a href="#">Lihat</a>
+                                <a href="{{ route('show-surat-akademik', $surat->id) }}">Lihat</a>
 
                             </div>
                             <form
