@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('pengaju_id');
             $table->unsignedBigInteger('current_user_id');
-            $table->unsignedBigInteger('penerima_id');
+            $table->unsignedBigInteger('penerima_id')->nullable();
             $table->enum('status', ['on_process', 'finished', 'denied']);
             $table->unsignedBigInteger('jenis_surat_id');
             $table->json('data')->nullable();

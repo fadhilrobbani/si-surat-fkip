@@ -73,6 +73,7 @@ class AkademikController extends Controller
     {
         $surat->status = 'denied';
         $surat->expired_at = null;
+        $surat->penerima_id = null;
         $surat->save();
         Approval::create([
             'user_id' => auth()->user()->id,

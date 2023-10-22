@@ -28,7 +28,7 @@
             </tr>
             <tr>
                 <td class="font-semibold">Tujuan selanjutnya:&nbsp;</td>
-                <td>{{ $surat->penerima->name }}</td>
+                <td>{{ $surat->penerima->name ?? '-' }}</td>
             </tr>
             <tr>
                 <td class="font-semibold">Tanggal Diajukan:&nbsp;</td>
@@ -54,7 +54,7 @@
         <button type="button"
             class="text-white p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button>
 
-        @if ($surat->current_user_id == auth()->user()->id)
+        @if ($surat->current_user_id == auth()->user()->id && $surat->status == 'on_process')
             <div class="flex flex-col sm:flex-row">
 
                 <form class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
