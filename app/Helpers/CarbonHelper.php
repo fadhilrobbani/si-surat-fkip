@@ -46,3 +46,28 @@ if (!function_exists('formatTimestampToDiff')) {
         return $carbonTimestamp->diffForHumans();
     }
 }
+
+if (!function_exists('formatTimestampToDiffDays')) {
+    function formatTimestampToDiffDays($timestamp)
+    {
+        setlocale(LC_TIME, 'id_ID'); // Set locale ke bahasa Indonesia
+        Carbon::setLocale('id');
+        $carbonTimestamp = Carbon::parse($timestamp);
+        $now = Carbon::now();
+        return $now->diffInDays($carbonTimestamp);
+    }
+}
+
+
+//dari format yyyy:mm:dd ke misalnya Minggu, 28 Oktober 2023
+if (!function_exists('formatDateToText')) {
+    function formatDateToText($date)
+    {
+        setlocale(LC_TIME, 'id_ID'); // Set locale ke bahasa Indonesia
+        Carbon::setLocale('id');
+        list($year, $month, $day) = explode(':', $date);
+        $carbonDate = Carbon::create($year, $month, $day);
+        $formattedDate = $carbonDate->isoFormat('dddd, D MMMM YYYY');
+        return $formattedDate;
+    }
+}

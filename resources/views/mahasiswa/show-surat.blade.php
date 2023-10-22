@@ -2,15 +2,6 @@
     $authUser = auth()->user();
     $step = [];
     $avatar = 'https://ui-avatars.com/api/?name=' . $surat->data['name'] . '&background=random';
-
-    // Tanggal kadaluarsa dari surat (contoh)
-    $expiredAt = Illuminate\Support\Carbon::parse($surat->expired_at); // Gantilah dengan tanggal kadaluarsa yang sesuai
-
-    // Waktu saat ini
-    $now = Illuminate\Support\Carbon::now();
-
-    // Hitung sisa waktu kadaluarsa dalam hari
-    $masaAktif = $now->diffInDays($expiredAt);
 @endphp
 
 <x-layout :authUser='$authUser'>
@@ -56,14 +47,6 @@
                     <td>{{ formatTimestampToIndonesian($riwayatPenolakan->created_at) }}</td>
                 </tr>
             @endif
-            {{-- @php
-                $riwayatSelesai = App\Models\Approval::where('surat_id', '=', $surat->id)
-                    ->where('isApproved', '=', 1)
-                    ->where('su.status', '=', 'finished')
-                    ->where('su.pengaju_id', '=', $surat->pengaju_id)
-                    ->join('surat_tables as su', 'approvals.surat_id', '=', 'su.id')
-                    ->first();
-            @endphp --}}
             @if ($surat->status == 'finished' && isset($surat->data['tanggal_selesai']))
                 <tr>
                     <td class="font-semibold">Tanggal Disetujui:&nbsp;</td>
@@ -77,9 +60,17 @@
             </tr>
             <tr>
                 <td class="font-semibold">Masa Aktif Tersisa:&nbsp;</td>
-                <td>{{ $masaAktif }} hari</td>
+                <td>{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
             </tr>
             @foreach ($surat->data as $key => $value)
+                @if ($key == 'tanggal_selesai')
+                    <tr>
+                        <td class="font-semibold">{{ Str::title(str_replace('_', ' ', $key)) }}:&nbsp;
+                        </td>
+                        <td>{{ formatTimestampToIndonesian($surat->created_at) }}</td>
+                    </tr>
+                    @continue
+                @endif
                 <tr>
                     <td class="font-semibold">{{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:&nbsp;</td>
                     <td>{{ $value }}</td>

@@ -67,6 +67,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/surat-masuk', [StaffController::class, 'suratMasuk'])->middleware('userAccess:3');
         Route::get('/surat-masuk/show/{surat}', [StaffController::class, 'showSuratMasuk'])->middleware('userAccess:3')->name('show-surat-staff');
         Route::get('/riwayat-persetujuan', [StaffController::class, 'riwayatPersetujuan'])->middleware('userAccess:3');
+        Route::get('/riwayat-persetujuan/show/{approval}', [StaffController::class, 'showApproval'])->middleware('userAccess:3')->name('show-approval-staff');
         Route::put('/surat-disetujui/{surat}', [StaffController::class, 'setujuiSurat'])->middleware('userAccess:3')->name('setujui-surat');
         Route::get('/surat-ditolak/{surat}', [StaffController::class, 'confirmTolakSurat'])->middleware('userAccess:3')->name('confirm-tolak-surat');
         Route::put('/surat-ditolak/{surat}', [StaffController::class, 'tolakSurat'])->middleware('userAccess:3')->name('tolak-surat');

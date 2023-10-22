@@ -28,10 +28,22 @@ class StaffController extends Controller
 
     public function showSuratMasuk(Surat $surat)
     {
+        if ($surat->current_user_id == auth()->user()->id) {
+
+            return view('staff.show-surat', [
+                'surat' => $surat
+            ]);
+        }
+        return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
+    }
+
+
+    public function showApproval(Approval $approval)
+    {
         // if ($surat->current_user_id == auth()->user()->id) {
 
-        return view('staff.show-surat', [
-            'surat' => $surat
+        return view('staff.show-approval', [
+            'approval' => $approval
         ]);
         // }
         // return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil disetujui');

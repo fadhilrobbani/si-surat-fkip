@@ -51,15 +51,6 @@
                     @php
                         $avatar = 'https://ui-avatars.com/api/?name=' . $surat->data['name'] . '&background=random';
 
-                        // Tanggal kadaluarsa dari surat (contoh)
-                        $expiredAt = Illuminate\Support\Carbon::parse($surat->expired_at); // Gantilah dengan tanggal kadaluarsa yang sesuai
-
-                        // Waktu saat ini
-                        $now = Illuminate\Support\Carbon::now();
-
-                        // Hitung sisa waktu kadaluarsa dalam hari
-                        $masaAktif = $now->diffInDays($expiredAt);
-
                     @endphp
                     <tr class=" border-b dark:border-gray-700 hover:bg-slate-100">
                         <th scope="row"
@@ -74,7 +65,7 @@
                         <td class="px-4 py-3">{{ $surat->status }}</td>
                         <td class="px-4 py-3">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
 
-                        <td class="px-4 py-3">{{ $masaAktif }} hari</td>
+                        <td class="px-4 py-3">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
                         <td class="px-4 py-3 flex ">
 
 

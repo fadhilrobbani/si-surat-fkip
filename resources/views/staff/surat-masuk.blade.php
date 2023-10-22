@@ -15,6 +15,7 @@
                     <th scope="col" class="px-4 py-3">NPM</th>
                     <th scope="col" class="px-4 py-3">Email</th>
                     <th scope="col" class="px-4 py-3">Surat yang Diajukan</th>
+                    <th scope="col" class="px-4 py-3">Masa Aktif</th>
                     <th scope="col" class="px-4 py-3">
                         Actions
                         <span class="sr-only">Actions</span>
@@ -42,6 +43,7 @@
                             $jenisSurat = App\Models\JenisSurat::find($surat->jenis_surat_id);
                         @endphp
                         <td class="px-4 py-3">{{ $jenisSurat->name }}</td>
+                        <td class="px-4 py-3">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
                         <td class="px-4 py-3 flex ">
 
 
