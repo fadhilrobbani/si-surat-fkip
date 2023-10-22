@@ -84,14 +84,16 @@
 
                             </div>
 
-                            <form
-                                class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2"
-                                action="{{ route('destroy-surat', $surat->id) }}" method="POST">
-                                @csrf
-                                @method('delete')
-                                <button type="submit">
-                                    Batal </button>
-                            </form>
+                            @if ($surat->status == 'on_process')
+                                <form
+                                    class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2"
+                                    action="{{ route('destroy-surat', $surat->id) }}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit">
+                                        Batal </button>
+                                </form>
+                            @endif
 
                         </td>
                     </tr>

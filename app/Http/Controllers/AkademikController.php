@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Surat;
 use App\Models\Approval;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 
 class AkademikController extends Controller
 {
@@ -44,13 +44,11 @@ class AkademikController extends Controller
         // SELECT jt.id FROM users u
         // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
         // JOIN jurusan_tables jt ON jt.id = pst.jurusan_id ;
-
-
         $surat->current_user_id = $surat->pengaju_id;
         $surat->penerima_id = $surat->pengaju_id;
         $surat->expired_at = null;
         $data = $surat->data;
-        $data['tanggal_selesai'] = Carbon::now();
+        $data['tanggal_selesai'] = Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s');
         $surat->data = $data;
         $surat->status = 'finished';
         $surat->save();

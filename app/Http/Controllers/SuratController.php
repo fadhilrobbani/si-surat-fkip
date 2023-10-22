@@ -100,7 +100,10 @@ class SuratController extends Controller
 
     public function destroy(Surat $surat)
     {
-        Surat::destroy($surat->id);
-        return redirect()->back()->with('success', 'Berhasil membatalkan pengajuan surat');
+        if ($surat->status == 'on_process') {
+            Surat::destroy($surat->id);
+            return redirect()->back()->with('success', 'Berhasil membatalkan pengajuan surat');
+        }
+        return redirect()->back()->with('deleted', 'Gagal membatalkan pengajuan surat');
     }
 }
