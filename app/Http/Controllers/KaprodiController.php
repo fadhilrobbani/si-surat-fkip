@@ -31,11 +31,34 @@ class KaprodiController extends Controller
         ]);
     }
 
-    public function suratDisetujui()
+    public function showSuratMasuk(Surat $surat)
     {
-        $daftarSuratMasuk = Surat::where('current_user_id', '=', auth()->user()->id)->get();
-        return view('kaprodi.surat-disetujui', [
-            'daftarSuratMasuk' => $daftarSuratMasuk
+        if ($surat->current_user_id == auth()->user()->id) {
+
+            return view('kaprodi.show-surat', [
+                'surat' => $surat
+            ]);
+        }
+        return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
+    }
+
+
+    public function showApproval(Approval $approval)
+    {
+        // if ($surat->current_user_id == auth()->user()->id) {
+
+        return view('kaprodi.show-approval', [
+            'approval' => $approval
+        ]);
+        // }
+        // return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil disetujui');
+    }
+
+    public function riwayatPersetujuan()
+    {
+        $daftarRiwayatSurat = Approval::where('user_id', '=', auth()->user()->id)->latest()->get();
+        return view('kaprodi.riwayat-persetujuan', [
+            'daftarRiwayatSurat' => $daftarRiwayatSurat
         ]);
     }
 
@@ -64,7 +87,7 @@ class KaprodiController extends Controller
             'isApproved' => true,
             'note' => 'setuju',
         ]);
-        return redirect()->back()->with('success', 'Surat berhasil disetujui');
+        return redirect('kaprodi/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 
 

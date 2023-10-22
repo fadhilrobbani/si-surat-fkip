@@ -6,7 +6,7 @@
 
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Staff | Detail Surat
+        Kaprodi | Detail Surat
     </x-slot:title>
     <h1 class="mx-auto text-center font-bold">{{ $surat->jenisSurat->name }}</h1>
     <br>
@@ -57,14 +57,14 @@
             <div class="flex flex-col sm:flex-row">
 
                 <form class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
-                    action="{{ route('setujui-surat', $surat->id) }}" method="POST">
+                    action="{{ route('setujui-surat-kaprodi', $surat->id) }}" method="POST">
                     @csrf
                     @method('put')
                     <button type="submit">
                         Setuju </button>
                 </form>
                 <div class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
-                    <a href="{{ route('confirm-tolak-surat', $surat->id) }}">Tolak</a>
+                    <a href="{{ route('confirm-tolak-surat-kaprodi', $surat->id) }}">Tolak</a>
 
                 </div>
             </div>

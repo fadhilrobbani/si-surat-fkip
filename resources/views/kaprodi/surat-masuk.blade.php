@@ -14,6 +14,7 @@
                     <th scope="col" class="px-4 py-3">NPM</th>
                     <th scope="col" class="px-4 py-3">Email</th>
                     <th scope="col" class="px-4 py-3">Surat yang Diajukan</th>
+                    <th scope="col" class="px-4 py-3">Masa Aktif</th>
                     <th scope="col" class="px-4 py-3">
                         Actions
                         <span class="sr-only">Actions</span>
@@ -41,12 +42,13 @@
                             $jenisSurat = App\Models\JenisSurat::find($surat->jenis_surat_id);
                         @endphp
                         <td class="px-4 py-3">{{ $jenisSurat->name }}</td>
+                        <td class="px-4 py-3">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
                         <td class="px-4 py-3 flex ">
 
 
                             <div
                                 class="hover:bg-blue-800 cursor-pointer rounded-lg text-center bg-blue-600 p-2 text-white m-2">
-                                <a href="#">Lihat</a>
+                                <a href="{{ route('show-surat-kaprodi', $surat->id) }}">Lihat</a>
 
                             </div>
                             <form

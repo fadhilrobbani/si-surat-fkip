@@ -207,8 +207,8 @@
                     'dropdown' => [],
                 ],
                 [
-                    'link' => 'kaprodi/surat-disetujui',
-                    'title' => 'Surat Disetujui',
+                    'link' => 'kaprodi/riwayat-persetujuan',
+                    'title' => 'Riwayat Persetujuan',
                     'icon' => asset('svg/letter.svg'),
                     'dropdown' => [],
                 ],

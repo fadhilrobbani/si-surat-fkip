@@ -84,7 +84,7 @@ class StaffController extends Controller
 
     public function confirmTolakSurat(Surat $surat)
     {
-        return view('staff.confirm-tolak', [
+        return view('kaprodi.confirm-tolak', [
             'surat' => $surat
         ]);
     }

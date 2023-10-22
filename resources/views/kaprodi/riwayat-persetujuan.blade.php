@@ -3,7 +3,7 @@
 @endphp
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Staff | Surat Disetujui
+        Kaprodi | Riwayat Persetujuan
     </x-slot:title>
     <div class="overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -12,6 +12,7 @@
                     <th scope="col" class="px-4 py-3">Foto</th>
                     <th scope="col" class="px-4 py-3">Nama</th>
                     <th scope="col" class="px-4 py-3">NPM</th>
+
                     <th scope="col" class="px-4 py-3">Surat yang Diajukan</th>
                     <th scope="col" class="px-4 py-3">Tanggal disetujui/ditolak</th>
                     <th scope="col" class="px-4 py-3">Status</th>
@@ -38,6 +39,7 @@
 
                         <td class="px-4 py-3">{{ $riwayatSurat->surat->data['username'] }}</td>
 
+
                         <td class="px-4 py-3">{{ $riwayatSurat->surat->jenisSurat->name }}</td>
                         <td class="px-4 py-3">{{ formatTimestampToIndonesian($riwayatSurat->created_at) }}</td>
                         <td class="px-4 py-3">{{ $riwayatSurat->isApproved == 1 ? 'Disetujui' : 'Ditolak' }}</td>
@@ -45,7 +47,7 @@
 
                             <div
                                 class="hover:bg-blue-800 cursor-pointer rounded-lg text-center bg-blue-600 p-2 text-white m-2">
-                                <a href="{{ route('show-approval-staff', $riwayatSurat->id) }}">Lihat</a>
+                                <a href="{{ route('show-approval-kaprodi', $riwayatSurat->id) }}">Lihat</a>
 
                             </div>
 
