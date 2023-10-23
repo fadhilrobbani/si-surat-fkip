@@ -12,6 +12,7 @@ use App\Http\Controllers\KaprodiController;
 use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\JenisSuratController;
+use App\Http\Controllers\PDFController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,12 +26,8 @@ use App\Http\Controllers\JenisSuratController;
 */
 
 //test surat doang
-Route::get('/surat-aktif', function () {
-    return view('template.surat-aktif-kuliah', [
-        'mahasiswa' =>  User::where('username', 'G1A020036')->first()
-    ]);
-});
-
+Route::get('/print-surat-keterangan-alumni/{surat}', [PDFController::class, 'printSuratKeteranganAlumni']);
+Route::get('/print-test/{surat}', [PDFController::class, 'liveTest']);
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'login'])->name('login');

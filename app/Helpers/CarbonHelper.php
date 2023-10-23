@@ -65,7 +65,7 @@ if (!function_exists('formatDateToText')) {
     {
         setlocale(LC_TIME, 'id_ID'); // Set locale ke bahasa Indonesia
         Carbon::setLocale('id');
-        list($year, $month, $day) = explode(':', $date);
+        list($year, $month, $day) = explode('-', $date);
         $carbonDate = Carbon::create($year, $month, $day);
         $formattedDate = $carbonDate->isoFormat('dddd, D MMMM YYYY');
         return $formattedDate;
