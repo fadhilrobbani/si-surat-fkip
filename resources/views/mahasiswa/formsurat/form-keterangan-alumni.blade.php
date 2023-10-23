@@ -56,6 +56,20 @@
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Tempat lahir" required>
             </div>
+            <div>
+                <label for="tahunAkademikAwal"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tahun Akademik (Awal)</label>
+                <input type="number" id="tahunAkademikAwal" name="tahunAkademikAwal"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Masukkan Tahun dalam format YYYY, misal 2013" required>
+            </div>
+            <div>
+                <label for="tahunAkademikAkhir"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tahun Akademik (Akhir)</label>
+                <input type="number" id="tahunAkademikAkhir" name="tahunAkademikAkhir"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Masukkan Tahun dalam format YYYY, misal 2013" required>
+            </div>
 
 
 

@@ -43,6 +43,8 @@ class SuratController extends Controller
             'no-ijazah' => 'required',
             'birthplace' => 'required',
             'birthdate' => 'required|date',
+            'tahunAkademikAwal' => 'required|date_format:Y',
+            'tahunAkademikAkhir' => 'required|date_format:Y',
             'email' => 'required|email'
         ]);
 
@@ -91,6 +93,8 @@ class SuratController extends Controller
             'noIjazah' => $request->input('no-ijazah'),
             'birthplace' => $request->input('birthplace'),
             'birthdate' => $request->input('birthdate'),
+            'tahunAkademikAwal' => $request->input('tahunAkademikAwal'),
+            'tahunAkademikAkhir' => $request->input('tahunAkademikAkhir'),
             'email' => $request->input('email'),
         ];
 

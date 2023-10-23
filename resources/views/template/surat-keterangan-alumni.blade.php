@@ -39,7 +39,8 @@
     </table>
     <br>
     <p style="text-align: center"><b><u>SURAT KETERANGAN ALUMNI</u></b></p>
-    <p style="text-align: center"><b>Nomor:&nbsp;NoSurat/UN30.7/PP/{{ Carbon\Carbon::now()->year }} </b></p>
+    <p style="text-align: center">
+        <b>Nomor:&nbsp;{{ $surat->data['noSurat'] ?? 'NoSurat' }}/UN30.7/PP/{{ Carbon\Carbon::now()->year }} </b></p>
     <br>
     <br>
     <p style="text-align: justify">Wakil Dekan Bidang Akademik Fakultas Keguruan dan Ilmu Pendidikan Universitas
