@@ -42,8 +42,11 @@ class AkademikController extends Controller
     }
 
 
-    public function setujuiSurat(Surat $surat)
+    public function setujuiSurat(Request $request, Surat $surat)
     {
+        $request->validate([
+            'no-surat' => 'required|size:4'
+        ]);
         // SELECT jt.id FROM users u
         // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
         // JOIN jurusan_tables jt ON jt.id = pst.jurusan_id ;
@@ -52,6 +55,9 @@ class AkademikController extends Controller
         $surat->expired_at = null;
         $data = $surat->data;
         $data['tanggal_selesai'] = Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s');
+        $data['ttdWD1'] = public_path('images/ttd.png');
+        $data['noSurat'] = $request->input('no-surat') ?? str_pad($surat->id, 4, '0', STR_PAD_LEFT);
+        $data['note'] = $request->input('note');
         $surat->data = $data;
         $surat->status = 'finished';
         $surat->save();
@@ -60,7 +66,7 @@ class AkademikController extends Controller
             'user_id' => auth()->user()->id,
             'surat_id' => $surat->id,
             'isApproved' => true,
-            'note' => 'setuju',
+            'note' => $request->input('note'),
         ]);
         return redirect('/akademik/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
@@ -100,6 +106,9 @@ class AkademikController extends Controller
         $surat->status = 'denied';
         $surat->expired_at = null;
         $surat->penerima_id = null;
+        $data = $surat->data;
+        $data['alasanPenolakan'] = $request->input('note');
+        $surat->data = $data;
         $surat->save();
         Approval::create([
             'user_id' => auth()->user()->id,

@@ -5,6 +5,7 @@
     <x-slot:title>
         Staff | Konfirmasi Penolakan
     </x-slot:title>
+
     <form action="{{ route('tolak-surat', $surat->id) }}" method="POST" class="p-6 text-center">
         @csrf
         @method('PUT')

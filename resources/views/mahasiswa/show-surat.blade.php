@@ -67,8 +67,11 @@
                     <tr>
                         <td class="font-semibold">{{ Str::title(str_replace('_', ' ', $key)) }}:&nbsp;
                         </td>
-                        <td>{{ formatTimestampToIndonesian($surat->created_at) }}</td>
+                        <td>{{ formatTimestampToIndonesian($value) }}</td>
                     </tr>
+                    @continue
+                @endif
+                @if ($key == 'ttdWD1')
                     @continue
                 @endif
                 <tr>
@@ -143,8 +146,8 @@
     </div>
 
     @if ($surat->status == 'finished')
-        <button type="button"
-            class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button>
+        <a href="{{ route('print-surat', $surat->id) }}"> <button type="button"
+                class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button></a>
     @else
         <button type="button" disabled
             class="text-white cursor-not-allowed mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button>

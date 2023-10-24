@@ -25,7 +25,7 @@
             <tbody>
                 @foreach ($daftarRiwayatSurat as $riwayatSurat)
                     @php
-                        $avatar = 'https://ui-avatars.com/api/?name=' . $riwayatSurat->user->name . '&background=random';
+                        $avatar = 'https://ui-avatars.com/api/?name=' . $riwayatSurat->surat->pengaju->name . '&background=random';
                     @endphp
                     <tr class=" border-b dark:border-gray-700 hover:bg-slate-100">
                         <th scope="row"

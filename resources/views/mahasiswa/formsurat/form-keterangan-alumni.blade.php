@@ -40,35 +40,37 @@
                     Ijazah</label>
                 <input type="text" id="no-ijazah" name="no-ijazah"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Masukkan No. Ijazah" required>
+                    placeholder="Masukkan No. Ijazah" value="{{ old('no-ijazah') }}" required>
             </div>
             <div>
                 <label for="birthplace" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kota Tempat
                     Lahir</label>
                 <input type="text" id="birthplace" name="birthplace"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Masukkan Kota Tempat lahir" required>
+                    placeholder="Masukkan Kota Tempat lahir" value="{{ old('birthplace') }}" required>
             </div>
             <div>
                 <label for="birthdate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal
                     Lahir</label>
                 <input type="date" id="birthdate" name="birthdate"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Tempat lahir" required>
+                    placeholder="Tempat lahir" value="{{ old('birthdate') }}" required>
             </div>
             <div>
                 <label for="tahunAkademikAwal"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tahun Akademik (Awal)</label>
                 <input type="number" id="tahunAkademikAwal" name="tahunAkademikAwal"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Masukkan Tahun dalam format YYYY, misal 2013" required>
+                    placeholder="Masukkan Tahun dalam format YYYY, misal 2013" value="{{ old('tahunAkademikAwal') }}"
+                    required>
             </div>
             <div>
                 <label for="tahunAkademikAkhir"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tahun Akademik (Akhir)</label>
                 <input type="number" id="tahunAkademikAkhir" name="tahunAkademikAkhir"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Masukkan Tahun dalam format YYYY, misal 2013" required>
+                    placeholder="Masukkan Tahun dalam format YYYY, misal 2013" value="{{ old('tahunAkademikAkhir') }}"
+                    required>
             </div>
 
 

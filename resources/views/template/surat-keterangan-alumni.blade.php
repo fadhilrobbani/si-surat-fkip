@@ -40,7 +40,8 @@
     <br>
     <p style="text-align: center"><b><u>SURAT KETERANGAN ALUMNI</u></b></p>
     <p style="text-align: center">
-        <b>Nomor:&nbsp;{{ $surat->data['noSurat'] ?? 'NoSurat' }}/UN30.7/PP/{{ Carbon\Carbon::now()->year }} </b></p>
+        <b>Nomor:&nbsp;{{ $surat->data['noSurat'] ?? 'NoSurat' }}/UN30.7/PP/{{ Carbon\Carbon::now()->year }} </b>
+    </p>
     <br>
     <br>
     <p style="text-align: justify">Wakil Dekan Bidang Akademik Fakultas Keguruan dan Ilmu Pendidikan Universitas
@@ -84,10 +85,13 @@
     <div>
         <div class="tandatangan">
             <div>
-                <p>Bengkulu, {{ formatTimestampToOnlyDateIndonesian(Carbon\Carbon::now()) }}</p>
+                <p>Bengkulu,
+                    {{ isset($surat->data['tanggal_selesai']) ? formatTimestampToOnlyDateIndonesian($surat->data['tanggal_selesai']) : '' }}
+                </p>
                 <p>Wakil Dekan Bidang Akademik</p>
             </div>
-            <img style="margin-left: 40px" width="100px" src="{{ public_path('images/ttd.png') }}" alt="ttd">
+            <img style="margin-left: 40px" width="100px"
+                src="{{ $surat->data['ttdWD1'] ?? public_path('images/ttd.png') }}" alt="ttd">
             <div>
 
                 <p>Dr. Abdul Rahman, M.Si</p>

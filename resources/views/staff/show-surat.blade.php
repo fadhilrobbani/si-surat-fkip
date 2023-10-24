@@ -38,6 +38,8 @@
                     </tr>
                     @continue
                 @endif
+
+
                 <tr>
                     <td class="font-semibold">{{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:&nbsp;</td>
                     <td>{{ $value }}</td>
@@ -51,7 +53,8 @@
     <div class="flex mt-8 justify-between flex-col sm:flex-row ">
 
         <button type="button"
-            class="text-white p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button>
+            class="text-white p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lihat
+            Lampiran</button>
 
         @if ($surat->current_user_id == auth()->user()->id && $surat->status == 'on_process')
             <div class="flex flex-col sm:flex-row">

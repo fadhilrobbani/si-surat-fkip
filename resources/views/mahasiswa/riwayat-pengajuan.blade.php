@@ -50,7 +50,14 @@
                 @foreach ($daftarPengajuan as $surat)
                     @php
                         $avatar = 'https://ui-avatars.com/api/?name=' . $surat->data['name'] . '&background=random';
-
+                        $statusStyle = '';
+                        if ($surat->status == 'finished') {
+                            $statusStyle = ' text-green-400 font-semibold';
+                        } elseif ($surat->status == 'on_process') {
+                            $statusStyle = ' text-yellow-400 font-semibold';
+                        } else {
+                            $statusStyle = ' text-pink-500 font-semibold';
+                        }
                     @endphp
                     <tr class=" border-b dark:border-gray-700 hover:bg-slate-100">
                         <th scope="row"
@@ -62,7 +69,9 @@
                             {{ $surat->jenisSurat->name }}
                         </th>
 
-                        <td class="px-4 py-3">{{ $surat->status }}</td>
+                        <td class="px-4 py-3">
+                            <p class="{{ $statusStyle }}">{{ $surat->status }}</p>
+                        </td>
                         <td class="px-4 py-3">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
 
                         <td class="px-4 py-3">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>

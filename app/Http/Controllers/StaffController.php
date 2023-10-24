@@ -84,7 +84,7 @@ class StaffController extends Controller
 
     public function confirmTolakSurat(Surat $surat)
     {
-        return view('kaprodi.confirm-tolak', [
+        return view('staff.confirm-tolak', [
             'surat' => $surat
         ]);
     }
@@ -94,6 +94,9 @@ class StaffController extends Controller
         $surat->status = 'denied';
         $surat->expired_at = null;
         $surat->penerima_id = null;
+        $data = $surat->data;
+        $data['alasanPenolakan'] = $request->input('note');
+        $surat->data = $data;
         $surat->save();
         Approval::create([
             'user_id' => auth()->user()->id,

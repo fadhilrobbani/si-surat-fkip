@@ -51,19 +51,7 @@
                                 <a href="{{ route('show-surat-akademik', $surat->id) }}">Lihat</a>
 
                             </div>
-                            <form
-                                class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
-                                action="{{ route('setujui-surat-akademik', $surat->id) }}" method="POST">
-                                @csrf
-                                @method('put')
-                                <button type="submit">
-                                    Setuju </button>
-                            </form>
-                            <div
-                                class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
-                                <a href="{{ route('confirm-tolak-surat-akademik', $surat->id) }}">Tolak</a>
 
-                            </div>
 
                         </td>
                     </tr>

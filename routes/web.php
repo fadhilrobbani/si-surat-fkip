@@ -26,7 +26,6 @@ use App\Http\Controllers\PDFController;
 */
 
 //test surat doang
-Route::get('/print-surat-keterangan-alumni/{surat}', [PDFController::class, 'printSuratKeteranganAlumni']);
 Route::get('/print-test/{surat}', [PDFController::class, 'liveTest']);
 
 Route::middleware('guest')->group(function () {
@@ -36,7 +35,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-
+    Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->middleware('userAccess:1');
@@ -96,6 +95,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/riwayat-persetujuan', [AkademikController::class, 'riwayatPersetujuan'])->middleware('userAccess:6');
         Route::get('/riwayat-persetujuan/show/{approval}', [AkademikController::class, 'showApproval'])->middleware('userAccess:6')->name('show-approval-akademik');
         Route::get('/surat-masuk/show/{surat}', [AkademikController::class, 'showSuratMasuk'])->middleware('userAccess:6')->name('show-surat-akademik');
+        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->middleware('userAccess:6')->name('preview-surat');
         Route::put('/surat-disetujui/{surat}', [AkademikController::class, 'setujuiSurat'])->middleware('userAccess:6')->name('setujui-surat-akademik');
         Route::get('/surat-ditolak/{surat}', [AkademikController::class, 'confirmTolakSurat'])->middleware('userAccess:6')->name('confirm-tolak-surat-akademik');
         Route::put('/surat-ditolak/{surat}', [AkademikController::class, 'tolakSurat'])->middleware('userAccess:6')->name('tolak-surat-akademik');

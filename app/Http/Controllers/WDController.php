@@ -109,6 +109,9 @@ class WDController extends Controller
         $surat->status = 'denied';
         $surat->expired_at = null;
         $surat->penerima_id = null;
+        $data = $surat->data;
+        $data['alasanPenolakan'] = $request->input('note');
+        $surat->data = $data;
         $surat->save();
         Approval::create([
             'user_id' => auth()->user()->id,
