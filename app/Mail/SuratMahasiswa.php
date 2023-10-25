@@ -31,10 +31,7 @@ class SuratMahasiswa extends Mailable
     {
         return new Envelope(
             from: new Address('officialexeclothes@gmail.com', 'FKIP UNIB'),
-            replyTo: [
-                new Address('rabbanifadhillailham@gmail.com'),
-            ],
-            subject: 'Test Send Email from E-surat FKIP UNIB',
+            subject: 'E-Surat ' . $this->surat->jenisSurat->name . ' Anda telah terbit dan disetujui!',
         );
     }
 

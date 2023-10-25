@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Mail\SuratMahasiswa;
 use App\Models\Surat;
 use App\Models\Approval;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
 class AkademikController extends Controller
@@ -68,6 +70,7 @@ class AkademikController extends Controller
             'isApproved' => true,
             'note' => $request->input('note'),
         ]);
+        Mail::to($surat->pengaju->email)->send(new SuratMahasiswa($surat));
         return redirect('/akademik/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 
