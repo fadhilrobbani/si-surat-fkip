@@ -25,7 +25,7 @@ class KaprodiController extends Controller
         $daftarSuratMasuk = Surat::where('current_user_id', '=', auth()->user()->id)->where('status', 'on_process')->where(function ($query) {
             $now = Carbon::now();
             $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
-        })->get();
+        })->paginate(10);
         return view('kaprodi.surat-masuk', [
             'daftarSuratMasuk' => $daftarSuratMasuk
         ]);
@@ -56,7 +56,7 @@ class KaprodiController extends Controller
 
     public function riwayatPersetujuan()
     {
-        $daftarRiwayatSurat = Approval::where('user_id', '=', auth()->user()->id)->latest()->get();
+        $daftarRiwayatSurat = Approval::where('user_id', '=', auth()->user()->id)->latest()->paginate(10);
         return view('kaprodi.riwayat-persetujuan', [
             'daftarRiwayatSurat' => $daftarRiwayatSurat
         ]);

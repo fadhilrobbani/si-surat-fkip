@@ -72,4 +72,8 @@
             </tbody>
         </table>
     </div>
+    <div class="mt-4">
+
+        {{ $daftarSuratMasuk->links() }}
+    </div>
 </x-layout>

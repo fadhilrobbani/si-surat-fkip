@@ -56,6 +56,8 @@
 
             </tbody>
         </table>
-        {{-- {{ $daftarRiwayatSurat->links() }} --}}
+        <div class="mt-4">
+            {{ $daftarRiwayatSurat->links() }}
+        </div>
     </div>
 </x-layout>

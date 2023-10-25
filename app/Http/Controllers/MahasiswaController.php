@@ -28,7 +28,7 @@ class MahasiswaController extends Controller
         // $test2 = Surat::all();
         // dd($test->data);
         return view('mahasiswa.riwayat-pengajuan', [
-            'daftarPengajuan' => Surat::where('pengaju_id', '=', auth()->user()->id)->latest()->get(),
+            'daftarPengajuan' => Surat::where('pengaju_id', '=', auth()->user()->id)->latest()->paginate(10),
 
         ]);
     }

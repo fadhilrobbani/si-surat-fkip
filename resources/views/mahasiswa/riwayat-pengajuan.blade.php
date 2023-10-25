@@ -1,6 +1,5 @@
 @php
     $authUser = auth()->user();
-    $number = 1;
 
 @endphp
 <x-layout :authUser='$authUser'>
@@ -62,7 +61,7 @@
                     <tr class=" border-b dark:border-gray-700 hover:bg-slate-100">
                         <th scope="row"
                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $number++ }}
+                            {{  $loop->iteration + $daftarPengajuan->firstItem() - 1 }}
                         </th>
                         <th scope="row"
                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -101,5 +100,9 @@
 
             </tbody>
         </table>
+    </div>
+    <div class="mt-4">
+
+        {{ $daftarPengajuan->links() }}
     </div>
 </x-layout>
