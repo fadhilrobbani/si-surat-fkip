@@ -36,9 +36,10 @@
                     </a>
                 </div>
                 <div class="flex justify-center items-center">
-                    <x-bell :authUser='$authUser' />
+                    {{-- <x-bell :authUser='$authUser' /> --}}
                     <div class="flex items-center">
                         <div class="flex items-center ml-3">
+                            <p class="hidden sm:block mr-2 text-slate-600 font-semibold">{{ $authUser->name }}</p>
 
                             <button type="button"
                                 class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -85,7 +86,6 @@
                             </div>
                         </div>
                     </div>
-                    <p class="hidden sm:block ml-1 text-slate-600 font-semibold">{{ $authUser->name }}</p>
 
                 </div>
 
