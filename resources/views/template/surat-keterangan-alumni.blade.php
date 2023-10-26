@@ -90,8 +90,13 @@
                 </p>
                 <p>Wakil Dekan Bidang Akademik</p>
             </div>
-            <img style="margin-left: 40px" width="100px"
-                src="{{ $surat->data['ttdWD1'] ?? public_path('images/ttd.png') }}" alt="ttd">
+            <div class="parent">
+
+                <img class="ttd" style="margin-left: 40px" width="100px"
+                    src="{{ $surat->data['ttdWD1'] ?? public_path('images/ttd.png') }}" alt="ttd">
+                <img class="stempel" style="margin-left: 40px" width="120px"
+                    src="{{ public_path('images/stempel.png') }}" alt="stempel">
+            </div>
             <div>
 
                 <p>Dr. Abdul Rahman, M.Si</p>
