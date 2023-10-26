@@ -30,6 +30,13 @@ use App\Http\Controllers\JenisSuratController;
 Route::get('/print-test/{surat}', [PDFController::class, 'liveTest']);
 Route::get('/send-surat/{surat}', [EmailController::class, 'send']);
 
+Route::get('/home', function () {
+    return redirect('/');
+});
+Route::get('/login', function () {
+    return redirect('/');
+});
+
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'login'])->name('login');
     Route::get('/register', [AuthController::class, 'create']);
@@ -102,10 +109,4 @@ Route::middleware('auth')->group(function () {
         Route::get('/surat-ditolak/{surat}', [AkademikController::class, 'confirmTolakSurat'])->middleware('userAccess:6')->name('confirm-tolak-surat-akademik');
         Route::put('/surat-ditolak/{surat}', [AkademikController::class, 'tolakSurat'])->middleware('userAccess:6')->name('tolak-surat-akademik');
     });
-});
-Route::get('/home', function () {
-    return redirect('/admin');
-});
-Route::get('/login', function () {
-    return redirect('/');
 });
