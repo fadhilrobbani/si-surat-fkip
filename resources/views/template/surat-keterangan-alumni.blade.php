@@ -98,7 +98,6 @@
                     src="{{ public_path('images/stempel.png') }}" alt="stempel">
             </div>
             <div>
-
                 <p>Dr. Abdul Rahman, M.Si</p>
                 <p>NIP 198108202006041006</p>
             </div>

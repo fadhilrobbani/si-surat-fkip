@@ -8,6 +8,7 @@ use App\Models\JenisSurat;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class SuratController extends Controller
 {
@@ -45,7 +46,8 @@ class SuratController extends Controller
             'birthdate' => 'required|date',
             'tahunAkademikAwal' => 'required|date_format:Y',
             'tahunAkademikAkhir' => 'required|date_format:Y',
-            'email' => 'required|email'
+            'email' => 'required|email',
+            'ijazah' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
         ]);
 
         $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
@@ -96,6 +98,10 @@ class SuratController extends Controller
             'tahunAkademikAwal' => $request->input('tahunAkademikAwal'),
             'tahunAkademikAkhir' => $request->input('tahunAkademikAkhir'),
             'email' => $request->input('email'),
+
+        ];
+        $surat->files = [
+            'ijazah' => $request->file('ijazah')->store('lampiran')
         ];
 
         $surat->save();

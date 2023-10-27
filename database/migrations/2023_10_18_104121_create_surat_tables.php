@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('status', ['on_process', 'finished', 'denied']);
             $table->unsignedBigInteger('jenis_surat_id');
             $table->json('data')->nullable();
+            $table->json('files')->nullable();
             $table->timestamp('expired_at')->nullable();
             $table->foreign('pengaju_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('current_user_id')->references('id')->on('users')->onDelete('cascade');

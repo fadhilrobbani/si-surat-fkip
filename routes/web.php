@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WDController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EmailController;
@@ -43,6 +44,8 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat');
+    Route::get('/show-file/{path}','FileController@show')->name('show-file');
+    Route::get('/storage/{path}',[FileController::class,'show']);
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->middleware('userAccess:1');

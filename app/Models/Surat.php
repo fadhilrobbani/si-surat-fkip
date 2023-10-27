@@ -13,7 +13,8 @@ class Surat extends Model
     protected $table = 'surat_tables';
     protected $fillable = ['pengaju_id', 'current_user_id', 'penerima_id', 'status', 'jenis_surat_id', 'data'];
     protected $casts = [
-        'data' => 'json'
+        'data' => 'json',
+        'files' => 'json'
     ];
 
 
