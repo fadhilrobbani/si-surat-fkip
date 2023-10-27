@@ -20,7 +20,7 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->logout();
-        return redirect('/');
+        return redirect('');
     }
     public function authenticate(Request $request)
     {
@@ -51,5 +51,24 @@ class AuthController extends Controller
         }
 
         return back()->withErrors('Username atau password tidak sesuai, silahkan coba lagi')->withInput();
+    }
+
+    public function home(){
+        if (auth()->check()) {
+            if (auth()->user()->role_id == 1) {
+                return redirect('/admin');
+            } elseif (auth()->user()->role_id == 2) {
+                return redirect('/mahasiswa');
+            } elseif (auth()->user()->role_id == 3) {
+                return redirect('/staff');
+            } elseif (auth()->user()->role_id == 4) {
+                return redirect('/kaprodi');
+            } elseif (auth()->user()->role_id == 5) {
+                return redirect('/wd');
+            } elseif (auth()->user()->role_id == 6) {
+                return redirect('/akademik');
+            }
+        }
+        return redirect('/');
     }
 }

@@ -30,9 +30,7 @@ use App\Http\Controllers\JenisSuratController;
 Route::get('/print-test/{surat}', [PDFController::class, 'liveTest']);
 Route::get('/send-surat/{surat}', [EmailController::class, 'send']);
 
-Route::get('/home', function () {
-    return redirect('/');
-});
+Route::get('/home', [AuthController::class, 'home']);
 Route::get('/login', function () {
     return redirect('/');
 });
