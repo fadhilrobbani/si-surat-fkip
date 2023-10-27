@@ -44,8 +44,7 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat');
-    Route::get('/show-file/{path}','FileController@show')->name('show-file');
-    Route::get('/storage/{path}',[FileController::class,'show']);
+    Route::get('/show-file/{filename}',[FileController::class,'show'])->name('show-file');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->middleware('userAccess:1');
