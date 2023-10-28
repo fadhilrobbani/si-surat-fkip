@@ -4,10 +4,12 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
-use App\Models\Approval;
 use App\Models\Surat;
-use App\Policies\ApprovalPolicy;
+use App\Models\Approval;
+use App\Policies\FilePolicy;
 use App\Policies\SuratPolicy;
+use App\Policies\ApprovalPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -27,6 +29,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::define('show-file', [FilePolicy::class, 'showFile']);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
@@ -13,6 +14,10 @@ class FileController extends Controller
     {
         if(auth()->guest()){
             return abort(403);
+        }
+
+        if(!Gate::allows('show-file')){
+            abort(403);
         }
         // $path = Storage::path($filename);
         $path = storage_path('app/lampiran/'.$filename);

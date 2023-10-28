@@ -43,7 +43,6 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat');
     Route::get('/show-file/{filename}',[FileController::class,'show'])->name('show-file');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::prefix('admin')->group(function () {
@@ -66,6 +65,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/riwayat-pengajuan-surat', [MahasiswaController::class, 'riwayatPengajuanSurat'])->middleware('userAccess:2');
         Route::get('/riwayat-pengajuan-surat/show/{surat}', [MahasiswaController::class, 'lihatSurat'])->middleware('userAccess:2')->can('mahasiswaCanViewShowRiwayatPengajuanSurat','surat')->name('lihat-surat-mahasiswa');
         Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->can('mahasiswaCanPrintSurat','surat')->name('print-surat-mahasiswa');
+        Route::get('/show-file/{filename}',[FileController::class,'show'])->name('show-file-mahasiswa');
     });
     Route::prefix('staff')->group(function () {
 
@@ -78,6 +78,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/surat-ditolak/{surat}', [StaffController::class, 'confirmTolakSurat'])->middleware('userAccess:3')->can('staffCanShowDenySuratMasuk','surat')->name('confirm-tolak-surat');
         Route::put('/surat-ditolak/{surat}', [StaffController::class, 'tolakSurat'])->middleware('userAccess:3')->can('staffCanDenySuratMasuk','surat')->name('tolak-surat');
         Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->can('staffCanPrintSurat','surat')->name('print-surat-staff');
+        Route::get('/show-file/{filename}',[FileController::class,'show'])->name('show-file-staff');
     });
     Route::prefix('kaprodi')->group(function () {
 
@@ -90,6 +91,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/surat-ditolak/{surat}', [KaprodiController::class, 'confirmTolakSurat'])->middleware('userAccess:4')->can('kaprodiCanShowDenySuratMasuk','surat')->name('confirm-tolak-surat-kaprodi');
         Route::put('/surat-ditolak/{surat}', [KaprodiController::class, 'tolakSurat'])->middleware('userAccess:4')->can('kaprodiCanDenySuratMasuk','surat')->name('tolak-surat-kaprodi');
         Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->can('kaprodiCanPrintSurat','surat')->name('print-surat-kaprodi');
+        Route::get('/show-file/{filename}',[FileController::class,'show'])->name('show-file-kaprodi');
     });
     Route::prefix('wd')->group(function () {
         Route::get('/', [WDController::class, 'dashboard'])->middleware('userAccess:5');
@@ -101,6 +103,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/surat-ditolak/{surat}', [WDController::class, 'confirmTolakSurat'])->middleware('userAccess:5')->name('confirm-tolak-surat-wd');
         Route::put('/surat-ditolak/{surat}', [WDController::class, 'tolakSurat'])->middleware('userAccess:5')->name('tolak-surat-wd');
         Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-wd');
+        Route::get('/show-file/{filename}',[FileController::class,'show'])->name('show-file-wd');
     });
     Route::prefix('akademik')->group(function () {
         Route::get('/', [AkademikController::class, 'dashboard'])->middleware('userAccess:6');
@@ -113,5 +116,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/surat-ditolak/{surat}', [AkademikController::class, 'confirmTolakSurat'])->middleware('userAccess:6')->can('akademikCanShowDenySuratMasuk','surat')->name('confirm-tolak-surat-akademik');
         Route::put('/surat-ditolak/{surat}', [AkademikController::class, 'tolakSurat'])->middleware('userAccess:6')->can('akademikCanDenySuratMasuk','surat')->name('tolak-surat-akademik');
         Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->can('akademikCanPrintSurat')->name('print-surat-akademik');
+        Route::get('/show-file/{filename}',[FileController::class,'show'])->name('show-file-akademik');
     });
 });
