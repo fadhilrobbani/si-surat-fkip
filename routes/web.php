@@ -81,12 +81,12 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/', [KaprodiController::class, 'dashboard'])->middleware('userAccess:4');
         Route::get('/surat-masuk', [KaprodiController::class, 'suratMasuk'])->middleware('userAccess:4');
-        Route::get('/surat-masuk/show/{surat}', [KaprodiController::class, 'showSuratMasuk'])->middleware('userAccess:4')->name('show-surat-kaprodi');
+        Route::get('/surat-masuk/show/{surat}', [KaprodiController::class, 'showSuratMasuk'])->middleware('userAccess:4')->can('kaprodiCanShowSuratMasuk','surat')->name('show-surat-kaprodi');
         Route::get('/riwayat-persetujuan', [KaprodiController::class, 'riwayatPersetujuan'])->middleware('userAccess:4');
-        Route::get('/riwayat-persetujuan/show/{approval}', [KaprodiController::class, 'showApproval'])->middleware('userAccess:4')->name('show-approval-kaprodi');
-        Route::put('/surat-disetujui/{surat}', [KaprodiController::class, 'setujuiSurat'])->middleware('userAccess:4')->name('setujui-surat-kaprodi');
-        Route::get('/surat-ditolak/{surat}', [KaprodiController::class, 'confirmTolakSurat'])->middleware('userAccess:4')->name('confirm-tolak-surat-kaprodi');
-        Route::put('/surat-ditolak/{surat}', [KaprodiController::class, 'tolakSurat'])->middleware('userAccess:4')->name('tolak-surat-kaprodi');
+        Route::get('/riwayat-persetujuan/show/{approval}', [KaprodiController::class, 'showApproval'])->middleware('userAccess:4')->can('kaprodiCanShowRiwayatPersetujuan','approval')->name('show-approval-kaprodi');
+        Route::put('/surat-disetujui/{surat}', [KaprodiController::class, 'setujuiSurat'])->middleware('userAccess:4')->can('kaprodiCanApproveSuratMasuk','surat')->name('setujui-surat-kaprodi');
+        Route::get('/surat-ditolak/{surat}', [KaprodiController::class, 'confirmTolakSurat'])->middleware('userAccess:4')->can('kaprodiCanShowDenySuratMasuk','surat')->name('confirm-tolak-surat-kaprodi');
+        Route::put('/surat-ditolak/{surat}', [KaprodiController::class, 'tolakSurat'])->middleware('userAccess:4')->can('kaprodiCanDenySuratMasuk','surat')->name('tolak-surat-kaprodi');
     });
     Route::prefix('wd')->group(function () {
         Route::get('/', [WDController::class, 'dashboard'])->middleware('userAccess:5');

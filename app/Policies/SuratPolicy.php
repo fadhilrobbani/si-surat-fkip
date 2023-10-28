@@ -36,6 +36,22 @@ class SuratPolicy
         return $user->programStudi->id === $surat->pengaju->programStudi->id;
     }
 
+    public function kaprodiCanShowSuratMasuk(User $user, Surat $surat):bool{
+        return $user->programStudi->id === $surat->pengaju->programStudi->id;
+    }
+
+    public function kaprodiCanApproveSuratMasuk(User $user, Surat $surat):bool{
+        return $user->programStudi->id === $surat->pengaju->programStudi->id;
+    }
+
+    public function kaprodiCanDenySuratMasuk(User $user, Surat $surat):bool{
+        return $user->programStudi->id === $surat->pengaju->programStudi->id;
+    }
+
+    public function kaprodiCanShowDenySuratMasuk(User $user, Surat $surat):bool{
+        return $user->programStudi->id === $surat->pengaju->programStudi->id;
+    }
+
 
 
 }

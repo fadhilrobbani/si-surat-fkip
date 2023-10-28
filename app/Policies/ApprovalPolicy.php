@@ -12,5 +12,8 @@ class ApprovalPolicy
     public function staffCanShowRiwayatPersetujuan(User $user, Approval $approval): bool{
         return $user->id === $approval->user->id;
     }
+    public function kaprodiCanShowRiwayatPersetujuan(User $user, Approval $approval): bool{
+        return $user->id === $approval->user->id;
+    }
 
 }
