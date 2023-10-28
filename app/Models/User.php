@@ -58,6 +58,10 @@ class User extends Authenticatable
         return $this->belongsTo(ProgramStudi::class, 'program_studi_id','id');
     }
 
+    public function jurusan(){
+        return $this->belongsTo(Jurusan::class,'jurusan_id','id');
+    }
+
     public function suratDikirim(){
         return $this->hasMany(Surat::class,'pengaju_id','id');
     }
@@ -75,9 +79,6 @@ class User extends Authenticatable
         return $this->hasMany(Approval::class,'user_id','id');
     }
 
-    public function jurusan(){
-        return $this->belongsTo(Jurusan::class,'jurusan_id','id');
-    }
 
 
 
