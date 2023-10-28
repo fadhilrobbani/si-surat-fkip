@@ -92,7 +92,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [WDController::class, 'dashboard'])->middleware('userAccess:5');
         Route::get('/surat-masuk', [WDController::class, 'suratMasuk'])->middleware('userAccess:5');
         Route::get('/riwayat-persetujuan', [WDController::class, 'riwayatPersetujuan'])->middleware('userAccess:5');
-        Route::get('/riwayat-persetujuan/show/{approval}', [WDController::class, 'showApproval'])->middleware('userAccess:5')->name('show-approval-wd');
+        Route::get('/riwayat-persetujuan/show/{approval}', [WDController::class, 'showApproval'])->middleware('userAccess:5')->can('wdCanShowRiwayatPersetujuan','approval')->name('show-approval-wd');
         Route::get('/surat-masuk/show/{surat}', [WDController::class, 'showSuratMasuk'])->middleware('userAccess:5')->name('show-surat-wd');
         Route::put('/surat-disetujui/{surat}', [WDController::class, 'setujuiSurat'])->middleware('userAccess:5')->name('setujui-surat-wd');
         Route::get('/surat-ditolak/{surat}', [WDController::class, 'confirmTolakSurat'])->middleware('userAccess:5')->name('confirm-tolak-surat-wd');
@@ -102,11 +102,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [AkademikController::class, 'dashboard'])->middleware('userAccess:6');
         Route::get('/surat-masuk', [AkademikController::class, 'suratMasuk'])->middleware('userAccess:6');
         Route::get('/riwayat-persetujuan', [AkademikController::class, 'riwayatPersetujuan'])->middleware('userAccess:6');
-        Route::get('/riwayat-persetujuan/show/{approval}', [AkademikController::class, 'showApproval'])->middleware('userAccess:6')->name('show-approval-akademik');
-        Route::get('/surat-masuk/show/{surat}', [AkademikController::class, 'showSuratMasuk'])->middleware('userAccess:6')->name('show-surat-akademik');
-        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->middleware('userAccess:6')->name('preview-surat');
-        Route::put('/surat-disetujui/{surat}', [AkademikController::class, 'setujuiSurat'])->middleware('userAccess:6')->name('setujui-surat-akademik');
-        Route::get('/surat-ditolak/{surat}', [AkademikController::class, 'confirmTolakSurat'])->middleware('userAccess:6')->name('confirm-tolak-surat-akademik');
-        Route::put('/surat-ditolak/{surat}', [AkademikController::class, 'tolakSurat'])->middleware('userAccess:6')->name('tolak-surat-akademik');
+        Route::get('/riwayat-persetujuan/show/{approval}', [AkademikController::class, 'showApproval'])->middleware('userAccess:6')->can('akademikCanShowRiwayatPersetujuan','approval')->name('show-approval-akademik');
+        Route::get('/surat-masuk/show/{surat}', [AkademikController::class, 'showSuratMasuk'])->middleware('userAccess:6')->can('akademikCanShowSuratMasuk','surat')->name('show-surat-akademik');
+        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->middleware('userAccess:6')->can('akademikCanShowPreviewSuratMasuk','surat')->name('preview-surat');
+        Route::put('/surat-disetujui/{surat}', [AkademikController::class, 'setujuiSurat'])->middleware('userAccess:6')->can('akademikCanApproveSuratMasuk','surat')->name('setujui-surat-akademik');
+        Route::get('/surat-ditolak/{surat}', [AkademikController::class, 'confirmTolakSurat'])->middleware('userAccess:6')->can('akademikCanShowDenySuratMasuk','surat')->name('confirm-tolak-surat-akademik');
+        Route::put('/surat-ditolak/{surat}', [AkademikController::class, 'tolakSurat'])->middleware('userAccess:6')->can('akademikCanDenySuratMasuk','surat')->name('tolak-surat-akademik');
     });
 });
