@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 
@@ -15,6 +16,8 @@ class FileController extends Controller
         }
         // $path = Storage::path($filename);
         $path = storage_path('app/lampiran/'.$filename);
+        $expiration = now()->addHours(1);
+        $signedUrl = URL::temporarySignedRoute('show-file', $expiration,$filename);
         // dd($path);
         $file = Storage::disk('local')->get($path);
         // dd($file);

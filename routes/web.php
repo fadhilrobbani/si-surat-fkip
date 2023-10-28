@@ -61,21 +61,21 @@ Route::middleware('auth')->group(function () {
         Route::get('/pengajuan-surat', [MahasiswaController::class, 'pengajuanSurat'])->middleware('userAccess:2');
         Route::get('/pengajuan-surat/{jenisSurat}', [SuratController::class, 'create'])->middleware('userAccess:2')->name('show-form-surat');
         Route::post('/pengajuan-surat/store/6', [SuratController::class, 'storeSuratKeteranganAlumni'])->middleware('userAccess:2')->name('store-surat-alumni');
-        Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->middleware('userAccess:2')->name('destroy-surat');
+        Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->middleware('userAccess:2')->can('mahasiswaCanCancelSurat','surat')->name('destroy-surat');
         Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->middleware('userAccess:2')->name('redirect-form-surat');
         Route::get('/riwayat-pengajuan-surat', [MahasiswaController::class, 'riwayatPengajuanSurat'])->middleware('userAccess:2');
-        Route::get('/riwayat-pengajuan-surat/show/{surat}', [MahasiswaController::class, 'lihatSurat'])->middleware('userAccess:2')->name('lihat-surat-mahasiswa');
+        Route::get('/riwayat-pengajuan-surat/show/{surat}', [MahasiswaController::class, 'lihatSurat'])->middleware('userAccess:2')->can('mahasiswaCanViewShowRiwayatPengajuanSurat','surat')->name('lihat-surat-mahasiswa');
     });
     Route::prefix('staff')->group(function () {
 
         Route::get('/', [StaffController::class, 'dashboard'])->middleware('userAccess:3');
         Route::get('/surat-masuk', [StaffController::class, 'suratMasuk'])->middleware('userAccess:3');
-        Route::get('/surat-masuk/show/{surat}', [StaffController::class, 'showSuratMasuk'])->middleware('userAccess:3')->name('show-surat-staff');
+        Route::get('/surat-masuk/show/{surat}', [StaffController::class, 'showSuratMasuk'])->middleware('userAccess:3')->can('staffCanShowSuratMasuk','surat')->name('show-surat-staff');
         Route::get('/riwayat-persetujuan', [StaffController::class, 'riwayatPersetujuan'])->middleware('userAccess:3');
-        Route::get('/riwayat-persetujuan/show/{approval}', [StaffController::class, 'showApproval'])->middleware('userAccess:3')->name('show-approval-staff');
-        Route::put('/surat-disetujui/{surat}', [StaffController::class, 'setujuiSurat'])->middleware('userAccess:3')->name('setujui-surat');
-        Route::get('/surat-ditolak/{surat}', [StaffController::class, 'confirmTolakSurat'])->middleware('userAccess:3')->name('confirm-tolak-surat');
-        Route::put('/surat-ditolak/{surat}', [StaffController::class, 'tolakSurat'])->middleware('userAccess:3')->name('tolak-surat');
+        Route::get('/riwayat-persetujuan/show/{approval}', [StaffController::class, 'showApproval'])->middleware('userAccess:3')->can('staffCanShowRiwayatPersetujuan','approval')->name('show-approval-staff');
+        Route::put('/surat-disetujui/{surat}', [StaffController::class, 'setujuiSurat'])->middleware('userAccess:3')->can('staffCanApproveSuratMasuk','surat')->name('setujui-surat');
+        Route::get('/surat-ditolak/{surat}', [StaffController::class, 'confirmTolakSurat'])->middleware('userAccess:3')->can('staffCanShowDenySuratMasuk','surat')->name('confirm-tolak-surat');
+        Route::put('/surat-ditolak/{surat}', [StaffController::class, 'tolakSurat'])->middleware('userAccess:3')->can('staffCanDenySuratMasuk','surat')->name('tolak-surat');
     });
     Route::prefix('kaprodi')->group(function () {
 

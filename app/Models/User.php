@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Surat;
 use App\Models\Approval;
+use App\Models\ProgramStudi;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,7 +25,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id'
+        'role_id',
+        'program_studi_id',
+        'jurusan_id'
     ];
 
     /**
@@ -52,7 +55,7 @@ class User extends Authenticatable
     }
 
     public function programStudi(){
-        return $this->belongsTo(Surat::class, 'program_studi_id','id');
+        return $this->belongsTo(ProgramStudi::class, 'program_studi_id','id');
     }
 
     public function suratDikirim(){

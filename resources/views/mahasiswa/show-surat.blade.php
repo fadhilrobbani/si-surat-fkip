@@ -79,7 +79,16 @@
                     <td>{{ $value }}</td>
                 </tr>
             @endforeach
+            @foreach ($surat->files as $key => $value )
+            <tr>
+                <td class="font-semibold">Lampiran {{ Str::title(str_replace('_', ' ', $key))  }}:</td>
+                <td>
+                    <a class="text-blue-700 underline" href="{{ route('show-file', basename($value)) }}">Lihat</a>
+                </td>
+            </tr>
+            @endforeach
         </table>
+
         <div>
             <ol class="relative mx-8 text-gray-500 border-l border-gray-200 dark:border-gray-700 dark:text-gray-400">
                 <li class="mb-10 ml-6">
@@ -144,7 +153,7 @@
             </ol>
         </div>
     </div>
-    <a href="{{ route('show-file',basename($surat->files['ijazah'])) }}">lihat lampiran</a>
+
     {{-- <embed
     src="{{ route('show-file',basename($surat->files['ijazah'])) }}"
     style="width:600px; height:800px;"
@@ -158,5 +167,6 @@
             class="text-white cursor-not-allowed mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button>
         <p class="italic text-slate-500">Surat belum dapat dicetak selama surat belum disetujui</p>
     @endif
+
 
 </x-layout>
