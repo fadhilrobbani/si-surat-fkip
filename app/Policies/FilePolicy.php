@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Surat;
 use App\Models\User;
 
 class FilePolicy
@@ -14,8 +15,4 @@ class FilePolicy
     //     //
     // }
 
-    public function showFile(User $user){
-        dd('halo bro '. $user->name);
-        return true;
-    }
 }

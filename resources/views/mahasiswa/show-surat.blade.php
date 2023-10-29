@@ -83,7 +83,7 @@
             <tr>
                 <td class="font-semibold">Lampiran {{ Str::title(str_replace('_', ' ', $key))  }}:</td>
                 <td>
-                    <a class="text-blue-700 underline" href="{{ route('show-file', basename($value)) }}">Lihat</a>
+                    <a class="text-blue-700 underline" href="{{ route('show-file-mahasiswa', ['surat' => $surat->id, 'filename' => basename($value)]) }}">Lihat</a>
                 </td>
             </tr>
             @endforeach

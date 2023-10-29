@@ -45,16 +45,24 @@
                     <td>{{ $value }}</td>
                 </tr>
             @endforeach
+            @foreach ($surat->files as $key => $value )
+            <tr>
+                <td class="font-semibold">Lampiran {{ Str::title(str_replace('_', ' ', $key))  }}:</td>
+                <td>
+                    <a class="text-blue-700 underline" href="{{ route('show-file-staff', ['surat' => $surat->id, 'filename' => basename($value)]) }}">Lihat</a>
+                </td>
+            </tr>
+            @endforeach
         </table>
 
     </div>
 
 
-    <div class="flex mt-8 justify-between flex-col sm:flex-row ">
+    <div class="flex mt-8 justify-end flex-col sm:flex-row ">
 
-        <button type="button"
+        {{-- <button type="button"
             class="text-white p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lihat
-            Lampiran</button>
+            Lampiran</button> --}}
 
         @if ($surat->current_user_id == auth()->user()->id && $surat->status == 'on_process')
             <div class="flex flex-col sm:flex-row">

@@ -21,7 +21,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Surat::class => SuratPolicy::class,
-        Approval::class => ApprovalPolicy::class
+        Approval::class => ApprovalPolicy::class,
     ];
 
     /**
@@ -29,6 +29,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('show-file', [FilePolicy::class, 'showFile']);
+        // Gate::define('show-file-mahasiswa', [FilePolicy::class, 'showFileMahasiswa']);
     }
 }

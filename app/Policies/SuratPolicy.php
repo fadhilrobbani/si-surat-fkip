@@ -26,6 +26,10 @@ class SuratPolicy
         return $user->id === $surat->pengaju->id;
     }
 
+    public function mahasiswaCanShowLampiranSurat(User $user, Surat $surat){
+        return $user->id === $surat->pengaju->id;
+    }
+
     public function staffCanShowSuratMasuk(User $user, Surat $surat): bool
     {
         return $user->programStudi->id === $surat->pengaju->programStudi->id;
@@ -51,6 +55,10 @@ class SuratPolicy
         return $user->programStudi->id === $surat->pengaju->programStudi->id;
     }
 
+    public function staffCanShowLampiranSurat(User $user, Surat $surat){
+        return $user->programStudi->id === $surat->pengaju->programStudi->id;
+    }
+
     public function kaprodiCanShowSuratMasuk(User $user, Surat $surat): bool
     {
         return $user->programStudi->id === $surat->pengaju->programStudi->id;
@@ -73,6 +81,11 @@ class SuratPolicy
 
     public function kaprodiCanPrintSurat(User $user, Surat $surat): bool
     {
+        return $user->programStudi->id === $surat->pengaju->programStudi->id;
+    }
+
+
+    public function kaprodiCanShowLampiranSurat(User $user, Surat $surat){
         return $user->programStudi->id === $surat->pengaju->programStudi->id;
     }
 
@@ -103,6 +116,10 @@ class SuratPolicy
 
     public function akademikCanPrintSurat(User $user, Surat $surat): bool
     {
+        return $user->jurusan->id === $surat->pengaju->programStudi->jurusan->id;
+    }
+
+    public function akademikCanShowLampiranSurat(User $user, Surat $surat){
         return $user->jurusan->id === $surat->pengaju->programStudi->jurusan->id;
     }
 }
