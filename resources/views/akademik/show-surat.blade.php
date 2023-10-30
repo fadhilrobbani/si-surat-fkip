@@ -43,14 +43,18 @@
                     <td>{{ $value }}</td>
                 </tr>
             @endforeach
-            @foreach ($surat->files as $key => $value )
-            <tr>
-                <td class="font-semibold">Lampiran {{ Str::title(str_replace('_', ' ', $key))  }}:</td>
-                <td>
-                    <a class="text-blue-700 underline" href="{{ route('show-file-akademik', ['surat' => $surat->id, 'filename' => basename($value)]) }}">Lihat</a>
-                </td>
-            </tr>
-            @endforeach
+            @if (isset($surat->files))
+
+                @foreach ($surat->files as $key => $value)
+                    <tr>
+                        <td class="font-semibold">Lampiran {{ Str::title(str_replace('_', ' ', $key)) }}:</td>
+                        <td>
+                            <a class="text-blue-700 underline"
+                                href="{{ route('show-file-akademik', ['surat' => $surat->id, 'filename' => basename($value)]) }}">Lihat</a>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
         </table>
         @if ($surat->current_user_id == auth()->user()->id && $surat->status == 'on_process')
             <form action="{{ route('setujui-surat-akademik', $surat->id) }}" method="POST" class="w-full">
