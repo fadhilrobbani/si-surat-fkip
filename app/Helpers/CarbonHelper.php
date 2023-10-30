@@ -36,6 +36,18 @@ if (!function_exists('formatTimestampToOnlyDateIndonesian')) {
     }
 }
 
+//ke format ex: Oktober 2023
+if (!function_exists('formatTimestampToOnlyMonthIndonesian')) {
+    function formatTimestampToOnlyMonthIndonesian($timestamp)
+    {
+        setlocale(LC_TIME, 'id_ID'); // Set locale ke bahasa Indonesia
+        Carbon::setLocale('id');
+        $carbonTimestamp = Carbon::parse($timestamp);
+        return $carbonTimestamp->isoFormat('MMMM Y');
+    }
+}
+
+
 //ke format ex: 2 hari yang lalu
 if (!function_exists('formatTimestampToDiff')) {
     function formatTimestampToDiff($timestamp)

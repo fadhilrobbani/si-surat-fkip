@@ -47,7 +47,7 @@
 
                 @foreach ($surat->files as $key => $value)
                     <tr>
-                        <td class="font-semibold">Lampiran {{ Str::title(str_replace('_', ' ', $key)) }}:</td>
+                        <td class="font-semibold">Lampiran {{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:</td>
                         <td>
                             <a class="text-blue-700 underline"
                                 href="{{ route('show-file-wd', ['surat' => $surat->id, 'filename' => basename($value)]) }}">Lihat</a>

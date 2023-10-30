@@ -22,6 +22,13 @@ class PDFController extends Controller
                 'chroot' => public_path()
             ]);
         }
+
+        if ($surat->jenisSurat->id == 8) {
+            $pdf = Pdf::loadview('template.surat-keterangan-lulus', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+                'tempDir' => public_path(),
+                'chroot' => public_path()
+            ]);
+        }
         return $pdf->stream();
     }
 
@@ -35,6 +42,12 @@ class PDFController extends Controller
     {
         if ($surat->jenisSurat->id == 6) {
             $pdf = Pdf::loadview('template.surat-keterangan-alumni', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+                'tempDir' => public_path(),
+                'chroot' => public_path()
+            ]);
+        }
+        if ($surat->jenisSurat->id == 8) {
+            $pdf = Pdf::loadview('template.surat-keterangan-lulus', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
                 'tempDir' => public_path(),
                 'chroot' => public_path()
             ]);

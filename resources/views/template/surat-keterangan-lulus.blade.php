@@ -38,15 +38,14 @@
 
     </table>
     <br>
-    <p style="text-align: center"><b><u>SURAT KETERANGAN ALUMNI</u></b></p>
+    <p style="text-align: center"><b><u>SURAT KETERANGAN LULUS</u></b></p>
     <p style="text-align: center">
         <b>Nomor:&nbsp;{{ $surat->data['noSurat'] ?? 'NoSurat' }}/UN30.7/PP/{{ Carbon\Carbon::now()->year }} </b>
     </p>
     <br>
     <br>
-    <p style="text-align: justify">Wakil Dekan Bidang Akademik Fakultas Keguruan dan Ilmu Pendidikan Universitas
-        Bengkulu menerangkan dengan
-        sesungguhnya bahwa Saudara tersebut di bawah ini:</p>
+    <p style="text-align: justify">Wakil Dekan Bidang Akademik FKIP Universitas Bengkulu dengan ini menerangkan bahwa:
+    </p>
     <br>
     <table>
         <tr>
@@ -59,12 +58,12 @@
         </tr>
         <tr>
             <td>Tempat/Tanggal Lahir</td>
-            <td>: {{ Str::title($surat->data['birthplace']) . ', ' . formatTimestampToOnlyDateIndonesian($surat->data['birthdate']) }}
+            <td>: {{ Str::title($surat->data['tempatLahir']) . ', ' . formatTimestampToOnlyDateIndonesian($surat->data['tanggalLahir']) }}
             </td>
         </tr>
         <tr>
-            <td>Nomor Seri Ijazah</td>
-            <td>: {{ $surat->data['noIjazah'] }}</td>
+            <td>Program Studi</td>
+            <td>: {{ $surat->data['programStudi'] }}</td>
         </tr>
     </table>
     {{-- <p>Nama&emsp; {{ $surat->pengaju->name }}</p>
@@ -73,14 +72,10 @@
     <p>Program Studi&emsp;: {{ $surat->data['programStudi'] }}</p>
     <p>Nomor Seri Ijazah&emsp;: {{ $surat->data['noIjazah'] }}</p> --}}
     <br>
-    <p style="text-align: justify">Adalah benar Alumni Fakultas Keguruan dan Ilmu Pendidikan Universitas Bengkulu yang
-        mengikuti perkuliahan secara
-        regular dari Tahun Akademik {{ $surat->data['tahunAkademikAwal'] ?? '20xx' }} s.d Tahun Akademik
-        {{ $surat->data['tahunAkademikAkhir'] ?? '20xx' }} .</p>
+    <p style="text-align: justify">Telah melaksanakan Ujian Sidang {{ $surat->data['jenisUjian'] }} pada tanggal {{ formatTimestampToOnlyDateIndonesian($surat->data['tanggalUjian']) }}, dan mahasiswa tersebut telah dinyatakan <b><u>LULUS</u></b>. Proses penganugerahan gelar {{ $surat->data['gelar'] }} pada
+        yang bersangkutan akan dilakukan pada wisuda periode ke-{{ $surat->data['periodeWisuda'] }}, {{ formatTimestampToOnlyMonthIndonesian($surat->data['tanggalWisuda']) }}</p>
     <br>
-    <p style="text-align: justify">Demikianlah surat keterangan ini dibuat dengan sesungguhnya, apabila terjadi
-        kekeliruan akan diperbaiki
-        sebagaimana mestinya.</p>
+    <p style="text-align: justify">Demikian surat keterangan ini dibuat dengan sebenarnya, untuk dapat dipergunakan sebagaimana mestinya.</p>
     <br><br>
     <div>
         <div class="tandatangan">
