@@ -79,14 +79,20 @@
                     <td>{{ $value }}</td>
                 </tr>
             @endforeach
-            @foreach ($surat->files as $key => $value )
-            <tr>
-                <td class="font-semibold">Lampiran {{ Str::title(str_replace('_', ' ', $key))  }}:</td>
-                <td>
-                    <a class="text-blue-700 underline" href="{{ route('show-file-mahasiswa', ['surat' => $surat->id, 'filename' => basename($value)]) }}">Lihat</a>
-                </td>
-            </tr>
-            @endforeach
+            @if (isset($surat->files))
+
+                @foreach ($surat->files as $key => $value)
+                    <tr>
+                        {{-- Str::title(str_replace('_', ' ', $key)) . --}}
+                        <td class="font-semibold">Lampiran
+                            {{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:</td>
+                        <td>
+                            <a class="text-blue-700 underline"
+                                href="{{ route('show-file-mahasiswa', ['surat' => $surat->id, 'filename' => basename($value)]) }}">Lihat</a>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
         </table>
 
         <div>

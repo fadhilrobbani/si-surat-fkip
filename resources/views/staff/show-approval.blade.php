@@ -53,6 +53,8 @@
                     <td>{{ $value }}</td>
                 </tr>
             @endforeach
+            @if (isset($approval->surat->files))
+
             @foreach ($approval->surat->files as $key => $value )
             <tr>
                 <td class="font-semibold">Lampiran {{ Str::title(str_replace('_', ' ', $key))  }}:</td>
@@ -61,6 +63,7 @@
                 </td>
             </tr>
             @endforeach
+            @endif
         </table>
 
     </div>
