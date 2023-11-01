@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('surat_tables', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('pengaju_id');
-            $table->unsignedBigInteger('current_user_id');
-            $table->unsignedBigInteger('penerima_id')->nullable();
+            $table->uuid('id')->primary();
+            $table->uuid('pengaju_id');
+            $table->uuid('current_user_id');
+            $table->uuid('penerima_id')->nullable();
             $table->enum('status', ['on_process', 'finished', 'denied']);
             $table->unsignedBigInteger('jenis_surat_id');
             $table->json('data')->nullable();

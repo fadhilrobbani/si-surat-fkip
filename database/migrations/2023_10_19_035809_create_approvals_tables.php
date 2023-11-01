@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('approvals', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('surat_id');
+            $table->uuid('id')->primary();
+            $table->uuid('user_id');
+            $table->uuid('surat_id');
             $table->boolean('isApproved');
             $table->text('note');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

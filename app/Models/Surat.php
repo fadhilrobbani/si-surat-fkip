@@ -4,12 +4,15 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Approval;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Surat extends Model
 {
     use HasFactory;
+    use HasUuids;
     protected $table = 'surat_tables';
     protected $fillable = ['pengaju_id', 'current_user_id', 'penerima_id', 'status', 'jenis_surat_id', 'data'];
     protected $casts = [
