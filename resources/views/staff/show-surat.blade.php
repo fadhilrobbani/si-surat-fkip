@@ -18,9 +18,42 @@
                 <td>{{ $surat->status }}</td>
             </tr>
             <tr>
-                <td class="font-semibold">Tujuan selanjutnya:&nbsp;</td>
-                <td>{{ $surat->penerima->name ?? '-' }}</td>
+                @php
+                    $recentStatus = 'user';
+                    if ($surat->status == 'on_process') {
+                        $recentStatus = 'Menunggu';
+                    } elseif ($surat->status == 'denied') {
+                        $recentStatus = 'Ditolak';
+                    } elseif ($surat->status == 'finished') {
+                        $recentStatus = 'Diterima';
+                    }
+                @endphp
+                <td class="font-semibold">{{ $recentStatus }}:&nbsp;</td>
+                <td>{{ $surat->current_user->name }}</td>
             </tr>
+            @php
+                $riwayatPenolakan = App\Models\Approval::where('surat_id', '=', $surat->id)
+                    ->where('isApproved', '=', 0)
+                    ->first();
+            @endphp
+
+            @if ($surat->status == 'denied')
+                <tr>
+                    <td class="font-semibold">Catatan Penolakan:&nbsp;</td>
+                    <td>{{ $riwayatPenolakan->note }}</td>
+                </tr>
+                <tr>
+                    <td class="font-semibold">Tanggal Penolakan:&nbsp;</td>
+                    <td>{{ formatTimestampToIndonesian($riwayatPenolakan->created_at) }}</td>
+                </tr>
+            @endif
+            @if ($surat->status == 'finished' && isset($surat->data['tanggal_selesai']))
+                <tr>
+                    <td class="font-semibold">Tanggal Disetujui:&nbsp;</td>
+                    <td>{{ $surat->data['tanggal_selesai'] }}
+                    </td>
+                </tr>
+            @endif
             <tr>
                 <td class="font-semibold">Tanggal Diajukan:&nbsp;</td>
                 <td>{{ formatTimestampToIndonesian($surat->created_at) }}</td>
@@ -31,15 +64,16 @@
             </tr>
             @foreach ($surat->data as $key => $value)
                 @if ($key == 'tanggal_selesai')
-                    <tr>
+                    {{-- <tr>
                         <td class="font-semibold">{{ Str::title(str_replace('_', ' ', $key)) }}:&nbsp;
                         </td>
-                        <td>{{ formatTimestampToIndonesian($surat->created_at) }}</td>
-                    </tr>
+                        <td>{{ $value}}</td>
+                    </tr> --}}
                     @continue
                 @endif
-
-
+                @if ($key == 'ttdWD1')
+                    @continue
+                @endif
                 <tr>
                     <td class="font-semibold">{{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:&nbsp;</td>
                     <td>{{ $value }}</td>
@@ -49,7 +83,9 @@
 
                 @foreach ($surat->files as $key => $value)
                     <tr>
-                        <td class="font-semibold">Lampiran {{ Str::title(str_replace('_', ' ', $key)) }}:</td>
+                        {{-- Str::title(str_replace('_', ' ', $key)) . --}}
+                        <td class="font-semibold">Lampiran
+                            {{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:</td>
                         <td>
                             <a class="text-blue-700 underline"
                                 href="{{ route('show-file-staff', ['surat' => $surat->id, 'filename' => basename($value)]) }}">Lihat</a>

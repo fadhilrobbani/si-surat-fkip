@@ -100,8 +100,8 @@ class SuratController extends Controller
             'username' => $request->input('name'),
             'programStudi' => $programStudi->name,
             'noIjazah' => $request->input('no-ijazah'),
-            'birthplace' => $request->input('birthplace'),
-            'birthdate' => $request->input('birthdate'),
+            'tempatLahir' => $request->input('birthplace'),
+            'tanggalLahir' => formatTimestampToOnlyDateIndonesian($request->input('birthdate')),
             'tahunAkademikAwal' => $request->input('tahunAkademikAwal'),
             'tahunAkademikAkhir' => $request->input('tahunAkademikAkhir'),
             'email' => $request->input('email'),
@@ -164,12 +164,12 @@ class SuratController extends Controller
             'programStudi' => $programStudi->name,
             'email' => $request->input('email'),
             'tempatLahir' => $request->input('tempat-lahir'),
-            'tanggalLahir' => $request->input('tanggal-lahir'),
+            'tanggalLahir' => formatTimestampToOnlyDateIndonesian($request->input('tanggal-lahir')),
             'jenisUjian' => $request->input('jenis-ujian'),
             'gelar' => $request->input('gelar'),
-            'tanggalUjian' => $request->input('tanggal-ujian'),
+            'tanggalUjian' =>formatTimestampToOnlyDateIndonesian($request->input('tanggal-ujian')),
             'periodeWisuda' => $request->input('periode-wisuda'),
-            'tanggalWisuda' => $request->input('tanggal-wisuda'),
+            'tanggalWisuda' =>formatTimestampToOnlyMonthIndonesian($request->input('tanggal-wisuda')),
 
         ];
         if($request->hasFile('bukti-lulus')){

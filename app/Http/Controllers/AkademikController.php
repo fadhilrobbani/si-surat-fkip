@@ -56,7 +56,7 @@ class AkademikController extends Controller
         $surat->penerima_id = $surat->pengaju_id;
         $surat->expired_at = null;
         $data = $surat->data;
-        $data['tanggal_selesai'] = Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s');
+        $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
         $data['ttdWD1'] = public_path('images/ttd.png');
         $data['noSurat'] = $request->input('no-surat') ?? str_pad($surat->id, 4, '0', STR_PAD_LEFT);
         $data['note'] = $request->input('note');
@@ -70,7 +70,7 @@ class AkademikController extends Controller
             'isApproved' => true,
             'note' => $request->input('note'),
         ]);
-        Mail::to($surat->pengaju->email)->send(new SuratMahasiswa($surat));
+        // Mail::to($surat->pengaju->email)->send(new SuratMahasiswa($surat));
         return redirect('/akademik/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 

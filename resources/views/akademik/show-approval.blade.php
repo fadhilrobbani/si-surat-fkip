@@ -36,9 +36,9 @@
             @foreach ($approval->surat->data as $key => $value)
                 @if ($key == 'tanggal_selesai')
                     <tr>
-                        <td class="font-semibold">{{ Str::title(str_replace('_', ' ', $key)) }}:&nbsp;
+                        <td class="font-semibold">{{ Str::title(str_replace('_', ' Surat ', $key)) }}:&nbsp;
                         </td>
-                        <td>{{ formatTimestampToIndonesian($value) }}</td>
+                        <td>{{ $value }}</td>
                     </tr>
                     @continue
                 @endif

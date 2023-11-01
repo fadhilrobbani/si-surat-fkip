@@ -73,7 +73,7 @@
                         </td>
                         <td class="px-4 py-3">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
 
-                        <td class="px-4 py-3">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
+                        <td class="px-4 py-3">{{ formatTimestampToDiffDays($surat->expired_at) != 0 ? formatTimestampToDiffDays($surat->expired_at). ' hari' : '-' }}</td>
                         <td class="px-4 py-3 flex ">
 
 

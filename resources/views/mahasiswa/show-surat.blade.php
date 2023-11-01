@@ -50,7 +50,7 @@
             @if ($surat->status == 'finished' && isset($surat->data['tanggal_selesai']))
                 <tr>
                     <td class="font-semibold">Tanggal Disetujui:&nbsp;</td>
-                    <td>{{ formatTimestampToIndonesian($surat->data['tanggal_selesai']) }}
+                    <td>{{ $surat->data['tanggal_selesai'] }}
                     </td>
                 </tr>
             @endif
@@ -64,11 +64,11 @@
             </tr>
             @foreach ($surat->data as $key => $value)
                 @if ($key == 'tanggal_selesai')
-                    <tr>
+                    {{-- <tr>
                         <td class="font-semibold">{{ Str::title(str_replace('_', ' ', $key)) }}:&nbsp;
                         </td>
-                        <td>{{ formatTimestampToIndonesian($value) }}</td>
-                    </tr>
+                        <td>{{ $value}}</td>
+                    </tr> --}}
                     @continue
                 @endif
                 @if ($key == 'ttdWD1')

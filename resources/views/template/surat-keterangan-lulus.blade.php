@@ -58,7 +58,7 @@
         </tr>
         <tr>
             <td>Tempat/Tanggal Lahir</td>
-            <td>: {{ Str::title($surat->data['tempatLahir']) . ', ' . formatTimestampToOnlyDateIndonesian($surat->data['tanggalLahir']) }}
+            <td>: {{ Str::title($surat->data['tempatLahir']) . ', ' . $surat->data['tanggalLahir'] }}
             </td>
         </tr>
         <tr>
@@ -72,8 +72,8 @@
     <p>Program Studi&emsp;: {{ $surat->data['programStudi'] }}</p>
     <p>Nomor Seri Ijazah&emsp;: {{ $surat->data['noIjazah'] }}</p> --}}
     <br>
-    <p style="text-align: justify">Telah melaksanakan Ujian Sidang {{ $surat->data['jenisUjian'] }} pada tanggal {{ formatTimestampToOnlyDateIndonesian($surat->data['tanggalUjian']) }}, dan mahasiswa tersebut telah dinyatakan <b><u>LULUS</u></b>. Proses penganugerahan gelar {{ $surat->data['gelar'] }} pada
-        yang bersangkutan akan dilakukan pada wisuda periode ke-{{ $surat->data['periodeWisuda'] }}, {{ formatTimestampToOnlyMonthIndonesian($surat->data['tanggalWisuda']) }}</p>
+    <p style="text-align: justify">Telah melaksanakan Ujian Sidang {{ $surat->data['jenisUjian'] }} pada tanggal {{ $surat->data['tanggalUjian'] }}, dan mahasiswa tersebut telah dinyatakan <b><u>LULUS</u></b>. Proses penganugerahan gelar {{ $surat->data['gelar'] }} pada
+        yang bersangkutan akan dilakukan pada wisuda periode ke-{{ $surat->data['periodeWisuda'] }}, {{ $surat->data['tanggalWisuda'] }}</p>
     <br>
     <p style="text-align: justify">Demikian surat keterangan ini dibuat dengan sebenarnya, untuk dapat dipergunakan sebagaimana mestinya.</p>
     <br><br>
@@ -81,7 +81,7 @@
         <div class="tandatangan">
             <div>
                 <p>Bengkulu,
-                    {{ isset($surat->data['tanggal_selesai']) ? formatTimestampToOnlyDateIndonesian($surat->data['tanggal_selesai']) : '' }}
+                    {{ isset($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '' }}
                 </p>
                 <p>Wakil Dekan Bidang Akademik</p>
             </div>

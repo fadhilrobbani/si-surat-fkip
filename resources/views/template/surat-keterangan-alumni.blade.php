@@ -59,7 +59,7 @@
         </tr>
         <tr>
             <td>Tempat/Tanggal Lahir</td>
-            <td>: {{ Str::title($surat->data['birthplace']) . ', ' . formatTimestampToOnlyDateIndonesian($surat->data['birthdate']) }}
+            <td>: {{ Str::title($surat->data['tempatLahir']) . ', ' . $surat->data['tanggalLahir'] }}
             </td>
         </tr>
         <tr>
@@ -86,7 +86,7 @@
         <div class="tandatangan">
             <div>
                 <p>Bengkulu,
-                    {{ isset($surat->data['tanggal_selesai']) ? formatTimestampToOnlyDateIndonesian($surat->data['tanggal_selesai']) : '' }}
+                    {{ isset($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '' }}
                 </p>
                 <p>Wakil Dekan Bidang Akademik</p>
             </div>
