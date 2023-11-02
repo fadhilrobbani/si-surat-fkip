@@ -5,7 +5,7 @@
     <x-slot:title>
         Mahasiswa | Pengajuan Surat
     </x-slot:title>
-    <x-breadcumb />
+    {{-- <x-breadcumb /> --}}
     <p class="font-bold text-lg mx-auto text-center mb-2">Surat Keterangan Alumni</p>
 
     <form action="{{ route('store-surat-alumni') }}" method="POST" enctype="multipart/form-data">

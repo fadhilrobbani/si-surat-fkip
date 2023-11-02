@@ -98,7 +98,7 @@
                             Buka tab <a class="underline" href="/mahasiswa/pengajuan-surat">Pengajuan Surat</a>
                         </li>
                         <li>
-                            Pilih surat yang ingin diajukan. Lalu tekan tombol "Berikutnya"
+                            Pilih surat yang ingin diajukan. Lalu tekan tombol "Selanjutnya"
                         </li>
                         <li>
                             Isi form yang disediakan beserta persyaratannya seperti lampiran file jika diperlukan. Jika sudah tekan tombol submit.
