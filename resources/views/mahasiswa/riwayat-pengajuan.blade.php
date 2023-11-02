@@ -52,9 +52,12 @@
                         $statusStyle = '';
                         if ($surat->status == 'finished') {
                             $statusStyle = ' text-green-400 font-semibold';
-                        } elseif ($surat->status == 'on_process') {
+                        } elseif ($surat->status == 'on_process' && $surat->expired_at > Carbon\Carbon::now()) {
                             $statusStyle = ' text-yellow-400 font-semibold';
-                        } else {
+                        } elseif($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process'){
+                            $statusStyle = ' text-pink-500 font-semibold';
+                        }
+                        else {
                             $statusStyle = ' text-pink-500 font-semibold';
                         }
                     @endphp
@@ -69,7 +72,8 @@
                         </th>
 
                         <td class="px-4 py-3">
-                            <p class="{{ $statusStyle }}">{{ $surat->status }}</p>
+                            {{-- <p class="{{ $statusStyle }}">{{ $surat->status }}</p> --}}
+                            <p class="{{ $statusStyle }}">{{ $surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process' ? 'expired' : $surat->status }}</p>
                         </td>
                         <td class="px-4 py-3">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
 

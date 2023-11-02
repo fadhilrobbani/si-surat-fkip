@@ -11,7 +11,12 @@ class MahasiswaController extends Controller
 {
     public function dashboard()
     {
-        return view('mahasiswa.dashboard');
+        return view('mahasiswa.dashboard',[
+            'pengajuanSelesai' => Surat::where('pengaju_id', '=', auth()->user()->id)->where('status','=','finished')->get(),
+            'pengajuanDitolak' => Surat::where('pengaju_id', '=', auth()->user()->id)->where('status','=','denied')->get(),
+            'pengajuanDiproses' => Surat::where('pengaju_id', '=', auth()->user()->id)->where('status','=','on_process')->get(),
+            'pengajuanKadaluarsa' =>  Surat::where('pengaju_id', '=', auth()->user()->id)->where('status','=','on_process')->get()
+        ]);
     }
 
     public function pengajuanSurat()
