@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Surat;
 use App\Models\JenisSurat;
@@ -15,7 +16,9 @@ class MahasiswaController extends Controller
             'pengajuanSelesai' => Surat::where('pengaju_id', '=', auth()->user()->id)->where('status','=','finished')->get(),
             'pengajuanDitolak' => Surat::where('pengaju_id', '=', auth()->user()->id)->where('status','=','denied')->get(),
             'pengajuanDiproses' => Surat::where('pengaju_id', '=', auth()->user()->id)->where('status','=','on_process')->get(),
-            'pengajuanKadaluarsa' =>  Surat::where('pengaju_id', '=', auth()->user()->id)->where('status','=','on_process')->get()
+            'pengajuanKadaluarsa' =>  Surat::where('pengaju_id', '=', auth()->user()->id)->where('status','=','on_process')->where(function ($query) {
+                $now = Carbon::now();
+                $query->whereNull('expired_at')->orWhere('expired_at', '<', $now);})->get(),
         ]);
     }
 

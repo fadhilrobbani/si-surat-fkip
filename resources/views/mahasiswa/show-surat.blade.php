@@ -15,14 +15,17 @@
         <table border="2">
             <tr>
                 <td class="font-semibold">Status:&nbsp;</td>
-                <td>{{ $surat->status }}</td>
+                <td>{{  $surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process' ? 'expired' : $surat->status}}</td>
             </tr>
             <tr>
                 @php
                     $recentStatus = 'user';
-                    if ($surat->status == 'on_process') {
+                    if ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process') {
+                        $recentStatus = 'Masa Aktif Habis Saat';
+                    }elseif ($surat->status == 'on_process') {
                         $recentStatus = 'Menunggu';
-                    } elseif ($surat->status == 'denied') {
+                    }
+                    elseif ($surat->status == 'denied') {
                         $recentStatus = 'Ditolak';
                     } elseif ($surat->status == 'finished') {
                         $recentStatus = 'Diterima';

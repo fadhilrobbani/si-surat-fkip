@@ -5,7 +5,7 @@
     <x-slot:title>
         Mahasiswa | Dashboard
     </x-slot:title>
-    <x-breadcumb />
+    {{-- <x-breadcumb /> --}}
     <form action="{{ route('redirect-form-surat') }}" class="mt-4" method="POST">
         @csrf
         @method('post')
