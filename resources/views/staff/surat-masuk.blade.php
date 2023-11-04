@@ -50,25 +50,29 @@
                             <td class="px-4 py-3 flex ">
 
 
-                                <div
-                                    class="hover:bg-blue-800 cursor-pointer rounded-lg text-center bg-blue-600 p-2 text-white m-2">
-                                    <a href="{{ route('show-surat-staff', $surat->id) }}">Lihat</a>
+                                <a href="{{ route('show-surat-staff', $surat->id) }}">
+                                    <div
+                                        class="hover:bg-blue-800 cursor-pointer rounded-lg text-center bg-blue-600 p-2 text-white m-2">
+                                        Lihat
 
-                                </div>
+                                    </div>
+                                </a>
 
-                                <form
-                                    class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
-                                    action="{{ route('setujui-surat', $surat->id) }}" method="POST">
+                                <form action="{{ route('setujui-surat', $surat->id) }}" method="POST">
                                     @csrf
                                     @method('put')
-                                    <button type="submit">
+                                    <button
+                                        class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
+                                        type="submit">
                                         Setuju </button>
                                 </form>
-                                <div
-                                    class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
-                                    <a href="{{ route('confirm-tolak-surat', $surat->id) }}">Tolak</a>
+                                <a href="{{ route('confirm-tolak-surat', $surat->id) }}">
+                                    <div
+                                        class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
+                                        Tolak
 
-                                </div>
+                                    </div>
+                                </a>
 
 
                             </td>

@@ -15,7 +15,7 @@
         <table border="2">
             <tr>
                 <td class="font-semibold">Status Surat:&nbsp;</td>
-                <td>{{ $approval->surat->status }}</td>
+                <td>{{   $approval->surat->expired_at < Carbon\Carbon::now() && $approval->surat->status == 'on_process'?'expired': $approval->surat->status   }}</td>
             </tr>
             <tr>
                 <td class="font-semibold">Hasil Konfirmasi Anda:&nbsp;</td>

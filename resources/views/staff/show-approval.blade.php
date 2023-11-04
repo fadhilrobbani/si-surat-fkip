@@ -13,9 +13,6 @@
     <div class="flex flex-col gap-4 md:flex-row justify-evenly items-center">
 
         <table border="2">
-            @php
-                $approval->surat->expired_at < Carbon\Carbon::now()
-            @endphp
             <tr>
                 <td class="font-semibold">Status Surat:&nbsp;</td>
                 <td>{{  $approval->surat->expired_at < Carbon\Carbon::now() && $approval->surat->status == 'on_process'?'expired': $approval->surat->status  }}</td>
