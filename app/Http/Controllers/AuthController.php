@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProgramStudi;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -24,11 +25,21 @@ class AuthController extends Controller
         $formFields = $request->validate([
             'username' => 'required|unique:users,username',
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'program-studi' => 'required',
             'password' => 'required|confirmed|min:6'
         ]);
-        return redirect()->back()->with('success', 'Berhasil mendaftarkan akun');
+        $user = User::create([
+            'username' => $request->input('username'),
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'program_studi_id' => $request->input('program-studi'),
+            'password' => bcrypt($request->input('password')),
+            'role_id' => 2,
+        ]);
+        event(new Registered($user));
+        auth()->login($user);
+        return redirect('/')->with('success', 'Berhasil mendaftarkan akun');
     }
 
     public function logout()

@@ -15,6 +15,7 @@ use App\Http\Controllers\KaprodiController;
 use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\JenisSuratController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,8 +36,16 @@ Route::get('/home', [AuthController::class, 'home']);
 Route::get('/login', function () {
     return redirect('/');
 });
-Route::get('/register',[AuthController::class,'create']);
-Route::post('/register/new',[AuthController::class,'store'])->name('register-user');
+Route::get('/register', [AuthController::class, 'create']);
+Route::post('/register/new', [AuthController::class, 'store'])->name('register-user');
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'login'])->name('login');
@@ -55,7 +64,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/users/akademik', [AkademikController::class, 'index'])->middleware('userAccess:1')->name('admin-akademik');
         Route::get('/surat', [SuratController::class, 'index'])->middleware('userAccess:1');
     });
-    Route::prefix('mahasiswa')->group(function () {
+    Route::prefix('mahasiswa')->middleware('verified')->group(function () {
         Route::get('/', [MahasiswaController::class, 'dashboard'])->middleware('userAccess:2');
         Route::get('/pengajuan-surat', [MahasiswaController::class, 'pengajuanSurat'])->middleware('userAccess:2');
         Route::get('/pengajuan-surat/{jenisSurat}', [SuratController::class, 'create'])->middleware('userAccess:2')->name('show-form-surat');
@@ -116,7 +125,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/surat-disetujui/{surat}', [AkademikController::class, 'setujuiSurat'])->middleware('userAccess:6')->can('akademikCanApproveSuratMasuk', 'surat')->name('setujui-surat-akademik');
         Route::get('/surat-ditolak/{surat}', [AkademikController::class, 'confirmTolakSurat'])->middleware('userAccess:6')->can('akademikCanShowDenySuratMasuk', 'surat')->name('confirm-tolak-surat-akademik');
         Route::put('/surat-ditolak/{surat}', [AkademikController::class, 'tolakSurat'])->middleware('userAccess:6')->can('akademikCanDenySuratMasuk', 'surat')->name('tolak-surat-akademik');
-        Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->can('akademikCanPrintSurat','surat')->name('print-surat-akademik');
+        Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->can('akademikCanPrintSurat', 'surat')->name('print-surat-akademik');
         Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->can('akademikCanShowLampiranSurat', 'surat')->name('show-file-akademik');
     });
 });
