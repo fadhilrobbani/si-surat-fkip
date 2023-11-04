@@ -35,6 +35,8 @@ Route::get('/home', [AuthController::class, 'home']);
 Route::get('/login', function () {
     return redirect('/');
 });
+Route::get('/register',[AuthController::class,'create']);
+Route::post('/register/new',[AuthController::class,'store'])->name('register-user');
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'login'])->name('login');

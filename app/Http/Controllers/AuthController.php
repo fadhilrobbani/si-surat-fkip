@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProgramStudi;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,22 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function register()
+    public function create()
     {
-        return view('auth.register');
+        return view('auth.register',[
+            'daftarProgramStudi' => ProgramStudi::all(),
+        ]);
+    }
+
+    public function store(Request $request){
+        $formFields = $request->validate([
+            'username' => 'required|unique:users,username',
+            'name' => 'required',
+            'email' => 'required|email',
+            'program-studi' => 'required',
+            'password' => 'required|confirmed|min:6'
+        ]);
+        return redirect()->back()->with('success', 'Berhasil mendaftarkan akun');
     }
 
     public function logout()
