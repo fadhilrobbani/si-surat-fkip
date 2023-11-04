@@ -120,17 +120,20 @@
 
                     <div class="flex flex-col sm:flex-row">
 
-                        <div
-                            class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2">
+                        <div>
 
-                            <button type="submit">
+                            <button
+                                class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
+                                type="submit">
                                 Setuju </button>
                         </div>
-                        <div
-                            class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
-                            <a href="{{ route('confirm-tolak-surat-akademik', $surat->id) }}">Tolak</a>
+                        <a href="{{ route('confirm-tolak-surat-akademik', $surat->id) }}">
+                            <div
+                                class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
+                                Tolak
 
-                        </div>
+                            </div>
+                        </a>
                     </div>
         @endif
     </div>
