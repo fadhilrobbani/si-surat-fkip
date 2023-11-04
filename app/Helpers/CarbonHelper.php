@@ -66,7 +66,7 @@ if (!function_exists('formatTimestampToDiffDays')) {
         Carbon::setLocale('id');
         $carbonTimestamp = Carbon::parse($timestamp);
         $now = Carbon::now();
-        return $now->diffInDays($carbonTimestamp);
+        return $now->diffInDays($carbonTimestamp,false) >= 0 ? $now->diffInDays($carbonTimestamp,false) : '0';
     }
 }
 
