@@ -47,6 +47,13 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     return redirect('/home');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
+Route::get('/forgot-password', [AuthController::class,'forgotPasswordPage'])->middleware('guest')->name('password.request');
+Route::post('/forgot-password', [AuthController::class,'forgotPassword'])->middleware('guest')->name('password.email');
+Route::get('/reset-password/{token}', [AuthController::class,'resetPasswordPage'])->middleware('guest')->name('password.reset');
+
+
+Route::post('/reset-password',[AuthController::class,'resetPassword'] )->middleware('guest')->name('password.update');
+
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'login'])->name('login');
     Route::get('/register', [AuthController::class, 'create']);

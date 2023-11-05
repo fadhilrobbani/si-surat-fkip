@@ -1,5 +1,5 @@
 @if (session()->has('success'))
-    <div id="toast-success" x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
+    <div id="toast-success" x-data="{ show: true }" x-init="setTimeout(() => show = false, 8000)" x-show="show"
         class="fixed top-0 left-1/2 z-[100] flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
         role="alert">
         <div
@@ -26,7 +26,7 @@
 @endif
 
 @if (session()->has('deleted'))
-    <div id="toast-danger" x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
+    <div id="toast-danger" x-data="{ show: true }" x-init="setTimeout(() => show = false, 8000)" x-show="show"
         class="fixed top-0 left-1/2 z-[100] flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
         role="alert">
         <div
@@ -54,7 +54,7 @@
 
 @if ($errors->any())
     @foreach ($errors->all() as $message)
-        <div id="toast-warning" x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
+        <div id="toast-warning" x-data="{ show: true }" x-init="setTimeout(() => show = false, 8000)" x-show="show"
             class="fixed top-0 left-1/2 z-[100] flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
             role="alert">
             <div

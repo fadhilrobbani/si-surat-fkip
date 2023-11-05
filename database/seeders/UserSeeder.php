@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -22,6 +23,7 @@ class UserSeeder extends Seeder
                 'role_id' => 1,
                 'jurusan_id' => null,
                 'program_studi_id' => null,
+                'email_verified_at' => now()
 
             ],
             [
@@ -32,6 +34,7 @@ class UserSeeder extends Seeder
                 'role_id' => 2,
                 'jurusan_id' => null,
                 'program_studi_id' => 3,
+                'email_verified_at' => now()
             ],
             [
                 'username' => 'mahasiswa_fisika',
@@ -41,6 +44,7 @@ class UserSeeder extends Seeder
                 'role_id' => 2,
                 'jurusan_id' => null,
                 'program_studi_id' => 7,
+                'email_verified_at' => now()
             ],
             [
                 'username' => 'mahasiswa_pgsd',
@@ -50,6 +54,7 @@ class UserSeeder extends Seeder
                 'role_id' => 2,
                 'jurusan_id' => null,
                 'program_studi_id' => 9,
+                'email_verified_at' => now()
             ],
             [
                 'username' => 'staff_bk',
@@ -59,6 +64,7 @@ class UserSeeder extends Seeder
                 'role_id' => 3,
                 'jurusan_id' => null,
                 'program_studi_id' => 3,
+                'email_verified_at' => now()
             ],
             [
                 'username' => 'staff_pgsd',
@@ -68,6 +74,7 @@ class UserSeeder extends Seeder
                 'role_id' => 3,
                 'jurusan_id' => null,
                 'program_studi_id' => 9,
+                'email_verified_at' => now()
             ],
             [
                 'username' => 'staff_fisika',
@@ -77,6 +84,7 @@ class UserSeeder extends Seeder
                 'role_id' => 3,
                 'jurusan_id' => null,
                 'program_studi_id' => 7,
+                'email_verified_at' => now()
             ],
             [
                 'username' => 'kaprodi_bk',
@@ -86,6 +94,7 @@ class UserSeeder extends Seeder
                 'role_id' => 4,
                 'jurusan_id' => null,
                 'program_studi_id' => 3,
+                'email_verified_at' => now()
             ],
             [
                 'username' => 'kaprodi_pgsd',
@@ -95,6 +104,7 @@ class UserSeeder extends Seeder
                 'role_id' => 4,
                 'jurusan_id' => null,
                 'program_studi_id' => 3,
+                'email_verified_at' => now()
             ],
             [
                 'username' => 'kaprodi_fisika',
@@ -104,6 +114,7 @@ class UserSeeder extends Seeder
                 'role_id' => 4,
                 'jurusan_id' => null,
                 'program_studi_id' => 7,
+                'email_verified_at' => now()
             ],
             [
                 'username' => 'wd1',
@@ -113,6 +124,7 @@ class UserSeeder extends Seeder
                 'role_id' => 5,
                 'jurusan_id' => null,
                 'program_studi_id' => null,
+                'email_verified_at' => now()
             ],
             [
                 'username' => 'akademik_jip',
@@ -122,6 +134,7 @@ class UserSeeder extends Seeder
                 'role_id' => 6,
                 'jurusan_id' => 1,
                 'program_studi_id' => null,
+                'email_verified_at' => now()
             ],
             [
                 'username' => 'akademik_jmipa',
@@ -131,6 +144,7 @@ class UserSeeder extends Seeder
                 'role_id' => 6,
                 'jurusan_id' => 2,
                 'program_studi_id' => null,
+                'email_verified_at' => now()
             ],
         ];
 
@@ -143,7 +157,8 @@ class UserSeeder extends Seeder
                     'password' => $user['password'],
                     'role_id' => $user['role_id'],
                     'program_studi_id' => $user['program_studi_id'],
-                    'jurusan_id' => $user['jurusan_id']
+                    'jurusan_id' => $user['jurusan_id'],
+                    'email_verified_at' => $user['email_verified_at']
                 ]
             );
         };
