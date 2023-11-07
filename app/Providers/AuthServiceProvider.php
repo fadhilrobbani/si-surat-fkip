@@ -4,9 +4,11 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
+use App\Models\User;
 use App\Models\Surat;
 use App\Models\Approval;
 use App\Policies\FilePolicy;
+use App\Policies\UserPolicy;
 use App\Policies\SuratPolicy;
 use App\Policies\ApprovalPolicy;
 use Illuminate\Support\Facades\Gate;
@@ -22,6 +24,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Surat::class => SuratPolicy::class,
         Approval::class => ApprovalPolicy::class,
+        User::class => UserPolicy::class,
     ];
 
     /**

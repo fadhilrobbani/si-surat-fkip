@@ -20,6 +20,12 @@
                 </h1>
                 <h1 class=" text-md mt-0 text-slate-700  text-center mb-4 mx-auto"> </h1>
                 <h1 class=" text-md mt-0 text-slate-700  text-center mb-4 mx-auto">Kami telah mengirimkan email konfirmasi ke email Anda <b>{{ auth()->user()->email }}</b>. <br>Silahkan buka email yang Anda daftarkan, lalu lakukan konfirmasi dengan menekan tombol atau link konfirmasi yang dikirimkan! </h1>
+                <form action="{{ route('verification.send') }}" class="self-center flex flex-col justify-center items-center" method="POST">
+                @csrf
+                @method('post')
+                <p class="text-slate-700">Tidak mendapatkan email verifikasi?</p>
+                <button class="bg-blue-600 mt-2 p-2 rounded-lg text-white font-semibold hover:bg-blue-800" type="submit"> Kirim ulang di sini</button>
+                </form>
             </div>
 
         </div>

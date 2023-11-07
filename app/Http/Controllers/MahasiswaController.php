@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Surat;
 use App\Models\JenisSurat;
+use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 
 class MahasiswaController extends Controller
@@ -20,6 +21,27 @@ class MahasiswaController extends Controller
                 $now = Carbon::now();
                 $query->whereNull('expired_at')->orWhere('expired_at', '<', $now);})->get(),
         ]);
+    }
+
+    public function profilePage(){
+        return view('mahasiswa.profile',[
+            'daftarProgramStudi' => ProgramStudi::all()
+        ]);
+    }
+
+    public function updateProfile(Request $request, User $user){
+        $request->validate([
+            'username' => 'string|required',
+            'name' => 'string|required',
+            'email' =>'email|required',
+            'program-studi' => 'required'
+        ]);
+        $user->update($request->only('username','name','program-studi'));
+        // if($request->input('email') != $user->email){
+        //     $user->update($request->only('email'));
+        //     $user->update(['email_verified_at',null]);
+        // }
+        return redirect(url()->current())->with('success','Sukses mengupdate data');
     }
 
     public function pengajuanSurat()

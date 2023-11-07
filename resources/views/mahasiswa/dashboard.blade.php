@@ -28,7 +28,7 @@
                 </div>
             </div>
         </a>
-        <a href="/setting">
+        <a href="/mahasiswa/profile">
             <div
                 class="flex hover:bg-slate-300 items-center justify-center gap-4  rounded bg-gray-50 h-28 dark:bg-gray-800">
                 <p class="font-semibold cursor-pointer hover:text-slate-900 text-slate-600 text-lg">Pengaturan Akun</p>
