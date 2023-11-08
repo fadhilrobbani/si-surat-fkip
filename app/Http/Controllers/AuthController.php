@@ -53,6 +53,11 @@ class AuthController extends Controller
         return redirect('');
     }
 
+    public function emailVerification(User $user){
+        $user->sendEmailVerificationNotification();
+        return back()->with('success', 'Email Verifikasi telah dikirim!');
+    }
+
     public function forgotPasswordPage()
     {
         return view('auth.forgot-password');

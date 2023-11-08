@@ -36,12 +36,23 @@ class MahasiswaController extends Controller
             'email' =>'email|required',
             'program-studi' => 'required'
         ]);
-        $user->update($request->only('username','name','program-studi'));
-        // if($request->input('email') != $user->email){
-        //     $user->update($request->only('email'));
-        //     $user->update(['email_verified_at',null]);
-        // }
-        return redirect(url()->current())->with('success','Sukses mengupdate data');
+
+        if($request->input('username') != $user->username){
+            $request->validate([
+                'username' => 'unique:users,username'
+            ]);
+            $user->update($request->only('username'));
+        }
+
+        if($request->input('email') != $user->email){
+            $request->validate([
+                'email' => 'unique:users,email'
+            ]);
+            $user->update($request->only('email'));
+            $user->email_verified_at = null;
+        }
+        $user->update($request->only('name','program-studi'));
+        return redirect('/mahasiswa/profile')->with('success','Sukses mengupdate data');
     }
 
     public function pengajuanSurat()

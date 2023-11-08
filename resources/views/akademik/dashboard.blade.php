@@ -5,16 +5,16 @@
     <x-slot:title>
         Akademik | Dashboard
     </x-slot:title>
-    <div class="flex items-center justify-evenly h-48 p-4 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+    <div class="flex sm:flex-row flex-col-reverse items-center justify-evenly min-h-fit  p-4 mb-4 rounded bg-gray-50 dark:bg-gray-800">
         <div>
             <p class="font-bold text-2xl text-indigo-400">Selamat Datang {{ $authUser->name }}!</p>
             <br>
             <p class="text-slate-500 font-semibold">Website ini merupakan terobosan baru dari Fakultas Keguruan dan Ilmu
                 Pendidikan dalam mempermudah proses kebutuhan surat menyurat mahasiswa</p>
         </div>
-        <img class="h-full m-2 p-2" src="{{ asset('images/man-laptop.png') }}" alt="">
+        <img class="h-48 m-2 p-2" src="{{ asset('images/man-laptop.png') }}" alt="">
     </div>
-    <div class="grid grid-cols-3 gap-4 mb-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
         <a href="/akademik/surat-masuk">
             <div
                 class="flex items-center gap-2 flex-col hover:bg-slate-300 justify-center rounded p-4  bg-gray-50 h-28 dark:bg-gray-800">
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </a>
-        <a href="/setting">
+        <a href="/akademik/profile">
             <div
                 class="flex hover:bg-slate-300 items-center justify-center gap-4  rounded bg-gray-50 h-28 dark:bg-gray-800">
                 <p class="font-semibold cursor-pointer hover:text-slate-900 text-slate-600 text-lg">Pengaturan Akun</p>

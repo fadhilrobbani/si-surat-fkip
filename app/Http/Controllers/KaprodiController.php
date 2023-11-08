@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Surat;
 use App\Models\Approval;
+use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -22,6 +23,39 @@ class KaprodiController extends Controller
 
         ]);
     }
+
+    public function profilePage(){
+        return view('kaprodi.profile',[
+            'daftarProgramStudi' => ProgramStudi::all()
+        ]);
+    }
+
+    public function updateProfile(Request $request, User $user){
+        $request->validate([
+            'username' => 'string|required',
+            'name' => 'string|required',
+            'email' =>'email|required',
+            'program-studi' => 'required'
+        ]);
+
+        if($request->input('username') != $user->username){
+            $request->validate([
+                'username' => 'unique:users,username'
+            ]);
+            $user->update($request->only('username'));
+        }
+
+        if($request->input('email') != $user->email){
+            $request->validate([
+                'email' => 'unique:users,email'
+            ]);
+            $user->update($request->only('email'));
+            $user->email_verified_at = null;
+        }
+        $user->update($request->only('name','program-studi'));
+        return redirect('/kaprodi/profile')->with('success','Sukses mengupdate data');
+    }
+
 
     public function index()
     {

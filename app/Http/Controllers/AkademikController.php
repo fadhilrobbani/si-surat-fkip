@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Mail\SuratMahasiswa;
 use App\Models\Surat;
 use App\Models\Approval;
+use App\Models\Jurusan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
@@ -28,6 +29,39 @@ class AkademikController extends Controller
     {
         return view('admin.users.akademik.index');
     }
+
+    public function profilePage(){
+        return view('akademik.profile',[
+           'daftarJurusan' => Jurusan::all()
+        ]);
+    }
+
+    public function updateProfile(Request $request, User $user){
+        $request->validate([
+            'username' => 'string|required',
+            'name' => 'string|required',
+            'email' =>'email|required',
+            'jurusan' => 'required'
+        ]);
+
+        if($request->input('username') != $user->username){
+            $request->validate([
+                'username' => 'unique:users,username'
+            ]);
+            $user->update($request->only('username'));
+        }
+
+        if($request->input('email') != $user->email){
+            $request->validate([
+                'email' => 'unique:users,email'
+            ]);
+            $user->update($request->only('email'));
+            $user->email_verified_at = null;
+        }
+        $user->update($request->only('name','jurusan'));
+        return redirect('/akademik/profile')->with('success','Sukses mengupdate data');
+    }
+
 
     public function suratMasuk()
     {
