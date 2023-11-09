@@ -31,6 +31,10 @@ class SuratController extends Controller
             return view('mahasiswa.formsurat.form-keterangan-lulus', [
                 'jenisSurat' => $jenisSurat,
                 'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id','name','username')
+                    ->where('role_id', '=', 3)
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->get()
             ]);
         }
         return abort(404);
@@ -167,12 +171,12 @@ class SuratController extends Controller
             'tanggalLahir' => formatTimestampToOnlyDateIndonesian($request->input('tanggal-lahir')),
             'jenisUjian' => $request->input('jenis-ujian'),
             'gelar' => $request->input('gelar'),
-            'tanggalUjian' =>formatTimestampToOnlyDateIndonesian($request->input('tanggal-ujian')),
+            'tanggalUjian' => formatTimestampToOnlyDateIndonesian($request->input('tanggal-ujian')),
             'periodeWisuda' => $request->input('periode-wisuda'),
-            'tanggalWisuda' =>formatTimestampToOnlyMonthIndonesian($request->input('tanggal-wisuda')),
+            'tanggalWisuda' => formatTimestampToOnlyMonthIndonesian($request->input('tanggal-wisuda')),
 
         ];
-        if($request->hasFile('bukti-lulus')){
+        if ($request->hasFile('bukti-lulus')) {
             $request->validate([
                 'bukti-lulus' => 'file|mimes:jpeg,png,jpg,pdf|max:2048',
             ]);
