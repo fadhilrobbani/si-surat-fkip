@@ -68,7 +68,7 @@ class AkademikController extends Controller
         $daftarSuratMasuk = Surat::where('current_user_id', '=', auth()->user()->id)->where('status', 'on_process')->where(function ($query) {
             $now = Carbon::now();
             $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
-        })->paginate(10);
+        })->latest()->paginate(10);
         return view('akademik.surat-masuk', [
             'daftarSuratMasuk' => $daftarSuratMasuk
         ]);

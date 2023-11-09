@@ -58,7 +58,7 @@
                                 </a>
 
 
-                                <form action="{{ route('setujui-surat-wd', $surat->id) }}" method="POST">
+                                {{-- <form action="{{ route('setujui-surat-wd', $surat->id) }}" method="POST">
                                     @csrf
                                     @method('put')
                                     <button
@@ -72,7 +72,7 @@
                                         Tolak
 
                                     </div>
-                                </a>
+                                </a> --}}
 
 
                             </td>

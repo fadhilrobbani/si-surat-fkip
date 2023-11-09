@@ -13,9 +13,9 @@
     <div class="flex flex-col gap-4 md:flex-row justify-evenly items-center">
 
         <table border="2">
-            <tr>
-                <td class="font-semibold">Status:&nbsp;</td>
-                <td>{{  $surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process' ? 'expired' : $surat->status}}</td>
+            <tr class="border-b border-gray-200 dark:border-gray-700">
+                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-200 dark:text-white dark:bg-gray-800" >Status:&nbsp;</td>
+                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800" >{{  $surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process' ? 'expired' : $surat->status}}</td>
             </tr>
             <tr>
                 @php
