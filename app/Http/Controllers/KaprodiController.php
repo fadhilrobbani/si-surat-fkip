@@ -78,7 +78,10 @@ class KaprodiController extends Controller
         if ($surat->current_user_id == auth()->user()->id) {
 
             return view('kaprodi.show-surat', [
-                'surat' => $surat
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 5)
+                    ->get()
             ]);
         }
         return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
@@ -104,7 +107,7 @@ class KaprodiController extends Controller
         ]);
     }
 
-    public function setujuiSurat(Surat $surat)
+    public function setujuiSurat(Request $request,Surat $surat)
     {
         // SELECT jt.id FROM users u
         // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
@@ -119,8 +122,8 @@ class KaprodiController extends Controller
             ->where('jurusan_id', '=', $idJurusan->id)
             ->first();
 
-        $surat->current_user_id = $surat->penerima_id;
-        $surat->penerima_id = $akademik->id;
+        $surat->current_user_id = $request->input('penerima');
+        // $surat->penerima_id = $akademik->id;
         $surat->save();
 
         Approval::create([

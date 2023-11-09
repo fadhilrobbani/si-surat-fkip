@@ -23,6 +23,10 @@ class SuratController extends Controller
             return view('mahasiswa.formsurat.form-keterangan-alumni', [
                 'jenisSurat' => $jenisSurat,
                 'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 3)
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->get()
 
             ]);
         }
@@ -31,7 +35,7 @@ class SuratController extends Controller
             return view('mahasiswa.formsurat.form-keterangan-lulus', [
                 'jenisSurat' => $jenisSurat,
                 'daftarProgramStudi' => ProgramStudi::all(),
-                'daftarPenerima' => User::select('id','name','username')
+                'daftarPenerima' => User::select('id', 'name', 'username')
                     ->where('role_id', '=', 3)
                     ->where('program_studi_id', '=', auth()->user()->program_studi_id)
                     ->get()
@@ -64,10 +68,10 @@ class SuratController extends Controller
         $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
 
         // $staff = DB::select('SELECT*FROM users WHERE role_id =? AND program_studi_id  = ?', [3,3]);
-        $staff = User::select('id')
-            ->where('role_id', '=', 3)
-            ->where('program_studi_id', '=', auth()->user()->program_studi_id)
-            ->first();
+        // $staff = User::select('id')
+        //     ->where('role_id', '=', 3)
+        //     ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+        //     ->first();
         // dd($staff);
 
         $kaprodi = User::select('id')
@@ -94,8 +98,8 @@ class SuratController extends Controller
         // Surat::create($surat);
         $surat = new Surat;
         $surat->pengaju_id = auth()->user()->id;
-        $surat->current_user_id = $staff->id;
-        $surat->penerima_id = $kaprodi->id;
+        $surat->current_user_id = $request->input('penerima');
+        // $surat->penerima_id = $kaprodi->id;
         $surat->status = 'on_process';
         $surat->jenis_surat_id = $jenisSurat;
         $surat->expired_at = now()->addDays(30);
@@ -157,8 +161,8 @@ class SuratController extends Controller
 
         $surat = new Surat;
         $surat->pengaju_id = auth()->user()->id;
-        $surat->current_user_id = $staff->id;
-        $surat->penerima_id = $kaprodi->id;
+        $surat->current_user_id = $request->input('penerima');
+        // $surat->penerima_id = $kaprodi->id;
         $surat->status = 'on_process';
         $surat->jenis_surat_id = $jenisSurat;
         $surat->expired_at = now()->addDays(30);

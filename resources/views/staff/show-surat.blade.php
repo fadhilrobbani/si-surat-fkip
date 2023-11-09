@@ -107,12 +107,15 @@
         @if ($surat->current_user_id == auth()->user()->id && $surat->status == 'on_process')
             <div class="flex flex-col sm:flex-row">
 
-                <form
-                    action="{{ route('setujui-surat', $surat->id) }}" method="POST">
+                <form action="{{ route('setujui-surat', $surat->id) }}" method="POST">
                     @csrf
                     @method('put')
-                    <button class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2" type="submit">
+                    <x-modal-send :daftarPenerima='$daftarPenerima' />
+                    <button
+                        class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
+                        data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
                         Setuju </button>
+
                 </form>
                 <a href="{{ route('confirm-tolak-surat', $surat->id) }}">
                     <div class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">

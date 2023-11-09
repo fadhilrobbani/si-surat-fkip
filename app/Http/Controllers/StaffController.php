@@ -15,45 +15,47 @@ class StaffController extends Controller
     {
         return view('staff.dashboard', [
 
-                'suratDisetujui' => count(Approval::where('user_id', '=', auth()->user()->id)->where('isApproved','=',true)->get()) ,
-                'suratDitolak' => count( Approval::where('user_id', '=', auth()->user()->id)->where('isApproved','=',false)->get()),
-                'suratMenunggu' => count(Surat::where('current_user_id', '=', auth()->user()->id)->where('status', 'on_process')->where(function ($query) {
-                    $now = Carbon::now();
-                    $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
-                })->get()->toArray())
+            'suratDisetujui' => count(Approval::where('user_id', '=', auth()->user()->id)->where('isApproved', '=', true)->get()),
+            'suratDitolak' => count(Approval::where('user_id', '=', auth()->user()->id)->where('isApproved', '=', false)->get()),
+            'suratMenunggu' => count(Surat::where('current_user_id', '=', auth()->user()->id)->where('status', 'on_process')->where(function ($query) {
+                $now = Carbon::now();
+                $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
+            })->get()->toArray())
 
         ]);
     }
-    public function profilePage(){
-        return view('staff.profile',[
+    public function profilePage()
+    {
+        return view('staff.profile', [
             'daftarProgramStudi' => ProgramStudi::all()
         ]);
     }
 
-    public function updateProfile(Request $request, User $user){
+    public function updateProfile(Request $request, User $user)
+    {
         $request->validate([
             'username' => 'string|required',
             'name' => 'string|required',
-            'email' =>'email|required',
+            'email' => 'email|required',
             'program-studi' => 'required'
         ]);
 
-        if($request->input('username') != $user->username){
+        if ($request->input('username') != $user->username) {
             $request->validate([
                 'username' => 'unique:users,username'
             ]);
             $user->update($request->only('username'));
         }
 
-        if($request->input('email') != $user->email){
+        if ($request->input('email') != $user->email) {
             $request->validate([
                 'email' => 'unique:users,email'
             ]);
             $user->update($request->only('email'));
             $user->email_verified_at = null;
         }
-        $user->update($request->only('name','program-studi'));
-        return redirect('/staff/profile')->with('success','Sukses mengupdate data');
+        $user->update($request->only('name', 'program-studi'));
+        return redirect('/staff/profile')->with('success', 'Sukses mengupdate data');
     }
 
 
@@ -65,7 +67,8 @@ class StaffController extends Controller
             $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
         })->latest()->paginate(10);
         return view('staff.surat-masuk', [
-            'daftarSuratMasuk' => $daftarSuratMasuk
+            'daftarSuratMasuk' => $daftarSuratMasuk,
+
         ]);
     }
 
@@ -74,7 +77,11 @@ class StaffController extends Controller
         if ($surat->current_user_id == auth()->user()->id) {
 
             return view('staff.show-surat', [
-                'surat' => $surat
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 4)
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->get()
             ]);
         }
         return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
@@ -100,14 +107,14 @@ class StaffController extends Controller
         ]);
     }
 
-    public function setujuiSurat(Surat $surat)
+    public function setujuiSurat(Request $request, Surat $surat)
     {
         $wd1 = User::select('id')
             ->where('role_id', '=', 5)
             ->first();
 
-        $surat->current_user_id = $surat->penerima_id;
-        $surat->penerima_id = $wd1->id;
+        $surat->current_user_id = $request->input('penerima');
+        // $surat->penerima_id = $wd1->id;
         $surat->save();
 
         Approval::create([

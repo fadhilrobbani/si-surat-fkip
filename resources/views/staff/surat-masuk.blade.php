@@ -57,13 +57,13 @@
 
                                     </div>
                                 </a>
-
-                                <form action="{{ route('setujui-surat', $surat->id) }}" method="POST">
+                                {{-- <form action="{{ route('setujui-surat', $surat->id) }}" method="POST">
                                     @csrf
                                     @method('put')
+                                    <x-modal-send :daftarPenerima='$daftarPenerima'/>
                                     <button
                                         class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
-                                        type="submit">
+                                        data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
                                         Setuju </button>
                                 </form>
                                 <a href="{{ route('confirm-tolak-surat', $surat->id) }}">
@@ -72,7 +72,7 @@
                                         Tolak
 
                                     </div>
-                                </a>
+                                </a> --}}
 
 
                             </td>
