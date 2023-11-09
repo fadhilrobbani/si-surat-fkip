@@ -94,53 +94,53 @@
     </nav>
     @php
         $listsData = [
-            'admin' => [
-                [
-                    'link' => 'admin',
-                    'title' => 'Dashboard',
-                    'icon' => asset('svg/piechart.svg'),
-                    'dropdown' => [],
-                ],
-                [
-                    'link' => '',
-                    'title' => 'Daftar Akun',
-                    'icon' => asset('svg/user.svg'),
-                    'dropdown' => [
-                        [
-                            'title' => 'Mahasiswa',
-                            'link' => route('admin-mahasiswa'),
-                        ],
-                        [
-                            'title' => 'Staff',
-                            'link' => route('admin-staff'),
-                        ],
-                        [
-                            'title' => 'Kaprodi',
-                            'link' => route('admin-kaprodi'),
-                        ],
-                        [
-                            'title' => 'Wakil Dekan',
-                            'link' => route('admin-wd'),
-                        ],
-                        [
-                            'title' => 'Akademik',
-                            'link' => route('admin-akademik'),
-                        ],
-                    ],
-                ],
-                [
-                    'link' => 'admin/surat',
-                    'title' => 'Daftar Surat',
-                    'icon' => asset('svg/letter.svg'),
-                    'dropdown' => [],
-                ],
-                [
-                    'link' => 'logout',
-                    'title' => 'Logout',
-                    'icon' => asset('svg/signout.svg'),
-                    'dropdown' => [],
-                ],
-            ],
+            // 'admin' => [
+            //     [
+            //         'link' => 'admin',
+            //         'title' => 'Dashboard',
+            //         'icon' => asset('svg/piechart.svg'),
+            //         'dropdown' => [],
+            //     ],
+            //     [
+            //         'link' => '',
+            //         'title' => 'Daftar Akun',
+            //         'icon' => asset('svg/user.svg'),
+            //         'dropdown' => [
+            //             [
+            //                 'title' => 'Mahasiswa',
+            //                 'link' => route('admin-mahasiswa'),
+            //             ],
+            //             [
+            //                 'title' => 'Staff',
+            //                 'link' => route('admin-staff'),
+            //             ],
+            //             [
+            //                 'title' => 'Kaprodi',
+            //                 'link' => route('admin-kaprodi'),
+            //             ],
+            //             [
+            //                 'title' => 'Wakil Dekan',
+            //                 'link' => route('admin-wd'),
+            //             ],
+            //             [
+            //                 'title' => 'Akademik',
+            //                 'link' => route('admin-akademik'),
+            //             ],
+            //         ],
+            //     ],
+            //     [
+            //         'link' => 'admin/surat',
+            //         'title' => 'Daftar Surat',
+            //         'icon' => asset('svg/letter.svg'),
+            //         'dropdown' => [],
+            //     ],
+            //     [
+            //         'link' => 'logout',
+            //         'title' => 'Logout',
+            //         'icon' => asset('svg/signout.svg'),
+            //         'dropdown' => [],
+            //     ],
+            // ],
             'mahasiswa' => [
                 [
                     'link' => 'mahasiswa',

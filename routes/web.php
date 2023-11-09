@@ -36,6 +36,9 @@ Route::get('/home', [AuthController::class, 'home']);
 Route::get('/login', function () {
     return redirect('/');
 });
+// Route::get('/admin/login',function(){
+//     return redirect('/');
+// });
 Route::get('/register', [AuthController::class, 'create']);
 Route::post('/register/new', [AuthController::class, 'store'])->name('register-user');
 Route::get('/email/verify', function () {
@@ -63,16 +66,16 @@ Route::middleware('guest')->group(function () {
 });
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::prefix('admin')->group(function () {
-        Route::get('/', [AdminController::class, 'dashboard'])->middleware('userAccess:1');
-        Route::get('/users/mahasiswa', [MahasiswaController::class, 'index'])->middleware('userAccess:1')->name('admin-mahasiswa');
-        Route::get('/users/mahasiswa/new', [MahasiswaController::class, 'create'])->middleware('userAccess:1')->name('admin-mahasiswa-create');
-        Route::get('/users/staff', [StaffController::class, 'index'])->middleware('userAccess:1')->name('admin-staff');
-        Route::get('/users/kaprodi', [KaprodiController::class, 'index'])->middleware('userAccess:1')->name('admin-kaprodi');
-        Route::get('/users/wd', [WDController::class, 'index'])->middleware('userAccess:1')->name('admin-wd');
-        Route::get('/users/akademik', [AkademikController::class, 'index'])->middleware('userAccess:1')->name('admin-akademik');
-        Route::get('/surat', [SuratController::class, 'index'])->middleware('userAccess:1');
-    });
+    // Route::prefix('admin')->group(function () {
+    //     Route::get('/', [AdminController::class, 'dashboard'])->middleware('userAccess:1');
+    //     Route::get('/users/mahasiswa', [MahasiswaController::class, 'index'])->middleware('userAccess:1')->name('admin-mahasiswa');
+    //     Route::get('/users/mahasiswa/new', [MahasiswaController::class, 'create'])->middleware('userAccess:1')->name('admin-mahasiswa-create');
+    //     Route::get('/users/staff', [StaffController::class, 'index'])->middleware('userAccess:1')->name('admin-staff');
+    //     Route::get('/users/kaprodi', [KaprodiController::class, 'index'])->middleware('userAccess:1')->name('admin-kaprodi');
+    //     Route::get('/users/wd', [WDController::class, 'index'])->middleware('userAccess:1')->name('admin-wd');
+    //     Route::get('/users/akademik', [AkademikController::class, 'index'])->middleware('userAccess:1')->name('admin-akademik');
+    //     Route::get('/surat', [SuratController::class, 'index'])->middleware('userAccess:1');
+    // });
     Route::prefix('mahasiswa')->middleware(['userAccess:2'])->group(function () {
         Route::get('/', [MahasiswaController::class, 'dashboard']);
         Route::middleware('verified')->group(function () {

@@ -12,6 +12,7 @@
 
 <body class="relative bg-slate-50 h-screen flex flex-col items-center justify-center ">
     <x-notification />
+
     <main class=" py-6 w-[400px] bg-white shadow-xl rounded-lg justify-center items-center flex flex-col">
         <div class="flex flex-col justify-center items-center gap-2">
             <img class="w-28" src="{{ asset('images/logounib.png') }}" alt="logounib" />

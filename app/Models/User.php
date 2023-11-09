@@ -7,6 +7,8 @@ use App\Models\Surat;
 use App\Models\Approval;
 use Illuminate\Support\Str;
 use App\Models\ProgramStudi;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
@@ -15,7 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail,FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable, CanResetPassword;
     use HasUuids;
@@ -25,6 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
+    protected $keyType = 'string';
     protected $fillable = [
         'username',
         'name',
@@ -54,39 +57,47 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'id' =>'string'
     ];
 
-    public function role(){
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->role->id == 1 && $this->hasVerifiedEmail();
+    }
+
+    public function role()
+    {
         return $this->belongsTo(Role::class);
     }
 
-    public function programStudi(){
-        return $this->belongsTo(ProgramStudi::class, 'program_studi_id','id');
+    public function programStudi()
+    {
+        return $this->belongsTo(ProgramStudi::class, 'program_studi_id', 'id');
     }
 
-    public function jurusan(){
-        return $this->belongsTo(Jurusan::class,'jurusan_id','id');
+    public function jurusan()
+    {
+        return $this->belongsTo(Jurusan::class, 'jurusan_id', 'id');
     }
 
-    public function suratDikirim(){
-        return $this->hasMany(Surat::class,'pengaju_id','id');
-    }
-
-
-    public function suratDiproses(){
-        return $this->hasMany(Surat::class,'current_user_id','id');
-    }
-
-    public function suratDiterima(){
-        return $this->hasMany(Surat::class,'penerima_id','id');
-    }
-
-    public function approvals(){
-        return $this->hasMany(Approval::class,'user_id','id');
+    public function suratDikirim()
+    {
+        return $this->hasMany(Surat::class, 'pengaju_id', 'id');
     }
 
 
+    public function suratDiproses()
+    {
+        return $this->hasMany(Surat::class, 'current_user_id', 'id');
+    }
 
+    public function suratDiterima()
+    {
+        return $this->hasMany(Surat::class, 'penerima_id', 'id');
+    }
 
+    public function approvals()
+    {
+        return $this->hasMany(Approval::class, 'user_id', 'id');
+    }
 }
-

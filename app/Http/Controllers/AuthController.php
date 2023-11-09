@@ -119,6 +119,7 @@ class AuthController extends Controller
         ]);
 
         if (auth()->attempt($credentials)) {
+            // dd('login');
             $request->session()->regenerate();
             if (auth()->user()->role_id == 1) {
                 return redirect('/admin')->with('success', 'Anda berhasil login');
