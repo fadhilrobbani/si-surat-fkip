@@ -55,4 +55,9 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ]);
     }
+
+    // public static function getGloballySearchableAttributes(): array
+    // {
+    //     return ['username', 'name', 'email', 'role.name'];
+    // }
 }
