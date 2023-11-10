@@ -5,13 +5,12 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
+use App\Models\Akademik;
 use Filament\Forms\Form;
-use App\Models\Mahasiswa;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -19,57 +18,57 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\TernaryFilter;
-use App\Filament\Resources\MahasiswaResource\Pages;
+use App\Filament\Resources\AkademikResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\MahasiswaResource\RelationManagers;
+use App\Filament\Resources\AkademikResource\RelationManagers;
 
-class MahasiswaResource extends Resource
+class AkademikResource extends Resource
 {
-    protected static ?string $model = Mahasiswa::class;
+    protected static ?string $model = Akademik::class;
+
     protected static ?string $recordTitleAttribute = 'name';
-    protected static ?string $modelLabel = 'Mahasiswa';
+    protected static ?string $modelLabel = 'Akademik';
     protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?string $navigationGroup = 'Manajemen Akun';
-    protected static ?string $slug = 'akun-mahasiswa';
-    protected static ?int $navigationSort = 2;
-
+    protected static ?string $slug = 'akun-akademik';
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Select::make('role_id')
-                    ->default(2)
-                    ->relationship('role', 'name')
-                    ->disabled()
-                    ->dehydrated(),
-                TextInput::make('username')
-                    ->placeholder('Masukkan NPM Anda')
-                    ->required(),
-                TextInput::make('name')
-                    ->placeholder('Masukkan nama lengkap')
-                    ->required(),
-                TextInput::make('email')
-                    ->email()
-                    ->placeholder('email@example.com')
-                    ->required(),
-                Select::make('program_studi_id')
-                    ->relationship('programStudi', 'name'),
-                // Select::make('jurusan_id')
-                //     ->relationship('jurusan', 'name'),
+        ->schema([
+            Select::make('role_id')
+                ->default(6)
+                ->relationship('role', 'name')
+                ->disabled()
+                ->dehydrated(),
+            TextInput::make('username')
+                ->placeholder('Username')
+                ->required(),
+            TextInput::make('name')
+                ->placeholder('Masukkan nama lengkap')
+                ->required(),
+            TextInput::make('email')
+                ->email()
+                ->placeholder('email@example.com')
+                ->required(),
+            // Select::make('program_studi_id')
+            //     ->relationship('programStudi', 'name'),
+            Select::make('jurusan_id')
+                ->relationship('jurusan', 'name'),
 
-                TextInput::make('password')->password()
-                    ->placeholder('********')
-                    ->confirmed()
-                    ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->required(fn (string $operation): bool => $operation === 'create'),
-                TextInput::make('password_confirmation')
-                    ->placeholder('********')
-                    ->password()
-                    ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->required(fn (string $operation): bool => $operation === 'create'),
+            TextInput::make('password')->password()
+                ->placeholder('********')
+                ->confirmed()
+                ->dehydrated(fn (?string $state): bool => filled($state))
+                ->required(fn (string $operation): bool => $operation === 'create'),
+            TextInput::make('password_confirmation')
+                ->placeholder('********')
+                ->password()
+                ->dehydrated(fn (?string $state): bool => filled($state))
+                ->required(fn (string $operation): bool => $operation === 'create'),
 
-            ]);
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -77,7 +76,7 @@ class MahasiswaResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('username')
-                    ->label('Username (NPM)')
+                    ->label('Username')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
@@ -89,11 +88,7 @@ class MahasiswaResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
-                TextColumn::make('programStudi.name')
-                    ->searchable()
-                    ->toggleable()
-                    ->sortable(),
-                TextColumn::make('programStudi.jurusan.name')
+                TextColumn::make('jurusan.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
@@ -146,7 +141,6 @@ class MahasiswaResource extends Resource
             ]);
     }
 
-
     public static function getRelations(): array
     {
         return [
@@ -157,15 +151,15 @@ class MahasiswaResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMahasiswas::route('/'),
-            'create' => Pages\CreateMahasiswa::route('/create'),
-            // 'edit' => Pages\EditMahasiswa::route('/{record}/edit'),
+            'index' => Pages\ListAkademiks::route('/'),
+            'create' => Pages\CreateAkademik::route('/create'),
+            // 'edit' => Pages\EditAkademik::route('/{record}/edit'),
         ];
     }
 
     public static function getEloquentQuery(): Builder
     {
-        $query = User::where('role_id', 2);
+        $query = User::where('role_id', 6);
 
         return $query;
     }

@@ -5,64 +5,59 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
+use App\Models\Kaprodi;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Filament\Actions\CreateAction;
 use Filament\Tables\Filters\Filter;
-// use Filament\Resources\Components\Tab;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\TernaryFilter;
-use Filament\Resources\Pages\ListRecords\Tab;
-use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\KaprodiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\KaprodiResource\RelationManagers;
 
-class UserResource extends Resource
+class KaprodiResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = Kaprodi::class;
+
     protected static ?string $recordTitleAttribute = 'name';
-    protected static ?string $modelLabel = 'Semua Akun';
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $modelLabel = 'Kaprodi';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?string $navigationGroup = 'Manajemen Akun';
-    protected static ?string $slug = 'semua-akun';
-    protected static ?int $navigationSort = 1;
+    protected static ?string $slug = 'akun-kaprodi';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
-        CreateAction::make()
-            ->mutateFormDataUsing(function (array $data): array {
-                $data['email_verified_at'] = $data['email_verified_at'] ? now() : null;
-                return $data;
-            });
         return $form
             ->schema([
                 Select::make('role_id')
+                    ->default(4)
                     ->relationship('role', 'name')
-                    ->required(),
+                    ->disabled()
+                    ->dehydrated(),
                 TextInput::make('username')
-                    ->placeholder('NPM atau Username')
+                    ->placeholder('Username')
                     ->required(),
                 TextInput::make('name')
                     ->placeholder('Masukkan nama lengkap')
                     ->required(),
-                TextInput::make('email')->email()
+                TextInput::make('email')
+                    ->email()
                     ->placeholder('email@example.com')
                     ->required(),
                 Select::make('program_studi_id')
                     ->relationship('programStudi', 'name'),
-                Select::make('jurusan_id')
-                    ->relationship('jurusan', 'name'),
-                TextInput::make('password')
-                    ->password()
+                // Select::make('jurusan_id')
+                //     ->relationship('jurusan', 'name'),
+
+                TextInput::make('password')->password()
                     ->placeholder('********')
                     ->confirmed()
                     ->dehydrated(fn (?string $state): bool => filled($state))
@@ -72,7 +67,7 @@ class UserResource extends Resource
                     ->password()
                     ->dehydrated(fn (?string $state): bool => filled($state))
                     ->required(fn (string $operation): bool => $operation === 'create'),
-                // Toggle::make('email_verified_at')->label('Verifikasi Akun')
+
             ]);
     }
 
@@ -81,7 +76,7 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('username')
-                    ->label('Username / NPM')
+                    ->label('Username')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
@@ -97,11 +92,7 @@ class UserResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
-                TextColumn::make('jurusan.name')
-                    ->searchable()
-                    ->toggleable()
-                    ->sortable(),
-                TextColumn::make('role.name')
+                TextColumn::make('programStudi.jurusan.name')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
@@ -116,8 +107,6 @@ class UserResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                SelectFilter::make('role')
-                    ->relationship('role', 'name'),
                 SelectFilter::make('programStudi')
                     ->relationship('programStudi', 'name'),
                 SelectFilter::make('jurusan')
@@ -156,19 +145,6 @@ class UserResource extends Resource
             ]);
     }
 
-    // public static function getTabs(): array
-    // {
-    //     return [
-    //         'admin' => Tab::make('Admin')
-    //         ->modifyQueryUsing(fn (Builder $query) => $query->where('role_id', 1)),
-    //         'mahasiswa' => Tab::make('Mahasiswa')
-    //             ->modifyQueryUsing(fn (Builder $query) => $query->where('role_id', 2)),
-    //         'staff' => Tab::make('Staff')
-    //             ->modifyQueryUsing(fn (Builder $query) => $query->where('role_id', 3)),
-    //     ];
-    // }
-
-
     public static function getRelations(): array
     {
         return [
@@ -179,25 +155,16 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            // 'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListKaprodis::route('/'),
+            'create' => Pages\CreateKaprodi::route('/create'),
+            // 'edit' => Pages\EditKaprodi::route('/{record}/edit'),
         ];
     }
 
-
-    public static function getGlobalSearchResultTitle(Model $record): string
+    public static function getEloquentQuery(): Builder
     {
-        return $record->name;
-    }
+        $query = User::where('role_id', 4);
 
-    public static function getGloballySearchableAttributes(): array
-    {
-        return ['name', 'username', 'programStudi.name', 'jurusan.name', 'role.name', 'email'];
-    }
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
+        return $query;
     }
 }
