@@ -10,8 +10,10 @@ use App\Models\Mahasiswa;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -31,43 +33,42 @@ class MahasiswaResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?string $navigationGroup = 'Manajemen Akun';
     protected static ?string $slug = 'akun-mahasiswa';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('role_id')
-                    ->default(2)
-                    ->relationship('role', 'name')
-                    ->disabled()
-                    ->dehydrated(),
-                TextInput::make('username')
-                    ->placeholder('Masukkan NPM Anda')
-                    ->required(),
-                TextInput::make('name')
-                    ->placeholder('Masukkan nama lengkap')
-                    ->required(),
-                TextInput::make('email')
-                    ->email()
-                    ->placeholder('email@example.com')
-                    ->required(),
-                Select::make('program_studi_id')
-                    ->relationship('programStudi', 'name'),
-                // Select::make('jurusan_id')
-                //     ->relationship('jurusan', 'name'),
+                Section::make()->schema([
 
-                TextInput::make('password')->password()
-                    ->placeholder('********')
-                    ->confirmed()
-                    ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->required(fn (string $operation): bool => $operation === 'create'),
-                TextInput::make('password_confirmation')
-                    ->placeholder('********')
-                    ->password()
-                    ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->required(fn (string $operation): bool => $operation === 'create'),
+                    Hidden::make('role_id')
+                        ->default(2),
+                    TextInput::make('username')
+                        ->placeholder('Masukkan NPM Anda')
+                        ->required(),
+                    TextInput::make('name')
+                        ->placeholder('Masukkan nama lengkap')
+                        ->required(),
+                    TextInput::make('email')
+                        ->email()
+                        ->placeholder('email@example.com')
+                        ->required(),
+                    Select::make('program_studi_id')
+                        ->relationship('programStudi', 'name'),
+                    // Select::make('jurusan_id')
+                    //     ->relationship('jurusan', 'name'),
+                    TextInput::make('password')->password()
+                        ->placeholder('********')
+                        ->confirmed()
+                        ->dehydrated(fn (?string $state): bool => filled($state))
+                        ->required(fn (string $operation): bool => $operation === 'create'),
+                    TextInput::make('password_confirmation')
+                        ->placeholder('********')
+                        ->password()
+                        ->dehydrated(fn (?string $state): bool => filled($state))
+                        ->required(fn (string $operation): bool => $operation === 'create'),
+                ])->columns(2),
 
             ]);
     }
@@ -162,6 +163,8 @@ class MahasiswaResource extends Resource
             // 'edit' => Pages\EditMahasiswa::route('/{record}/edit'),
         ];
     }
+
+
 
     public static function getEloquentQuery(): Builder
     {

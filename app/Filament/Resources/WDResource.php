@@ -10,7 +10,9 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -36,36 +38,39 @@ class WDResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('role_id')
-                    ->default(5)
-                    ->relationship('role', 'name')
-                    ->disabled()
-                    ->dehydrated(),
-                TextInput::make('username')
-                    ->placeholder('Username')
-                    ->required(),
-                TextInput::make('name')
-                    ->placeholder('Masukkan nama lengkap')
-                    ->required(),
-                TextInput::make('email')
-                    ->email()
-                    ->placeholder('email@example.com')
-                    ->required(),
-                // Select::make('program_studi_id')
-                //     ->relationship('programStudi', 'name'),
-                // Select::make('jurusan_id')
-                //     ->relationship('jurusan', 'name'),
+                Section::make([
+                    Hidden::make('role_id')
+                        ->default(6),
 
-                TextInput::make('password')->password()
-                    ->placeholder('********')
-                    ->confirmed()
-                    ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->required(fn (string $operation): bool => $operation === 'create'),
-                TextInput::make('password_confirmation')
-                    ->placeholder('********')
-                    ->password()
-                    ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->required(fn (string $operation): bool => $operation === 'create'),
+                    TextInput::make('username')
+                        ->placeholder('Username')
+                        ->required()
+                        ->columnSpan(2),
+                    TextInput::make('name')
+                        ->placeholder('Masukkan nama lengkap')
+                        ->required(),
+                        TextInput::make('email')
+                            ->email()
+                            ->placeholder('email@example.com')
+                            ->required(),
+
+                    // Select::make('program_studi_id')
+                    //     ->relationship('programStudi', 'name'),
+                    // Select::make('jurusan_id')
+                    //     ->relationship('jurusan', 'name'),
+
+                    TextInput::make('password')->password()
+                        ->placeholder('********')
+                        ->confirmed()
+                        ->dehydrated(fn (?string $state): bool => filled($state))
+                        ->required(fn (string $operation): bool => $operation === 'create'),
+                    TextInput::make('password_confirmation')
+                        ->placeholder('********')
+                        ->password()
+                        ->dehydrated(fn (?string $state): bool => filled($state))
+                        ->required(fn (string $operation): bool => $operation === 'create'),
+
+                ])->columns(2),
 
             ]);
     }
@@ -95,6 +100,7 @@ class WDResource extends Resource
                 TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->dateTime()
                     ->sortable(),
             ])
             ->filters([
@@ -116,16 +122,18 @@ class WDResource extends Resource
                                 $data['created_until'],
                                 fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
-                    })
+                    }),
             ])
 
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+
                 ]),
             ])
             ->emptyStateActions([
@@ -151,8 +159,8 @@ class WDResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $query = User::where('role_id', 5);
+        return parent::getEloquentQuery()
+            ->where('role_id',5);
 
-        return $query;
     }
 }

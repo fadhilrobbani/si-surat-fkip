@@ -13,6 +13,7 @@ use Filament\Tables\Filters\Filter;
 // use Filament\Resources\Components\Tab;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
@@ -38,14 +39,10 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
-        CreateAction::make()
-            ->mutateFormDataUsing(function (array $data): array {
-                $data['email_verified_at'] = $data['email_verified_at'] ? now() : null;
-                return $data;
-            });
         return $form
             ->schema([
-                Select::make('role_id')
+                Section::make([
+                    Select::make('role_id')
                     ->relationship('role', 'name')
                     ->required(),
                 TextInput::make('username')
@@ -73,6 +70,9 @@ class UserResource extends Resource
                     ->dehydrated(fn (?string $state): bool => filled($state))
                     ->required(fn (string $operation): bool => $operation === 'create'),
                 // Toggle::make('email_verified_at')->label('Verifikasi Akun')
+
+                ])->columns(2),
+
             ]);
     }
 
@@ -113,6 +113,7 @@ class UserResource extends Resource
                 TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->dateTime()
                     ->sortable(),
             ])
             ->filters([
@@ -199,5 +200,9 @@ class UserResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
+
     }
+
+
+
 }

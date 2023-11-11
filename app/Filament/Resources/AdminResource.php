@@ -3,73 +3,69 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
-use App\Models\User;
 use Filament\Tables;
-use App\Models\Kaprodi;
+use App\Models\Admin;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Repeater;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
-use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\TernaryFilter;
-use App\Filament\Resources\KaprodiResource\Pages;
+use App\Filament\Resources\AdminResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\KaprodiResource\RelationManagers;
+use App\Filament\Resources\AdminResource\RelationManagers;
 
-class KaprodiResource extends Resource
+class AdminResource extends Resource
 {
-    protected static ?string $model = Kaprodi::class;
-
+    protected static ?string $model = Admin::class;
     protected static ?string $recordTitleAttribute = 'name';
-    protected static ?string $modelLabel = 'Kaprodi';
+    protected static ?string $modelLabel = 'Admin';
     protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?string $navigationGroup = 'Manajemen Akun';
-    protected static ?string $slug = 'akun-kaprodi';
-    protected static ?int $navigationSort = 5;
+    protected static ?string $slug = 'akun-admin';
+    protected static ?int $navigationSort = 2;
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Section::make([
+                Section::make()->schema([
+
                     Hidden::make('role_id')
-                    ->default(4),
+                        ->default(1),
+                    Hidden::make('email_verification_at')
+                        ->default(now()),
+                    TextInput::make('username')
+                        ->placeholder('Username')
+                        ->required()
+                        ->columnSpan(2),
 
-                TextInput::make('username')
-                    ->placeholder('Username')
-                    ->required(),
-                TextInput::make('name')
-                    ->placeholder('Masukkan nama lengkap')
-                    ->required(),
-                TextInput::make('email')
-                    ->email()
-                    ->placeholder('email@example.com')
-                    ->required(),
-                Select::make('program_studi_id')
-                    ->relationship('programStudi', 'name'),
-                // Select::make('jurusan_id')
-                //     ->relationship('jurusan', 'name'),
-
-                TextInput::make('password')->password()
-                    ->placeholder('********')
-                    ->confirmed()
-                    ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->required(fn (string $operation): bool => $operation === 'create'),
-                TextInput::make('password_confirmation')
-                    ->placeholder('********')
-                    ->password()
-                    ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->required(fn (string $operation): bool => $operation === 'create'),
+                    TextInput::make('name')
+                        ->placeholder('Masukkan nama lengkap')
+                        ->required(),
+                    TextInput::make('email')
+                        ->email()
+                        ->placeholder('email@example.com'),
+                    TextInput::make('password')->password()
+                        ->placeholder('********')
+                        ->confirmed()
+                        ->dehydrated(fn (?string $state): bool => filled($state))
+                        ->required(fn (string $operation): bool => $operation === 'create'),
+                    TextInput::make('password_confirmation')
+                        ->placeholder('********')
+                        ->password()
+                        ->dehydrated(fn (?string $state): bool => filled($state))
+                        ->required(fn (string $operation): bool => $operation === 'create'),
                 ])->columns(2),
-
 
             ]);
     }
@@ -91,19 +87,7 @@ class KaprodiResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
-                TextColumn::make('programStudi.name')
-                    ->searchable()
-                    ->toggleable()
-                    ->sortable(),
-                TextColumn::make('programStudi.jurusan.name')
-                    ->searchable()
-                    ->toggleable()
-                    ->sortable(),
-                IconColumn::make('email_verified_at')
-                    ->label('Terverifikasi')
-                    ->boolean()
-                    ->trueIcon('heroicon-o-check-badge')
-                    ->falseIcon('heroicon-o-x-mark'),
+
                 TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -111,12 +95,6 @@ class KaprodiResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                SelectFilter::make('programStudi')
-                    ->relationship('programStudi', 'name'),
-                SelectFilter::make('jurusan')
-                    ->relationship('jurusan', 'name'),
-                TernaryFilter::make('email_verified_at')
-                    ->nullable(),
                 Filter::make('created_at')
                     ->form([
                         DatePicker::make('created_from'),
@@ -159,16 +137,15 @@ class KaprodiResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListKaprodis::route('/'),
-            'create' => Pages\CreateKaprodi::route('/create'),
-            // 'edit' => Pages\EditKaprodi::route('/{record}/edit'),
+            'index' => Pages\ListAdmins::route('/'),
+            'create' => Pages\CreateAdmin::route('/create'),
+            // 'edit' => Pages\EditAdmin::route('/{record}/edit'),
         ];
     }
 
     public static function getEloquentQuery(): Builder
     {
-        $query = User::where('role_id', 4);
-
-        return $query;
+        return parent::getEloquentQuery()
+            ->where('role_id', 1);
     }
 }

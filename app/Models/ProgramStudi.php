@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ProgramStudi extends Model
 {
     protected $table = 'program_studi_tables';
-    protected $fillable = ['name'];
+    protected $fillable = ['name','jurusan_id'];
     use HasFactory;
 
     public function users(){

@@ -10,7 +10,9 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -31,17 +33,16 @@ class StaffResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?string $navigationGroup = 'Manajemen Akun';
     protected static ?string $slug = 'akun-staff';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('role_id')
-                    ->default(3)
-                    ->relationship('role', 'name')
-                    ->disabled()
-                    ->dehydrated(),
+                Section::make([
+                    Hidden::make('role_id')
+                    ->default(3),
+
                 TextInput::make('username')
                     ->placeholder('Username')
                     ->required(),
@@ -67,6 +68,8 @@ class StaffResource extends Resource
                     ->password()
                     ->dehydrated(fn (?string $state): bool => filled($state))
                     ->required(fn (string $operation): bool => $operation === 'create'),
+
+                ])->columns(2),
 
             ]);
     }
@@ -104,6 +107,7 @@ class StaffResource extends Resource
             TextColumn::make('created_at')
                 ->searchable()
                 ->toggleable(isToggledHiddenByDefault: true)
+                ->dateTime()
                 ->sortable(),
         ])
         ->filters([
