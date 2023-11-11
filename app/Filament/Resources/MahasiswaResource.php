@@ -55,7 +55,8 @@ class MahasiswaResource extends Resource
                         ->placeholder('email@example.com')
                         ->required(),
                     Select::make('program_studi_id')
-                        ->relationship('programStudi', 'name'),
+                        ->relationship('programStudi', 'name')
+                        ->required(),
                     // Select::make('jurusan_id')
                     //     ->relationship('jurusan', 'name'),
                     TextInput::make('password')->password()
