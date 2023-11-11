@@ -67,7 +67,10 @@ class MahasiswaController extends Controller
 
     public function riwayatPengajuanSurat(Request $request)
     {
-        $daftarPengajuan = Surat::where('pengaju_id', '=', auth()->user()->id)->latest()->paginate(10);
+        // dd($request->get('order') != 'asc' ? 'desc' : 'asc');
+        $daftarPengajuan = Surat::where('pengaju_id', '=', auth()->user()->id)
+        ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+        ->paginate(10);
 
         if ($request->get('search') && $request->get('jenis-surat') && $request->get('status')){
             $daftarPengajuan = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
@@ -75,7 +78,7 @@ class MahasiswaController extends Controller
             ->where('jenis_surat_tables.name', 'LIKE', '%'.$request->get('search').'%')
             ->where('surat_tables.status',$request->get('status'))
             ->where('surat_tables.jenis_surat_id',$request->get('jenis-surat'))
-            ->orderBy('surat_tables.created_at', 'DESC')
+            ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
             ->paginate(10);
         }
 
@@ -84,7 +87,7 @@ class MahasiswaController extends Controller
                 ->where('surat_tables.pengaju_id', '=',  auth()->user()->id)
                 ->where('surat_tables.status',$request->get('status'))
                 ->where('surat_tables.jenis_surat_id',$request->get('jenis-surat'))
-                ->orderBy('surat_tables.created_at', 'DESC')
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
                 ->paginate(10);
         }
 
@@ -93,7 +96,7 @@ class MahasiswaController extends Controller
                 ->where('surat_tables.pengaju_id', '=',  auth()->user()->id)
                 ->where('surat_tables.status',$request->get('status'))
                 ->where('jenis_surat_tables.name', 'LIKE', '%'.$request->get('search').'%')
-                ->orderBy('surat_tables.created_at', 'DESC')
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
                 ->paginate(10);
         }
 
@@ -102,7 +105,7 @@ class MahasiswaController extends Controller
                 ->where('surat_tables.pengaju_id', '=',  auth()->user()->id)
                 ->where('surat_tables.jenis_surat_id',$request->get('jenis-surat'))
                 ->where('jenis_surat_tables.name', 'LIKE', '%'.$request->get('search').'%')
-                ->orderBy('surat_tables.created_at', 'DESC')
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
                 ->paginate(10);
         }
 
@@ -110,7 +113,7 @@ class MahasiswaController extends Controller
             $daftarPengajuan = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->where('surat_tables.pengaju_id', '=',  auth()->user()->id)
                 ->where('surat_tables.status',$request->get('status'))
-                ->orderBy('surat_tables.created_at', 'DESC')
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
                 ->paginate(10);
         }
 
@@ -118,7 +121,7 @@ class MahasiswaController extends Controller
             $daftarPengajuan = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->where('surat_tables.pengaju_id', '=',  auth()->user()->id)
                 ->where('surat_tables.jenis_surat_id',$request->get('jenis-surat'))
-                ->orderBy('surat_tables.created_at', 'DESC')
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
                 ->paginate(10);
         }
 
@@ -126,7 +129,7 @@ class MahasiswaController extends Controller
             $daftarPengajuan = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->where('surat_tables.pengaju_id', '=',  auth()->user()->id)
                 ->where('jenis_surat_tables.name', 'LIKE', '%'.$request->get('search').'%')
-                ->orderBy('surat_tables.created_at', 'DESC')
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
                 ->paginate(10);
         }
 

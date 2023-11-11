@@ -54,7 +54,7 @@
             <div
                 class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
 
-                <div class="flex items-center space-x-3 w-full max-w-[250px] md:w-auto">
+                <div class="flex items-center space-x-3 w-full max-w-[150px] md:w-auto">
 
                     <select id="jenis-surat" name="jenis-surat"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -82,6 +82,18 @@
 
 
                 </div>
+                <div class="flex items-center space-x-3 w-full max-w-[250px] md:w-auto">
+
+                    <select id="order" name="order"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option {{ request()->get('order') != 'asc' ? 'selected' : '' }} value="desc" selected>Terbaru</option>
+                        <option {{ request()->get('order') == 'asc' ? 'selected' : '' }} value="asc" >Terlama</option>
+
+
+                    </select>
+
+
+                </div>
                 <button type="submit"
                     class="flex cursor-pointer items-center justify-center text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -98,6 +110,7 @@
                         document.getElementById('filter-form').reset();
                         document.getElementById('status').value = null;
                         document.getElementById('search').value = null;
+                        document.getElementById('order').value = null;
                         document.getElementById('jenis-surat').value = null;
                         return false;
                     }
