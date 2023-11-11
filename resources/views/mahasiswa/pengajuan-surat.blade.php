@@ -3,8 +3,10 @@
 @endphp
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Mahasiswa | Dashboard
+        Mahasiswa | Pengajuan
     </x-slot:title>
+    <h1 class="mx-auto text-center font-bold">Pengajuan Surat</h1>
+
     {{-- <x-breadcumb /> --}}
     <form action="{{ route('redirect-form-surat') }}" class="mt-4" method="POST">
         @csrf

@@ -6,6 +6,8 @@
     <x-slot:title>
         Mahasiswa | Dashboard
     </x-slot:title>
+    <h1 class="mx-auto text-center font-bold">Riwayat Pengajuan Surat</h1>
+
     {{-- @foreach ($daftarPengajuan as $surat)
         <div class="m-4 bg-slate-300">
             @php

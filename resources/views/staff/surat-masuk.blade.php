@@ -7,6 +7,8 @@
     </x-slot:title>
 
     <div class="overflow-x-auto">
+        <h1 class="mx-auto text-center font-bold">Surat Masuk</h1>
+
         @if ($daftarSuratMasuk->isEmpty())
             <p class="text-slate-500 text-xl font-semibold text-center mx-auto">Tidak terdapat Surat Masuk</p>
         @else

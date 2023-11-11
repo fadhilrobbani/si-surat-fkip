@@ -105,7 +105,7 @@ class SuratController extends Controller
         $surat->expired_at = now()->addDays(30);
         $surat->data = [
             'name' => $request->input('name'),
-            'username' => $request->input('name'),
+            'username' => $request->input('username'),
             'programStudi' => $programStudi->name,
             'noIjazah' => $request->input('no-ijazah'),
             'tempatLahir' => $request->input('birthplace'),
@@ -168,7 +168,7 @@ class SuratController extends Controller
         $surat->expired_at = now()->addDays(30);
         $surat->data = [
             'name' => $request->input('name'),
-            'username' => $request->input('name'),
+            'username' => $request->input('username'),
             'programStudi' => $programStudi->name,
             'email' => $request->input('email'),
             'tempatLahir' => $request->input('tempat-lahir'),
