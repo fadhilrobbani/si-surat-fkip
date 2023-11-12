@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
-use App\Mail\SuratMahasiswa;
 use App\Models\Surat;
-use App\Models\Approval;
 use App\Models\Jurusan;
+use App\Models\Approval;
+use App\Models\JenisSurat;
+use App\Mail\SuratMahasiswa;
+use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Carbon\Carbon;
 
 class AkademikController extends Controller
 {
@@ -63,14 +65,119 @@ class AkademikController extends Controller
     }
 
 
-    public function suratMasuk()
+    public function suratMasuk(Request $request)
     {
         $daftarSuratMasuk = Surat::where('current_user_id', '=', auth()->user()->id)->where('status', 'on_process')->where(function ($query) {
             $now = Carbon::now();
             $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
-        })->latest()->paginate(10);
+        })
+            ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+            ->paginate(10);
+
+        if ($request->get('search') && $request->get('jenis-surat') && $request->get('program-studi')) {
+            $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
+                ->where('current_user_id', '=', auth()->user()->id)
+                ->where('status', 'on_process')
+                ->where(function ($query) {
+                    $now = Carbon::now();
+                    $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
+                })
+                ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
+                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
+                ->where('users.program_studi_id', $request->get('program-studi'))
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10);
+        } elseif ($request->get('program-studi') && $request->get('jenis-surat')) {
+            $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
+                ->where('current_user_id', '=', auth()->user()->id)
+                ->where('status', 'on_process')
+                ->where(function ($query) {
+                    $now = Carbon::now();
+                    $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
+                })
+                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
+                ->where('users.program_studi_id', $request->get('program-studi'))
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10);
+        } elseif ($request->get('program-studi') && $request->get('search')) {
+            $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
+                ->where('current_user_id', '=', auth()->user()->id)
+                ->where('status', 'on_process')
+                ->where(function ($query) {
+                    $now = Carbon::now();
+                    $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
+                })
+                ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
+                ->where('users.program_studi_id', $request->get('program-studi'))
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10);
+        } elseif ($request->get('jenis-surat') && $request->get('search')) {
+            $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
+                ->where('current_user_id', '=', auth()->user()->id)
+                ->where('status', 'on_process')
+                ->where(function ($query) {
+                    $now = Carbon::now();
+                    $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
+                })
+                ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
+                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10);
+        } elseif ($request->get('program-studi')) {
+            $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+            ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
+            ->where('current_user_id', '=', auth()->user()->id)
+            ->where('status', 'on_process')
+            ->where(function ($query) {
+                $now = Carbon::now();
+                    $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
+                })
+                ->where('users.program_studi_id', $request->get('program-studi'))
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10);
+                // dd($daftarSuratMasuk);
+        } elseif ($request->get('jenis-surat')) {
+            $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
+                ->where('current_user_id', '=', auth()->user()->id)
+                ->where('status', 'on_process')
+                ->where(function ($query) {
+                    $now = Carbon::now();
+                    $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
+                })
+                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10);
+        } elseif ($request->get('search')) {
+            $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
+                ->where('current_user_id', '=', auth()->user()->id)
+                ->where('status', 'on_process')
+                ->where(function ($query) {
+                    $now = Carbon::now();
+                    $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
+                })
+                ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10);
+        }
+
+
         return view('akademik.surat-masuk', [
-            'daftarSuratMasuk' => $daftarSuratMasuk
+            'daftarSuratMasuk' => $daftarSuratMasuk,
+            'daftarJenisSurat' => JenisSurat::all(),
+            'daftarProgramStudi' => ProgramStudi::all(),
         ]);
     }
     public function showSuratMasuk(Surat $surat)
@@ -115,11 +222,92 @@ class AkademikController extends Controller
         return redirect('/akademik/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 
-    public function riwayatPersetujuan()
+    public function riwayatPersetujuan(Request $request)
     {
-        $daftarRiwayatSurat = Approval::where('user_id', '=', auth()->user()->id)->latest()->paginate(10);
+        $daftarRiwayatSurat = Approval::where('user_id', '=', auth()->user()->id)
+        ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+        ->paginate(10);
+
+
+        if ($request->get('search') && $request->get('jenis-surat') && $request->get('status')){
+            $daftarRiwayatSurat = Approval::join('surat_tables','surat_tables.id','=','approvals.surat_id')
+            ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->join('users','users.id','=','surat_tables.pengaju_id')
+            ->where('users.username', 'LIKE', '%'.$request->get('search').'%')
+            ->where('approvals.isApproved',$request->get('status') != 'ditolak' ? true : false)
+            ->where('approvals.user_id', '=', auth()->user()->id)
+            ->where('surat_tables.jenis_surat_id',$request->get('jenis-surat'))
+            ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+            ->paginate(10);
+        }
+
+        elseif ($request->get('status') && $request->get('jenis-surat')) {
+            $daftarRiwayatSurat = Approval::join('surat_tables','surat_tables.id','=','approvals.surat_id')
+            ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->join('users','users.id','=','surat_tables.pengaju_id')
+            ->where('approvals.isApproved',$request->get('status') != 'ditolak' ? true : false)
+            ->where('approvals.user_id', '=', auth()->user()->id)
+            ->where('surat_tables.jenis_surat_id',$request->get('jenis-surat'))
+            ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+            ->paginate(10);
+        }
+
+        elseif ($request->get('status') && $request->get('search')) {
+            $daftarRiwayatSurat = Approval::join('surat_tables','surat_tables.id','=','approvals.surat_id')
+            ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->join('users','users.id','=','surat_tables.pengaju_id')
+            ->where('users.username', 'LIKE', '%'.$request->get('search').'%')
+            ->where('approvals.isApproved',$request->get('status')!= 'ditolak' ? true : false)
+            ->where('approvals.user_id', '=', auth()->user()->id)
+            ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+            ->paginate(10);
+        }
+
+        elseif ($request->get('jenis-surat') && $request->get('search')) {
+            $daftarRiwayatSurat = Approval::join('surat_tables','surat_tables.id','=','approvals.surat_id')
+            ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->join('users','users.id','=','surat_tables.pengaju_id')
+            ->where('users.username', 'LIKE', '%'.$request->get('search').'%')
+            ->where('approvals.user_id', '=', auth()->user()->id)
+            ->where('surat_tables.jenis_surat_id',$request->get('jenis-surat'))
+            ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+            ->paginate(10);
+        }
+
+        elseif ($request->get('status')) {
+            $daftarRiwayatSurat = Approval::join('surat_tables','surat_tables.id','=','approvals.surat_id')
+            ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->join('users','users.id','=','surat_tables.pengaju_id')
+            ->where('approvals.isApproved',$request->get('status')!= 'ditolak' ? true : false)
+            ->where('approvals.user_id', '=', auth()->user()->id)
+            ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+            ->paginate(10);
+        }
+
+        elseif ($request->get('jenis-surat')) {
+            $daftarRiwayatSurat = Approval::join('surat_tables','surat_tables.id','=','approvals.surat_id')
+            ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->join('users','users.id','=','surat_tables.pengaju_id')
+            ->where('approvals.user_id', '=', auth()->user()->id)
+            ->where('surat_tables.jenis_surat_id',$request->get('jenis-surat'))
+            ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+            ->paginate(10);
+        }
+
+        elseif ($request->get('search')) {
+            $daftarRiwayatSurat = Approval::join('surat_tables','surat_tables.id','=','approvals.surat_id')
+            ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->join('users','users.id','=','surat_tables.pengaju_id')
+            ->where('users.username', 'LIKE', '%'.$request->get('search').'%')
+            ->where('approvals.user_id', '=', auth()->user()->id)
+            ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+            ->paginate(10);
+        }
+
         return view('akademik.riwayat-persetujuan', [
-            'daftarRiwayatSurat' => $daftarRiwayatSurat
+            'daftarRiwayatSurat' => $daftarRiwayatSurat,
+            'daftarJenisSurat' => JenisSurat::all(),
+            'daftarStatus' => [true => 'Disetujui',false => 'Ditolak'],
         ]);
     }
 

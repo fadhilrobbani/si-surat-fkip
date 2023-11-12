@@ -136,7 +136,7 @@ class MahasiswaController extends Controller
         return view('mahasiswa.riwayat-pengajuan', [
             'daftarPengajuan' => $daftarPengajuan,
             'daftarJenisSurat' => JenisSurat::all(),
-            'daftarStatus' => ['on_process', 'denied', 'finished', 'expired'],
+            'daftarStatus' => ['on_process', 'denied', 'finished'],
 
         ]);
     }
