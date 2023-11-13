@@ -218,7 +218,7 @@ class AkademikController extends Controller
             'isApproved' => true,
             'note' => $request->input('note'),
         ]);
-        // Mail::to($surat->pengaju->email)->send(new SuratMahasiswa($surat));
+        Mail::to($surat->pengaju->email)->send(new SuratMahasiswa($surat));
         return redirect('/akademik/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 
