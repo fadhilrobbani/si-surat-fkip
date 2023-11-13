@@ -71,6 +71,7 @@ class WDController extends Controller
 
         if ($request->get('search') && $request->get('jenis-surat') && $request->get('program-studi')) {
             $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->select('surat_tables.*')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
                 ->where('current_user_id', '=', auth()->user()->id)
@@ -86,6 +87,7 @@ class WDController extends Controller
                 ->paginate(10);
         } elseif ($request->get('program-studi') && $request->get('jenis-surat')) {
             $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->select('surat_tables.*')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
                 ->where('current_user_id', '=', auth()->user()->id)
@@ -100,6 +102,7 @@ class WDController extends Controller
                 ->paginate(10);
         } elseif ($request->get('program-studi') && $request->get('search')) {
             $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->select('surat_tables.*')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
                 ->where('current_user_id', '=', auth()->user()->id)
@@ -114,6 +117,7 @@ class WDController extends Controller
                 ->paginate(10);
         } elseif ($request->get('jenis-surat') && $request->get('search')) {
             $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->select('surat_tables.*')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
                 ->where('current_user_id', '=', auth()->user()->id)
@@ -128,6 +132,7 @@ class WDController extends Controller
                 ->paginate(10);
         } elseif ($request->get('program-studi')) {
             $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->select('surat_tables.*')
             ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
             ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
             ->where('current_user_id', '=', auth()->user()->id)
@@ -142,6 +147,7 @@ class WDController extends Controller
                 // dd($daftarSuratMasuk);
         } elseif ($request->get('jenis-surat')) {
             $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->select('surat_tables.*')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
                 ->where('current_user_id', '=', auth()->user()->id)
@@ -155,6 +161,7 @@ class WDController extends Controller
                 ->paginate(10);
         } elseif ($request->get('search')) {
             $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->select('surat_tables.*')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
                 ->where('current_user_id', '=', auth()->user()->id)
@@ -233,13 +240,16 @@ class WDController extends Controller
     }
     public function riwayatPersetujuan(Request $request)
     {
-        $daftarRiwayatSurat = Approval::where('user_id', '=', auth()->user()->id)
+        $daftarRiwayatSurat = Approval::with('surat','surat.pengaju','surat.jenisSurat')
+        ->where('user_id', '=', auth()->user()->id)
         ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
         ->paginate(10);
 
 
         if ($request->get('search') && $request->get('jenis-surat') && $request->get('status')){
-            $daftarRiwayatSurat = Approval::join('surat_tables','surat_tables.id','=','approvals.surat_id')
+            $daftarRiwayatSurat = Approval::with('surat','surat.pengaju','surat.jenisSurat')
+            ->select('approvals.*')
+            ->join('surat_tables','surat_tables.id','=','approvals.surat_id')
             ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
             ->join('users','users.id','=','surat_tables.pengaju_id')
             ->where('users.username', 'LIKE', '%'.$request->get('search').'%')
@@ -251,7 +261,9 @@ class WDController extends Controller
         }
 
         elseif ($request->get('status') && $request->get('jenis-surat')) {
-            $daftarRiwayatSurat = Approval::join('surat_tables','surat_tables.id','=','approvals.surat_id')
+            $daftarRiwayatSurat = Approval::with('surat','surat.pengaju','surat.jenisSurat')
+            ->select('approvals.*')
+            ->join('surat_tables','surat_tables.id','=','approvals.surat_id')
             ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
             ->join('users','users.id','=','surat_tables.pengaju_id')
             ->where('approvals.isApproved',$request->get('status') != 'ditolak' ? true : false)
@@ -262,7 +274,9 @@ class WDController extends Controller
         }
 
         elseif ($request->get('status') && $request->get('search')) {
-            $daftarRiwayatSurat = Approval::join('surat_tables','surat_tables.id','=','approvals.surat_id')
+            $daftarRiwayatSurat = Approval::with('surat','surat.pengaju','surat.jenisSurat')
+            ->select('approvals.*')
+            ->join('surat_tables','surat_tables.id','=','approvals.surat_id')
             ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
             ->join('users','users.id','=','surat_tables.pengaju_id')
             ->where('users.username', 'LIKE', '%'.$request->get('search').'%')
@@ -273,7 +287,9 @@ class WDController extends Controller
         }
 
         elseif ($request->get('jenis-surat') && $request->get('search')) {
-            $daftarRiwayatSurat = Approval::join('surat_tables','surat_tables.id','=','approvals.surat_id')
+            $daftarRiwayatSurat = Approval::with('surat','surat.pengaju','surat.jenisSurat')
+            ->select('approvals.*')
+            ->join('surat_tables','surat_tables.id','=','approvals.surat_id')
             ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
             ->join('users','users.id','=','surat_tables.pengaju_id')
             ->where('users.username', 'LIKE', '%'.$request->get('search').'%')
@@ -284,7 +300,9 @@ class WDController extends Controller
         }
 
         elseif ($request->get('status')) {
-            $daftarRiwayatSurat = Approval::join('surat_tables','surat_tables.id','=','approvals.surat_id')
+            $daftarRiwayatSurat = Approval::with('surat','surat.pengaju','surat.jenisSurat')
+            ->select('approvals.*')
+            ->join('surat_tables','surat_tables.id','=','approvals.surat_id')
             ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
             ->join('users','users.id','=','surat_tables.pengaju_id')
             ->where('approvals.isApproved',$request->get('status')!= 'ditolak' ? true : false)
@@ -294,7 +312,9 @@ class WDController extends Controller
         }
 
         elseif ($request->get('jenis-surat')) {
-            $daftarRiwayatSurat = Approval::join('surat_tables','surat_tables.id','=','approvals.surat_id')
+            $daftarRiwayatSurat = Approval::with('surat','surat.pengaju','surat.jenisSurat')
+            ->select('approvals.*')
+            ->join('surat_tables','surat_tables.id','=','approvals.surat_id')
             ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
             ->join('users','users.id','=','surat_tables.pengaju_id')
             ->where('approvals.user_id', '=', auth()->user()->id)
@@ -304,7 +324,9 @@ class WDController extends Controller
         }
 
         elseif ($request->get('search')) {
-            $daftarRiwayatSurat = Approval::join('surat_tables','surat_tables.id','=','approvals.surat_id')
+            $daftarRiwayatSurat = Approval::with('surat','surat.pengaju','surat.jenisSurat')
+            ->select('approvals.*')
+            ->join('surat_tables','surat_tables.id','=','approvals.surat_id')
             ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
             ->join('users','users.id','=','surat_tables.pengaju_id')
             ->where('users.username', 'LIKE', '%'.$request->get('search').'%')

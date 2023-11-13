@@ -71,8 +71,9 @@ class StaffController extends Controller
             ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
             ->paginate(10);
 
-       if ($request->get('jenis-surat') && $request->get('search')) {
+        if ($request->get('jenis-surat') && $request->get('search')) {
             $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->select('surat_tables.*')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->where('current_user_id', '=', auth()->user()->id)
                 ->where('status', 'on_process')
@@ -84,8 +85,9 @@ class StaffController extends Controller
                 ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
                 ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
                 ->paginate(10);
-        }  elseif ($request->get('jenis-surat')) {
+        } elseif ($request->get('jenis-surat')) {
             $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->select('surat_tables.*')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->where('current_user_id', '=', auth()->user()->id)
                 ->where('status', 'on_process')
@@ -98,6 +100,7 @@ class StaffController extends Controller
                 ->paginate(10);
         } elseif ($request->get('search')) {
             $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->select('surat_tables.*')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->where('current_user_id', '=', auth()->user()->id)
                 ->where('status', 'on_process')
@@ -123,7 +126,8 @@ class StaffController extends Controller
 
             return view('staff.show-surat', [
                 'surat' => $surat,
-                'daftarPenerima' => User::select('id', 'name', 'username')
+                'daftarPenerima' => User::with('programStudi')
+                    ->select('id', 'name', 'username')
                     ->where('role_id', '=', 4)
                     ->where('program_studi_id', '=', auth()->user()->program_studi_id)
                     ->get()
@@ -139,10 +143,10 @@ class StaffController extends Controller
 
         return view('staff.show-approval', [
             'approval' => $approval,
-            'surat' => Surat::join('approvals','approvals.surat_id','=','surat_tables.id')
-            ->where('approvals.user_id', auth()->user()->id)
-            ->where('approvals.id', $approval->id)
-            ->first()
+            'surat' => Surat::join('approvals', 'approvals.surat_id', '=', 'surat_tables.id')
+                ->where('approvals.user_id', auth()->user()->id)
+                ->where('approvals.id', $approval->id)
+                ->first()
         ]);
         // }
         // return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil disetujui');
@@ -150,13 +154,16 @@ class StaffController extends Controller
 
     public function riwayatPersetujuan(Request $request)
     {
-        $daftarRiwayatSurat = Approval::where('user_id', '=', auth()->user()->id)
+        $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+            ->where('user_id', '=', auth()->user()->id)
             ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
             ->paginate(10);
 
 
         if ($request->get('search') && $request->get('jenis-surat') && $request->get('status')) {
-            $daftarRiwayatSurat = Approval::join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
+            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+                ->select('approvals.*')
+                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
                 ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
@@ -166,7 +173,9 @@ class StaffController extends Controller
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
                 ->paginate(10);
         } elseif ($request->get('status') && $request->get('jenis-surat')) {
-            $daftarRiwayatSurat = Approval::join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
+            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+                ->select('approvals.*')
+                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
                 ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->where('approvals.isApproved', $request->get('status') != 'ditolak' ? true : false)
@@ -175,7 +184,9 @@ class StaffController extends Controller
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
                 ->paginate(10);
         } elseif ($request->get('status') && $request->get('search')) {
-            $daftarRiwayatSurat = Approval::join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
+            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+                ->select('approvals.*')
+                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
                 ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
@@ -184,7 +195,9 @@ class StaffController extends Controller
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
                 ->paginate(10);
         } elseif ($request->get('jenis-surat') && $request->get('search')) {
-            $daftarRiwayatSurat = Approval::join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
+            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+                ->select('approvals.*')
+                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
                 ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
@@ -193,7 +206,9 @@ class StaffController extends Controller
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
                 ->paginate(10);
         } elseif ($request->get('status')) {
-            $daftarRiwayatSurat = Approval::join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
+            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+                ->select('approvals.*')
+                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
                 ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->where('approvals.isApproved', $request->get('status') != 'ditolak' ? true : false)
@@ -201,7 +216,9 @@ class StaffController extends Controller
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
                 ->paginate(10);
         } elseif ($request->get('jenis-surat')) {
-            $daftarRiwayatSurat = Approval::join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
+            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+                ->select('approvals.*')
+                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
                 ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->where('approvals.user_id', '=', auth()->user()->id)
@@ -209,7 +226,9 @@ class StaffController extends Controller
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
                 ->paginate(10);
         } elseif ($request->get('search')) {
-            $daftarRiwayatSurat = Approval::join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
+            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+                ->select('approvals.*')
+                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
                 ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
