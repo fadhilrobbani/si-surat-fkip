@@ -6,66 +6,82 @@
 
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Kaprodi | Detail Surat
+        Kaprodi | Detail Riwayat Persetujuan
     </x-slot:title>
     <h1 class="mx-auto text-center font-bold">{{ $approval->surat->jenisSurat->name }}</h1>
     <br>
-    <div class="flex flex-col gap-4 md:flex-row justify-evenly items-center">
+    <div class="flex flex-col gap-4 md:flex-row justify-evenly items-start">
 
-        <table border="2">
-            <tr>
-                <td class="font-semibold">Status Surat:&nbsp;</td>
-                <td>{{   $approval->surat->expired_at < Carbon\Carbon::now() && $approval->surat->status == 'on_process'?'expired': $approval->surat->status   }}</td>
-            </tr>
-            <tr>
-                <td class="font-semibold">Hasil Konfirmasi Anda:&nbsp;</td>
-                <td>{{ $approval->isApproved == 1 ? 'Disetujui' : 'Ditolak' }}</td>
-            </tr>
-            <tr>
-                <td class="font-semibold">Tanggal Diajukan:&nbsp;</td>
-                <td>{{ formatTimestampToIndonesian($approval->surat->created_at) }}</td>
-            </tr>
-            <tr>
-                <td class="font-semibold">Tanggal Anda Menyetujui/Menolak:&nbsp;</td>
-                <td>{{ formatTimestampToIndonesian($approval->created_at) }}</td>
-            </tr>
-            <tr>
-                <td class="font-semibold">Masa Aktif Tersisa:&nbsp;</td>
-                <td>{{ formatTimestampToDiffDays($approval->surat->expired_at) }} hari</td>
-            </tr>
-            @foreach ($approval->surat->data as $key => $value)
-                @if ($key == 'tanggal_selesai')
-                    <tr>
-                        <td class="font-semibold">{{ Str::title(str_replace('_', ' Surat ', $key)) }}:&nbsp;
-                        </td>
-                        <td>{{ $value }}</td>
-                    </tr>
-                    @continue
-                @endif
-                @if ($key == 'ttdWD1')
-                    @continue
-                @endif
-                @if ($key == 'note')
-                    @continue
-                @endif
-                <tr>
-                    <td class="font-semibold">{{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:&nbsp;</td>
-                    <td>{{ $value }}</td>
-                </tr>
-            @endforeach
-            @if (isset($approval->surat->files))
+        <div class="relative overflow-x-auto shadow-lg sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <tbody>
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
 
-                @foreach ($approval->surat->files as $key => $value)
-                    <tr>
-                        <td class="font-semibold">Lampiran {{ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:</td>
-                        <td>
-                            <a class="text-blue-700 underline"
-                                href="{{ route('show-file-kaprodi', ['surat' => $approval->surat->id, 'filename' => basename($value)]) }}">Lihat</a>
+                        <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Status:&nbsp;</td>
+                        <td class="px-6 py-4">
+                            {{ $approval->surat->expired_at < Carbon\Carbon::now() && $approval->surat->status == 'on_process' ? 'expired' : $approval->surat->status }}
                         </td>
                     </tr>
-                @endforeach
-            @endif
-        </table>
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Hasil Konfirmasi Anda:&nbsp;
+                        </td>
+                        <td class="px-6 py-4">{{ $approval->isApproved == 1 ? 'Disetujui' : 'Ditolak' }}</td>
+                    </tr>
+
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Diajukan:&nbsp;</td>
+                        <td class="px-6 py-4">{{ formatTimestampToIndonesian($approval->surat->created_at) }}</td>
+                    </tr>
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Anda
+                            Menyetujui/Menolak:&nbsp;</td>
+                        <td class="px-6 py-4">{{ formatTimestampToIndonesian($approval->created_at) }}</td>
+                    </tr>
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Masa Aktif Tersisa:&nbsp;</td>
+                        <td class="px-6 py-4">{{ formatTimestampToDiffDays($approval->surat->expired_at) }} hari</td>
+                    </tr>
+                    @foreach ($approval->surat->data as $key => $value)
+                        @if ($key == 'tanggal_selesai')
+                            <tr class="border-b border-gray-200 dark:border-gray-700">
+                                <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">
+                                    {{ Str::title(str_replace('_', ' Surat ', $key)) }}:&nbsp;
+                                </td>
+                                <td class="px-6 py-4">{{ $value }}</td>
+                            </tr>
+
+                            @continue
+                        @endif
+                        @if ($key == 'ttdWD1')
+                            @continue
+                        @endif
+                        @if ($key == 'note')
+                            @continue
+                        @endif
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">
+                                {{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:&nbsp;</td>
+                            <td class="px-6 py-4">{{ $value }}</td>
+                        </tr>
+                    @endforeach
+                    @if (isset($approval->surat->files))
+
+                        @foreach ($approval->surat->files as $key => $value)
+                            <tr  class="border-b border-gray-200 dark:border-gray-700">
+                                <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Lampiran {{ Str::title(str_replace('_', ' ', $key)) }}:</td>
+                                <td class="px-6 py-4">
+                                    <a class="text-blue-700 underline"
+                                        href="{{ route('show-file-kaprodi', ['surat' => $approval->surat->id, 'filename' => basename($value)]) }}">Lihat</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+
+                </tbody>
+            </table>
+        </div>
+
+
         <x-stepper :surat='$surat'/>
     </div>
 
