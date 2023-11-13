@@ -28,7 +28,7 @@
                             </path>
                         </svg>
                     </button>
-                    <a href="/dashboard" class="flex ml-2 md:mr-24">
+                    <a href="/" class="flex ml-2 md:mr-24">
                         <img src="{{ asset('images/logounib.png') }}" class="h-8 mr-3" alt="FlowBite Logo" />
                         <span
                             class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">E-Surat
@@ -290,7 +290,7 @@
 
 
     <div class="p-4 sm:ml-64">
-        <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+        <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg  dark:border-gray-700 mt-14">
             {{ $slot }}
         </div>
     </div>

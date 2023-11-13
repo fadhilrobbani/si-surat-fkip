@@ -94,6 +94,8 @@
                 @endforeach
             @endif
         </table>
+        <x-stepper :surat='$surat' />
+
         @if ($surat->current_user_id == auth()->user()->id && $surat->status == 'on_process')
             <form action="{{ route('setujui-surat-akademik', $surat->id) }}" method="POST" class="w-full">
                 @csrf
@@ -113,10 +115,8 @@
                         placeholder="Masukkan catatan yang ingin disampaikan ke mahasiswa" required></textarea>
                 </div>
                 <div class="flex mt-8 justify-between flex-col sm:flex-row ">
-
                     <a href="{{ route('preview-surat', $surat->id) }}"><button type="button"
                             class="text-white p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
-
 
                     <div class="flex flex-col sm:flex-row">
 

@@ -66,7 +66,7 @@
                 @endforeach
             @endif
         </table>
-
+        <x-stepper :surat='$surat'/>
     </div>
 
 

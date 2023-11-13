@@ -138,7 +138,11 @@ class KaprodiController extends Controller
         // if ($surat->current_user_id == auth()->user()->id) {
 
         return view('kaprodi.show-approval', [
-            'approval' => $approval
+            'approval' => $approval,
+            'surat' => Surat::join('approvals','approvals.surat_id','=','surat_tables.id')
+            ->where('approvals.user_id', auth()->user()->id)
+            ->where('approvals.id', $approval->id)
+            ->first()
         ]);
         // }
         // return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil disetujui');

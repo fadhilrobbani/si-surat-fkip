@@ -56,7 +56,7 @@
             <div
                 class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
 
-                <div class="flex items-center space-x-3 w-full max-w-[150px] md:w-auto">
+                <div class="flex items-center space-x-3 w-full md:max-w-[150px] md:w-auto">
 
                     <select id="jenis-surat" name="jenis-surat"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -70,7 +70,7 @@
 
 
                 </div>
-                <div class="flex items-center space-x-3 w-full max-w-[250px] md:w-auto">
+                <div class="flex items-center space-x-3 w-full md:max-w-[250px] md:w-auto">
 
                     <select id="status" name="status"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -84,7 +84,7 @@
 
 
                 </div>
-                <div class="flex items-center space-x-3 w-full max-w-[250px] md:w-auto">
+                <div class="flex items-center space-x-3 w-full md:max-w-[250px] md:w-auto">
 
                     <select id="order" name="order"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
