@@ -10,94 +10,112 @@
     </x-slot:title>
     <h1 class="mx-auto text-center font-bold">{{ $surat->jenisSurat->name }}</h1>
     <br>
-    <div class="flex flex-col gap-4 md:flex-row justify-evenly items-center">
+    <div class="flex flex-col gap-4 md:flex-row justify-evenly items-start">
 
-        <table class="flex flex-col  gap-10" border="2">
-            <tr>
-                <td class="font-semibold">Status:&nbsp;</td>
-                <td>{{ $surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process' ? 'expired' : $surat->status }}
-                </td>
-            </tr>
-            <tr>
-                @php
-                    $recentStatus = 'user';
-                    if ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process') {
-                        $recentStatus = 'Masa Aktif Habis Saat';
-                    } elseif ($surat->status == 'on_process') {
-                        $recentStatus = 'Menunggu';
-                    } elseif ($surat->status == 'denied') {
-                        $recentStatus = 'Ditolak';
-                    } elseif ($surat->status == 'finished') {
-                        $recentStatus = 'Diterima';
-                    }
-                @endphp
-                <td class="font-semibold">{{ $recentStatus }}:&nbsp;</td>
-                <td>{{ $surat->current_user->name }}</td>
-            </tr>
-            @php
-                $riwayatPenolakan = App\Models\Approval::where('surat_id', '=', $surat->id)
-                    ->where('isApproved', '=', 0)
-                    ->first();
-            @endphp
+        <div class="relative overflow-x-auto shadow-lg sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <tbody>
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
 
-            @if ($surat->status == 'denied')
-                <tr>
-                    <td class="font-semibold">Catatan Penolakan:&nbsp;</td>
-                    <td>{{ $riwayatPenolakan->note }}</td>
-                </tr>
-                <tr>
-                    <td class="font-semibold">Tanggal Penolakan:&nbsp;</td>
-                    <td>{{ formatTimestampToIndonesian($riwayatPenolakan->created_at) }}</td>
-                </tr>
-            @endif
-            @if ($surat->status == 'finished' && isset($surat->data['tanggal_selesai']))
-                <tr>
-                    <td class="font-semibold">Tanggal Disetujui:&nbsp;</td>
-                    <td>{{ $surat->data['tanggal_selesai'] }}
-                    </td>
-                </tr>
-            @endif
-            <tr>
-                <td class="font-semibold">Tanggal Diajukan:&nbsp;</td>
-                <td>{{ formatTimestampToIndonesian($surat->created_at) }}</td>
-            </tr>
-            <tr>
-                <td class="font-semibold">Masa Aktif Tersisa:&nbsp;</td>
-                <td>{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
-            </tr>
-            @foreach ($surat->data as $key => $value)
-                @if ($key == 'tanggal_selesai')
-                    {{-- <tr>
-                        <td class="font-semibold">{{ Str::title(str_replace('_', ' ', $key)) }}:&nbsp;
-                        </td>
-                        <td>{{ $value}}</td>
-                    </tr> --}}
-                    @continue
-                @endif
-                @if ($key == 'ttdWD1')
-                    @continue
-                @endif
-                <tr>
-                    <td class="font-semibold">{{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:&nbsp;</td>
-                    <td>{{ $value }}</td>
-                </tr>
-            @endforeach
-            @if (isset($surat->files))
-
-                @foreach ($surat->files as $key => $value)
-                    <tr>
-                        {{-- Str::title(str_replace('_', ' ', $key)) . --}}
-                        <td class="font-semibold border-1 border-slate-300">Lampiran
-                            {{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:</td>
-                        <td>
-                            <a class="text-blue-700 underline"
-                                href="{{ route('show-file-mahasiswa', ['surat' => $surat->id, 'filename' => basename($value)]) }}">Lihat</a>
+                        <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Status:&nbsp;</td>
+                        <td class="px-6 py-4">
+                            {{ $surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process' ? 'expired' : $surat->status }}
                         </td>
                     </tr>
-                @endforeach
-            @endif
-        </table>
-        <x-stepper :surat='$surat'/>
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                        @php
+                            $recentStatus = 'user';
+                            if ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process') {
+                                $recentStatus = 'Masa Aktif Habis Saat';
+                            } elseif ($surat->status == 'on_process') {
+                                $recentStatus = 'Menunggu';
+                            } elseif ($surat->status == 'denied') {
+                                $recentStatus = 'Ditolak';
+                            } elseif ($surat->status == 'finished') {
+                                $recentStatus = 'Diterima';
+                            }
+                        @endphp
+                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">{{ $recentStatus }}:&nbsp;
+                        </td>
+                        <td class="px-6 py-4">{{ $surat->current_user->name }}</td>
+                    </tr>
+                    @php
+                        $riwayatPenolakan = App\Models\Approval::where('surat_id', '=', $surat->id)
+                            ->where('isApproved', '=', 0)
+                            ->first();
+                    @endphp
+
+                    @if ($surat->status == 'denied')
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Catatan Penolakan:&nbsp;
+                            </td>
+                            <td class="px-6 py-4">{{ $riwayatPenolakan->note }}</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Penolakan:&nbsp;
+                            </td>
+                            <td class="px-6 py-4">{{ formatTimestampToIndonesian($riwayatPenolakan->created_at) }}
+                            </td>
+                        </tr>
+                    @endif
+                    @if ($surat->status == 'finished' && isset($surat->data['tanggal_selesai']))
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Disetujui:&nbsp;
+                            </td>
+                            <td class="px-6 py-4">{{ $surat->data['tanggal_selesai'] }}
+                            </td>
+                        </tr>
+                    @endif
+
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Diajukan:&nbsp;</td>
+                        <td class="px-6 py-4">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
+                    </tr>
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Masa Aktif Tersisa:&nbsp;</td>
+                        <td class="px-6 py-4">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
+                    </tr>
+                    @foreach ($surat->data as $key => $value)
+                        @if ($key == 'tanggal_selesai')
+                            {{-- <tr>
+                            <td class="font-semibold">{{ Str::title(str_replace('_', ' ', $key)) }}:&nbsp;
+                            </td>
+                            <td>{{ $value}}</td>
+                        </tr> --}}
+                            @continue
+                        @endif
+                        @if ($key == 'ttdWD1')
+                            @continue
+                        @endif
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">
+                                {{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:&nbsp;
+                            </td>
+                            <td class="px-6 py-4">{{ $value }}</td>
+                        </tr>
+                    @endforeach
+                    @if (isset($surat->files))
+
+                        @foreach ($surat->files as $key => $value)
+                            <tr class="border-b border-gray-200 dark:border-gray-700">
+                                {{-- Str::title(str_replace('_', ' ', $key)) . --}}
+                                <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Lampiran
+                                    {{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:</td>
+                                <td class="px-6 py-4">
+                                    <a class="text-blue-700 underline"
+                                        href="{{ route('show-file-mahasiswa', ['surat' => $surat->id, 'filename' => basename($value)]) }}">Lihat</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <x-stepper :surat='$surat' />
     </div>
 
     {{-- <embed

@@ -12,52 +12,53 @@
         @method('post')
         <div class="grid gap-6 mb-6 md:grid-cols-2">
             <div>
-                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
+                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama<span class="text-red-500">*</span></label>
                 <input type="text" id="disabled-input-2" aria-label="disabled input 2" readonly name="name"
                     class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Masukkan Nama Lengkap" value="{{ $authUser->name }}" required>
             </div>
             <div>
-                <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NPM</label>
+                <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NPM<span class="text-red-500">*</span></label>
                 <input type="text" id="username" name="username"
                     class=" cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Masukkan NPM Anda" value="{{ $authUser->username }}" readonly required>
             </div>
             <div>
                 <label for="program-studi" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
-                    Program Studi</label>
-                <select id="program-studi" name="program-studi"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    Program Studi<span class="text-red-500">*</span></label>
+                <select id="program-studi" disabled
+                    class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     @foreach ($daftarProgramStudi as $programStudi)
                         <option {{ $authUser->program_studi_id == $programStudi->id ? 'selected' : '' }}
                             value="{{ $programStudi->id }}">{{ $programStudi->name }}</option>
                     @endforeach
                 </select>
+                <input class="hidden" name="program-studi" type="text" value="{{ $authUser->programStudi->id }}" >
             </div>
 
             <div>
-                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                <input type="email" id="email" name="email"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email<span class="text-red-500">*</span></label>
+                <input type="email" id="email" name="email" readonly
+                    class="bg-gray-50 border cursor-not-allowed border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Masukkan email yang aktif" value="{{ $authUser->email }}" required>
             </div>
             <div>
                 <label for="tempat-lahir" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kota Tempat
-                    Lahir</label>
+                    Lahir<span class="text-red-500">*</span></label>
                 <input type="text" id="tempat-lahir" name="tempat-lahir"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Masukkan Kota Tempat lahir" value="{{ old('tempat-lahir') }}" required>
             </div>
             <div>
                 <label for="tanggal-lahir" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal
-                    Lahir</label>
+                    Lahir<span class="text-red-500">*</span></label>
                 <input type="date" id="tanggal-lahir" name="tanggal-lahir"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Tempat lahir" value="{{ old('tanggal-lahir') }}" required>
             </div>
             <div>
                 <label for="jenis-ujian" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
-                    Jenis Ujian yang ditempuh</label>
+                    Jenis Ujian yang ditempuh<span class="text-red-500">*</span></label>
                 <select id="jenis-ujian" name="jenis-ujian"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                   <option value="skripsi" selected>Skripsi</option>
@@ -67,7 +68,7 @@
             </div>
             <div>
                 <label for="gelar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
-                    Gelar</label>
+                    Gelar<span class="text-red-500">*</span></label>
                 <select id="gelar" name="gelar"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                   <option value="sarjana" selected>Sarjana</option>
@@ -77,14 +78,14 @@
             </div>
             <div>
                 <label for="tanggal-ujian" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal
-                    Ujian</label>
+                    Ujian<span class="text-red-500">*</span></label>
                 <input type="date"  id="tanggal-ujian" name="tanggal-ujian"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Tanggal Ujian" value="{{ old('tanggal-ujian') }}" required>
             </div>
             <div>
                 <label for="periode-wisuda"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Periode Wisuda</label>
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Periode Wisuda<span class="text-red-500">*</span></label>
                 <input type="number" id="periode-wisuda" name="periode-wisuda"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Contoh: 101" value="{{ old('periode-wisuda') }}"
@@ -92,7 +93,7 @@
             </div>
             <div>
                 <label for="tanggal-wisuda" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal
-                    akan wisuda</label>
+                    akan wisuda<span class="text-red-500">*</span></label>
                 <input type="month"  id="tanggal-wisuda" name="tanggal-wisuda"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Tanggal Wisuda" value="{{ old('tanggal-wisuda') }}" required>
