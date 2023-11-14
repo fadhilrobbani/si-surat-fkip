@@ -14,7 +14,9 @@
         <tr>
 
             <td>
-                <img class="logo" src="{{ public_path('images/logounib.png') }}" alt="logo">
+                <img class="logo"
+                    src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logounib.png'))) }}"
+                    alt="logo">
             </td>
             <td class="kop-text">
                 <center>
@@ -58,7 +60,8 @@
         </tr>
         <tr>
             <td>Tempat/Tanggal Lahir</td>
-            <td>: {{ Str::title($surat->data['tempatLahir']) . ', ' . formatTimestampToOnlyDateIndonesian($surat->data['tanggalLahir']) }}
+            <td>:
+                {{ Str::title($surat->data['tempatLahir']) . ', ' . formatTimestampToOnlyDateIndonesian($surat->data['tanggalLahir']) }}
             </td>
         </tr>
         <tr>
@@ -72,10 +75,14 @@
     <p>Program Studi&emsp;: {{ $surat->data['programStudi'] }}</p>
     <p>Nomor Seri Ijazah&emsp;: {{ $surat->data['noIjazah'] }}</p> --}}
     <br>
-    <p style="text-align: justify">Telah melaksanakan Ujian Sidang {{ $surat->data['jenisUjian'] }} pada tanggal {{ formatTimestampToOnlyDateIndonesian($surat->data['tanggalUjian']) }}, dan mahasiswa tersebut telah dinyatakan <b><u>LULUS</u></b>. Proses penganugerahan gelar {{ $surat->data['gelar'] }} pada
-        yang bersangkutan akan dilakukan pada wisuda periode ke-{{ $surat->data['periodeWisuda'] }}, {{ formatTimestampToOnlyMonthIndonesian($surat->data['tanggalWisuda']) }}</p>
+    <p style="text-align: justify">Telah melaksanakan Ujian Sidang {{ $surat->data['jenisUjian'] }} pada tanggal
+        {{ formatTimestampToOnlyDateIndonesian($surat->data['tanggalUjian']) }}, dan mahasiswa tersebut telah dinyatakan
+        <b><u>LULUS</u></b>. Proses penganugerahan gelar {{ $surat->data['gelar'] }} pada
+        yang bersangkutan akan dilakukan pada wisuda periode ke-{{ $surat->data['periodeWisuda'] }},
+        {{ formatTimestampToOnlyMonthIndonesian($surat->data['tanggalWisuda']) }}</p>
     <br>
-    <p style="text-align: justify">Demikian surat keterangan ini dibuat dengan sebenarnya, untuk dapat dipergunakan sebagaimana mestinya.</p>
+    <p style="text-align: justify">Demikian surat keterangan ini dibuat dengan sebenarnya, untuk dapat dipergunakan
+        sebagaimana mestinya.</p>
     <br><br>
     <div>
         <div class="tandatangan">
@@ -86,11 +93,14 @@
                 <p>Wakil Dekan Bidang Akademik</p>
             </div>
             <div class="parent">
-
+                @if (isset($surat->data['ttdWD1']) && isset($surat->data['stempel']))
                 <img class="ttd" style="margin-left: 40px" width="100px"
-                    src="{{ $surat->data['ttdWD1'] ?? public_path('images/ttd.png') }}" alt="ttd">
+                    src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path($surat->data['ttdWD1']))) }}"
+                    alt="ttd">
                 <img class="stempel" style="margin-left: 40px" width="120px"
-                    src="{{ public_path('images/stempel.png') }}" alt="stempel">
+                    src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path($surat->data['stempel']))) }}"
+                    alt="stempel">
+            @endif
             </div>
             <div>
                 <p>Dr. Abdul Rahman, M.Si</p>
