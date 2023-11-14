@@ -34,6 +34,7 @@ class User extends Authenticatable implements MustVerifyEmail,FilamentUser
         'email',
         'password',
         'role_id',
+        'tandatangan',
         'program_studi_id',
         'jurusan_id',
         'email_verified_at'
@@ -62,7 +63,7 @@ class User extends Authenticatable implements MustVerifyEmail,FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->role->id == 1 && $this->hasVerifiedEmail();
+        return $this->role->id == 1 ;
     }
 
     public function role()

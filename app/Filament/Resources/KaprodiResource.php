@@ -16,7 +16,9 @@ use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\TernaryFilter;
@@ -41,33 +43,37 @@ class KaprodiResource extends Resource
             ->schema([
                 Section::make([
                     Hidden::make('role_id')
-                    ->default(4),
+                        ->default(4),
 
-                TextInput::make('username')
-                    ->placeholder('Username')
-                    ->required(),
-                TextInput::make('name')
-                    ->placeholder('Masukkan nama lengkap')
-                    ->required(),
-                TextInput::make('email')
-                    ->email()
-                    ->placeholder('email@example.com')
-                    ->required(),
-                Select::make('program_studi_id')
-                    ->relationship('programStudi', 'name'),
-                // Select::make('jurusan_id')
-                //     ->relationship('jurusan', 'name'),
+                    TextInput::make('username')
+                        ->placeholder('Username')
+                        ->required(),
+                    TextInput::make('name')
+                        ->placeholder('Masukkan nama lengkap')
+                        ->required(),
+                    TextInput::make('email')
+                        ->email()
+                        ->placeholder('email@example.com')
+                        ->required(),
+                    Select::make('program_studi_id')
+                        ->relationship('programStudi', 'name'),
+                    // Select::make('jurusan_id')
+                    //     ->relationship('jurusan', 'name'),
 
-                TextInput::make('password')->password()
-                    ->placeholder('********')
-                    ->confirmed()
-                    ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->required(fn (string $operation): bool => $operation === 'create'),
-                TextInput::make('password_confirmation')
-                    ->placeholder('********')
-                    ->password()
-                    ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->required(fn (string $operation): bool => $operation === 'create'),
+                    TextInput::make('password')->password()
+                        ->placeholder('********')
+                        ->confirmed()
+                        ->dehydrated(fn (?string $state): bool => filled($state))
+                        ->required(fn (string $operation): bool => $operation === 'create'),
+                    TextInput::make('password_confirmation')
+                        ->placeholder('********')
+                        ->password()
+                        ->dehydrated(fn (?string $state): bool => filled($state))
+                        ->required(fn (string $operation): bool => $operation === 'create'),
+                    FileUpload::make('tandatangan')
+                        ->image()
+                        ->directory('ttd')
+                        ->columnSpan(2)
                 ])->columns(2),
 
 
@@ -99,11 +105,8 @@ class KaprodiResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
-                IconColumn::make('email_verified_at')
-                    ->label('Terverifikasi')
-                    ->boolean()
-                    ->trueIcon('heroicon-o-check-badge')
-                    ->falseIcon('heroicon-o-x-mark'),
+                ImageColumn::make('tandatangan')
+                    ->toggleable(),
                 TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true)

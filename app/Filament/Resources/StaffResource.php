@@ -99,11 +99,6 @@ class StaffResource extends Resource
                 ->searchable()
                 ->toggleable()
                 ->sortable(),
-            IconColumn::make('email_verified_at')
-                ->label('Terverifikasi')
-                ->boolean()
-                ->trueIcon('heroicon-o-check-badge')
-                ->falseIcon('heroicon-o-x-mark'),
             TextColumn::make('created_at')
                 ->searchable()
                 ->toggleable(isToggledHiddenByDefault: true)

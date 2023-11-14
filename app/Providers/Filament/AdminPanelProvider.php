@@ -30,6 +30,8 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->brandName('E-Surat FKIP UNIB')
+            // ->brandLogo(asset('images/ttd.png'))
             ->colors([
                 'primary' => Color::Teal,
             ])

@@ -16,7 +16,9 @@ use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\TernaryFilter;
 use App\Filament\Resources\WDResource\Pages;
@@ -40,7 +42,7 @@ class WDResource extends Resource
             ->schema([
                 Section::make([
                     Hidden::make('role_id')
-                        ->default(6),
+                        ->default(5),
 
                     TextInput::make('username')
                         ->placeholder('Username')
@@ -69,6 +71,10 @@ class WDResource extends Resource
                         ->password()
                         ->dehydrated(fn (?string $state): bool => filled($state))
                         ->required(fn (string $operation): bool => $operation === 'create'),
+                    FileUpload::make('tandatangan')
+                        ->image()
+                        ->directory('ttd')
+                        ->columnSpan(2)
 
                 ])->columns(2),
 
@@ -92,11 +98,8 @@ class WDResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
-                IconColumn::make('email_verified_at')
-                    ->label('Terverifikasi')
-                    ->boolean()
-                    ->trueIcon('heroicon-o-check-badge')
-                    ->falseIcon('heroicon-o-x-mark'),
+                ImageColumn::make('tandatangan')
+                    ->toggleable(),
                 TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true)

@@ -212,7 +212,9 @@ class AkademikController extends Controller
     public function setujuiSurat(Request $request, Surat $surat)
     {
         $request->validate([
-            'no-surat' => 'required|size:4'
+            'no-surat' => 'required|size:4',
+            'ttd' => 'required',
+            'stempel' => 'required'
         ]);
         // SELECT jt.id FROM users u
         // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
@@ -222,7 +224,8 @@ class AkademikController extends Controller
         $surat->expired_at = null;
         $data = $surat->data;
         $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
-        $data['ttdWD1'] = public_path('images/ttd.png');
+        $data['ttdWD1'] = $request->input('ttd') ;
+        $data['stempel'] = $request->input('stempel') ;
         $data['noSurat'] = $request->input('no-surat') ?? str_pad($surat->id, 4, '0', STR_PAD_LEFT);
         $data['note'] = $request->input('note');
         $surat->data = $data;
