@@ -54,6 +54,7 @@ class WDController extends Controller
             $user->update($request->only('email'));
             $user->email_verified_at = null;
         }
+
         $user->update($request->only('name'));
         return redirect('/wd/profile')->with('success','Sukses mengupdate data');
     }

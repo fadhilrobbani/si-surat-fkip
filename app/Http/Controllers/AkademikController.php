@@ -224,8 +224,10 @@ class AkademikController extends Controller
         $surat->expired_at = null;
         $data = $surat->data;
         $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
-        $data['ttdWD1'] = $request->input('ttd') ;
-        $data['stempel'] = $request->input('stempel') ;
+        // $data['ttdWD1'] = $request->input('ttd') ;
+        // $data['stempel'] = $request->input('stempel') ;
+        $data['ttdWD1'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg' ;
+        $data['stempel'] ='storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg' ;
         $data['noSurat'] = $request->input('no-surat') ?? str_pad($surat->id, 4, '0', STR_PAD_LEFT);
         $data['note'] = $request->input('note');
         $surat->data = $data;

@@ -45,6 +45,21 @@
             @endif
 
         </div>
+        <div class="mb-6">
+            <label for="ttd" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanda Tangan
+            </label>
+            @if ($edit)
+                <input
+                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    aria-describedby="file_input_help" id="file_input" type="file" name="ttd"
+                    accept=".png" max-size="2048">
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">File .PNG (Background
+                    Transparan MAX.
+                    2 MB).</p>
+            @else
+            <img class="w-20" src="{{ asset('storage/'. $authUser->tandatangan) }}" alt="">
+            @endif
+        </div>
 
         <div class="col-span-2 flex w-full justify-center gap-2 items-center mx-auto mt-0">
             <a class="bg-yellow-400 p-2 text-white font-medium hover:bg-yellow-500  rounded-lg flex {{ $edit ? 'hidden' : '' }}"
