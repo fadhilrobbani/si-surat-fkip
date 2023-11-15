@@ -10,7 +10,7 @@
 
     <h1 class="mx-auto text-center font-bold mb-2">Pengaturan Akun</h1>
 
-    <form action="{{ route('update-profile-wd', $authUser->id) }}" method="POST"
+    <form action="{{ route('update-profile-wd', $authUser->id) }}" enctype="multipart/form-data" method="POST"
         class="md:grid flex  md:grid-cols-2 gap-4 justify-center mx-auto flex-col px-12  w-full">
         @csrf
         @method('PUT')
@@ -51,7 +51,7 @@
             @if ($edit)
                 <input
                     class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    aria-describedby="file_input_help" id="file_input" type="file" name="ttd"
+                    aria-describedby="file_input_help" id="ttd" type="file" name="ttd"
                     accept=".png" max-size="2048">
                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">File .PNG (Background
                     Transparan MAX.

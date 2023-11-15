@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Surat;
+use Ramsey\Uuid\Uuid;
 use App\Models\Approval;
 use App\Models\JenisSurat;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class WDController extends Controller
 {
@@ -55,6 +57,16 @@ class WDController extends Controller
             $user->email_verified_at = null;
         }
 
+
+        if($request->hasFile('ttd')){
+            $request->validate([
+                'ttd' => 'file|mimes:png|max:2048'
+            ]);
+            $uuid = Uuid::uuid4();
+            $file = $request->file('ttd');
+            Storage::disk('public')->put('ttd/'.$uuid,file_get_contents($file));
+            $user->update(['tandatangan' => 'ttd/'. $uuid]);
+        }
         $user->update($request->only('name'));
         return redirect('/wd/profile')->with('success','Sukses mengupdate data');
     }
