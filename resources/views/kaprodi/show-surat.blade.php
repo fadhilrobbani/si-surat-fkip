@@ -24,15 +24,15 @@
                     </tr>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         @php
-                        $recentStatus = 'user';
-                        if ($surat->status == 'on_process') {
-                            $recentStatus = 'Menunggu';
-                        } elseif ($surat->status == 'denied') {
-                            $recentStatus = 'Ditolak';
-                        } elseif ($surat->status == 'finished') {
-                            $recentStatus = 'Diterima';
-                        }
-                    @endphp
+                            $recentStatus = 'user';
+                            if ($surat->status == 'on_process') {
+                                $recentStatus = 'Menunggu';
+                            } elseif ($surat->status == 'denied') {
+                                $recentStatus = 'Ditolak';
+                            } elseif ($surat->status == 'finished') {
+                                $recentStatus = 'Diterima';
+                            }
+                        @endphp
                         <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">{{ $recentStatus }}:&nbsp;
                         </td>
                         <td class="px-6 py-4">{{ $surat->current_user->name }}</td>
@@ -95,6 +95,9 @@
                     @if (isset($surat->files))
 
                         @foreach ($surat->files as $key => $value)
+                            @if ($key == 'private')
+                                @continue
+                            @endif
                             <tr class="border-b border-gray-200 dark:border-gray-700">
                                 {{-- Str::title(str_replace('_', ' ', $key)) . --}}
                                 <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Lampiran
@@ -111,7 +114,7 @@
             </table>
         </div>
 
-        <x-stepper :surat='$surat'/>
+        <x-stepper :surat='$surat' />
     </div>
 
 

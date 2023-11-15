@@ -67,8 +67,12 @@
                     @if (isset($approval->surat->files))
 
                         @foreach ($approval->surat->files as $key => $value)
-                            <tr  class="border-b border-gray-200 dark:border-gray-700">
-                                <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Lampiran {{ Str::title(str_replace('_', ' ', $key)) }}:</td>
+                            @if ($key == 'private')
+                                @continue
+                            @endif
+                            <tr class="border-b border-gray-200 dark:border-gray-700">
+                                <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Lampiran
+                                    {{ Str::title(str_replace('_', ' ', $key)) }}:</td>
                                 <td class="px-6 py-4">
                                     <a class="text-blue-700 underline"
                                         href="{{ route('show-file-kaprodi', ['surat' => $approval->surat->id, 'filename' => basename($value)]) }}">Lihat</a>
@@ -82,7 +86,7 @@
         </div>
 
 
-        <x-stepper :surat='$surat'/>
+        <x-stepper :surat='$surat' />
     </div>
 
     @if ($approval->surat->status == 'finished')

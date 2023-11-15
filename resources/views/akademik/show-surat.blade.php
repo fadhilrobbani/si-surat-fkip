@@ -71,7 +71,8 @@
                             <td class="px-6 py-4">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
                         </tr>
                         <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Masa Aktif Tersisa:&nbsp;</td>
+                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Masa Aktif Tersisa:&nbsp;
+                            </td>
                             <td class="px-6 py-4">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
                         </tr>
                         @foreach ($surat->data as $key => $value)
@@ -96,6 +97,9 @@
                         @if (isset($surat->files))
 
                             @foreach ($surat->files as $key => $value)
+                                @if ($key == 'private')
+                                    @continue
+                                @endif
                                 <tr class="border-b border-gray-200 dark:border-gray-700">
                                     {{-- Str::title(str_replace('_', ' ', $key)) . --}}
                                     <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Lampiran
@@ -117,7 +121,8 @@
 
 
         @if ($surat->current_user_id == auth()->user()->id && $surat->status == 'on_process')
-            <form action="{{ route('setujui-surat-akademik', $surat->id) }}" method="POST" class="bg-slate-100 rounded-lg w-full">
+            <form action="{{ route('setujui-surat-akademik', $surat->id) }}" method="POST"
+                class="bg-slate-100 rounded-lg w-full">
                 @csrf
                 @method('put')
                 <div class=" flex flex-col gap-4 mt-10 items-center justify-center">
@@ -128,23 +133,20 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Masukkan 4 digit no. surat, misal 0001" required>
                     </div>
+
                     <div class="w-full max-w-[400px]">
-                        <label for="ttd" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanda Tangan yang digunakan<span class="text-red-600">*</span></label>
-                        <input type="text" name="ttd"
-                            class="bg-gray-50 hidden border cur border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            value="ttd">
-                            <img class="w-20" src="{{ asset('/storage/ttd/ttd.png') }}" alt="">
-                    </div>
-                    <div class="w-full max-w-[400px]">
-                        <label for="stempel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stempel yang digunakan<span class="text-red-600">*</span></label>
+                        <label for="stempel"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stempel yang
+                            digunakan</label>
                         <input type="text" name="stempel"
                             class="bg-gray-50 hidden border cur border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             value="ok">
-                            <img class="w-20" src="{{ asset('/storage/stempel/stempel.png') }}" alt="">
+                        <img class="w-20" src="{{ asset('storage/' . $authUser->tandatangan) }}" alt="">
                     </div>
                     <div class="w-full max-w-[400px]">
                         <label for="note"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catatan (opsional)</label>
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catatan
+                            (opsional)</label>
                         <textarea id="note" name="note"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Masukkan catatan yang ingin disampaikan ke mahasiswa">{{ old('note') }}</textarea>

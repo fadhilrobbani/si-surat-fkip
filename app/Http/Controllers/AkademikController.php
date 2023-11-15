@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Surat;
+use Ramsey\Uuid\Uuid;
 use App\Models\Jurusan;
 use App\Models\Approval;
 use App\Models\JenisSurat;
@@ -12,6 +13,7 @@ use App\Mail\SuratMahasiswa;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class AkademikController extends Controller
 {
@@ -61,6 +63,15 @@ class AkademikController extends Controller
             ]);
             $user->update($request->only('email'));
             $user->email_verified_at = null;
+        }
+        if ($request->hasFile('stempel')) {
+            $request->validate([
+                'stempel' => 'file|mimes:png|max:2048'
+            ]);
+            $uuid = Uuid::uuid4();
+            $file = $request->file('stempel');
+            Storage::disk('public')->put('stempel/' . $uuid, file_get_contents($file));
+            $user->update(['tandatangan' => 'stempel/' . $uuid]);
         }
         $user->update($request->only('name', 'jurusan'));
         return redirect('/akademik/profile')->with('success', 'Sukses mengupdate data');
@@ -213,8 +224,6 @@ class AkademikController extends Controller
     {
         $request->validate([
             'no-surat' => 'required|size:4',
-            'ttd' => 'required',
-            'stempel' => 'required'
         ]);
         // SELECT jt.id FROM users u
         // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
@@ -226,11 +235,28 @@ class AkademikController extends Controller
         $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
         // $data['ttdWD1'] = $request->input('ttd') ;
         // $data['stempel'] = $request->input('stempel') ;
-        $data['ttdWD1'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg' ;
-        $data['stempel'] ='storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg' ;
+        // $data['ttdWD1'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg' ;
+        // $data['stempel'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg';
         $data['noSurat'] = $request->input('no-surat') ?? str_pad($surat->id, 4, '0', STR_PAD_LEFT);
         $data['note'] = $request->input('note');
         $surat->data = $data;
+        $file = $surat->files;
+        if ($file) {
+            if (isset($file['private'])) {
+                $file['private']['stempel'] =  'storage/' . auth()->user()->tandatangan;
+            } else {
+                $file['private'] = [
+                    'stempel' => 'storage/' . auth()->user()->tandatangan
+                ];
+            }
+        } else {
+            $file = [
+                'private' => [
+                    'stempel' => 'storage/' . auth()->user()->tandatangan,
+                ]
+            ];
+        }
+        $surat->files = $file;
         $surat->status = 'finished';
         $surat->save();
 

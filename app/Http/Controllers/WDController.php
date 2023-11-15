@@ -239,6 +239,23 @@ class WDController extends Controller
 
         //kita buat wd1 bisa memilih penerimanya selain di data misal dari request wd1, tapi sementara manual dulu
         $surat->current_user_id = $request->input('penerima');
+        $file = $surat->files;
+        if($file){
+            if(isset($file['private'])){
+                $file['private']['ttdWD1'] =  'storage/'.auth()->user()->tandatangan;
+            }else{
+                $file['private'] =[
+                   'ttdWD1'=> 'storage/'.auth()->user()->tandatangan
+                ] ;
+            }
+        }else{
+            $file = [
+                'private' => [
+                    'ttdWD1' => 'storage/'.auth()->user()->tandatangan,
+                ]
+            ];
+        }
+        $surat->files = $file;
         // $surat->current_user_id = $surat->penerima_id;
         // $surat->penerima_id = $surat->pengaju_id;
         $surat->save();

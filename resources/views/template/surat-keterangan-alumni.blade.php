@@ -14,7 +14,9 @@
         <tr>
 
             <td>
-                <img class="logo" src="{{ public_path('images/logounib.png') }}" alt="logo">
+                <img class="logo"
+                    src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logounib.png'))) }}"
+                    alt="logo">
             </td>
             <td class="kop-text">
                 <center>
@@ -91,11 +93,16 @@
                 <p>Wakil Dekan Bidang Akademik</p>
             </div>
             <div class="parent">
-
-                <img class="ttd" style="margin-left: 40px" width="100px"
-                    src="{{ $surat->data['ttdWD1'] ?? public_path('images/ttd.png') }}" alt="ttd">
-                <img class="stempel" style="margin-left: 40px" width="120px"
-                    src="{{ public_path('images/stempel.png') }}" alt="stempel">
+                @if (isset($surat->files['private']['ttdWD1']))
+                    <img class="ttd" style="margin-left: 40px" width="100px"
+                        src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path($surat->files['private']['ttdWD1']))) }}"
+                        alt="ttd">
+                @endif
+                @if (isset($surat->files['private']['stempel']))
+                    <img class="stempel" style="margin-left: 40px" width="120px"
+                        src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path($surat->files['private']['stempel']))) }}"
+                        alt="stempel">
+                @endif
             </div>
             <div>
                 <p>Dr. Abdul Rahman, M.Si</p>

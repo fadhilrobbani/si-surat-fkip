@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid('user_id');
             $table->uuid('surat_id');
             $table->boolean('isApproved');
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('surat_id')->references('id')->on('surat_tables')->onDelete('cascade');
             $table->timestamps();
