@@ -47,16 +47,16 @@ class WDResource extends Resource
                     TextInput::make('username')
                         ->placeholder('Username')
                         ->required()
-                        ->unique()
+                        ->unique(ignorable: fn ($record) => $record)
                         ->columnSpan(2),
                     TextInput::make('name')
                         ->placeholder('Masukkan nama lengkap')
                         ->required(),
-                        TextInput::make('email')
-                            ->email()
-                            ->unique()
-                            ->placeholder('email@example.com')
-                            ->required(),
+                    TextInput::make('email')
+                        ->email()
+                        ->unique(ignorable: fn ($record) => $record)
+                        ->placeholder('email@example.com')
+                        ->required(),
 
                     // Select::make('program_studi_id')
                     //     ->relationship('programStudi', 'name'),
@@ -165,7 +165,6 @@ class WDResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->where('role_id',5);
-
+            ->where('role_id', 5);
     }
 }

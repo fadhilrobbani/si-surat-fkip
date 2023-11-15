@@ -41,35 +41,35 @@ class StaffResource extends Resource
             ->schema([
                 Section::make([
                     Hidden::make('role_id')
-                    ->default(3),
+                        ->default(3),
 
-                TextInput::make('username')
-                    ->placeholder('Username')
-                    ->unique()
-                    ->required(),
-                TextInput::make('name')
-                    ->placeholder('Masukkan nama lengkap')
-                    ->required(),
-                TextInput::make('email')
-                    ->email()
-                    ->unique()
-                    ->placeholder('email@example.com')
-                    ->required(),
-                Select::make('program_studi_id')
-                    ->relationship('programStudi', 'name'),
-                // Select::make('jurusan_id')
-                //     ->relationship('jurusan', 'name'),
+                    TextInput::make('username')
+                        ->placeholder('Username')
+                        ->unique(ignorable: fn ($record) => $record)
+                        ->required(),
+                    TextInput::make('name')
+                        ->placeholder('Masukkan nama lengkap')
+                        ->required(),
+                    TextInput::make('email')
+                        ->email()
+                        ->unique(ignorable: fn ($record) => $record)
+                        ->placeholder('email@example.com')
+                        ->required(),
+                    Select::make('program_studi_id')
+                        ->relationship('programStudi', 'name'),
+                    // Select::make('jurusan_id')
+                    //     ->relationship('jurusan', 'name'),
 
-                TextInput::make('password')->password()
-                    ->placeholder('********')
-                    ->confirmed()
-                    ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->required(fn (string $operation): bool => $operation === 'create'),
-                TextInput::make('password_confirmation')
-                    ->placeholder('********')
-                    ->password()
-                    ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->required(fn (string $operation): bool => $operation === 'create'),
+                    TextInput::make('password')->password()
+                        ->placeholder('********')
+                        ->confirmed()
+                        ->dehydrated(fn (?string $state): bool => filled($state))
+                        ->required(fn (string $operation): bool => $operation === 'create'),
+                    TextInput::make('password_confirmation')
+                        ->placeholder('********')
+                        ->password()
+                        ->dehydrated(fn (?string $state): bool => filled($state))
+                        ->required(fn (string $operation): bool => $operation === 'create'),
 
                 ])->columns(2),
 
@@ -79,71 +79,71 @@ class StaffResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-        ->columns([
-            TextColumn::make('username')
-                ->label('Username')
-                ->searchable()
-                ->toggleable()
-                ->sortable(),
-            TextColumn::make('name')
-                ->searchable()
-                ->toggleable()
-                ->sortable(),
-            TextColumn::make('email')
-                ->searchable()
-                ->toggleable()
-                ->sortable(),
-            TextColumn::make('programStudi.name')
-                ->searchable()
-                ->toggleable()
-                ->sortable(),
-            TextColumn::make('programStudi.jurusan.name')
-                ->searchable()
-                ->toggleable()
-                ->sortable(),
-            TextColumn::make('created_at')
-                ->searchable()
-                ->toggleable(isToggledHiddenByDefault: true)
-                ->dateTime()
-                ->sortable(),
-        ])
-        ->filters([
-            SelectFilter::make('programStudi')
-                ->relationship('programStudi', 'name'),
-            SelectFilter::make('jurusan')
-                ->relationship('jurusan', 'name'),
-            TernaryFilter::make('email_verified_at')
-                ->nullable(),
-            Filter::make('created_at')
-                ->form([
-                    DatePicker::make('created_from'),
-                    DatePicker::make('created_until'),
-                ])
-                ->query(function (Builder $query, array $data): Builder {
-                    return $query
-                        ->when(
-                            $data['created_from'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
-                        )
-                        ->when(
-                            $data['created_until'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
-                        );
-                })
-        ])
+            ->columns([
+                TextColumn::make('username')
+                    ->label('Username')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
+                TextColumn::make('name')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
+                TextColumn::make('email')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
+                TextColumn::make('programStudi.name')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
+                TextColumn::make('programStudi.jurusan.name')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
+                TextColumn::make('created_at')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->dateTime()
+                    ->sortable(),
+            ])
+            ->filters([
+                SelectFilter::make('programStudi')
+                    ->relationship('programStudi', 'name'),
+                SelectFilter::make('jurusan')
+                    ->relationship('jurusan', 'name'),
+                TernaryFilter::make('email_verified_at')
+                    ->nullable(),
+                Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('created_from'),
+                        DatePicker::make('created_until'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    })
+            ])
 
-        ->actions([
-            Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make(),
-        ])
-        ->bulkActions([
-            Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]),
-        ])
-        ->emptyStateActions([
-            Tables\Actions\CreateAction::make(),
-        ]);
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ])
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make(),
+            ]);
     }
 
     public static function getRelations(): array

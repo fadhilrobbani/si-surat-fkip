@@ -45,7 +45,7 @@ class MahasiswaResource extends Resource
                     Hidden::make('role_id')
                         ->default(2),
                     TextInput::make('username')
-                        ->unique()
+                        ->unique(ignorable: fn ($record) => $record)
                         ->placeholder('Masukkan NPM Anda')
                         ->required(),
                     TextInput::make('name')
@@ -53,7 +53,7 @@ class MahasiswaResource extends Resource
                         ->required(),
                     TextInput::make('email')
                         ->email()
-                        ->unique()
+                        ->unique(ignorable: fn ($record) => $record)
                         ->placeholder('email@example.com')
                         ->required(),
                     Select::make('program_studi_id')

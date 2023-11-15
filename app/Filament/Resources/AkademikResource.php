@@ -16,6 +16,7 @@ use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Filters\SelectFilter;
@@ -39,42 +40,46 @@ class AkademikResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-        ->schema([
-            Section::make([
-                Hidden::make('role_id')
-                ->default(6),
+            ->schema([
+                Section::make([
+                    Hidden::make('role_id')
+                        ->default(6),
 
-            TextInput::make('username')
-                ->placeholder('Username')
-                ->unique()
-                ->required(),
-            TextInput::make('name')
-                ->placeholder('Masukkan nama lengkap')
-                ->required(),
-            TextInput::make('email')
-                ->email()
-                ->unique()
-                ->placeholder('email@example.com')
-                ->required(),
-            // Select::make('program_studi_id')
-            //     ->relationship('programStudi', 'name'),
-            Select::make('jurusan_id')
-                ->relationship('jurusan', 'name'),
+                    TextInput::make('username')
+                        ->placeholder('Username')
+                        ->unique(ignorable: fn ($record) => $record)
+                        ->required(),
+                    TextInput::make('name')
+                        ->placeholder('Masukkan nama lengkap')
+                        ->required(),
+                    TextInput::make('email')
+                        ->email()
+                        ->unique(ignorable: fn ($record) => $record)
+                        ->placeholder('email@example.com')
+                        ->required(),
+                    // Select::make('program_studi_id')
+                    //     ->relationship('programStudi', 'name'),
+                    Select::make('jurusan_id')
+                        ->relationship('jurusan', 'name'),
 
-            TextInput::make('password')->password()
-                ->placeholder('********')
-                ->confirmed()
-                ->dehydrated(fn (?string $state): bool => filled($state))
-                ->required(fn (string $operation): bool => $operation === 'create'),
-            TextInput::make('password_confirmation')
-                ->placeholder('********')
-                ->password()
-                ->dehydrated(fn (?string $state): bool => filled($state))
-                ->required(fn (string $operation): bool => $operation === 'create'),
-            ])->columns(2),
+                    TextInput::make('password')->password()
+                        ->placeholder('********')
+                        ->confirmed()
+                        ->dehydrated(fn (?string $state): bool => filled($state))
+                        ->required(fn (string $operation): bool => $operation === 'create'),
+                    TextInput::make('password_confirmation')
+                        ->placeholder('********')
+                        ->password()
+                        ->dehydrated(fn (?string $state): bool => filled($state))
+                        ->required(fn (string $operation): bool => $operation === 'create'),
+                    FileUpload::make('tandatangan')
+                        ->image()
+                        ->directory('stempel')
+                        ->columnSpan(2)
+                ])->columns(2),
 
 
-        ]);
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -98,6 +103,8 @@ class AkademikResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
+                ImageColumn::make('tandatangan')
+                    ->toggleable(),
                 TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true)
