@@ -10,6 +10,7 @@ use Filament\Support\Colors\Color;
 use App\Filament\Pages\CustomLogin;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Pages\Auth\EditProfile;
+use App\Filament\Pages\Login;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -30,6 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->login(CustomLogin::class)
             ->brandName('E-Surat FKIP UNIB')
             // ->brandLogo(asset('images/ttd.png'))
             ->colors([

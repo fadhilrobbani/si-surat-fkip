@@ -47,6 +47,7 @@ class AdminResource extends Resource
                     TextInput::make('username')
                         ->placeholder('Username')
                         ->required()
+                        ->unique()
                         ->columnSpan(2),
 
                     TextInput::make('name')
@@ -54,6 +55,7 @@ class AdminResource extends Resource
                         ->required(),
                     TextInput::make('email')
                         ->email()
+                        ->unique()
                         ->placeholder('email@example.com'),
                     TextInput::make('password')->password()
                         ->placeholder('********')

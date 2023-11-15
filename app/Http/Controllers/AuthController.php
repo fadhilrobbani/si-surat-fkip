@@ -109,7 +109,7 @@ class AuthController extends Controller
 
     public function authenticate(Request $request)
     {
-        $user = User::where('username', $request->input('username'))->first();
+        $user = User::where('username', $request->input('username'))->where('role_id','!=',1)->first();
         if (!$user) {
             return back()->withErrors(['username' => 'Username/NPM salah atau tidak terdaftar'])->withInput();
         }
@@ -122,7 +122,7 @@ class AuthController extends Controller
             // dd('login');
             $request->session()->regenerate();
             if (auth()->user()->role_id == 1) {
-                return redirect('/admin')->with('success', 'Anda berhasil login');
+                return redirect()->back()->withError('Unauthorized');
             } elseif (auth()->user()->role_id == 2) {
                 return redirect('/mahasiswa')->with('success', 'Anda berhasil login');
             } elseif (auth()->user()->role_id == 3) {

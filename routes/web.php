@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WDController;
@@ -36,6 +37,10 @@ Route::get('/home', [AuthController::class, 'home']);
 Route::get('/login', function () {
     return redirect('/');
 });
+
+// Route::get('/admin/login', function () {
+//     return redirect()->to(Filament::getLoginUrl());
+// });
 // Route::get('/admin/login',function(){
 //     return redirect('/');
 // });

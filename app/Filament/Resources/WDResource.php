@@ -47,12 +47,14 @@ class WDResource extends Resource
                     TextInput::make('username')
                         ->placeholder('Username')
                         ->required()
+                        ->unique()
                         ->columnSpan(2),
                     TextInput::make('name')
                         ->placeholder('Masukkan nama lengkap')
                         ->required(),
                         TextInput::make('email')
                             ->email()
+                            ->unique()
                             ->placeholder('email@example.com')
                             ->required(),
 

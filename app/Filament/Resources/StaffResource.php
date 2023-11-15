@@ -45,12 +45,14 @@ class StaffResource extends Resource
 
                 TextInput::make('username')
                     ->placeholder('Username')
+                    ->unique()
                     ->required(),
                 TextInput::make('name')
                     ->placeholder('Masukkan nama lengkap')
                     ->required(),
                 TextInput::make('email')
                     ->email()
+                    ->unique()
                     ->placeholder('email@example.com')
                     ->required(),
                 Select::make('program_studi_id')
