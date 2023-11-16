@@ -15,51 +15,69 @@ class JenisSuratSeeder extends Seeder
     {
         $daftarJenisSurat = [
             [
-                'name' => 'Surat Keterangan Aktif Kuliah'
+                'name' => 'Surat Keterangan Aktif Kuliah',
+                'slug' => 'surat-aktif-kuliah'
             ],
             [
-                'name' => 'Surat Permohonan Izin Cuti Akademik'
+                'name' => 'Surat Permohonan Izin Cuti Akademik',
+                'slug' => 'surat-izin-cuti'
             ],
             [
-                'name' => 'Surat Permohonan Seminar Proposal / Seminar Hasil / Ujian Komprehensif / Ujian Skripsi'
+                'name' => 'Surat Permohonan Seminar Proposal / Seminar Hasil / Ujian Komprehensif / Ujian Skripsi',
+                'slug' => 'surat-permohonan-seminar'
             ],
             [
-                'name' => 'Surat Aktif Kembali Setelah Non-aktif'
+                'name' => 'Surat Aktif Kembali Setelah Non-aktif',
+                'slug' => 'surat-aktif-kembali'
             ],
             [
-                'name' => 'Surat Permohonan Perbaikan Data PDDikti'
+                'name' => 'Surat Permohonan Perbaikan Data PDDikti',
+                'slug' => 'surat-permohonan-perbaikan-data'
             ],
             [
-                'name' => 'Surat Keterangan Alumni'
+                'name' => 'Surat Keterangan Alumni',
+                'slug' => 'surat-keterangan-alumni'
+
             ],
             [
-                'name' => 'Surat Keterangan Pernah Kuliah'
+                'name' => 'Surat Keterangan Pernah Kuliah',
+                'slug' => 'surat-keterangan-pernah-kuliah'
             ],
             [
-                'name' => 'Surat Keterangan Lulus'
+                'name' => 'Surat Keterangan Lulus',
+                'slug' => 'surat-keterangan-lulus'
             ],
             [
-                'name' => 'Surat Keterangan Kesalahan Nama di Ijazah'
+                'name' => 'Surat Keterangan Kesalahan Nama di Ijazah',
+                'slug' => 'surat-keterangan-kesalahan-ijazah'
             ],
             [
-                'name' => 'Surat Permohonan Sinkronisasi SK Homebase Dosen dengan Forlap PDDikti'
+                'name' => 'Surat Permohonan Sinkronisasi SK Homebase Dosen dengan Forlap PDDikti',
+                'slug' => 'surat-permohonan-sinkronisasi-skdosen-forlapdikti'
             ],
             [
-                'name' => 'Surat Permohonan Izin Pra-Penelitian Mahasiswa'
+                'name' => 'Surat Permohonan Izin Pra-Penelitian Mahasiswa',
+                'slug' => 'surat-permohonan-izin-prapenelitian-mahasiswa'
             ],
             [
-                'name' => 'Surat Permohonan Izin Penelitian Mahasiswa'
+                'name' => 'Surat Permohonan Izin Penelitian Mahasiswa',
+                'slug' => 'surat-permohonan-izin-penelitian-mahasiswa'
             ],
             [
-                'name' => 'Surat Keterangan Eligible PIN'
+                'name' => 'Surat Keterangan Eligible PIN',
+                'slug' => 'surat-keterangan-eligible-pin'
             ],
             [
-                'name' => 'Surat Usulan Bebas UKT'
+                'name' => 'Surat Usulan Bebas UKT',
+                'slug' => 'surat-usulan-bebas-ukt'
             ],
         ];
 
         foreach ($daftarJenisSurat as $jenisSurat) {
-            JenisSurat::create(['name' => $jenisSurat['name']]);
+            JenisSurat::create([
+                'name' => $jenisSurat['name'],
+                'slug' => $jenisSurat['slug']
+            ]);
         }
     }
 }

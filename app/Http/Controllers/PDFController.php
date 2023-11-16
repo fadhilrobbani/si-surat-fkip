@@ -16,14 +16,14 @@ class PDFController extends Controller
         if ($surat->status != 'finished') {
             return redirect()->back()->withErrors('deleted', 'Anda tidak bisa mengakses fungsi ini');
         }
-        if ($surat->jenisSurat->id == 6) {
+        if ($surat->jenisSurat->slug == 'surat-keterangan-alumni') {
             $pdf = Pdf::loadview('template.surat-keterangan-alumni', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
                 'tempDir' => public_path(),
                 'chroot' => public_path()
             ]);
         }
 
-        if ($surat->jenisSurat->id == 8) {
+        if ($surat->jenisSurat->slug == 'surat-keterangan-lulus') {
             $pdf = Pdf::loadview('template.surat-keterangan-lulus', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
                 'tempDir' => public_path(),
                 'chroot' => public_path()

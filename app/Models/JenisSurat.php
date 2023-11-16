@@ -10,9 +10,10 @@ class JenisSurat extends Model
 {
     use HasFactory;
     protected $table = 'jenis_surat_tables';
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'slug'];
 
-    public function surat(){
-        return $this->hasMany(Surat::class,'jenis_surat_id','id');
+    public function surat()
+    {
+        return $this->hasMany(Surat::class, 'jenis_surat_id', 'id');
     }
 }

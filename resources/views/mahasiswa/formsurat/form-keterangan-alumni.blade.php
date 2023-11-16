@@ -8,7 +8,7 @@
     {{-- <x-breadcumb /> --}}
     <p class="font-bold text-lg mx-auto text-center mb-2">Surat Keterangan Alumni</p>
 
-    <form action="{{ route('store-surat-alumni') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('store-surat', $jenisSurat->slug) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
         <div class="grid gap-6 mb-6 md:grid-cols-2">
