@@ -222,6 +222,9 @@ class AkademikController extends Controller
 
     public function setujuiSurat(Request $request, Surat $surat)
     {
+        if (!auth()->user()->tandatangan) {
+            return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
+        }
         $request->validate([
             'no-surat' => 'required|size:4',
         ]);

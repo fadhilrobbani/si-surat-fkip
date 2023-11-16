@@ -258,6 +258,9 @@ class KaprodiController extends Controller
 
     public function setujuiSurat(Request $request, Surat $surat)
     {
+        if (!auth()->user()->tandatangan) {
+            return redirect()->back()->withErrors('Tanda Tangan tidak boleh kosong, silahkan atur terlebih dahulu di profil');
+        }
         // SELECT jt.id FROM users u
         // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
         // JOIN jurusan_tables jt ON jt.id = pst.jurusan_id ;
