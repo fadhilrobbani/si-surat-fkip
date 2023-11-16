@@ -133,7 +133,7 @@
                     @csrf
                     @method('put')
                     <x-modal-send :daftarPenerima='$daftarPenerima' />
-                    <button
+                    <button type="button"
                         class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
                         data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
                         Setuju </button>

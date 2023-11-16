@@ -137,7 +137,8 @@
                     <div class="w-full max-w-[400px]">
                         <label for="stempel"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stempel yang
-                            digunakan</label>
+                            digunakan (Jika tidak sesuai/tidak muncul, Anda dapat mengubahnya di profil akun <a
+                                class="underline text-blue-600" href="/akademik/profile">di sini</a>)</label>
                         <input type="text" name="stempel"
                             class="bg-gray-50 hidden border cur border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             value="ok">
@@ -154,7 +155,7 @@
                 </div>
 
                 <div class="flex mt-8 justify-between flex-col sm:flex-row ">
-                    <a href="{{ route('preview-surat', $surat->id) }}"><button type="button"
+                    <a href="{{ route('preview-surat-akademik', $surat->id) }}"><button type="button"
                             class="text-white w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
                     <div class="flex flex-col sm:flex-row">
 

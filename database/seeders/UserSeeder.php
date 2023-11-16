@@ -103,7 +103,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'jurusan_id' => null,
-                'program_studi_id' => 3,
+                'program_studi_id' => 9,
                 'email_verified_at' => now()
             ],
             [
@@ -162,6 +162,5 @@ class UserSeeder extends Seeder
                 ]
             );
         };
-
     }
 }

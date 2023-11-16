@@ -123,6 +123,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/surat-ditolak/{surat}', [KaprodiController::class, 'tolakSurat'])->can('kaprodiCanDenySuratMasuk', 'surat')->name('tolak-surat-kaprodi');
         Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->can('kaprodiCanPrintSurat', 'surat')->name('print-surat-kaprodi');
         Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->can('kaprodiCanShowLampiranSurat', 'surat')->name('show-file-kaprodi');
+        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->can('kaprodiCanShowPreviewSuratMasuk', 'surat')->name('preview-surat-kaprodi');
 
         Route::get('/', [KaprodiController::class, 'dashboard']);
         Route::get('/profile', [KaprodiController::class, 'profilePage']);
@@ -138,6 +139,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/surat-ditolak/{surat}', [WDController::class, 'tolakSurat'])->name('tolak-surat-wd');
         Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-wd');
         Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-wd');
+        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->name('preview-surat-wd');
         Route::get('/', [WDController::class, 'dashboard']);
         Route::get('/profile', [WDController::class, 'profilePage']);
         Route::put('/profile/update/{user}', [WDController::class, 'updateProfile'])->name('update-profile-wd');
@@ -148,7 +150,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/riwayat-persetujuan', [AkademikController::class, 'riwayatPersetujuan']);
         Route::get('/riwayat-persetujuan/show/{approval}', [AkademikController::class, 'showApproval'])->can('akademikCanShowRiwayatPersetujuan', 'approval')->name('show-approval-akademik');
         Route::get('/surat-masuk/show/{surat}', [AkademikController::class, 'showSuratMasuk'])->can('akademikCanShowSuratMasuk', 'surat')->name('show-surat-akademik');
-        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->can('akademikCanShowPreviewSuratMasuk', 'surat')->name('preview-surat');
+        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->can('akademikCanShowPreviewSuratMasuk', 'surat')->name('preview-surat-akademik');
         Route::put('/surat-disetujui/{surat}', [AkademikController::class, 'setujuiSurat'])->can('akademikCanApproveSuratMasuk', 'surat')->name('setujui-surat-akademik');
         Route::get('/surat-ditolak/{surat}', [AkademikController::class, 'confirmTolakSurat'])->can('akademikCanShowDenySuratMasuk', 'surat')->name('confirm-tolak-surat-akademik');
         Route::put('/surat-ditolak/{surat}', [AkademikController::class, 'tolakSurat'])->can('akademikCanDenySuratMasuk', 'surat')->name('tolak-surat-akademik');
