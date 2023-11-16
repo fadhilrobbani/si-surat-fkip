@@ -75,6 +75,7 @@ class WDResource extends Resource
                         ->required(fn (string $operation): bool => $operation === 'create'),
                     FileUpload::make('tandatangan')
                         ->image()
+                        ->label('Tanda Tangan (Background Image Transparent PNG & Max. 2 MB)')
                         ->directory('ttd')
                         ->columnSpan(2)
 

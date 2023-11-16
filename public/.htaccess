@@ -2,9 +2,12 @@
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
+    # <IfModule mod_headers.c>
+    #     Header set Access-Control-Allow-Origin "*"
+    # </IfModule>
 
     RewriteEngine On
-
+    # Header always set Access-Control-Allow-Origin "*"
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
