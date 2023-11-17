@@ -19,6 +19,7 @@ use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\JenisSuratController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,12 +39,7 @@ Route::get('/login', function () {
     return redirect('/');
 });
 
-// Route::get('/admin/login', function () {
-//     return redirect()->to(Filament::getLoginUrl());
-// });
-// Route::get('/admin/login',function(){
-//     return redirect('/');
-// });
+Route::get('/01HFESRKBBEQMHRZHK7A1DJWR8/{surat}/', [PDFController::class, 'previewSurat'])->middleware('signed')->name('preview-surat-qr');
 Route::get('/register', [AuthController::class, 'create']);
 Route::post('/register/new', [AuthController::class, 'store'])->name('register-user');
 Route::get('/email/verify', function () {

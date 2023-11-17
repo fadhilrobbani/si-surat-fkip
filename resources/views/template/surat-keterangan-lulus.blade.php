@@ -1,3 +1,8 @@
+@php
+    $url = URL::signedRoute('preview-surat-qr', [
+        'surat' => $surat->id,
+    ]);
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
@@ -109,6 +114,11 @@
                 <p>NIP 198108202006041006</p>
             </div>
         </div>
+        @if ($surat->status == 'finished')
+            <img src="data:image/svg;base64, {!! base64_encode(
+                QrCode::format('svg')->size(90)->generate($url),
+            ) !!}" style="position: absolute; bottom:70px">
+        @endif
     </div>
 
 
