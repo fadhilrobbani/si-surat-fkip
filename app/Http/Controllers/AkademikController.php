@@ -14,6 +14,7 @@ use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
 
 class AkademikController extends Controller
 {
@@ -275,6 +276,7 @@ class AkademikController extends Controller
 
     public function riwayatPersetujuan(Request $request)
     {
+        $keyword = $request->get('search');
         $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
             ->where('user_id', '=', auth()->user()->id)
             ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
@@ -287,7 +289,12 @@ class AkademikController extends Controller
                 ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
                 ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
-                ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
+                // ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
+                ->where(function (Builder $query) use ($keyword) {
+
+                    return $query->where('users.username', 'LIKE', '%' .  $keyword . '%')
+                        ->orWhere('surat_tables.data->noSurat', 'LIKE', '%' .  $keyword . '%');
+                })
                 ->where('approvals.isApproved', $request->get('status') != 'ditolak' ? true : false)
                 ->where('approvals.user_id', '=', auth()->user()->id)
                 ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
@@ -310,7 +317,11 @@ class AkademikController extends Controller
                 ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
                 ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
-                ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
+                ->where(function (Builder $query) use ($keyword) {
+
+                    return $query->where('users.username', 'LIKE', '%' .  $keyword . '%')
+                        ->orWhere('surat_tables.data->noSurat', 'LIKE', '%' .  $keyword . '%');
+                })
                 ->where('approvals.isApproved', $request->get('status') != 'ditolak' ? true : false)
                 ->where('approvals.user_id', '=', auth()->user()->id)
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
@@ -321,7 +332,11 @@ class AkademikController extends Controller
                 ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
                 ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
-                ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
+                ->where(function (Builder $query) use ($keyword) {
+
+                    return $query->where('users.username', 'LIKE', '%' .  $keyword . '%')
+                        ->orWhere('surat_tables.data->noSurat', 'LIKE', '%' .  $keyword . '%');
+                })
                 ->where('approvals.user_id', '=', auth()->user()->id)
                 ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
@@ -352,7 +367,11 @@ class AkademikController extends Controller
                 ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
                 ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
-                ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
+                ->where(function (Builder $query) use ($keyword) {
+
+                    return $query->where('users.username', 'LIKE', '%' .  $keyword . '%')
+                        ->orWhere('surat_tables.data->noSurat', 'LIKE', '%' .  $keyword . '%');
+                })
                 ->where('approvals.user_id', '=', auth()->user()->id)
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
                 ->paginate(10);
