@@ -116,7 +116,7 @@
             </div>
         </div>
 
-        @if ($surat->status == 'finished')
+        @if ($surat->status == 'finished' && !request()->hasValidSignature())
             <img src="data:image/svg;base64, {!! base64_encode(
                 QrCode::format('svg')->size(90)->generate($url),
             ) !!}" style="position: absolute; bottom:70px">
