@@ -72,11 +72,11 @@ class KaprodiResource extends Resource
                         ->password()
                         ->dehydrated(fn (?string $state): bool => filled($state))
                         ->required(fn (string $operation): bool => $operation === 'create'),
-                    FileUpload::make('tandatangan')
-                        ->image()
-                        ->label('Tanda Tangan (Background Image Transparent PNG & Max. 2 MB)')
-                        ->directory('ttd')
-                        ->columnSpan(2)
+                    // FileUpload::make('tandatangan')
+                    //     ->image()
+                    //     ->label('Tanda Tangan (Background Image Transparent PNG & Max. 2 MB)')
+                    //     ->directory('ttd')
+                    //     ->columnSpan(2)
                 ])->columns(2),
 
 
@@ -108,8 +108,8 @@ class KaprodiResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
-                ImageColumn::make('tandatangan')
-                    ->toggleable(),
+                // ImageColumn::make('tandatangan')
+                //     ->toggleable(),
                 TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true)

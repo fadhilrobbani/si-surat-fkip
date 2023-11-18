@@ -72,11 +72,11 @@ class AkademikResource extends Resource
                         ->password()
                         ->dehydrated(fn (?string $state): bool => filled($state))
                         ->required(fn (string $operation): bool => $operation === 'create'),
-                    FileUpload::make('tandatangan')
-                        ->image()
-                        ->label('Stempel (Background Image Transparent PNG & Max. 2 MB)')
-                        ->directory('stempel')
-                        ->columnSpan(2)
+                    // FileUpload::make('tandatangan')
+                    //     ->image()
+                    //     ->label('Stempel (Background Image Transparent PNG & Max. 2 MB)')
+                    //     ->directory('stempel')
+                    //     ->columnSpan(2)
                 ])->columns(2),
 
 
@@ -104,9 +104,9 @@ class AkademikResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
-                ImageColumn::make('tandatangan')
-                    ->label('Stempel')
-                    ->toggleable(),
+                // ImageColumn::make('tandatangan')
+                //     ->label('Stempel')
+                //     ->toggleable(),
                 TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true)
