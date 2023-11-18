@@ -227,7 +227,7 @@ class AkademikController extends Controller
         //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
         // }
         $request->validate([
-            'no-surat' => 'required|size:4',
+            'no-surat' => 'required|size:4|unique:surat_tables,data->noSurat',
         ]);
         // SELECT jt.id FROM users u
         // JOIN program_studi_tables pst ON pst.id = u.program_studi_id

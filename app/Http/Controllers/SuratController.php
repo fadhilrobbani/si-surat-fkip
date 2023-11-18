@@ -41,6 +41,17 @@ class SuratController extends Controller
                     ->get()
             ]);
         }
+
+        if ($jenisSurat->slug == 'surat-keterangan-pernah-kuliah') {
+            return view('mahasiswa.formsurat.form-keterangan-pernah-kuliah', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 3)
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->get()
+            ]);
+        }
         return abort(404);
     }
 

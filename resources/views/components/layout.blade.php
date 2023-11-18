@@ -157,7 +157,7 @@
                 [
                     'link' => 'mahasiswa/riwayat-pengajuan-surat',
                     'title' => 'Riwayat Pengajuan',
-                    'icon' => asset('svg/letter.svg'),
+                    'icon' => asset('svg/invoice.svg'),
                     'dropdown' => [],
                 ],
                 [
@@ -183,7 +183,7 @@
                 [
                     'link' => 'staff/riwayat-persetujuan',
                     'title' => 'Riwayat Persetujuan',
-                    'icon' => asset('svg/letter.svg'),
+                    'icon' => asset('svg/invoice.svg'),
                     'dropdown' => [],
                 ],
                 [
@@ -209,7 +209,7 @@
                 [
                     'link' => 'kaprodi/riwayat-persetujuan',
                     'title' => 'Riwayat Persetujuan',
-                    'icon' => asset('svg/letter.svg'),
+                    'icon' => asset('svg/invoice.svg'),
                     'dropdown' => [],
                 ],
                 [
@@ -235,7 +235,7 @@
                 [
                     'link' => 'wd/riwayat-persetujuan',
                     'title' => 'Riwayat Persetujuan',
-                    'icon' => asset('svg/letter.svg'),
+                    'icon' => asset('svg/invoice.svg'),
                     'dropdown' => [],
                 ],
                 [
@@ -261,7 +261,7 @@
                 [
                     'link' => 'akademik/riwayat-persetujuan',
                     'title' => 'Riwayat Persetujuan',
-                    'icon' => asset('svg/letter.svg'),
+                    'icon' => asset('svg/invoice.svg'),
                     'dropdown' => [],
                 ],
                 [
