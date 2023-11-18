@@ -97,7 +97,7 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
-                <p>&nbsp;Reset Password</p>
+                <p>&nbsp;Atur Ulang Kata Sandi</p>
 
             </a>
             <a class="bg-pink-700 p-2 text-white font-medium hover:bg-pink-800  rounded-lg flex {{ $edit ? '' : 'hidden' }}"
@@ -121,7 +121,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="m7 10 2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
-                    <p>&nbsp;Update</p>
+                    <p>&nbsp;Perbarui</p>
 
                 </button>
                 {{-- <button type="submit"
