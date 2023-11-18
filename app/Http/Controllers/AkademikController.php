@@ -223,9 +223,9 @@ class AkademikController extends Controller
 
     public function setujuiSurat(Request $request, Surat $surat)
     {
-        if (!auth()->user()->tandatangan) {
-            return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
-        }
+        // if (!auth()->user()->tandatangan) {
+        //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
+        // }
         $request->validate([
             'no-surat' => 'required|size:4',
         ]);
@@ -244,23 +244,23 @@ class AkademikController extends Controller
         $data['noSurat'] = $request->input('no-surat') ?? str_pad($surat->id, 4, '0', STR_PAD_LEFT);
         $data['note'] = $request->input('note');
         $surat->data = $data;
-        $file = $surat->files;
-        if ($file) {
-            if (isset($file['private'])) {
-                $file['private']['stempel'] =  'storage/' . auth()->user()->tandatangan;
-            } else {
-                $file['private'] = [
-                    'stempel' => 'storage/' . auth()->user()->tandatangan
-                ];
-            }
-        } else {
-            $file = [
-                'private' => [
-                    'stempel' => 'storage/' . auth()->user()->tandatangan,
-                ]
-            ];
-        }
-        $surat->files = $file;
+        // $file = $surat->files;
+        // if ($file) {
+        //     if (isset($file['private'])) {
+        //         $file['private']['stempel'] =  'storage/' . auth()->user()->tandatangan;
+        //     } else {
+        //         $file['private'] = [
+        //             'stempel' => 'storage/' . auth()->user()->tandatangan
+        //         ];
+        //     }
+        // } else {
+        //     $file = [
+        //         'private' => [
+        //             'stempel' => 'storage/' . auth()->user()->tandatangan,
+        //         ]
+        //     ];
+        // }
+        // $surat->files = $file;
         $surat->status = 'finished';
         $surat->save();
 

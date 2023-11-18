@@ -6,7 +6,7 @@
         Staff | Konfirmasi Penolakan
     </x-slot:title>
 
-    <form action="{{ route('tolak-surat', $surat->id) }}" method="POST" class="p-6 text-center">
+    <form action="{{ route('tolak-surat-staff', $surat->id) }}" method="POST" class="p-6 text-center">
         @csrf
         @method('PUT')
         <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true"

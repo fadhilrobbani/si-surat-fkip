@@ -33,22 +33,21 @@ img.logo {
     margin-right: 20px;
 }
 
-.parent{
+.parent {
     position: relative;
-    height: 70px;
-  top: 0;
-  left: 0;
+    height: 100px;
+    top: 0;
+    left: 45px;
 }
 
-.ttd{
+.ttd {
     position: absolute;
     top: 8px;
     left: 0;
     z-index: 100;
 }
 
-.stempel{
+.stempel {
     position: absolute;
     top: -30px;
-
 }

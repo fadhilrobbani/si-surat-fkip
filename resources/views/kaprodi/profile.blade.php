@@ -61,7 +61,7 @@
             </select>
         </div>
 
-        <div class="mb-6">
+        {{-- <div class="mb-6">
             <label for="ttd" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanda Tangan
             </label>
             @if ($edit)
@@ -75,7 +75,7 @@
             @else
                 <img class="w-20" src="{{ asset('storage/' . $authUser->tandatangan) }}" alt="">
             @endif
-        </div>
+        </div> --}}
 
         <div class="col-span-2 flex w-full justify-center gap-2 items-center mx-auto mt-0">
             <a class="bg-yellow-400 p-2 text-white font-medium hover:bg-yellow-500  rounded-lg flex {{ $edit ? 'hidden' : '' }}"

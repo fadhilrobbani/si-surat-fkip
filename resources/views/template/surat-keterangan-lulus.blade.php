@@ -97,7 +97,7 @@
                 <p>Wakil Dekan Bidang Akademik </p>
             </div>
             <div class="parent">
-                @if (isset($surat->files['private']['ttdWD1']))
+                {{-- @if (isset($surat->files['private']['ttdWD1']))
                     <img class="ttd" style="margin-left: 40px" width="100px"
                         src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path($surat->files['private']['ttdWD1']))) }}"
                         alt="ttd">
@@ -106,19 +106,25 @@
                     <img class="stempel" style="margin-left: 40px" width="120px"
                         src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path($surat->files['private']['stempel']))) }}"
                         alt="stempel">
-                @endif
+                @endif --}}
 
+                @if ($surat->status == 'finished')
+                    <img class="ttd" src="data:image/svg;base64, {!! base64_encode(
+                        QrCode::format('svg')->size(90)->generate($url),
+                    ) !!}"
+                        style="position: absolute; bottom:70px">
+                @endif
             </div>
             <div>
                 <p>Dr. Abdul Rahman, M.Si</p>
                 <p>NIP 198108202006041006</p>
             </div>
         </div>
-        @if ($surat->status == 'finished' && !request()->hasValidSignature())
+        {{-- @if ($surat->status == 'finished' && !request()->hasValidSignature())
             <img src="data:image/svg;base64, {!! base64_encode(
                 QrCode::format('svg')->size(90)->generate($url),
             ) !!}" style="position: absolute; bottom:70px">
-        @endif
+        @endif --}}
     </div>
 
 

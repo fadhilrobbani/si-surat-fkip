@@ -57,15 +57,15 @@ class KaprodiController extends Controller
             $user->update($request->only('email'));
             $user->email_verified_at = null;
         }
-        if ($request->hasFile('ttd')) {
-            $request->validate([
-                'ttd' => 'file|mimes:png|max:2048'
-            ]);
-            $uuid = Uuid::uuid4();
-            $file = $request->file('ttd');
-            Storage::disk('public')->put('ttd/' . $uuid, file_get_contents($file));
-            $user->update(['tandatangan' => 'ttd/' . $uuid]);
-        }
+        // if ($request->hasFile('ttd')) {
+        //     $request->validate([
+        //         'ttd' => 'file|mimes:png|max:2048'
+        //     ]);
+        //     $uuid = Uuid::uuid4();
+        //     $file = $request->file('ttd');
+        //     Storage::disk('public')->put('ttd/' . $uuid, file_get_contents($file));
+        //     $user->update(['tandatangan' => 'ttd/' . $uuid]);
+        // }
         $user->update($request->only('name', 'program-studi'));
         return redirect('/kaprodi/profile')->with('success', 'Sukses mengupdate data');
     }
@@ -258,9 +258,9 @@ class KaprodiController extends Controller
 
     public function setujuiSurat(Request $request, Surat $surat)
     {
-        if (!auth()->user()->tandatangan) {
-            return redirect()->back()->withErrors('Tanda Tangan tidak boleh kosong, silahkan atur terlebih dahulu di profil');
-        }
+        // if (!auth()->user()->tandatangan) {
+        //     return redirect()->back()->withErrors('Tanda Tangan tidak boleh kosong, silahkan atur terlebih dahulu di profil');
+        // }
         // SELECT jt.id FROM users u
         // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
         // JOIN jurusan_tables jt ON jt.id = pst.jurusan_id ;
@@ -276,23 +276,23 @@ class KaprodiController extends Controller
 
         $surat->current_user_id = $request->input('penerima');
         // $surat->penerima_id = $akademik->id;
-        $file = $surat->files;
-        if ($file) {
-            if (isset($file['private'])) {
-                $file['private']['ttdKaprodi'] =  'storage/' . auth()->user()->tandatangan;
-            } else {
-                $file['private'] = [
-                    'ttdKaprodi' => 'storage/' . auth()->user()->tandatangan
-                ];
-            }
-        } else {
-            $file = [
-                'private' => [
-                    'ttdKaprodi' => 'storage/' . auth()->user()->tandatangan,
-                ]
-            ];
-        }
-        $surat->files = $file;
+        // $file = $surat->files;
+        // if ($file) {
+        //     if (isset($file['private'])) {
+        //         $file['private']['ttdKaprodi'] =  'storage/' . auth()->user()->tandatangan;
+        //     } else {
+        //         $file['private'] = [
+        //             'ttdKaprodi' => 'storage/' . auth()->user()->tandatangan
+        //         ];
+        //     }
+        // } else {
+        //     $file = [
+        //         'private' => [
+        //             'ttdKaprodi' => 'storage/' . auth()->user()->tandatangan,
+        //         ]
+        //     ];
+        // }
+        // $surat->files = $file;
         $surat->save();
 
         Approval::create([

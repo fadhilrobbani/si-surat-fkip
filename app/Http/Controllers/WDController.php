@@ -220,27 +220,27 @@ class WDController extends Controller
 
     public function setujuiSurat(Request $request, Surat $surat)
     {
-        if (!auth()->user()->tandatangan) {
-            return redirect()->back()->withErrors('Tanda Tangan tidak boleh kosong, silahkan atur terlebih dahulu di profil');
-        }
+        // if (!auth()->user()->tandatangan) {
+        //     return redirect()->back()->withErrors('Tanda Tangan tidak boleh kosong, silahkan atur terlebih dahulu di profil');
+        // }
         $surat->current_user_id = $request->input('penerima');
-        $file = $surat->files;
-        if ($file) {
-            if (isset($file['private'])) {
-                $file['private']['ttdWD1'] =  'storage/' . auth()->user()->tandatangan;
-            } else {
-                $file['private'] = [
-                    'ttdWD1' => 'storage/' . auth()->user()->tandatangan
-                ];
-            }
-        } else {
-            $file = [
-                'private' => [
-                    'ttdWD1' => 'storage/' . auth()->user()->tandatangan,
-                ]
-            ];
-        }
-        $surat->files = $file;
+        // $file = $surat->files;
+        // if ($file) {
+        //     if (isset($file['private'])) {
+        //         $file['private']['ttdWD1'] =  'storage/' . auth()->user()->tandatangan;
+        //     } else {
+        //         $file['private'] = [
+        //             'ttdWD1' => 'storage/' . auth()->user()->tandatangan
+        //         ];
+        //     }
+        // } else {
+        //     $file = [
+        //         'private' => [
+        //             'ttdWD1' => 'storage/' . auth()->user()->tandatangan,
+        //         ]
+        //     ];
+        // }
+        // $surat->files = $file;
         // $surat->current_user_id = $surat->penerima_id;
         // $surat->penerima_id = $surat->pengaju_id;
         $surat->save();

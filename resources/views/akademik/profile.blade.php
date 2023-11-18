@@ -58,21 +58,21 @@
                 @endforeach
             </select>
         </div>
-        <div class="mb-6">
-            <label for="stempel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stempel
-            </label>
-            @if ($edit)
-                <input
-                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    aria-describedby="file_input_help" id="stempel" type="file" name="stempel" accept=".png"
-                    max-size="2048">
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">File .PNG (Background
-                    Transparan MAX.
-                    2 MB).</p>
-            @else
-                <img class="w-20" src="{{ asset('storage/' . $authUser->tandatangan) }}" alt="">
-            @endif
-        </div>
+        {{-- <div class="mb-6">
+                <label for="stempel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stempel
+                </label>
+                @if ($edit)
+                    <input
+                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                        aria-describedby="file_input_help" id="stempel" type="file" name="stempel" accept=".png"
+                        max-size="2048">
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">File .PNG (Background
+                        Transparan MAX.
+                        2 MB).</p>
+                @else
+                    <img class="w-20" src="{{ asset('storage/' . $authUser->tandatangan) }}" alt="">
+                @endif
+            </div> --}}
 
 
         <div class="col-span-2 flex w-full justify-center gap-2 items-center mx-auto mt-0">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\NotificationCreated;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Filament\Facades\Filament;
@@ -32,14 +33,17 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 |
 */
 
-
+Route::get('testnotif', function () {
+    NotificationCreated::dispatch('woi');
+    return view('previews.show-surat-qr');
+});
 
 Route::get('/home', [AuthController::class, 'home']);
 Route::get('/login', function () {
     return redirect('/');
 });
 
-Route::get('/01HFESRKBBEQMHRZHK7A1DJWR8/{surat}/', [PDFController::class, 'previewSurat'])->middleware('signed')->name('preview-surat-qr');
+Route::get('/surat-terverifikasi/{surat}/', [PDFController::class, 'previewSurat'])->middleware('signed')->name('preview-surat-qr');
 Route::get('/register', [AuthController::class, 'create']);
 Route::post('/register/new', [AuthController::class, 'store'])->name('register-user');
 Route::get('/email/verify', function () {
@@ -91,11 +95,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/surat-masuk/show/{surat}', [StaffController::class, 'showSuratMasuk'])->can('staffCanShowSuratMasuk', 'surat')->name('show-surat-staff');
         Route::get('/riwayat-persetujuan', [StaffController::class, 'riwayatPersetujuan']);
         Route::get('/riwayat-persetujuan/show/{approval}', [StaffController::class, 'showApproval'])->can('staffCanShowRiwayatPersetujuan', 'approval')->name('show-approval-staff');
-        Route::put('/surat-disetujui/{surat}', [StaffController::class, 'setujuiSurat'])->can('staffCanApproveSuratMasuk', 'surat')->name('setujui-surat');
-        Route::get('/surat-ditolak/{surat}', [StaffController::class, 'confirmTolakSurat'])->can('staffCanShowDenySuratMasuk', 'surat')->name('confirm-tolak-surat');
-        Route::put('/surat-ditolak/{surat}', [StaffController::class, 'tolakSurat'])->can('staffCanDenySuratMasuk', 'surat')->name('tolak-surat');
+        Route::put('/surat-disetujui/{surat}', [StaffController::class, 'setujuiSurat'])->can('staffCanApproveSuratMasuk', 'surat')->name('setujui-surat-staff');
+        Route::get('/surat-ditolak/{surat}', [StaffController::class, 'confirmTolakSurat'])->can('staffCanShowDenySuratMasuk', 'surat')->name('confirm-tolak-surat-staff');
+        Route::put('/surat-ditolak/{surat}', [StaffController::class, 'tolakSurat'])->can('staffCanDenySuratMasuk', 'surat')->name('tolak-surat-staff');
         Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->can('staffCanPrintSurat', 'surat')->name('print-surat-staff');
         Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->can('staffCanShowLampiranSurat', 'surat')->name('show-file-staff');
+        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->name('preview-surat-staff');
         Route::get('/', [StaffController::class, 'dashboard']);
         Route::get('/profile', [StaffController::class, 'profilePage']);
         Route::put('/profile/update/{user}', [StaffController::class, 'updateProfile'])->name('update-profile-staff');

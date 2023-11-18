@@ -134,7 +134,7 @@
                             placeholder="Masukkan 4 digit no. surat, misal 0001" required>
                     </div>
 
-                    <div class="w-full max-w-[400px]">
+                    {{-- <div class="w-full max-w-[400px]">
                         <label for="stempel"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stempel yang
                             digunakan (Jika tidak sesuai/tidak muncul, Anda dapat mengubahnya di profil akun <a
@@ -143,7 +143,7 @@
                             class="bg-gray-50 hidden border cur border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             value="ok">
                         <img class="w-20" src="{{ asset('storage/' . $authUser->tandatangan) }}" alt="">
-                    </div>
+                    </div> --}}
                     <div class="w-full max-w-[400px]">
                         <label for="note"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catatan
