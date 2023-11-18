@@ -21,7 +21,7 @@
                 <h1 class="text-xl  text-slate-700 font-semibold text-center mb-4 mx-auto">Surat Menyurat
                     Akademik FKIP
                 </h1>
-                <h1 class=" text-sm mt-0 text-slate-700  text-center mb-4 mx-auto">Silahkan login dengan
+                <h1 class=" text-sm mt-0 text-slate-700  text-center mb-4 mx-auto">Silahkan masuk dengan
                     akun
                     yang
                     terdaftar </h1>

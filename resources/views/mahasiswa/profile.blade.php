@@ -11,7 +11,7 @@
     <h1 class="mx-auto text-center font-bold mb-2">Pengaturan Akun</h1>
 
     <form action="{{ route('update-profile', $authUser->id) }}" method="POST"
-        class="md:grid flex  md:grid-cols-2 gap-4 justify-center mx-auto flex-col px-12  w-full">
+        class="md:grid flex  md:grid-cols-2 gap-2 justify-center mx-auto flex-col w-full ">
         @csrf
         @method('PUT')
         <div class="mb-6">
@@ -76,14 +76,16 @@
 
             </a>
             <a class="bg-rose-600 p-2 text-white font-medium hover:bg-rose-700  rounded-lg flex {{ $edit ? 'hidden' : '' }}"
-            href="{{ route('password.request') }}">
+                href="{{ route('password.request') }}">
 
-            <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-              </svg>
-            <p>&nbsp;Reset Password</p>
+                <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                <p>&nbsp;Reset Password</p>
 
-        </a>
+            </a>
             <a class="bg-pink-700 p-2 text-white font-medium hover:bg-pink-800  rounded-lg flex {{ $edit ? '' : 'hidden' }}"
                 href="{{ url()->current() }}">
 
@@ -96,15 +98,18 @@
 
             </a>
             @if ($edit)
-            <button class="bg-blue-700 p-2 text-white font-medium hover:bg-blue-800  rounded-lg flex {{ $edit ? '' : 'hidden' }}"
-           type="submit">
+                <button
+                    class="bg-blue-700 p-2 text-white font-medium hover:bg-blue-800  rounded-lg flex {{ $edit ? '' : 'hidden' }}"
+                    type="submit">
 
-           <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 10 2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-          </svg>
-            <p>&nbsp;Update</p>
+                    <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m7 10 2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                    <p>&nbsp;Update</p>
 
-        </button>
+                </button>
                 {{-- <button type="submit"
                     class="text-white  rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button> --}}
             @endif

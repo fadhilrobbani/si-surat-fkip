@@ -12,7 +12,7 @@
     <br>
     <div class="flex flex-col gap-4 md:flex-row justify-evenly items-start">
 
-        <div class="relative overflow-x-auto shadow-lg sm:rounded-lg">
+        <div class="shadow-lg w-full overflow-x-auto sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <tbody>
                     <tr class="border-b border-gray-200 dark:border-gray-700">

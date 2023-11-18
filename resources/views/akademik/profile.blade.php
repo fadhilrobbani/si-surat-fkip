@@ -11,7 +11,7 @@
     <h1 class="mx-auto text-center font-bold mb-2">Pengaturan Akun</h1>
 
     <form action="{{ route('update-profile-akademik', $authUser->id) }}" enctype="multipart/form-data" method="POST"
-        class="md:grid flex  md:grid-cols-2 gap-4 justify-center mx-auto flex-col px-12  w-full">
+        class="md:grid flex  md:grid-cols-2 gap-4 justify-center mx-auto flex-col  w-full">
         @csrf
         @method('PUT')
         <div class="mb-6">
