@@ -5,7 +5,8 @@
     <x-slot:title>
         Mahasiswa | Dashboard
     </x-slot:title>
-    <div class="flex sm:flex-row flex-col-reverse items-center justify-evenly min-h-fit  p-4 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+    <div
+        class="flex sm:flex-row flex-col-reverse items-center justify-evenly min-h-fit  p-4 mb-4 rounded bg-gray-50 dark:bg-gray-800">
         <div>
             <p class="font-bold text-2xl text-indigo-400">Selamat Datang {{ $authUser->name }}!</p>
             <br>
@@ -17,14 +18,15 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
         <a href="/mahasiswa/riwayat-pengajuan-surat">
             <div
-                class="flex items-center gap-2 flex-col hover:bg-slate-300 justify-center rounded p-4  bg-gray-50 h-28 dark:bg-gray-800">
+                class="flex items-center h-full gap-2 flex-col hover:bg-slate-300 justify-center rounded p-4  bg-gray-50 h-28 dark:bg-gray-800">
 
                 <p class="font-semibold text-slate-600 text-lg">Riwayat Pengajuan Surat Anda</p>
-                <div class="text-white text-sm font-semibold flex gap-2 ">
+                <div class="text-white flex-col sm:flex-row text-sm font-semibold flex gap-2 ">
                     <div class="bg-green-400 p-2 rounded-lg">Selesai: {{ count($pengajuanSelesai->toArray()) }}</div>
                     <div class="bg-yellow-400 p-2 rounded-lg">Diproses: {{ count($pengajuanDiproses->toArray()) }}</div>
                     <div class="bg-rose-500 p-2 rounded-lg">Ditolak: {{ count($pengajuanDitolak->toArray()) }}</div>
-                    <div class="bg-rose-700 p-2 rounded-lg">Kadaluarsa: {{ count($pengajuanKadaluarsa->toArray()) }}</div>
+                    <div class="bg-rose-700 p-2 rounded-lg">Kadaluarsa: {{ count($pengajuanKadaluarsa->toArray()) }}
+                    </div>
                 </div>
             </div>
         </a>
@@ -102,7 +104,8 @@
                             Pilih surat yang ingin diajukan. Lalu tekan tombol "Selanjutnya"
                         </li>
                         <li>
-                            Isi form yang disediakan beserta persyaratannya seperti lampiran file jika diperlukan. Jika sudah tekan tombol submit.
+                            Isi form yang disediakan beserta persyaratannya seperti lampiran file jika diperlukan. Jika
+                            sudah tekan tombol submit.
                         </li>
                         <li>
                             Surat berhasil diajukan
@@ -127,7 +130,11 @@
             <div id="accordion-color-body-2" class="hidden" aria-labelledby="accordion-color-heading-2">
                 <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
                     <p class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
-                        Anda cukup menunggu hingga surat yang diajukan disetujui oleh semua yang terkait. Untuk melihat proses dan riwayat pengajuan, Anda bisa lihat di menu <a class="underline" href="/mahasiswa/riwayat-pengajuan-surat">Riwayat Pengajuan</a>. Anda dapat melihat detail surat yang anda ajukan dengan menekan tombol lihat atau membatalkan surat dengan tombol batal jika terjadi kesalahan. Surat yang dibatalkan tidak akan diteruskan lagi.
+                        Anda cukup menunggu hingga surat yang diajukan disetujui oleh semua yang terkait. Untuk melihat
+                        proses dan riwayat pengajuan, Anda bisa lihat di menu <a class="underline"
+                            href="/mahasiswa/riwayat-pengajuan-surat">Riwayat Pengajuan</a>. Anda dapat melihat detail
+                        surat yang anda ajukan dengan menekan tombol lihat atau membatalkan surat dengan tombol batal
+                        jika terjadi kesalahan. Surat yang dibatalkan tidak akan diteruskan lagi.
                     </p>
 
                 </div>
@@ -149,16 +156,21 @@
                 <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
                     <ul class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
                         <li>
-                            Status on_process berarti surat sedang dalam proses menunggu untuk disetujui oleh semua pihak
+                            Status on_process berarti surat sedang dalam proses menunggu untuk disetujui oleh semua
+                            pihak
                         </li>
                         <li>
-                            Status denied berarti surat ditolak oleh salah satu pihak yang artinya surat tidak dapat diteruskan lagi. Anda dapat melihat alasan penolakan dan siapa yang menolak di detail lihat surat.
+                            Status denied berarti surat ditolak oleh salah satu pihak yang artinya surat tidak dapat
+                            diteruskan lagi. Anda dapat melihat alasan penolakan dan siapa yang menolak di detail lihat
+                            surat.
                         </li>
                         <li>
-                            Status finished berarti surat sudah disetujui oleh semua pihak. Surat yang anda ajukan akan dikirim ke email Anda. Anda juga dapat mencetaknya di detail lihat surat.
+                            Status finished berarti surat sudah disetujui oleh semua pihak. Surat yang anda ajukan akan
+                            dikirim ke email Anda. Anda juga dapat mencetaknya di detail lihat surat.
                         </li>
                         <li>
-                            Status expired berarti surat sudah melewati masa aktif pengajuan. Artinya surat tidak dapat diteruskan lagi
+                            Status expired berarti surat sudah melewati masa aktif pengajuan. Artinya surat tidak dapat
+                            diteruskan lagi
                         </li>
 
                     </ul>
@@ -181,7 +193,8 @@
             <div id="accordion-color-body-4" class="hidden" aria-labelledby="accordion-color-heading-4">
                 <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
                     <p class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
-                      Anda dapat melihat alasan mengapa surat anda ditolak di detail lihat riwayat pengajuan surat. Anda dapat mengajukan surat kembali mengikuti saran dari alasan penolakan tersebut
+                        Anda dapat melihat alasan mengapa surat anda ditolak di detail lihat riwayat pengajuan surat.
+                        Anda dapat mengajukan surat kembali mengikuti saran dari alasan penolakan tersebut
                     </p>
 
                 </div>
@@ -191,7 +204,8 @@
                     class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800"
                     data-accordion-target="#accordion-color-body-5" aria-expanded="false"
                     aria-controls="accordion-color-body-5">
-                    <span>Bagaimana cara mengetahui surat saya sudah disetujui dan di mana saya dapat mencetaknya?</span>
+                    <span>Bagaimana cara mengetahui surat saya sudah disetujui dan di mana saya dapat
+                        mencetaknya?</span>
                     <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -202,7 +216,9 @@
             <div id="accordion-color-body-5" class="hidden" aria-labelledby="accordion-color-heading-5">
                 <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
                     <p class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
-                      Kami akan mengirimkan pesan bahwa surat Anda telah disetujui melalui email yang Anda daftarkan. Anda juga dapat melihat surat yang disetujui dengan melihat status "finished" pada surat. File surat akan kami lampirkan di email atau dapat juga dicetak manual di lihat riwayat pengajuan.
+                        Kami akan mengirimkan pesan bahwa surat Anda telah disetujui melalui email yang Anda daftarkan.
+                        Anda juga dapat melihat surat yang disetujui dengan melihat status "finished" pada surat. File
+                        surat akan kami lampirkan di email atau dapat juga dicetak manual di lihat riwayat pengajuan.
                     </p>
 
                 </div>

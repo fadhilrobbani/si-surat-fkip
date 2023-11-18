@@ -32,13 +32,13 @@
                     class="absolute flex items-center justify-center w-8 h-8 bg-green-200 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
                     <svg class="w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5" />
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 5.917 5.724 10.5 15 1.5" />
                     </svg>
                 </span>
                 <h3 class="font-medium leading-tight">Staff</h3>
                 <p class="text-sm">Disetujui</p>
-            @elseif ($surat->status == 'denied')
+            @elseif ($surat->status == 'denied' || ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process'))
                 <span
                     class="absolute flex items-center justify-center w-8 h-8 bg-pink-300 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
                     {{-- <svg class="w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true"
@@ -49,8 +49,8 @@
 
                     <svg class="w-3.5 h-3.5 text-rose-700 dark:text-rose-700" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                     </svg>
 
                 </span>
@@ -78,20 +78,20 @@
                     class="absolute flex items-center justify-center w-8 h-8 bg-green-200 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
                     <svg class="w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5" />
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 5.917 5.724 10.5 15 1.5" />
                     </svg>
                 </span>
                 <h3 class="font-medium leading-tight">Kaprodi</h3>
                 <p class="text-sm">Disetujui</p>
-            @elseif ($surat->status == 'denied')
+            @elseif ($surat->status == 'denied' || ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process'))
                 <span
                     class="absolute flex items-center justify-center w-8 h-8 bg-pink-300 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
 
                     <svg class="w-3.5 h-3.5 text-rose-700 dark:text-rose-700" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                     </svg>
 
                 </span>
@@ -119,20 +119,20 @@
                     class="absolute flex items-center justify-center w-8 h-8 bg-green-200 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
                     <svg class="w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5" />
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 5.917 5.724 10.5 15 1.5" />
                     </svg>
                 </span>
                 <h3 class="font-medium leading-tight">Wakil Dekan 1</h3>
                 <p class="text-sm">Disetujui</p>
-            @elseif ($surat->status == 'denied')
+            @elseif ($surat->status == 'denied' || ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process'))
                 <span
                     class="absolute flex items-center justify-center w-8 h-8 bg-pink-300 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
 
                     <svg class="w-3.5 h-3.5 text-rose-700 dark:text-rose-700" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                     </svg>
 
                 </span>
@@ -160,20 +160,20 @@
                     class="absolute flex items-center justify-center w-8 h-8 bg-green-200 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
                     <svg class="w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5" />
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 5.917 5.724 10.5 15 1.5" />
                     </svg>
                 </span>
                 <h3 class="font-medium leading-tight">Akademik</h3>
                 <p class="text-sm">Disetujui</p>
-            @elseif ($surat->status == 'denied')
+            @elseif ($surat->status == 'denied' || ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process'))
                 <span
                     class="absolute flex items-center justify-center w-8 h-8 bg-pink-300 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
 
                     <svg class="w-3.5 h-3.5 text-rose-700 dark:text-rose-700" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                     </svg>
 
                 </span>

@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>{{ $title ?? 'E-surat FKIP' }}</title>
     <script src="//unpkg.com/alpinejs" defer></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -69,18 +70,18 @@
                                     <li>
                                         <a href="/"
                                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            role="menuitem">Dashboard</a>
+                                            role="menuitem">Dasbor</a>
                                     </li>
                                     <li>
                                         <a href="{{ '/' . $authUser->role->name . '/profile' }}"
                                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            role="menuitem">Settings</a>
+                                            role="menuitem">Profil</a>
                                     </li>
 
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            role="menuitem">Sign out</a>
+                                            role="menuitem">Keluar</a>
                                     </li>
                                 </ul>
                             </div>
@@ -97,7 +98,7 @@
             // 'admin' => [
             //     [
             //         'link' => 'admin',
-            //         'title' => 'Dashboard',
+            //         'title' => 'Dasbor',
             //         'icon' => asset('svg/piechart.svg'),
             //         'dropdown' => [],
             //     ],
@@ -144,7 +145,7 @@
             'mahasiswa' => [
                 [
                     'link' => 'mahasiswa',
-                    'title' => 'Dashboard',
+                    'title' => 'Dasbor',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -162,7 +163,7 @@
                 ],
                 [
                     'link' => 'logout',
-                    'title' => 'Logout',
+                    'title' => 'Keluar',
                     'icon' => asset('svg/signout.svg'),
                     'dropdown' => [],
                 ],
@@ -170,7 +171,7 @@
             'staff' => [
                 [
                     'link' => 'staff',
-                    'title' => 'Dashboard',
+                    'title' => 'Dasbor',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -188,7 +189,7 @@
                 ],
                 [
                     'link' => 'logout',
-                    'title' => 'Logout',
+                    'title' => 'Keluar',
                     'icon' => asset('svg/signout.svg'),
                     'dropdown' => [],
                 ],
@@ -196,7 +197,7 @@
             'kaprodi' => [
                 [
                     'link' => 'kaprodi',
-                    'title' => 'Dashboard',
+                    'title' => 'Dasbor',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -214,7 +215,7 @@
                 ],
                 [
                     'link' => 'logout',
-                    'title' => 'Logout',
+                    'title' => 'Keluar',
                     'icon' => asset('svg/signout.svg'),
                     'dropdown' => [],
                 ],
@@ -222,7 +223,7 @@
             'wd' => [
                 [
                     'link' => 'wd',
-                    'title' => 'Dashboard',
+                    'title' => 'Dasbor',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -240,7 +241,7 @@
                 ],
                 [
                     'link' => 'logout',
-                    'title' => 'Logout',
+                    'title' => 'Keluar',
                     'icon' => asset('svg/signout.svg'),
                     'dropdown' => [],
                 ],
@@ -248,7 +249,7 @@
             'akademik' => [
                 [
                     'link' => 'akademik',
-                    'title' => 'Dashboard',
+                    'title' => 'Dasbor',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -266,7 +267,7 @@
                 ],
                 [
                     'link' => 'logout',
-                    'title' => 'Logout',
+                    'title' => 'Keluar',
                     'icon' => asset('svg/signout.svg'),
                     'dropdown' => [],
                 ],

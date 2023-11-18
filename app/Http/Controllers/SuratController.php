@@ -162,4 +162,11 @@ class SuratController extends Controller
         }
         return redirect()->back()->with('deleted', 'Gagal membatalkan pengajuan surat');
     }
+
+    public function previewSuratQR(Surat $surat)
+    {
+        return view('previews.show-surat-qr', [
+            'surat' => $surat
+        ]);
+    }
 }

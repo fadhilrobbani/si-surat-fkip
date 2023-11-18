@@ -43,7 +43,8 @@ Route::get('/login', function () {
     return redirect('/');
 });
 
-Route::get('/surat-terverifikasi/{surat}/', [PDFController::class, 'previewSurat'])->middleware('signed')->name('preview-surat-qr');
+Route::get('/surat-terverifikasi/{surat}', [SuratController::class, 'previewSuratQR'])->middleware('signed')->name('preview-surat-qr');
+Route::get('/surat-terverifikasi/{surat}/cetak', [PDFController::class, 'previewSurat'])->middleware('signed')->name('cetak-surat-qr');
 Route::get('/register', [AuthController::class, 'create']);
 Route::post('/register/new', [AuthController::class, 'store'])->name('register-user');
 Route::get('/email/verify', function () {
