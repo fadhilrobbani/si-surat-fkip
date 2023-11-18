@@ -33,7 +33,7 @@
     @endforeach --}}
 
     <div class="overflow-x-auto">
-        <form  id="filter-form" method="GET"
+        <form id="filter-form" method="GET"
             class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
             <div class="w-full md:w-1/2">
                 <div class="flex items-center">
@@ -79,6 +79,8 @@
                             <option {{ request()->get('status') == $status ? 'selected' : '' }}
                                 value="{{ $status }}">{{ $status }}</option>
                         @endforeach
+                        <option {{ request()->get('status') == 'expired' ? 'selected' : '' }} value="expired">expired
+                        </option>
 
                     </select>
 
@@ -88,8 +90,9 @@
 
                     <select id="order" name="order"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option {{ request()->get('order') != 'asc' ? 'selected' : '' }} value="desc" selected>Terbaru</option>
-                        <option {{ request()->get('order') == 'asc' ? 'selected' : '' }} value="asc" >Terlama</option>
+                        <option {{ request()->get('order') != 'asc' ? 'selected' : '' }} value="desc" selected>Terbaru
+                        </option>
+                        <option {{ request()->get('order') == 'asc' ? 'selected' : '' }} value="asc">Terlama</option>
 
 
                     </select>
