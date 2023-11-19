@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
-class User extends Authenticatable implements MustVerifyEmail,FilamentUser
+class User extends Authenticatable implements MustVerifyEmail, FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable, CanResetPassword;
     use HasUuids;
@@ -34,7 +34,7 @@ class User extends Authenticatable implements MustVerifyEmail,FilamentUser
         'email',
         'password',
         'role_id',
-        'tandatangan',
+        'nip',
         'program_studi_id',
         'jurusan_id',
         'email_verified_at'
@@ -58,12 +58,12 @@ class User extends Authenticatable implements MustVerifyEmail,FilamentUser
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'id' =>'string'
+        'id' => 'string'
     ];
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->role->id == 1 ;
+        return $this->role->id == 1;
     }
 
     public function role()

@@ -39,6 +39,7 @@ class KaprodiController extends Controller
         $request->validate([
             'username' => 'string|required|alpha_dash',
             'name' => 'string|required',
+            'nip' => 'required',
             'email' => 'email|required',
             'program-studi' => 'required'
         ]);
@@ -48,6 +49,13 @@ class KaprodiController extends Controller
                 'username' => 'unique:users,username'
             ]);
             $user->update($request->only('username'));
+        }
+
+        if ($request->input('nip') != $user->nip) {
+            $request->validate([
+                'nip' => 'unique:users,nip'
+            ]);
+            $user->update($request->only('nip'));
         }
 
         if ($request->input('email') != $user->email) {

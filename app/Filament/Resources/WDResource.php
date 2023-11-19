@@ -48,10 +48,14 @@ class WDResource extends Resource
                         ->placeholder('Username')
                         ->required()
                         ->alphaDash()
-                        ->unique(ignorable: fn ($record) => $record)
-                        ->columnSpan(2),
+                        ->unique(ignorable: fn ($record) => $record),
                     TextInput::make('name')
                         ->placeholder('Masukkan nama lengkap')
+                        ->required(),
+                    TextInput::make('nip')
+                        ->label('NIP')
+                        ->placeholder('NIP')
+                        ->unique(ignorable: fn ($record) => $record)
                         ->required(),
                     TextInput::make('email')
                         ->email()
@@ -95,6 +99,11 @@ class WDResource extends Resource
                     ->toggleable()
                     ->sortable(),
                 TextColumn::make('name')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
+                TextColumn::make('nip')
+                    ->label('NIP')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),

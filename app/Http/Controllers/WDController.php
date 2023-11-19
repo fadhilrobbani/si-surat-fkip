@@ -42,6 +42,7 @@ class WDController extends Controller
             'username' => 'string|required|alpha_dash',
             'name' => 'string|required',
             'email' => 'email|required',
+            'nip' => 'required'
         ]);
 
         if ($request->input('username') != $user->username) {
@@ -57,6 +58,13 @@ class WDController extends Controller
             ]);
             $user->update($request->only('email'));
             $user->email_verified_at = null;
+        }
+
+        if ($request->input('nip') != $user->nip) {
+            $request->validate([
+                'nip' => 'unique:users,nip'
+            ]);
+            $user->update($request->only('nip'));
         }
 
 

@@ -53,13 +53,19 @@ class KaprodiResource extends Resource
                     TextInput::make('name')
                         ->placeholder('Masukkan nama lengkap')
                         ->required(),
+                    TextInput::make('nip')
+                        ->label('NIP')
+                        ->placeholder('NIP')
+                        ->unique(ignorable: fn ($record) => $record)
+                        ->required(),
                     TextInput::make('email')
                         ->email()
                         ->unique(ignorable: fn ($record) => $record)
                         ->placeholder('email@example.com')
                         ->required(),
                     Select::make('program_studi_id')
-                        ->relationship('programStudi', 'name'),
+                        ->relationship('programStudi', 'name')
+                        ->columnSpan(2),
                     // Select::make('jurusan_id')
                     //     ->relationship('jurusan', 'name'),
 
@@ -94,6 +100,11 @@ class KaprodiResource extends Resource
                     ->toggleable()
                     ->sortable(),
                 TextColumn::make('name')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
+                TextColumn::make('nip')
+                    ->label('NIP')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
