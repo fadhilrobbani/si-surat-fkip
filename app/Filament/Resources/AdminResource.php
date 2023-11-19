@@ -47,6 +47,7 @@ class AdminResource extends Resource
                     TextInput::make('username')
                         ->placeholder('Username')
                         ->required()
+                        ->alphaDash()
                         ->unique(ignorable: fn ($record) => $record)
                         ->columnSpan(2),
 

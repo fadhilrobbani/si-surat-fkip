@@ -47,6 +47,7 @@ class WDResource extends Resource
                     TextInput::make('username')
                         ->placeholder('Username')
                         ->required()
+                        ->alphaDash()
                         ->unique(ignorable: fn ($record) => $record)
                         ->columnSpan(2),
                     TextInput::make('name')

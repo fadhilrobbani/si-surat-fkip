@@ -47,6 +47,7 @@ class KaprodiResource extends Resource
 
                     TextInput::make('username')
                         ->placeholder('Username')
+                        ->alphaDash()
                         ->unique(ignorable: fn ($record) => $record)
                         ->required(),
                     TextInput::make('name')

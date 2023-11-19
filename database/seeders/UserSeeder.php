@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
                 'email' => 'admin@gmail.com',
                 'password' => bcrypt('admin'),
                 'role_id' => 1,
+                'nip' => null,
                 'jurusan_id' => null,
                 'program_studi_id' => null,
                 'email_verified_at' => now()
@@ -32,6 +33,7 @@ class UserSeeder extends Seeder
                 'email' => 'mahasiswabk@gmail.com',
                 'password' => bcrypt('password'),
                 'role_id' => 2,
+                'nip' => null,
                 'jurusan_id' => null,
                 'program_studi_id' => 3,
                 'email_verified_at' => now()
@@ -42,6 +44,7 @@ class UserSeeder extends Seeder
                 'email' => 'mahasiswafisika@gmail.com',
                 'password' => bcrypt('password'),
                 'role_id' => 2,
+                'nip' => null,
                 'jurusan_id' => null,
                 'program_studi_id' => 7,
                 'email_verified_at' => now()
@@ -52,6 +55,7 @@ class UserSeeder extends Seeder
                 'email' => 'mahasiswapgsd@gmail.com',
                 'password' => bcrypt('password'),
                 'role_id' => 2,
+                'nip' => null,
                 'jurusan_id' => null,
                 'program_studi_id' => 9,
                 'email_verified_at' => now()
@@ -62,6 +66,7 @@ class UserSeeder extends Seeder
                 'email' => 'staffbk@gmail.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
+                'nip' => null,
                 'jurusan_id' => null,
                 'program_studi_id' => 3,
                 'email_verified_at' => now()
@@ -72,6 +77,7 @@ class UserSeeder extends Seeder
                 'email' => 'staffpgsd@gmail.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
+                'nip' => null,
                 'jurusan_id' => null,
                 'program_studi_id' => 9,
                 'email_verified_at' => now()
@@ -82,6 +88,7 @@ class UserSeeder extends Seeder
                 'email' => 'stafffisika@gmail.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
+                'nip' => null,
                 'jurusan_id' => null,
                 'program_studi_id' => 7,
                 'email_verified_at' => now()
@@ -92,6 +99,7 @@ class UserSeeder extends Seeder
                 'email' => 'kaprodibk@gmail.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
+                'nip' => null,
                 'jurusan_id' => null,
                 'program_studi_id' => 3,
                 'email_verified_at' => now()
@@ -102,6 +110,7 @@ class UserSeeder extends Seeder
                 'email' => 'kaprodipgsd@gmail.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
+                'nip' => null,
                 'jurusan_id' => null,
                 'program_studi_id' => 9,
                 'email_verified_at' => now()
@@ -112,16 +121,18 @@ class UserSeeder extends Seeder
                 'email' => 'kaprodifisika@gmail.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
+                'nip' => null,
                 'jurusan_id' => null,
                 'program_studi_id' => 7,
                 'email_verified_at' => now()
             ],
             [
                 'username' => 'wd1',
-                'name' => 'wd1',
+                'name' => 'Abdul Rahman, S.Si., M.Si., Ph.D',
                 'email' => 'wd1@gmail.com',
                 'password' => bcrypt('password'),
                 'role_id' => 5,
+                'nip' => '19810820 200604 1 006',
                 'jurusan_id' => null,
                 'program_studi_id' => null,
                 'email_verified_at' => now()
@@ -132,6 +143,7 @@ class UserSeeder extends Seeder
                 'email' => 'akademikjip@gmail.com',
                 'password' => bcrypt('password'),
                 'role_id' => 6,
+                'nip' => null,
                 'jurusan_id' => 1,
                 'program_studi_id' => null,
                 'email_verified_at' => now()
@@ -142,6 +154,7 @@ class UserSeeder extends Seeder
                 'email' => 'akademikjmipa@gmail.com',
                 'password' => bcrypt('password'),
                 'role_id' => 6,
+                'nip' => null,
                 'jurusan_id' => 2,
                 'program_studi_id' => null,
                 'email_verified_at' => now()

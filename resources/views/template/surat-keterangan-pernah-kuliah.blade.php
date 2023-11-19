@@ -40,14 +40,38 @@
 
     </table>
     <br>
-    <p style="text-align: center"><b><u>SURAT KETERANGAN LULUS</u></b></p>
+    <p style="text-align: center"><b><u>SURAT KETERANGAN PERNAH KULIAH</u></b></p>
     <p style="text-align: center">
-        <b>Nomor:&nbsp;{{ $surat->data['noSurat'] ?? 'NoSurat' }}/UN30.7.10/KM/{{ Carbon\Carbon::now()->year }} </b>
+        <b>Nomor:&nbsp;{{ $surat->data['noSurat'] ?? 'NoSurat' }}/UN30.7/KM/{{ Carbon\Carbon::now()->year }} </b>
     </p>
     <br>
     <br>
-    <p style="text-align: justify">Wakil Dekan Bidang Akademik FKIP Universitas Bengkulu dengan ini menerangkan bahwa:
+    <p style="text-align: justify">Yang bertandatangan di bawah ini:
     </p>
+    <br>
+    <table>
+        <tr>
+            <td>Nama</td>
+            <td>:
+                {{ isset($surat->data['namaWD1']) ? $surat->data['namaWD1'] : '(Nama WD1)' }}
+            </td>
+        </tr>
+        <tr>
+            <td>NIP</td>
+            <td>:
+                {{ isset($surat->data['nipWD1']) ? $surat->data['nipWD1'] : '(NIP WD1)' }}
+            </td>
+        </tr>
+        <tr>
+            <td>Jabatan</td>
+            <td>:
+                Wakil Dekan Bidang Akademik
+            </td>
+        </tr>
+    </table>
+
+    <br>
+    <p style="text-align: justify">Menyatakan dengan sesungguhnya bahwa: </p>
     <br>
     <table>
         <tr>
@@ -59,30 +83,24 @@
             <td>: {{ $surat->pengaju->username }}</td>
         </tr>
         <tr>
-            <td>Tempat/Tanggal Lahir</td>
+            <td>Program Studi</td>
             <td>:
-                {{ Str::title($surat->data['tempatLahir']) . ', ' . formatTimestampToOnlyDateIndonesian($surat->data['tanggalLahir']) }}
+                {{ Str::title($surat->data['programStudi']) . ' FKIP Universitas Bengkulu' }}
             </td>
         </tr>
-        <tr>
-            <td>Program Studi</td>
-            <td>: {{ $surat->data['programStudi'] }}</td>
-        </tr>
     </table>
-    {{-- <p>Nama&emsp; {{ $surat->pengaju->name }}</p>
-    <p>NPM&emsp;: {{ $surat->pengaju->username }}</p>
-    <p>Tempat/Tanggal Lahir&emsp;: {{ Str::title($surat->data['birthplace']) . ', ' . $surat->data['birthdate'] }}</p>
-    <p>Program Studi&emsp;: {{ $surat->data['programStudi'] }}</p>
-    <p>Nomor Seri Ijazah&emsp;: {{ $surat->data['noIjazah'] }}</p> --}}
     <br>
-    <p style="text-align: justify">Telah melaksanakan Ujian Sidang {{ $surat->data['jenisUjian'] }} pada tanggal
-        {{ formatTimestampToOnlyDateIndonesian($surat->data['tanggalUjian']) }}, dan mahasiswa tersebut telah dinyatakan
-        <b><u>LULUS</u></b>. Proses penganugerahan gelar {{ $surat->data['gelar'] }} pada
-        yang bersangkutan akan dilakukan pada wisuda periode ke-{{ $surat->data['periodeWisuda'] }},
-        {{ formatTimestampToOnlyMonthIndonesian($surat->data['tanggalWisuda']) }}</p>
+    <p style="text-align: justify">adalah mahasiswa yang <strong><em>pernah kuliah</em></strong> di Program Studi
+        {{ $surat->data['programStudi'] }} FKIP
+        Universitas Bengkulu dan <strong><em>terdaftar aktif</em></strong> mulai semester
+        {{ Str::title($surat->data['semesterMasuk']) }} Tahun Akademik
+        {{ $surat->data['tahunAkademikAwal'] }} hingga semester {{ Str::title($surat->data['semesterSelesai']) }}
+        Tahun Akademik {{ $surat->data['tahunAkademikAkhir'] }} (Transkrip sementara mahasiswa yang bersangkutan
+        terlampir).</p>
     <br>
-    <p style="text-align: justify">Demikian surat keterangan ini dibuat dengan sebenarnya, untuk dapat dipergunakan
-        sebagaimana mestinya.</p>
+    <p style="text-align: justify">Demikian Surat Keterangan ini dibuat dengan sesungguhnya. Apabila dikemudian hari
+        ternyata surat keterangan ini tidak benar, dan mengakibatkan kerugian terhadap Negara Kesatuan Republik
+        Indonesia, maka saya bersedia menanggung kerugian tersebut.</p>
     <br><br>
     <div>
         <div class="tandatangan">
@@ -94,17 +112,20 @@
             </div>
             <div class="parent">
                 @if (isset($surat->data['ttdWD1']) && isset($surat->data['stempel']))
-                <img class="ttd" style="margin-left: 40px" width="100px"
-                    src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path($surat->data['ttdWD1']))) }}"
-                    alt="ttd">
-                <img class="stempel" style="margin-left: 40px" width="120px"
-                    src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path($surat->data['stempel']))) }}"
-                    alt="stempel">
-            @endif
+                    <img class="ttd" style="margin-left: 40px" width="100px"
+                        src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path($surat->data['ttdWD1']))) }}"
+                        alt="ttd">
+                    <img class="stempel" style="margin-left: 40px" width="120px"
+                        src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path($surat->data['stempel']))) }}"
+                        alt="stempel">
+                @endif
             </div>
             <div>
-                <p>Dr. Abdul Rahman, M.Si</p>
-                <p>NIP 198108202006041006</p>
+                <p>{{ isset($surat->data['namaWD1']) ? $surat->data['namaWD1'] : '(Nama WD1)' }}
+                </p>
+                <p>NIP
+                    {{ isset($surat->data['nipWD1']) ? $surat->data['nipWD1'] : '(NIP WD1)' }}
+                </p>
             </div>
         </div>
     </div>

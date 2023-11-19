@@ -151,6 +151,53 @@ class SuratController extends Controller
 
             $surat->save();
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
+        } elseif ($jenisSurat->slug == 'surat-keterangan-pernah-kuliah') {
+            $request->validate([
+                'name' => 'required',
+                'username' => 'required',
+                'program-studi' => 'required',
+                'tahunAkademikAwal' => ['required', 'regex:/^\d{4}\/\d{4}$/'],
+                'tahunAkademikAkhir' => ['required', 'regex:/^\d{4}\/\d{4}$/'],
+                'email' => 'required|email',
+                'semester-masuk' => 'required|filled',
+                'semester-selesai' => 'required|filled',
+                'bukti-kuliah' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+                'bukti-kuliah-2' => 'file|mimes:jpeg,png,jpg,pdf|max:2048',
+            ]);
+
+            $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
+
+
+            $surat = new Surat;
+            $surat->pengaju_id = auth()->user()->id;
+            $surat->current_user_id = $request->input('penerima');
+            // $surat->penerima_id = $kaprodi->id;
+            $surat->status = 'on_process';
+            $surat->jenis_surat_id = $jenisSurat->id;
+            $surat->expired_at = now()->addDays(30);
+            $surat->data = [
+                'name' => $request->input('name'),
+                'username' => $request->input('username'),
+                'programStudi' => $programStudi->name,
+                'semesterMasuk' => $request->input('semester-masuk'),
+                'semesterSelesai' => $request->input('semester-selesai'),
+                'tahunAkademikAwal' => $request->input('tahunAkademikAwal'),
+                'tahunAkademikAkhir' => $request->input('tahunAkademikAkhir'),
+                'email' => $request->input('email'),
+
+            ];
+            $surat->files = [
+                'buktiKuliah' => $request->file('bukti-kuliah')->store('lampiran'),
+            ];
+
+            $files = $surat->files;
+            if ($request->hasFile('bukti-kuliah-2')) {
+                $files['buktiKuliah2'] = $request->file('bukti-kuliah-2')->store('lampiran');
+            }
+            $surat->files = $files;
+
+            $surat->save();
+            return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
         }
     }
 

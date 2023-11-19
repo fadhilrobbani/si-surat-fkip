@@ -46,6 +46,7 @@ class MahasiswaResource extends Resource
                         ->default(2),
                     TextInput::make('username')
                         ->unique(ignorable: fn ($record) => $record)
+                        ->alphaDash()
                         ->placeholder('Masukkan NPM Anda')
                         ->required(),
                     TextInput::make('name')

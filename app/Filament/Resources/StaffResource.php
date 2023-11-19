@@ -46,6 +46,7 @@ class StaffResource extends Resource
                     TextInput::make('username')
                         ->placeholder('Username')
                         ->unique(ignorable: fn ($record) => $record)
+                        ->alphaDash()
                         ->required(),
                     TextInput::make('name')
                         ->placeholder('Masukkan nama lengkap')

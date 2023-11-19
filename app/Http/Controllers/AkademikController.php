@@ -45,7 +45,7 @@ class AkademikController extends Controller
     public function updateProfile(Request $request, User $user)
     {
         $request->validate([
-            'username' => 'string|required',
+            'username' => 'string|required|alpha_dash',
             'name' => 'string|required',
             'email' => 'email|required',
             'jurusan' => 'required'
