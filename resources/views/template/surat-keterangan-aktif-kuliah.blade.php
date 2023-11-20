@@ -45,15 +45,14 @@
 
     </table>
     <br>
-    <p style="text-align: center"><b><u>SURAT KETERANGAN AKTIF KULIAH</u></b></p>
+    <p style="text-align: center"><b><u>SURAT KETERANGAN MASIH KULIAH</u></b></p>
     <p style="text-align: center">
         <b>Nomor:&nbsp;{{ $surat->data['noSurat'] ?? 'NoSurat' }}/UN30.7/KM/{{ Carbon\Carbon::now()->year }} </b>
     </p>
     <br>
     <br>
-    <p style="text-align: justify">Yang bertandatangan di bawah ini:
+    <p style="text-align: justify">Yang bertanda tangan di bawah ini:
     </p>
-    <br>
     <table>
         <tr>
             <td>Nama</td>
@@ -77,7 +76,6 @@
 
     <br>
     <p style="text-align: justify">Menyatakan dengan sesungguhnya bahwa: </p>
-    <br>
     <table>
         <tr>
             <td>Nama</td>
@@ -100,35 +98,32 @@
     </table>
     <br>
     <p style="text-align: justify">Orang tua / wali dari mahasiswa tersebut: </p>
-    <br>
     <table>
         <tr>
             <td>Nama</td>
-            <td>: {{ $surat->pengaju->name }}</td>
+            <td>: {{ $surat->data['namaOrangTuaAtauWali'] }}</td>
         </tr>
         <tr>
-            <td>NPM</td>
-            <td>: {{ $surat->pengaju->username }}</td>
+            <td>NIP</td>
+            <td>: {{ $surat->data['nipOrangTuaAtauWali'] ?? '-' }}</td>
         </tr>
         <tr>
-            <td>Program Studi</td>
+            <td>Pangkat / Golongan</td>
             <td>:
-                {{ Str::title($surat->data['programStudi']) . ' FKIP Universitas Bengkulu' }}
+                {{ $surat->data['pangkatAtauGolonganOrangTuaAtauWali'] ?? '-' }}
             </td>
         </tr>
         <tr>
-            <td>Semester</td>
-            <td>: {{ $surat->data['semester'] }}</td>
+            <td>Instansi Pekerjaan</td>
+            <td>: {{ $surat->data['instansiAtauPekerjaanOrangTuaAtauWali'] }}</td>
         </tr>
     </table>
     <br>
-    <p style="text-align: justify">adalah mahasiswa yang <strong><em>pernah kuliah</em></strong> di Program Studi
-        {{ $surat->data['programStudi'] }} FKIP
-        Universitas Bengkulu dan <strong><em>terdaftar aktif</em></strong> mulai semester
-        {{ Str::title($surat->data['semesterMasuk']) }} Tahun Akademik
-        {{ $surat->data['tahunAkademikAwal'] }} hingga semester {{ Str::title($surat->data['semesterSelesai']) }}
-        Tahun Akademik {{ $surat->data['tahunAkademikAkhir'] }} (Transkrip sementara mahasiswa yang bersangkutan
-        terlampir).</p>
+    <p style="text-align: justify">adalah mahasiswa FKIP Universitas Bengkulu yang <strong><em>terdaftar
+                aktif</em></strong> pada Semester
+        {{ $surat->data['semester'] % 2 == 0 ? 'Genap' : 'Ganjil' }} Tahun Akademik
+        {{ $surat->data['tahunAkademik'] }}.
+    </p>
     <br>
     <p style="text-align: justify">Demikian Surat Keterangan ini dibuat dengan sesungguhnya. Apabila dikemudian hari
         ternyata surat keterangan ini tidak benar, dan mengakibatkan kerugian terhadap Negara Kesatuan Republik

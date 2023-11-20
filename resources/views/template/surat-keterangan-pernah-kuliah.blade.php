@@ -51,7 +51,7 @@
     </p>
     <br>
     <br>
-    <p style="text-align: justify">Yang bertandatangan di bawah ini:
+    <p style="text-align: justify">Yang bertanda tangan di bawah ini:
     </p>
     <table>
         <tr>
