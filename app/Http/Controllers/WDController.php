@@ -232,24 +232,28 @@ class WDController extends Controller
         //     return redirect()->back()->withErrors('Tanda Tangan tidak boleh kosong, silahkan atur terlebih dahulu di profil');
         // }
         $surat->current_user_id = $request->input('penerima');
-        // $file = $surat->files;
-        // if ($file) {
-        //     if (isset($file['private'])) {
-        //         $file['private']['ttdWD1'] =  'storage/' . auth()->user()->tandatangan;
-        //     } else {
-        //         $file['private'] = [
-        //             'ttdWD1' => 'storage/' . auth()->user()->tandatangan
-        //         ];
-        //     }
-        // } else {
-        //     $file = [
-        //         'private' => [
-        //             'ttdWD1' => 'storage/' . auth()->user()->tandatangan,
-        //         ]
-        //     ];
-        // }
-        // $surat->files = $file;
+        $data = $surat->data;
+        if ($data) {
+            if (isset($data['private'])) {
+                $data['private']['namaWD1'] =  auth()->user()->name;
+                $data['private']['nipWD1'] =  auth()->user()->nip;
+            } else {
+                $data['private'] = [
+                    'namaWD1' =>  auth()->user()->name,
+                    'nipWD1' =>  auth()->user()->nip,
+                ];
+            }
+        } else {
+            $data = [
+                'private' => [
+                    'namaWD1' =>  auth()->user()->name,
+                    'nipWD1' =>  auth()->user()->nip
+                ]
+            ];
+        }
+        $surat->data = $data;
         // $surat->current_user_id = $surat->penerima_id;
+        $surat->current_user_id = $request->input('penerima');
         // $surat->penerima_id = $surat->pengaju_id;
         $surat->save();
 

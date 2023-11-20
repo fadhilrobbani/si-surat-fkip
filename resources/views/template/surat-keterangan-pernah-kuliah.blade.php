@@ -1,3 +1,8 @@
+@php
+    $url = URL::signedRoute('preview-surat-qr', [
+        'surat' => $surat->id,
+    ]);
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,13 +58,13 @@
         <tr>
             <td>Nama</td>
             <td>:
-                {{ isset($surat->data['namaWD1']) ? $surat->data['namaWD1'] : '(Nama WD1)' }}
+                {{ isset($surat->data['private']['namaWD1']) ? $surat->data['private']['namaWD1'] : '(Nama WD1)' }}
             </td>
         </tr>
         <tr>
             <td>NIP</td>
             <td>:
-                {{ isset($surat->data['nipWD1']) ? $surat->data['nipWD1'] : '(NIP WD1)' }}
+                {{ isset($surat->data['private']['nipWD1']) ? $surat->data['private']['nipWD1'] : '(NIP WD1)' }}
             </td>
         </tr>
         <tr>
@@ -111,20 +116,26 @@
                 <p>Wakil Dekan Bidang Akademik</p>
             </div>
             <div class="parent">
-                @if (isset($surat->data['ttdWD1']) && isset($surat->data['stempel']))
+                {{-- @if (isset($surat->data['ttdWD1']) && isset($surat->data['stempel']))
                     <img class="ttd" style="margin-left: 40px" width="100px"
                         src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path($surat->data['ttdWD1']))) }}"
                         alt="ttd">
                     <img class="stempel" style="margin-left: 40px" width="120px"
                         src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path($surat->data['stempel']))) }}"
                         alt="stempel">
+                @endif --}}
+                @if ($surat->status == 'finished')
+                    <img class="ttd" src="data:image/svg;base64, {!! base64_encode(
+                        QrCode::format('svg')->size(90)->generate($url),
+                    ) !!}"
+                        style="position: absolute; bottom:70px">
                 @endif
             </div>
             <div>
-                <p>{{ isset($surat->data['namaWD1']) ? $surat->data['namaWD1'] : '(Nama WD1)' }}
+                <p>{{ isset($surat->data['private']['namaWD1']) ? $surat->data['private']['namaWD1'] : '(Nama WD1)' }}
                 </p>
                 <p>NIP
-                    {{ isset($surat->data['nipWD1']) ? $surat->data['nipWD1'] : '(NIP WD1)' }}
+                    {{ isset($surat->data['private']['nipWD1']) ? $surat->data['private']['nipWD1'] : '(NIP WD1)' }}
                 </p>
             </div>
         </div>
