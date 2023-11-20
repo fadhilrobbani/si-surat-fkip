@@ -95,8 +95,8 @@ class SuratController extends Controller
             $surat->jenis_surat_id = $jenisSurat->id;
             $surat->expired_at = now()->addDays(30);
             $surat->data = [
-                'name' => $request->input('name'),
-                'username' => $request->input('username'),
+                'nama' => $request->input('name'),
+                'npm' => $request->input('username'),
                 'programStudi' => $programStudi->name,
                 'email' => $request->input('email'),
                 'tempatLahir' => $request->input('tempat-lahir'),
@@ -145,8 +145,8 @@ class SuratController extends Controller
             $surat->jenis_surat_id = $jenisSurat->id;
             $surat->expired_at = now()->addDays(30);
             $surat->data = [
-                'name' => $request->input('name'),
-                'username' => $request->input('username'),
+                'nama' => $request->input('name'),
+                'npm' => $request->input('username'),
                 'programStudi' => $programStudi->name,
                 'noIjazah' => $request->input('no-ijazah'),
                 'tempatLahir' => $request->input('birthplace'),
@@ -187,8 +187,8 @@ class SuratController extends Controller
             $surat->jenis_surat_id = $jenisSurat->id;
             $surat->expired_at = now()->addDays(30);
             $surat->data = [
-                'name' => $request->input('name'),
-                'username' => $request->input('username'),
+                'nama' => $request->input('name'),
+                'npm' => $request->input('username'),
                 'programStudi' => $programStudi->name,
                 'semesterMasuk' => $request->input('semester-masuk'),
                 'semesterSelesai' => $request->input('semester-selesai'),
@@ -238,8 +238,8 @@ class SuratController extends Controller
             $surat->jenis_surat_id = $jenisSurat->id;
             $surat->expired_at = now()->addDays(30);
             $surat->data = [
-                'name' => $request->input('name'),
-                'username' => $request->input('username'),
+                'nama' => $request->input('name'),
+                'npm' => $request->input('username'),
                 'programStudi' => $programStudi->name,
                 'email' => $request->input('email'),
                 'semester' => $request->input('semester'),

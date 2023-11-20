@@ -1,7 +1,7 @@
 @php
     $authUser = auth()->user();
     $step = [];
-    $avatar = 'https://ui-avatars.com/api/?name=' . $surat->data['name'] . '&background=random';
+    $avatar = 'https://ui-avatars.com/api/?name=' . $surat->pengaju->name . '&background=random';
 @endphp
 
 <x-layout :authUser='$authUser'>

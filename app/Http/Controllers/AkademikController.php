@@ -12,6 +12,7 @@ use App\Models\JenisSurat;
 use App\Mail\SuratMahasiswa;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
@@ -227,7 +228,8 @@ class AkademikController extends Controller
         //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
         // }
         $request->validate([
-            'no-surat' => 'required|size:4|unique:surat_tables,data->noSurat',
+            // 'no-surat' => 'required|size:4|unique:surat_tables,data->noSurat',
+            'no-surat' =>  Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id),
         ]);
         // SELECT jt.id FROM users u
         // JOIN program_studi_tables pst ON pst.id = u.program_studi_id

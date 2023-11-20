@@ -162,7 +162,7 @@
 
                         @foreach ($daftarPengajuan as $surat)
                             @php
-                                $avatar = 'https://ui-avatars.com/api/?name=' . $surat->data['name'] . '&background=random';
+                                $avatar = 'https://ui-avatars.com/api/?name=' . $surat->pengaju->name . '&background=random';
                                 $statusStyle = '';
                                 if ($surat->status == 'finished') {
                                     $statusStyle = ' text-green-400 font-semibold';

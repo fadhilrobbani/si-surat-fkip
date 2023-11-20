@@ -114,7 +114,7 @@
                     <tbody>
                         @foreach ($daftarSuratMasuk as $surat)
                             @php
-                                $avatar = 'https://ui-avatars.com/api/?name=' . $surat->data['name'] . '&background=random';
+                                $avatar = 'https://ui-avatars.com/api/?name=' . $surat->pengaju->name . '&background=random';
                             @endphp
                             <tr class=" border-b dark:border-gray-700 hover:bg-slate-100">
                                 <th scope="row"
@@ -123,10 +123,10 @@
                                 </th>
                                 <th scope="row"
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ $surat->data['name'] }}
+                                    {{ $surat->pengaju->name }}
                                 </th>
 
-                                <td class="px-4 py-3">{{ $surat->data['username'] }}</td>
+                                <td class="px-4 py-3">{{ $surat->pengaju->username }}</td>
                                 <td class="px-4 py-3">{{ $surat->data['email'] }}</td>
                                 @php
                                     $jenisSurat = App\Models\JenisSurat::find($surat->jenis_surat_id);
