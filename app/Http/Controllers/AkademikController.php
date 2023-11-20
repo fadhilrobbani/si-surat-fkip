@@ -24,7 +24,7 @@ class AkademikController extends Controller
         return view('akademik.dashboard', [
             'suratDisetujui' => count(Approval::where('user_id', '=', auth()->user()->id)->where('isApproved', '=', true)->get()),
             'suratDitolak' => count(Approval::where('user_id', '=', auth()->user()->id)->where('isApproved', '=', false)->get()),
-            'suratMenunggu' => count(Surat::where('current_user_id', '=', auth()->user()->id)->where('status', 'on_process')->where(function ($query) {
+            'suratMenunggu' => count(Surat::where('current_user_id', '=', auth()->user()->id)->where('status', 'diproses')->where(function ($query) {
                 $now = Carbon::now();
                 $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
             })->get()->toArray())
@@ -83,7 +83,7 @@ class AkademikController extends Controller
     public function suratMasuk(Request $request)
     {
         $daftarSuratMasuk = Surat::with('pengaju', 'pengaju.programStudi')
-            ->where('current_user_id', '=', auth()->user()->id)->where('status', 'on_process')->where(function ($query) {
+            ->where('current_user_id', '=', auth()->user()->id)->where('status', 'diproses')->where(function ($query) {
                 $now = Carbon::now();
                 $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
             })
@@ -97,7 +97,7 @@ class AkademikController extends Controller
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
                 ->where('current_user_id', '=', auth()->user()->id)
-                ->where('status', 'on_process')
+                ->where('status', 'diproses')
                 ->where(function ($query) {
                     $now = Carbon::now();
                     $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
@@ -114,7 +114,7 @@ class AkademikController extends Controller
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
                 ->where('current_user_id', '=', auth()->user()->id)
-                ->where('status', 'on_process')
+                ->where('status', 'diproses')
                 ->where(function ($query) {
                     $now = Carbon::now();
                     $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
@@ -130,7 +130,7 @@ class AkademikController extends Controller
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
                 ->where('current_user_id', '=', auth()->user()->id)
-                ->where('status', 'on_process')
+                ->where('status', 'diproses')
                 ->where(function ($query) {
                     $now = Carbon::now();
                     $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
@@ -146,7 +146,7 @@ class AkademikController extends Controller
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
                 ->where('current_user_id', '=', auth()->user()->id)
-                ->where('status', 'on_process')
+                ->where('status', 'diproses')
                 ->where(function ($query) {
                     $now = Carbon::now();
                     $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
@@ -162,7 +162,7 @@ class AkademikController extends Controller
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
                 ->where('current_user_id', '=', auth()->user()->id)
-                ->where('status', 'on_process')
+                ->where('status', 'diproses')
                 ->where(function ($query) {
                     $now = Carbon::now();
                     $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
@@ -178,7 +178,7 @@ class AkademikController extends Controller
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
                 ->where('current_user_id', '=', auth()->user()->id)
-                ->where('status', 'on_process')
+                ->where('status', 'diproses')
                 ->where(function ($query) {
                     $now = Carbon::now();
                     $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
@@ -193,7 +193,7 @@ class AkademikController extends Controller
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->join('program_studi_tables', 'program_studi_tables.id', '=', 'users.program_studi_id')
                 ->where('current_user_id', '=', auth()->user()->id)
-                ->where('status', 'on_process')
+                ->where('status', 'diproses')
                 ->where(function ($query) {
                     $now = Carbon::now();
                     $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
@@ -263,7 +263,7 @@ class AkademikController extends Controller
         //     ];
         // }
         // $surat->files = $file;
-        $surat->status = 'finished';
+        $surat->status = 'selesai';
         $surat->save();
 
         Approval::create([
@@ -414,7 +414,7 @@ class AkademikController extends Controller
 
     public function tolakSurat(Request $request, Surat $surat)
     {
-        $surat->status = 'denied';
+        $surat->status = 'ditolak';
         $surat->expired_at = null;
         $surat->penerima_id = null;
         $data = $surat->data;

@@ -43,7 +43,7 @@ class PDFController extends Controller
 
     public function printSurat(Surat $surat)
     {
-        if ($surat->status != 'finished') {
+        if ($surat->status != 'selesai') {
             return redirect()->back()->withErrors('deleted', 'Anda tidak bisa mengakses fungsi ini');
         }
         return $this->previewSurat($surat);

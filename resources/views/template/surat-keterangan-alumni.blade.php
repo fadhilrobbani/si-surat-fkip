@@ -109,7 +109,7 @@
                         alt="stempel">
                 @endif --}}
 
-                @if ($surat->status == 'finished')
+                @if ($surat->status == 'selesai')
                     <img class="ttd" src="data:image/svg;base64, {!! base64_encode(
                         QrCode::format('svg')->size(80)->generate($url),
                     ) !!}"
@@ -125,7 +125,7 @@
             </div>
         </div>
         {{--
-        @if ($surat->status == 'finished' && !request()->hasValidSignature())
+        @if ($surat->status == 'selesai' && !request()->hasValidSignature())
         <img src="data:image/svg;base64, {!! base64_encode(
             QrCode::format('svg')->size(90)->generate($url),
         ) !!}" style="position: absolute; bottom:70px">

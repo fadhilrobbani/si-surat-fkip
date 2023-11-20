@@ -25,11 +25,11 @@
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         @php
                             $recentStatus = 'user';
-                            if ($surat->status == 'on_process') {
+                            if ($surat->status == 'diproses') {
                                 $recentStatus = 'Menunggu';
-                            } elseif ($surat->status == 'denied') {
+                            } elseif ($surat->status == 'ditolak') {
                                 $recentStatus = 'Ditolak';
-                            } elseif ($surat->status == 'finished') {
+                            } elseif ($surat->status == 'selesai') {
                                 $recentStatus = 'Diterima';
                             }
                         @endphp
@@ -43,7 +43,7 @@
                             ->first();
                     @endphp
 
-                    @if ($surat->status == 'denied')
+                    @if ($surat->status == 'ditolak')
                         <tr class="border-b border-gray-200 dark:border-gray-700">
                             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Catatan Penolakan:&nbsp;
                             </td>
@@ -56,7 +56,7 @@
                             </td>
                         </tr>
                     @endif
-                    @if ($surat->status == 'finished' && isset($surat->data['tanggal_selesai']))
+                    @if ($surat->status == 'selesai' && isset($surat->data['tanggal_selesai']))
                         <tr class="border-b border-gray-200 dark:border-gray-700">
                             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Disetujui:&nbsp;
                             </td>
@@ -125,7 +125,7 @@
 
 
 
-        @if ($surat->current_user_id == auth()->user()->id && $surat->status == 'on_process')
+        @if ($surat->current_user_id == auth()->user()->id && $surat->status == 'diproses')
             <div class="flex flex-col sm:flex-row">
 
                 <form action="{{ route('setujui-surat-kaprodi', $surat->id) }}" method="POST">
@@ -146,7 +146,7 @@
         @endif
     </div> --}}
 
-    @if ($surat->current_user_id == auth()->user()->id && $surat->status == 'on_process')
+    @if ($surat->current_user_id == auth()->user()->id && $surat->status == 'diproses')
         <form action="{{ route('setujui-surat-kaprodi', $surat->id) }}" method="POST"
             class="bg-slate-100 rounded-lg w-full">
             @csrf

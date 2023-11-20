@@ -38,7 +38,7 @@
                 </span>
                 <h3 class="font-medium leading-tight">Staff</h3>
                 <p class="text-sm">Disetujui</p>
-            @elseif ($surat->status == 'denied' || ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process'))
+            @elseif ($surat->status == 'ditolak' || ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'diproses'))
                 <span
                     class="absolute flex items-center justify-center w-8 h-8 bg-pink-300 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
                     {{-- <svg class="w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true"
@@ -84,7 +84,7 @@
                 </span>
                 <h3 class="font-medium leading-tight">Kaprodi</h3>
                 <p class="text-sm">Disetujui</p>
-            @elseif ($surat->status == 'denied' || ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process'))
+            @elseif ($surat->status == 'ditolak' || ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'diproses'))
                 <span
                     class="absolute flex items-center justify-center w-8 h-8 bg-pink-300 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
 
@@ -125,7 +125,7 @@
                 </span>
                 <h3 class="font-medium leading-tight">Wakil Dekan 1</h3>
                 <p class="text-sm">Disetujui</p>
-            @elseif ($surat->status == 'denied' || ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process'))
+            @elseif ($surat->status == 'ditolak' || ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'diproses'))
                 <span
                     class="absolute flex items-center justify-center w-8 h-8 bg-pink-300 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
 
@@ -166,7 +166,7 @@
                 </span>
                 <h3 class="font-medium leading-tight">Akademik</h3>
                 <p class="text-sm">Disetujui</p>
-            @elseif ($surat->status == 'denied' || ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process'))
+            @elseif ($surat->status == 'ditolak' || ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'diproses'))
                 <span
                     class="absolute flex items-center justify-center w-8 h-8 bg-pink-300 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
 

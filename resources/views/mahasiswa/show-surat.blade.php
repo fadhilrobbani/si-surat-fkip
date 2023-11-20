@@ -19,19 +19,19 @@
 
                         <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Status:&nbsp;</td>
                         <td class="px-6 py-4">
-                            {{ $surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process' ? 'expired' : $surat->status }}
+                            {{ $surat->expired_at < Carbon\Carbon::now() && $surat->status === 'diproses' ? 'expired' : $surat->status }}
                         </td>
                     </tr>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         @php
                             $recentStatus = 'user';
-                            if ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process') {
+                            if ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'diproses') {
                                 $recentStatus = 'Masa Aktif Habis Saat';
-                            } elseif ($surat->status == 'on_process') {
+                            } elseif ($surat->status == 'diproses') {
                                 $recentStatus = 'Menunggu';
-                            } elseif ($surat->status == 'denied') {
+                            } elseif ($surat->status == 'ditolak') {
                                 $recentStatus = 'Ditolak';
-                            } elseif ($surat->status == 'finished') {
+                            } elseif ($surat->status == 'selesai') {
                                 $recentStatus = 'Diterima';
                             }
                         @endphp
@@ -45,7 +45,7 @@
                             ->first();
                     @endphp
 
-                    @if ($surat->status == 'denied')
+                    @if ($surat->status == 'ditolak')
                         <tr class="border-b border-gray-200 dark:border-gray-700">
                             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Catatan Penolakan:&nbsp;
                             </td>
@@ -58,7 +58,7 @@
                             </td>
                         </tr>
                     @endif
-                    @if ($surat->status == 'finished' && isset($surat->data['tanggal_selesai']))
+                    @if ($surat->status == 'selesai' && isset($surat->data['tanggal_selesai']))
                         <tr class="border-b border-gray-200 dark:border-gray-700">
                             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Disetujui:&nbsp;
                             </td>
@@ -129,7 +129,7 @@
     style="width:600px; height:800px;"
     frameborder="0"> --}}
 
-    @if ($surat->status == 'finished')
+    @if ($surat->status == 'selesai')
         <a href="{{ route('print-surat-mahasiswa', $surat->id) }}"> <button type="button"
                 class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button></a>
     @else

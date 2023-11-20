@@ -19,7 +19,7 @@
 
                         <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Status:&nbsp;</td>
                         <td class="px-6 py-4">
-                            {{ $approval->surat->expired_at < Carbon\Carbon::now() && $approval->surat->status == 'on_process' ? 'expired' : $approval->surat->status }}
+                            {{ $approval->surat->expired_at < Carbon\Carbon::now() && $approval->surat->status == 'diproses' ? 'expired' : $approval->surat->status }}
                         </td>
                     </tr>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -92,7 +92,7 @@
     </div>
 
 
-    @if ($approval->surat->status == 'finished')
+    @if ($approval->surat->status == 'selesai')
         <a href="{{ route('print-surat-wd', $approval->surat->id) }}"><button type="button"
                 class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button></a>
     @else

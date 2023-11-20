@@ -14,10 +14,10 @@ class MahasiswaController extends Controller
     public function dashboard()
     {
         return view('mahasiswa.dashboard', [
-            'pengajuanSelesai' => Surat::where('pengaju_id', '=', auth()->user()->id)->where('status', '=', 'finished')->get(),
-            'pengajuanDitolak' => Surat::where('pengaju_id', '=', auth()->user()->id)->where('status', '=', 'denied')->get(),
-            'pengajuanDiproses' => Surat::where('pengaju_id', '=', auth()->user()->id)->where('status', '=', 'on_process')->get(),
-            'pengajuanKadaluarsa' =>  Surat::where('pengaju_id', '=', auth()->user()->id)->where('status', '=', 'on_process')->where(function ($query) {
+            'pengajuanSelesai' => Surat::where('pengaju_id', '=', auth()->user()->id)->where('status', '=', 'selesai')->get(),
+            'pengajuanDitolak' => Surat::where('pengaju_id', '=', auth()->user()->id)->where('status', '=', 'ditolak')->get(),
+            'pengajuanDiproses' => Surat::where('pengaju_id', '=', auth()->user()->id)->where('status', '=', 'diproses')->get(),
+            'pengajuanKadaluarsa' =>  Surat::where('pengaju_id', '=', auth()->user()->id)->where('status', '=', 'diproses')->where(function ($query) {
                 $now = Carbon::now();
                 $query->whereNull('expired_at')->orWhere('expired_at', '<', $now);
             })->get(),
@@ -79,7 +79,7 @@ class MahasiswaController extends Controller
                 ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->where('surat_tables.pengaju_id', '=',  auth()->user()->id)
                 ->where('jenis_surat_tables.name', 'LIKE', '%' . $request->get('search') . '%')
-                ->where('surat_tables.status', $request->get('status') == 'expired' ? 'on_process' : $request->get('status'))
+                ->where('surat_tables.status', $request->get('status') == 'expired' ? 'diproses' : $request->get('status'))
                 ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
                 ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
                 ->paginate(10);
@@ -115,13 +115,13 @@ class MahasiswaController extends Controller
                 ->select('surat_tables.*')
                 ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->where('surat_tables.pengaju_id', '=',  auth()->user()->id)
-                ->where('surat_tables.status',  $request->get('status') == 'expired' ? 'on_process' : $request->get('status'))
+                ->where('surat_tables.status',  $request->get('status') == 'expired' ? 'diproses' : $request->get('status'))
                 ->where(function ($query) {
                     $now = Carbon::now();
                     if (request()->get('status') == 'expired') {
 
                         $query->where('expired_at', '<', $now);
-                    } elseif (request()->get('status') == 'on_process') {
+                    } elseif (request()->get('status') == 'diproses') {
                         $query->where('expired_at', '>', $now);
                     }
                 })
@@ -148,7 +148,7 @@ class MahasiswaController extends Controller
         return view('mahasiswa.riwayat-pengajuan', [
             'daftarPengajuan' => $daftarPengajuan,
             'daftarJenisSurat' => JenisSurat::all(),
-            'daftarStatus' => ['on_process', 'denied', 'finished'],
+            'daftarStatus' => ['diproses', 'ditolak', 'selesai'],
 
         ]);
     }

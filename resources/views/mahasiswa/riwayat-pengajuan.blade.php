@@ -50,7 +50,7 @@
                         </div>
                         <input type="text" id="search" name="search"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Search" value="{{ request()->get('search') }}">
+                            placeholder="Cari (Jenis Surat)" value="{{ request()->get('search') }}">
                     </div>
                 </div>
             </div>
@@ -153,8 +153,8 @@
                             <th scope="col" class="px-4 py-3">Tanggal&Waktu Diajukan</th>
                             <th scope="col" class="px-4 py-3">Masa Aktif</th>
                             <th scope="col" class="px-4 py-3">
-                                Actions
-                                <span class="sr-only">Actions</span>
+                                Aksi
+                                <span class="sr-only">Aksi</span>
                             </th>
                         </tr>
                     </thead>
@@ -164,11 +164,11 @@
                             @php
                                 $avatar = 'https://ui-avatars.com/api/?name=' . $surat->pengaju->name . '&background=random';
                                 $statusStyle = '';
-                                if ($surat->status == 'finished') {
+                                if ($surat->status == 'selesai') {
                                     $statusStyle = ' text-green-400 font-semibold';
-                                } elseif ($surat->status == 'on_process' && $surat->expired_at > Carbon\Carbon::now()) {
+                                } elseif ($surat->status == 'diproses' && $surat->expired_at > Carbon\Carbon::now()) {
                                     $statusStyle = ' text-yellow-400 font-semibold';
-                                } elseif ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process') {
+                                } elseif ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'diproses') {
                                     $statusStyle = ' text-pink-500 font-semibold';
                                 } else {
                                     $statusStyle = ' text-pink-500 font-semibold';
@@ -187,7 +187,7 @@
                                 <td class="px-4 py-3">
                                     {{-- <p class="{{ $statusStyle }}">{{ $surat->status }}</p> --}}
                                     <p class="{{ $statusStyle }}">
-                                        {{ $surat->expired_at < Carbon\Carbon::now() && $surat->status === 'on_process' ? 'expired' : $surat->status }}
+                                        {{ $surat->expired_at < Carbon\Carbon::now() && $surat->status === 'diproses' ? 'expired' : $surat->status }}
                                     </p>
                                 </td>
                                 <td class="px-4 py-3">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
@@ -206,7 +206,7 @@
                                         </div>
                                     </a>
 
-                                    @if ($surat->status == 'on_process')
+                                    @if ($surat->status == 'diproses')
                                         <form
                                             class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2"
                                             action="{{ route('destroy-surat', $surat->id) }}" method="POST">

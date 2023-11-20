@@ -19,7 +19,7 @@ class KaprodiController extends Controller
         return view('kaprodi.dashboard', [
             'suratDisetujui' => count(Approval::where('user_id', '=', auth()->user()->id)->where('isApproved', '=', true)->get()),
             'suratDitolak' => count(Approval::where('user_id', '=', auth()->user()->id)->where('isApproved', '=', false)->get()),
-            'suratMenunggu' => count(Surat::where('current_user_id', '=', auth()->user()->id)->where('status', 'on_process')->where(function ($query) {
+            'suratMenunggu' => count(Surat::where('current_user_id', '=', auth()->user()->id)->where('status', 'diproses')->where(function ($query) {
                 $now = Carbon::now();
                 $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
             })->get()->toArray())
@@ -86,7 +86,7 @@ class KaprodiController extends Controller
 
     public function suratMasuk(Request $request)
     {
-        $daftarSuratMasuk = Surat::where('current_user_id', '=', auth()->user()->id)->where('status', 'on_process')->where(function ($query) {
+        $daftarSuratMasuk = Surat::where('current_user_id', '=', auth()->user()->id)->where('status', 'diproses')->where(function ($query) {
             $now = Carbon::now();
             $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
         })
@@ -98,7 +98,7 @@ class KaprodiController extends Controller
                 ->select('surat_tables.*')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->where('current_user_id', '=', auth()->user()->id)
-                ->where('status', 'on_process')
+                ->where('status', 'diproses')
                 ->where(function ($query) {
                     $now = Carbon::now();
                     $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
@@ -112,7 +112,7 @@ class KaprodiController extends Controller
                 ->select('surat_tables.*')
                 ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
                 ->where('current_user_id', '=', auth()->user()->id)
-                ->where('status', 'on_process')
+                ->where('status', 'diproses')
                 ->where(function ($query) {
                     $now = Carbon::now();
                     $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
@@ -124,7 +124,7 @@ class KaprodiController extends Controller
             $daftarSuratMasuk = Surat::join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
                 ->select('surat_tables.*')
                 ->where('current_user_id', '=', auth()->user()->id)
-                ->where('status', 'on_process')
+                ->where('status', 'diproses')
                 ->where(function ($query) {
                     $now = Carbon::now();
                     $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
@@ -322,7 +322,7 @@ class KaprodiController extends Controller
 
     public function tolakSurat(Request $request, Surat $surat)
     {
-        $surat->status = 'denied';
+        $surat->status = 'ditolak';
         $surat->expired_at = null;
         $surat->penerima_id = null;
         $data = $surat->data;

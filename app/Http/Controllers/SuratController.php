@@ -91,7 +91,7 @@ class SuratController extends Controller
             $surat = new Surat;
             $surat->pengaju_id = auth()->user()->id;
             $surat->current_user_id = $request->input('penerima');
-            $surat->status = 'on_process';
+            $surat->status = 'diproses';
             $surat->jenis_surat_id = $jenisSurat->id;
             $surat->expired_at = now()->addDays(30);
             $surat->data = [
@@ -141,7 +141,7 @@ class SuratController extends Controller
             $surat->pengaju_id = auth()->user()->id;
             $surat->current_user_id = $request->input('penerima');
             // $surat->penerima_id = $kaprodi->id;
-            $surat->status = 'on_process';
+            $surat->status = 'diproses';
             $surat->jenis_surat_id = $jenisSurat->id;
             $surat->expired_at = now()->addDays(30);
             $surat->data = [
@@ -183,7 +183,7 @@ class SuratController extends Controller
             $surat->pengaju_id = auth()->user()->id;
             $surat->current_user_id = $request->input('penerima');
             // $surat->penerima_id = $kaprodi->id;
-            $surat->status = 'on_process';
+            $surat->status = 'diproses';
             $surat->jenis_surat_id = $jenisSurat->id;
             $surat->expired_at = now()->addDays(30);
             $surat->data = [
@@ -234,7 +234,7 @@ class SuratController extends Controller
             $surat->pengaju_id = auth()->user()->id;
             $surat->current_user_id = $request->input('penerima');
             // $surat->penerima_id = $kaprodi->id;
-            $surat->status = 'on_process';
+            $surat->status = 'diproses';
             $surat->jenis_surat_id = $jenisSurat->id;
             $surat->expired_at = now()->addDays(30);
             $surat->data = [
@@ -269,7 +269,7 @@ class SuratController extends Controller
 
     public function destroy(Surat $surat)
     {
-        if ($surat->status == 'on_process') {
+        if ($surat->status == 'diproses') {
             Surat::destroy($surat->id);
             return redirect()->back()->with('success', 'Berhasil membatalkan pengajuan surat');
         }

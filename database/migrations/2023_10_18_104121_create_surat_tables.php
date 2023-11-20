@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid('pengaju_id');
             $table->uuid('current_user_id');
             $table->uuid('penerima_id')->nullable();
-            $table->enum('status', ['on_process', 'finished', 'denied']);
+            $table->enum('status', ['diproses', 'selesai', 'ditolak']);
             $table->unsignedBigInteger('jenis_surat_id');
             $table->json('data')->nullable();
             $table->json('files')->nullable();

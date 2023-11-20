@@ -18,11 +18,9 @@ class StatsOverview extends BaseWidget
             Stat::make('Jumlah Program Studi', ProgramStudi::all()->count()),
             Stat::make('Jumlah Jurusan', Jurusan::all()->count()),
             // Stat::make('Jumlah Surat Yang Pernah Diajukan', Surat::all()->count()),
-            // Stat::make('Jumlah Surat Diproses', Surat::where('status','on_process')->count()),
-            // Stat::make('Jumlah Surat Ditolak', Surat::where('status','denied')->count()),
-            // Stat::make('Jumlah Surat Disetujui', Surat::where('status','finished')->count()),
+            // Stat::make('Jumlah Surat Diproses', Surat::where('status','diproses')->count()),
+            // Stat::make('Jumlah Surat Ditolak', Surat::where('status','ditolak')->count()),
+            // Stat::make('Jumlah Surat Disetujui', Surat::where('status','selesai')->count()),
         ];
     }
-
-
 }

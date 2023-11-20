@@ -123,8 +123,8 @@
                             <th scope="col" class="px-4 py-3">Tanggal disetujui/ditolak</th>
                             <th scope="col" class="px-4 py-3">Konfirmasi Anda</th>
                             <th scope="col" class="px-4 py-3">
-                                Actions
-                                <span class="sr-only">Actions</span>
+                                Aksi
+                                <span class="sr-only">Aksi</span>
                             </th>
                         </tr>
                     </thead>

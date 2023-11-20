@@ -144,7 +144,7 @@
                     class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800"
                     data-accordion-target="#accordion-color-body-3" aria-expanded="false"
                     aria-controls="accordion-color-body-3">
-                    <span>Apa maksud status on_process, denied, finished, dan expired pada surat?</span>
+                    <span>Apa maksud status diproses, ditolak, selesai, dan expired pada surat?</span>
                     <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -156,16 +156,16 @@
                 <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
                     <ul class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
                         <li>
-                            Status on_process berarti surat sedang dalam proses menunggu untuk disetujui oleh semua
+                            Status diproses berarti surat sedang dalam proses menunggu untuk disetujui oleh semua
                             pihak
                         </li>
                         <li>
-                            Status denied berarti surat ditolak oleh salah satu pihak yang artinya surat tidak dapat
+                            Status ditolak berarti surat ditolak oleh salah satu pihak yang artinya surat tidak dapat
                             diteruskan lagi. Anda dapat melihat alasan penolakan dan siapa yang menolak di detail lihat
                             surat.
                         </li>
                         <li>
-                            Status finished berarti surat sudah disetujui oleh semua pihak. Surat yang anda ajukan akan
+                            Status selesai berarti surat sudah disetujui oleh semua pihak. Surat yang anda ajukan akan
                             dikirim ke email Anda. Anda juga dapat mencetaknya di detail lihat surat.
                         </li>
                         <li>
@@ -217,7 +217,7 @@
                 <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
                     <p class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
                         Kami akan mengirimkan pesan bahwa surat Anda telah disetujui melalui email yang Anda daftarkan.
-                        Anda juga dapat melihat surat yang disetujui dengan melihat status "finished" pada surat. File
+                        Anda juga dapat melihat surat yang disetujui dengan melihat status "selesai" pada surat. File
                         surat akan kami lampirkan di email atau dapat juga dicetak manual di lihat riwayat pengajuan.
                     </p>
 

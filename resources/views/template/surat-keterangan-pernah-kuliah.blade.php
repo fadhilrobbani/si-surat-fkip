@@ -122,7 +122,7 @@
                         src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path($surat->data['stempel']))) }}"
                         alt="stempel">
                 @endif --}}
-                @if ($surat->status == 'finished')
+                @if ($surat->status == 'selesai')
                     <img class="ttd" src="data:image/svg;base64, {!! base64_encode(
                         QrCode::format('svg')->size(90)->generate($url),
                     ) !!}"
