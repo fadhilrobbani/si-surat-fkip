@@ -8,6 +8,7 @@
     <x-slot:title>
         Akademik | Detail Surat
     </x-slot:title>
+    {{ Breadcrumbs::render('detail-surat-masuk', $surat) }}
     <h1 class="mx-auto text-center font-bold">{{ $surat->jenisSurat->name }}</h1>
     <br>
     <div class="flex flex-col gap-10 justify-evenly items-start">

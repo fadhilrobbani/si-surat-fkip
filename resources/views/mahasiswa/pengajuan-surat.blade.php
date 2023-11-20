@@ -5,6 +5,7 @@
     <x-slot:title>
         Mahasiswa | Pengajuan
     </x-slot:title>
+    {{-- {{ Breadcrumbs::render('pengajuan-surat') }} --}}
     <h1 class="mx-auto text-center font-bold">Pengajuan Surat</h1>
 
     {{-- <x-breadcumb /> --}}

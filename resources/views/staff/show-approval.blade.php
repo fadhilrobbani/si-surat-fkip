@@ -8,6 +8,8 @@
     <x-slot:title>
         Mahasiswa | Riwayat Persetujuan
     </x-slot:title>
+    {{ Breadcrumbs::render('detail-persetujuan', $approval) }}
+
     <h1 class="mx-auto text-center font-bold">{{ $approval->surat->jenisSurat->name }}</h1>
     <br>
 

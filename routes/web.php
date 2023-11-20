@@ -92,7 +92,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile/update/{user}', [MahasiswaController::class, 'updateProfile'])->name('update-profile');
     });
     Route::prefix('staff')->middleware(['userAccess:3'])->group(function () {
-        Route::get('/surat-masuk', [StaffController::class, 'suratMasuk']);
+        Route::get('/surat-masuk', [StaffController::class, 'suratMasuk'])->name('surat-masuk-staff');
         Route::get('/surat-masuk/show/{surat}', [StaffController::class, 'showSuratMasuk'])->can('staffCanShowSuratMasuk', 'surat')->name('show-surat-staff');
         Route::get('/riwayat-persetujuan', [StaffController::class, 'riwayatPersetujuan']);
         Route::get('/riwayat-persetujuan/show/{approval}', [StaffController::class, 'showApproval'])->can('staffCanShowRiwayatPersetujuan', 'approval')->name('show-approval-staff');
