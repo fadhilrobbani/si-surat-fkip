@@ -116,8 +116,10 @@
                 @endif
             </div>
             <div>
-                <p>Dr. Abdul Rahman, M.Si</p>
-                <p>NIP 198108202006041006</p>
+                <p> {{ isset($surat->data['private']['namaWD1']) ? $surat->data['private']['namaWD1'] : '(Nama WD1)' }}
+                </p>
+                <p>NIP {{ isset($surat->data['private']['nipWD1']) ? $surat->data['private']['nipWD1'] : '(NIP WD1)' }}
+                </p>
             </div>
         </div>
         {{-- @if ($surat->status == 'finished' && !request()->hasValidSignature())

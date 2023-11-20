@@ -52,6 +52,17 @@ class SuratController extends Controller
                     ->get()
             ]);
         }
+
+        if ($jenisSurat->slug == 'surat-aktif-kuliah') {
+            return view('mahasiswa.formsurat.form-keterangan-aktif-kuliah', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 3)
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->get()
+            ]);
+        }
         return abort(404);
     }
 
@@ -193,6 +204,61 @@ class SuratController extends Controller
             $files = $surat->files;
             if ($request->hasFile('bukti-kuliah-2')) {
                 $files['buktiKuliah2'] = $request->file('bukti-kuliah-2')->store('lampiran');
+            }
+            $surat->files = $files;
+
+            $surat->save();
+            return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
+        } elseif ($jenisSurat->slug == 'surat-aktif-kuliah') {
+            $request->validate([
+                'name' => 'required',
+                'username' => 'required',
+                'program-studi' => 'required',
+                'email' => 'required|email',
+                'tahunAkademik' => ['required', 'regex:/^\d{4}\/\d{4}$/'],
+                'semester' => 'required|filled',
+                'nama-orang-tua' => 'required',
+                'pekerjaan-orang-tua' => 'required',
+                'pangkat-orang-tua' => '',
+                'nip-orang-tua' => '',
+                'slip-pembayaran' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+                'sk-orang-tua' => 'file|mimes:jpeg,png,jpg,pdf|max:2048',
+                'ktm' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+                'krs' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+            ]);
+
+            $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
+
+
+            $surat = new Surat;
+            $surat->pengaju_id = auth()->user()->id;
+            $surat->current_user_id = $request->input('penerima');
+            // $surat->penerima_id = $kaprodi->id;
+            $surat->status = 'on_process';
+            $surat->jenis_surat_id = $jenisSurat->id;
+            $surat->expired_at = now()->addDays(30);
+            $surat->data = [
+                'name' => $request->input('name'),
+                'username' => $request->input('username'),
+                'programStudi' => $programStudi->name,
+                'email' => $request->input('email'),
+                'semester' => $request->input('semester'),
+                'namaOrangTuaAtauWali' => $request->input('nama-orang-tua'),
+                'instansiAtauPekerjaanOrangTuaAtauWali' => $request->input('pekerjaan-orang-tua'),
+                'pangkatAtauGolonganOrangTuaAtauWali' => $request->input('pangkat-orang-tua'),
+                'nipOrangTuaAtauWali' => $request->input('nip-orang-tua'),
+                'tahunAkademik' => $request->input('tahunAkademik'),
+
+            ];
+            $surat->files = [
+                'slipPembayaran' => $request->file('slip-pembayaran')->store('lampiran'),
+                'ktm' => $request->file('ktm')->store('lampiran'),
+                'krs' => $request->file('krs')->store('lampiran'),
+            ];
+
+            $files = $surat->files;
+            if ($request->hasFile('sk-orang-tua')) {
+                $files['skOrangTua'] = $request->file('sk-orang-tua')->store('lampiran');
             }
             $surat->files = $files;
 

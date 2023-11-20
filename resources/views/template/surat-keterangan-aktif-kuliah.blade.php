@@ -45,7 +45,7 @@
 
     </table>
     <br>
-    <p style="text-align: center"><b><u>SURAT KETERANGAN PERNAH KULIAH</u></b></p>
+    <p style="text-align: center"><b><u>SURAT KETERANGAN AKTIF KULIAH</u></b></p>
     <p style="text-align: center">
         <b>Nomor:&nbsp;{{ $surat->data['noSurat'] ?? 'NoSurat' }}/UN30.7/KM/{{ Carbon\Carbon::now()->year }} </b>
     </p>
@@ -53,6 +53,7 @@
     <br>
     <p style="text-align: justify">Yang bertandatangan di bawah ini:
     </p>
+    <br>
     <table>
         <tr>
             <td>Nama</td>
@@ -76,6 +77,7 @@
 
     <br>
     <p style="text-align: justify">Menyatakan dengan sesungguhnya bahwa: </p>
+    <br>
     <table>
         <tr>
             <td>Nama</td>
@@ -90,6 +92,33 @@
             <td>:
                 {{ Str::title($surat->data['programStudi']) . ' FKIP Universitas Bengkulu' }}
             </td>
+        </tr>
+        <tr>
+            <td>Semester</td>
+            <td>: {{ $surat->data['semester'] }}</td>
+        </tr>
+    </table>
+    <br>
+    <p style="text-align: justify">Orang tua / wali dari mahasiswa tersebut: </p>
+    <br>
+    <table>
+        <tr>
+            <td>Nama</td>
+            <td>: {{ $surat->pengaju->name }}</td>
+        </tr>
+        <tr>
+            <td>NPM</td>
+            <td>: {{ $surat->pengaju->username }}</td>
+        </tr>
+        <tr>
+            <td>Program Studi</td>
+            <td>:
+                {{ Str::title($surat->data['programStudi']) . ' FKIP Universitas Bengkulu' }}
+            </td>
+        </tr>
+        <tr>
+            <td>Semester</td>
+            <td>: {{ $surat->data['semester'] }}</td>
         </tr>
     </table>
     <br>
