@@ -105,7 +105,8 @@
                         </li>
                         <li>
                             Isi form yang disediakan beserta persyaratannya seperti lampiran file jika diperlukan. Jika
-                            sudah tekan tombol submit.
+                            sudah tekan tombol Ajukan Surat. Lalu pilih tujuan kirim ke staff prodi yang tersedia
+                            (pastikan sesuai dengan prodi Anda)
                         </li>
                         <li>
                             Surat berhasil diajukan

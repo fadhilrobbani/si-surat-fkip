@@ -229,7 +229,7 @@ class AkademikController extends Controller
         // }
         $request->validate([
             // 'no-surat' => 'required|size:4|unique:surat_tables,data->noSurat',
-            'no-surat' =>  Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id),
+            'no-surat' =>  ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id)],
         ]);
         // SELECT jt.id FROM users u
         // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
