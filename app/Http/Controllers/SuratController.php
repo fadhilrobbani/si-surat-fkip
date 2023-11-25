@@ -63,6 +63,17 @@ class SuratController extends Controller
                     ->get()
             ]);
         }
+
+        if ($jenisSurat->slug == 'surat-keterangan-eligible-pin') {
+            return view('mahasiswa.formsurat.form-keterangan-eligible-pin', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 3)
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->get()
+            ]);
+        }
         return abort(404);
     }
 
@@ -261,6 +272,46 @@ class SuratController extends Controller
                 $files['skOrangTua'] = $request->file('sk-orang-tua')->store('lampiran');
             }
             $surat->files = $files;
+
+            $surat->save();
+            return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
+        } elseif ($jenisSurat->slug == 'surat-keterangan-eligible-pin') {
+
+            $request->validate([
+                'name' => 'required',
+                'username' => 'required',
+                'program-studi' => 'required',
+                'email' => 'required|email',
+                'periode-wisuda' => 'required|numeric',
+                'tanggal-wisuda' => 'required|date_format:Y-m',
+            ]);
+
+            $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
+
+            $surat = new Surat;
+            $surat->pengaju_id = auth()->user()->id;
+            $surat->current_user_id = $request->input('penerima');
+            $surat->status = 'diproses';
+            $surat->jenis_surat_id = $jenisSurat->id;
+            $surat->expired_at = now()->addDays(30);
+            $surat->data = [
+                'nama' => $request->input('name'),
+                'npm' => $request->input('username'),
+                'programStudi' => $programStudi->name,
+                'email' => $request->input('email'),
+                'periodeWisuda' => $request->input('periode-wisuda'),
+                'tanggalWisuda' => formatTimestampToOnlyMonthIndonesian($request->input('tanggal-wisuda')),
+
+            ];
+            if ($request->hasFile('bukti-lulus')) {
+                $request->validate([
+                    'bukti-lulus' => 'file|mimes:jpeg,png,jpg,pdf|max:2048',
+                ]);
+
+                $surat->files = [
+                    'buktiLulus' => $request->file('bukti-lulus')->store('lampiran')
+                ];
+            }
 
             $surat->save();
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');

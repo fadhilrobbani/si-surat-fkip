@@ -6,6 +6,7 @@
         Mahasiswa | Pengajuan Surat
     </x-slot:title>
     {{-- <x-breadcumb /> --}}
+    {{ Breadcrumbs::render('pengajuan-surat-form', $jenisSurat) }}
     <p class="font-bold text-lg mx-auto text-center mb-2">Surat Keterangan Alumni</p>
 
     <form action="{{ route('store-surat', $jenisSurat->slug) }}" method="POST" enctype="multipart/form-data">
