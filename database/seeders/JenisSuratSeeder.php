@@ -48,7 +48,7 @@ class JenisSuratSeeder extends Seeder
                 'slug' => 'surat-keterangan-lulus'
             ],
             [
-                'name' => 'Surat Keterangan Kesalahan Nama di Ijazah',
+                'name' => 'Surat Keterangan Kesalahan di Ijazah',
                 'slug' => 'surat-keterangan-kesalahan-ijazah'
             ],
             [
