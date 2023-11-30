@@ -14,13 +14,12 @@ class JurusanSeeder extends Seeder
     public function run(): void
     {
         //
-        $daftarJurusan = ['Jurusan Ilmu Pendidikan', 'Jurusan Pendidikan MIPA', 'Jurusan Pendidikan Bahasa dan Seni', 'Pascasarjana', 'Pendidikan Profesi Guru'];
+        $daftarJurusan = ['Jurusan Ilmu Pendidikan', 'Jurusan Pendidikan MIPA', 'Jurusan Pendidikan Bahasa dan Seni'];
 
         foreach ($daftarJurusan as $jurusan) {
             Jurusan::create([
                 'name' => $jurusan,
             ]);
         }
-
     }
 }

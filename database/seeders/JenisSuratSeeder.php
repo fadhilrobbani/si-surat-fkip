@@ -19,21 +19,25 @@ class JenisSuratSeeder extends Seeder
                 'slug' => 'surat-aktif-kuliah'
             ],
             [
-                'name' => 'Surat Permohonan Izin Cuti Akademik',
-                'slug' => 'surat-izin-cuti'
+                'name' => 'Surat Rekomendasi MBKM',
+                'slug' => 'surat-rekomendasi-mbkm'
             ],
-            [
-                'name' => 'Surat Permohonan Seminar Proposal / Seminar Hasil / Ujian Komprehensif / Ujian Skripsi',
-                'slug' => 'surat-permohonan-seminar'
-            ],
-            [
-                'name' => 'Surat Aktif Kembali Setelah Non-aktif',
-                'slug' => 'surat-aktif-kembali'
-            ],
-            [
-                'name' => 'Surat Permohonan Perbaikan Data PDDikti',
-                'slug' => 'surat-permohonan-perbaikan-data'
-            ],
+            // [
+            //     'name' => 'Surat Permohonan Izin Cuti Akademik',
+            //     'slug' => 'surat-izin-cuti'
+            // ],
+            // [
+            //     'name' => 'Surat Permohonan Seminar Proposal / Seminar Hasil / Ujian Komprehensif / Ujian Skripsi',
+            //     'slug' => 'surat-permohonan-seminar'
+            // ],
+            // [
+            //     'name' => 'Surat Aktif Kembali Setelah Non-aktif',
+            //     'slug' => 'surat-aktif-kembali'
+            // ],
+            // [
+            //     'name' => 'Surat Permohonan Perbaikan Data PDDikti',
+            //     'slug' => 'surat-permohonan-perbaikan-data'
+            // ],
             [
                 'name' => 'Surat Keterangan Alumni',
                 'slug' => 'surat-keterangan-alumni'
@@ -51,10 +55,10 @@ class JenisSuratSeeder extends Seeder
                 'name' => 'Surat Keterangan Kesalahan di Ijazah',
                 'slug' => 'surat-keterangan-kesalahan-ijazah'
             ],
-            [
-                'name' => 'Surat Permohonan Sinkronisasi SK Homebase Dosen dengan Forlap PDDikti',
-                'slug' => 'surat-permohonan-sinkronisasi-skdosen-forlapdikti'
-            ],
+            // [
+            //     'name' => 'Surat Permohonan Sinkronisasi SK Homebase Dosen dengan Forlap PDDikti',
+            //     'slug' => 'surat-permohonan-sinkronisasi-skdosen-forlapdikti'
+            // ],
             [
                 'name' => 'Surat Permohonan Izin Pra-Penelitian Mahasiswa',
                 'slug' => 'surat-permohonan-izin-prapenelitian-mahasiswa'
@@ -67,10 +71,10 @@ class JenisSuratSeeder extends Seeder
                 'name' => 'Surat Keterangan Eligible PIN',
                 'slug' => 'surat-keterangan-eligible-pin'
             ],
-            [
-                'name' => 'Surat Usulan Bebas UKT',
-                'slug' => 'surat-usulan-bebas-ukt'
-            ],
+            // [
+            //     'name' => 'Surat Usulan Bebas UKT',
+            //     'slug' => 'surat-usulan-bebas-ukt'
+            // ],
         ];
 
         foreach ($daftarJenisSurat as $jenisSurat) {

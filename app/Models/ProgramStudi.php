@@ -10,14 +10,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ProgramStudi extends Model
 {
     protected $table = 'program_studi_tables';
-    protected $fillable = ['name','jurusan_id'];
+    protected $fillable = ['name', 'jurusan_id', 'kode'];
     use HasFactory;
 
-    public function users(){
-        return $this->hasMany(User::class,'program_studi_id', 'id');
+    public function users()
+    {
+        return $this->hasMany(User::class, 'program_studi_id', 'id');
     }
 
-    public function jurusan(){
-        return $this->belongsTo(Jurusan::class, 'jurusan_id','id');
+    public function jurusan()
+    {
+        return $this->belongsTo(Jurusan::class, 'jurusan_id', 'id');
     }
 }

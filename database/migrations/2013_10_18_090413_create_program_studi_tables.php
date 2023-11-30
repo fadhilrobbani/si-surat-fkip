@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('jurusan_id');
+            $table->char('kode', 3);
             $table->foreign('jurusan_id')->references('id')->on('jurusan_tables')->onDelete('cascade');
             $table->timestamps();
         });
