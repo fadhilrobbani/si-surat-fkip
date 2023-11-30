@@ -59,6 +59,13 @@ class PDFController extends Controller
                 'chroot' => public_path()
             ]);
         }
+
+        if ($surat->jenisSurat->slug == 'surat-rekomendasi-mbkm') {
+            $pdf = Pdf::loadview('template.surat-rekomendasi-mbkm', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+                'tempDir' => public_path(),
+                'chroot' => public_path()
+            ]);
+        }
         return $pdf->stream();
     }
 

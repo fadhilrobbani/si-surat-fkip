@@ -107,6 +107,17 @@ class SuratController extends Controller
                     ->get()
             ]);
         }
+
+        if ($jenisSurat->slug == 'surat-rekomendasi-mbkm') {
+            return view('mahasiswa.formsurat.form-rekomendasi-mbkm', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 3)
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->get()
+            ]);
+        }
         return abort(404);
     }
 
@@ -494,6 +505,48 @@ class SuratController extends Controller
             ];
             $surat->files = [
                 'ijazah' => $request->file('ijazah')->store('lampiran')
+            ];
+
+            $surat->save();
+            return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
+        } elseif ($jenisSurat->slug == 'surat-rekomendasi-mbkm') {
+            $request->validate([
+                'name' => 'required',
+                'username' => 'required',
+                'program-studi' => 'required',
+                'email' => 'required|email',
+                'semester' => 'required',
+                'ipk' =>  ['required', 'regex:/^\d(\.\d{2})?$/'],
+                'jenis-program' => 'required',
+                'semester-saat-program-berlangsung' => 'required',
+                'tahun-akademik-saat-program-berlangsung' =>  ['required', 'regex:/^\d{4}\/\d{4}$/'],
+                'ktm' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+            ]);
+
+            $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
+
+
+            $surat = new Surat;
+            $surat->pengaju_id = auth()->user()->id;
+            $surat->current_user_id = $request->input('penerima');
+            // $surat->penerima_id = $kaprodi->id;
+            $surat->status = 'diproses';
+            $surat->jenis_surat_id = $jenisSurat->id;
+            $surat->expired_at = now()->addDays(30);
+            $surat->data = [
+                'nama' => $request->input('name'),
+                'npm' => $request->input('username'),
+                'programStudi' => $programStudi->name,
+                'email' => $request->input('email'),
+                'semester' => $request->input('semester'),
+                'ipk' => $request->input('ipk'),
+                'jenisProgram' => $request->input('jenis-program'),
+                'semesterSaatProgramBerlangsung' => $request->input('semester-saat-program-berlangsung'),
+                'tahunAkademikSaatProgramBerlangsung' => $request->input('tahun-akademik-saat-program-berlangsung')
+
+            ];
+            $surat->files = [
+                'ktm' => $request->file('ktm')->store('lampiran')
             ];
 
             $surat->save();
