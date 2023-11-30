@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Password;
@@ -27,8 +28,23 @@ class AuthController extends Controller
 
     public function store(Request $request)
     {
+        $programStudiKode = ProgramStudi::pluck('kode');
         $formFields = $request->validate([
-            'username' => 'required|unique:users,username',
+            // 'username' => 'required|unique:users,username|starts_with:foo,bar',
+            'username' => [
+                'required', 'unique:users,username', 'size:9',
+                function ($attribute, $value, $fail) use ($programStudiKode) {
+                    // Gunakan callback untuk memeriksa apakah nilai diawali dengan salah satu kode program studi
+                    foreach ($programStudiKode as $kode) {
+                        if (strpos($value, $kode) === 0) {
+                            return; // Validasi berhasil
+                        }
+                    }
+
+                    // Validasi gagal jika tidak ada kode program studi yang cocok
+                    $fail("NPM yang anda masukkan tidak sesuai atau tidak terdaftar dalam program studi di FKIP!");
+                },
+            ],
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'program-studi' => 'required',
@@ -53,7 +69,8 @@ class AuthController extends Controller
         return redirect('');
     }
 
-    public function emailVerification(User $user){
+    public function emailVerification(User $user)
+    {
         $user->sendEmailVerificationNotification();
         return back()->with('success', 'Email Verifikasi telah dikirim!');
     }
@@ -109,7 +126,7 @@ class AuthController extends Controller
 
     public function authenticate(Request $request)
     {
-        $user = User::where('username', $request->input('username'))->where('role_id','!=',1)->first();
+        $user = User::where('username', $request->input('username'))->where('role_id', '!=', 1)->first();
         if (!$user) {
             return back()->withErrors(['username' => 'Username/NPM salah atau tidak terdaftar'])->withInput();
         }
