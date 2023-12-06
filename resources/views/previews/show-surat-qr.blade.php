@@ -29,14 +29,14 @@
                         <tr class="border-b border-gray-200 dark:border-gray-700">
                             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Nama:&nbsp;
                             </td>
-                            <td class="px-6 py-4">{{ $surat->data['name'] }}
+                            <td class="px-6 py-4">{{ $surat->data['nama'] }}
                             </td>
                         </tr>
                         <tr class="border-b border-gray-200 dark:border-gray-700">
                             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Nomor Pokok Mahasiswa
                                 (NPM):&nbsp;
                             </td>
-                            <td class="px-6 py-4">{{ $surat->data['username'] }}
+                            <td class="px-6 py-4">{{ $surat->data['npm'] }}
                             </td>
                         </tr>
                         <tr class="border-b border-gray-200 dark:border-gray-700">

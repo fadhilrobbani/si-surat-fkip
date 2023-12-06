@@ -41,8 +41,22 @@ class MahasiswaController extends Controller
         ]);
 
         if ($request->input('username') != $user->username) {
+            $programStudiKode = ProgramStudi::pluck('kode');
             $request->validate([
-                'username' => 'unique:users,username'
+                'username' =>  [
+                    'required', 'unique:users,username', 'size:9',
+                    function ($attribute, $value, $fail) use ($programStudiKode) {
+                        // Gunakan callback untuk memeriksa apakah nilai diawali dengan salah satu kode program studi
+                        foreach ($programStudiKode as $kode) {
+                            if (strpos($value, $kode) === 0) {
+                                return; // Validasi berhasil
+                            }
+                        }
+
+                        // Validasi gagal jika tidak ada kode program studi yang cocok
+                        $fail("NPM yang anda masukkan tidak sesuai atau tidak terdaftar dalam program studi di FKIP!");
+                    },
+                ]
             ]);
             $user->update($request->only('username'));
         }
