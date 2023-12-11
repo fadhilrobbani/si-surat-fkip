@@ -152,13 +152,13 @@
                 [
                     'link' => 'mahasiswa/pengajuan-surat',
                     'title' => 'Pengajuan Surat',
-                    'icon' => asset('svg/letter.svg'),
+                    'icon' => asset('svg/letterpencil.svg'),
                     'dropdown' => [],
                 ],
                 [
                     'link' => 'mahasiswa/riwayat-pengajuan-surat',
                     'title' => 'Riwayat Pengajuan',
-                    'icon' => asset('svg/invoice.svg'),
+                    'icon' => asset('svg/letterline.svg'),
                     'dropdown' => [],
                 ],
                 [
@@ -175,6 +175,18 @@
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
+                // [
+                //     'link' => 'staff/pengajuan-surat',
+                //     'title' => 'Pengajuan Surat',
+                //     'icon' => asset('svg/letterpencil.svg'),
+                //     'dropdown' => [],
+                // ],
+                // [
+                //     'link' => 'staff/riwayat-pengajuan',
+                //     'title' => 'Riwayat Pengajuan ',
+                //     'icon' => asset('svg/letterline.svg'),
+                //     'dropdown' => [],
+                // ],
                 [
                     'link' => 'staff/surat-masuk',
                     'title' => 'Surat Masuk',
@@ -184,7 +196,7 @@
                 [
                     'link' => 'staff/riwayat-persetujuan',
                     'title' => 'Riwayat Persetujuan',
-                    'icon' => asset('svg/invoice.svg'),
+                    'icon' => asset('svg/lettercheck.svg'),
                     'dropdown' => [],
                 ],
                 [
@@ -210,7 +222,7 @@
                 [
                     'link' => 'kaprodi/riwayat-persetujuan',
                     'title' => 'Riwayat Persetujuan',
-                    'icon' => asset('svg/invoice.svg'),
+                    'icon' => asset('svg/lettercheck.svg'),
                     'dropdown' => [],
                 ],
                 [
@@ -236,7 +248,7 @@
                 [
                     'link' => 'wd/riwayat-persetujuan',
                     'title' => 'Riwayat Persetujuan',
-                    'icon' => asset('svg/invoice.svg'),
+                    'icon' => asset('svg/lettercheck.svg'),
                     'dropdown' => [],
                 ],
                 [
@@ -262,7 +274,7 @@
                 [
                     'link' => 'akademik/riwayat-persetujuan',
                     'title' => 'Riwayat Persetujuan',
-                    'icon' => asset('svg/invoice.svg'),
+                    'icon' => asset('svg/lettercheck.svg'),
                     'dropdown' => [],
                 ],
                 [

@@ -554,6 +554,10 @@ class SuratController extends Controller
         }
     }
 
+    public function storeByStaff(Request $request, Surat $surat)
+    {
+    }
+
     public function destroy(Surat $surat)
     {
         if ($surat->status == 'diproses') {
