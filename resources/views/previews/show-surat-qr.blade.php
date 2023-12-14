@@ -52,6 +52,12 @@
                             </td>
                         </tr>
                         <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Yang menandatangani:&nbsp;
+                            </td>
+                            <td class="px-6 py-4">{{ $surat->data['private']['namaWD1'] }}
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
                             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Surat
                                 Diterbitkan:&nbsp;
                             </td>
@@ -75,8 +81,7 @@
             ]);
         @endphp
         <a href="{{ $url }}"
-            class="m-10 p-2 mt-10 text-white  text-center bg-blue-600 hover:bg-blue-700 rounded-lg"><button>Cetak</button></a>
-
+            class="m-10 p-2 px-10 mt-4 text-white   text-center bg-blue-600 hover:bg-blue-700 rounded-lg"><button>Cetak</button></a>
 
 
     </main>
