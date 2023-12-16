@@ -17,11 +17,11 @@
         <div class="flex flex-col justify-center items-center gap-2">
             <img class="w-28" src="{{ asset('images/logounib.png') }}" alt="logounib" />
             <div class="flex flex-col gap-0 m-0 p-0">
-                <h1 class="text-xl  text-slate-700 font-semibold text-center mb-4 mx-auto">Halaman Lupa Kata Sandi
+                <h1 class="text-xl  text-slate-700 font-semibold text-center mb-4 mx-auto">Halaman Lupa Kata Sandi / Atur Ulang Kata Sandi
                 </h1>
-                <h1 class=" text-md mt-0 text-slate-700  text-center mb-4 mx-auto">Jika Anda lupa kata sandi akun, Anda
-                    dapat mereset kata sandi dengan mengisi form reset kata sandi di bawah. <br>Kami akan mengirim link
-                    untuk Anda dapat mereset kata sandi via email yang terdaftar</h1>
+                <h1 class=" text-md mt-0 text-slate-700  text-center mb-4 mx-auto">Anda
+                    dapat mereset kata sandi dengan memasukkan email Anda yang terdaftar di bawah. <br>Kami akan mengirim link
+                    untuk Anda dapat mereset kata sandi via email yang terdaftar. Pastikan Email Anda aktif</h1>
                 <h1 class=" text-md mt-0 text-slate-700  text-center mb-4 mx-auto"></h1>
                 <form action="{{ route('password.email') }}" method="POST">
                     @csrf
