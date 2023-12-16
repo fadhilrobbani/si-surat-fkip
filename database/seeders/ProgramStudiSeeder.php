@@ -15,7 +15,6 @@ class ProgramStudiSeeder extends Seeder
     {
         $daftarProgramStudi = [
             // ['name' => 'D3 Bahasa Inggris', 'jurusan_id' => 3],
-            // ['name' => 'Pendidikan Profesi Guru (PPG)', 'jurusan_id' => 5],
             ['name' => 'S1 Bimbingan dan Konseling', 'jurusan_id' => 1, 'kode' => 'A1L'],
             ['name' => 'S1 Pendidikan Bahasa Indonesia', 'jurusan_id' => 3, 'kode' => 'A1A'],
             ['name' => 'S1 Pendidikan Bahasa Inggris', 'jurusan_id' => 3, 'kode' => 'A1B'],
@@ -36,7 +35,8 @@ class ProgramStudiSeeder extends Seeder
             ['name' => 'S2 Pendidikan Matematika', 'jurusan_id' => 2, 'kode' => 'A2C'],
             ['name' => 'S2 Teknologi Pendidikan', 'jurusan_id' => 1, 'kode' => 'A2M'],
             ['name' => 'S3 Pendidikan', 'jurusan_id' => 1, 'kode' => 'A3K'],
-            ['name' => 'S3 Linguistik Terapan', 'jurusan_id' => 3, 'kode' => 'A3A']
+            ['name' => 'S3 Linguistik Terapan', 'jurusan_id' => 3, 'kode' => 'A3A'],
+            ['name' => 'Pendidikan Profesi Guru (PPG)', 'jurusan_id' => 1,'kode' => 'A'],
         ];
 
         foreach ($daftarProgramStudi as $programStudi) {

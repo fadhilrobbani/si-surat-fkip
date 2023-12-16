@@ -55,7 +55,16 @@ class StaffController extends Controller
             $user->update($request->only('email'));
             $user->email_verified_at = null;
         }
-        $user->update($request->only('name', 'program-studi'));
+        // if($request->input('program-studi') != $user->program_studi_id ){
+        //     if(strpos($user->username, $user->programStudi->kode) !== 0){
+
+        //         return redirect('/mahasiswa/profile')->with('deleted', 'Program Studi tidak sesuai NPM Anda');
+        //     }else{
+
+        //         $user->update(['program_studi_id' => $request->input('program-studi')]);
+        //     }
+        // }
+        $user->update($request->only('name'));
         return redirect('/staff/profile')->with('success', 'Sukses mengupdate data');
     }
 

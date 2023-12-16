@@ -47,9 +47,9 @@
         </div>
         <div class="mb-6">
             <label for="program-studi" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Program
-                Studi
+                Studi (Hanya bisa diubah admin)
             </label>
-            <select type="text" id="program-studi" name="program-studi" {{ $edit ? '' : 'disabled' }}
+            <select type="text" disabled
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required>
                 <option value="">Pilih Program Studi</option>
@@ -58,6 +58,7 @@
                         value="{{ $programStudi->id }}">{{ $programStudi->name }}</option>
                 @endforeach
             </select>
+            <input type="text" hidden name="program-studi" value="{{ $authUser->program_studi_id }}">
         </div>
 
 

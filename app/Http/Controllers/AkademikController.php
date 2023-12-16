@@ -75,7 +75,7 @@ class AkademikController extends Controller
             Storage::disk('public')->put('stempel/' . $uuid, file_get_contents($file));
             $user->update(['tandatangan' => 'stempel/' . $uuid]);
         }
-        $user->update($request->only('name', 'jurusan'));
+        $user->update($request->only('name'));
         return redirect('/akademik/profile')->with('success', 'Sukses mengupdate data');
     }
 

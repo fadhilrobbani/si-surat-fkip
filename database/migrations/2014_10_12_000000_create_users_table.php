@@ -23,9 +23,9 @@ return new class extends Migration
             $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('program_studi_id')->nullable();
             $table->unsignedBigInteger('jurusan_id')->nullable();
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
-            $table->foreign('program_studi_id')->references('id')->on('program_studi_tables')->onDelete('cascade');
-            $table->foreign('jurusan_id')->references('id')->on('jurusan_tables')->onDelete('cascade');
+            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('program_studi_id')->references('id')->on('program_studi_tables')->cascadeOnDelete();
+            $table->foreign('jurusan_id')->references('id')->on('jurusan_tables')->cascadeOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });

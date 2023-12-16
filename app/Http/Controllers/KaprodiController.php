@@ -74,7 +74,7 @@ class KaprodiController extends Controller
         //     Storage::disk('public')->put('ttd/' . $uuid, file_get_contents($file));
         //     $user->update(['tandatangan' => 'ttd/' . $uuid]);
         // }
-        $user->update($request->only('name', 'program-studi'));
+        $user->update($request->only('name'));
         return redirect('/kaprodi/profile')->with('success', 'Sukses mengupdate data');
     }
 

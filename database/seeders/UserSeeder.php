@@ -291,7 +291,17 @@ class UserSeeder extends Seeder
                 'program_studi_id' => 21,
                 'email_verified_at' => now()
             ],
-
+            [
+                'username' => 'staff_ppg',
+                'name' => 'Staff Program Profesi Guru',
+                'email' => 'staffppg@gmail.com',
+                'password' => bcrypt('password'),
+                'role_id' => 3,
+                'nip' => null,
+                'jurusan_id' => null,
+                'program_studi_id' => 22,
+                'email_verified_at' => now()
+            ],
 
             [
                 'username' => 'kaprodi_bk',
@@ -524,6 +534,18 @@ class UserSeeder extends Seeder
                 'program_studi_id' => 21,
                 'email_verified_at' => now()
             ],
+            [
+                'username' => 'kaprodi_ppg',
+                'name' => 'Kaprodi Program Profesi Guru',
+                'email' => 'kaprodippg@gmail.com',
+                'password' => bcrypt('password'),
+                'role_id' => 4,
+                'nip' => null,
+                'jurusan_id' => null,
+                'program_studi_id' => 22,
+                'email_verified_at' => now()
+            ],
+
             [
                 'username' => 'wd1fkip',
                 'name' => 'Abdul Rahman, S.Si., M.Si., Ph.D',

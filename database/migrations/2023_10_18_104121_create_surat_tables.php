@@ -13,18 +13,16 @@ return new class extends Migration
     {
         Schema::create('surat_tables', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('pengaju_id');
-            $table->uuid('current_user_id');
-            $table->uuid('penerima_id')->nullable();
+            $table->uuid('pengaju_id')->nullable();
+            $table->uuid('current_user_id')->nullable();
             $table->enum('status', ['diproses', 'selesai', 'ditolak']);
             $table->unsignedBigInteger('jenis_surat_id');
             $table->json('data')->nullable();
             $table->json('files')->nullable();
             $table->timestamp('expired_at')->nullable();
-            $table->foreign('pengaju_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('current_user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('penerima_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('jenis_surat_id')->references('id')->on('jenis_surat_tables')->onDelete('cascade');
+            $table->foreign('pengaju_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreign('current_user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreign('jenis_surat_id')->references('id')->on('jenis_surat_tables');
             $table->timestamps();
         });
     }
