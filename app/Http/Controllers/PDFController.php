@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JenisSurat;
 use App\Models\Surat;
 use Illuminate\Http\Request;
 
@@ -76,4 +77,78 @@ class PDFController extends Controller
         }
         return $this->previewSurat($surat);
     }
+
+    // public function templateSurat(JenisSurat $jenisSurat)
+    // {
+    //     if ($jenisSurat->slug == 'surat-keterangan-alumni') {
+    //         $pdf = Pdf::loadview('template.surat-keterangan-alumni',['surat' => [
+
+    //         ]])->setPaper('a4', 'potrait')->setOptions([
+    //             'tempDir' => public_path(),
+    //             'chroot' => public_path()
+    //         ]);
+    //     }
+    //     if ($jenisSurat->slug == 'surat-keterangan-lulus') {
+    //         $pdf = Pdf::loadview('template.surat-keterangan-lulus',['surat' => [
+
+    //         ]])->setPaper('a4', 'potrait')->setOptions([
+    //             'tempDir' => public_path(),
+    //             'chroot' => public_path()
+    //         ]);
+    //     }
+    //     if ($jenisSurat->slug == 'surat-keterangan-pernah-kuliah') {
+    //         $pdf = Pdf::loadview('template.surat-keterangan-pernah-kuliah',['surat' => [
+
+    //         ]])->setPaper('a4', 'potrait')->setOptions([
+    //             'tempDir' => public_path(),
+    //             'chroot' => public_path()
+    //         ]);
+    //     }
+
+    //     if ($jenisSurat->slug == 'surat-aktif-kuliah') {
+    //         $pdf = Pdf::loadview('template.surat-keterangan-aktif-kuliah',['surat' => [
+
+    //         ]])->setPaper('a4', 'potrait')->setOptions([
+    //             'tempDir' => public_path(),
+    //             'chroot' => public_path()
+    //         ]);
+    //     }
+
+    //     if ($jenisSurat->slug == 'surat-keterangan-eligible-pin') {
+    //         $pdf = Pdf::loadview('template.surat-keterangan-eligible-pin',['surat' => [
+
+    //         ]])->setPaper('a4', 'potrait')->setOptions([
+    //             'tempDir' => public_path(),
+    //             'chroot' => public_path()
+    //         ]);
+    //     }
+
+    //     if ($jenisSurat->slug == 'surat-permohonan-izin-penelitian-mahasiswa') {
+    //         $pdf = Pdf::loadview('template.surat-permohonan-izin-penelitian-mahasiswa',['surat' => [
+
+    //         ]])->setPaper('a4', 'potrait')->setOptions([
+    //             'tempDir' => public_path(),
+    //             'chroot' => public_path()
+    //         ]);
+    //     }
+
+    //     if ($jenisSurat->slug == 'surat-keterangan-kesalahan-ijazah') {
+    //         $pdf = Pdf::loadview('template.surat-keterangan-kesalahan-ijazah',['surat' => [
+
+    //         ]])->setPaper('a4', 'potrait')->setOptions([
+    //             'tempDir' => public_path(),
+    //             'chroot' => public_path()
+    //         ]);
+    //     }
+
+    //     if ($jenisSurat->slug == 'surat-rekomendasi-mbkm') {
+    //         $pdf = Pdf::loadview('template.surat-rekomendasi-mbkm',['surat' => [
+
+    //         ]])->setPaper('a4', 'potrait')->setOptions([
+    //             'tempDir' => public_path(),
+    //             'chroot' => public_path()
+    //         ]);
+    //     }
+    //     return $pdf->stream();
+    // }
 }

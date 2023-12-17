@@ -30,7 +30,7 @@ class SuratMahasiswa extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('fkipunivbengkulu@gmail.com', 'FKIP UNIB'),
+            from: new Address(env('MAIL_FROM_ADDRESS'), 'FKIP UNIB'),
             subject: 'E-Surat ' . $this->surat->jenisSurat->name . ' Anda telah terbit dan disetujui!',
         );
     }

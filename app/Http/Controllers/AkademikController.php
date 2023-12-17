@@ -235,7 +235,7 @@ class AkademikController extends Controller
         // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
         // JOIN jurusan_tables jt ON jt.id = pst.jurusan_id ;
         $surat->current_user_id = $surat->pengaju_id;
-        $surat->penerima_id = $surat->pengaju_id;
+        // $surat->penerima_id = $surat->pengaju_id;
         $surat->expired_at = null;
         $data = $surat->data;
         $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));

@@ -131,16 +131,39 @@ class AuthController extends Controller
 
     public function authenticate(Request $request)
     {
-        $user = User::where('username', $request->input('username'))->where('role_id', '!=', 1)->first();
+        // $user = User::where('username', $request->input('username'))->where('role_id', '!=', 1)->first();
+        $user = User::where(function($query) use ($request) {
+            $usernameOrEmail = $request->input('username');
+
+            $query->where('username', $usernameOrEmail)
+                  ->orWhere('email', $usernameOrEmail);
+        })
+        ->where('role_id', '!=', 1)
+        ->first();
+
         if (!$user) {
-            return back()->withErrors(['username' => 'Username/NPM salah atau tidak terdaftar'])->withInput();
+            return back()->withErrors(['username' => 'Username/NPM/Email salah atau tidak terdaftar'])->withInput();
         }
-        $credentials = $request->validate([
-            'username' => 'required|exists:users,username',
-            'password' => 'required'
+
+        $this->validate($request, [
+            'username'    => 'required',
+            'password' => 'required',
         ]);
 
-        if (auth()->attempt($credentials)) {
+        $login_type = filter_var($request->input('username'), FILTER_VALIDATE_EMAIL )
+            ? 'email'
+            : 'username';
+
+        $request->merge([
+            $login_type => $request->input('username')
+        ]);
+
+        // $credentials = $request->validate([
+        //     'username' => 'required',
+        //     'password' => 'required'
+        // ]);
+
+        if (auth()->attempt($request->only($login_type, 'password'))) {
             // dd('login');
             $request->session()->regenerate();
             if (auth()->user()->role_id == 1) {
