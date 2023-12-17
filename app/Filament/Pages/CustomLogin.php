@@ -23,12 +23,12 @@ class CustomLogin extends Login
             redirect()->intended(Filament::getUrl());
         }
 
-        if (app()->environment('local')) {
-            $this->form->fill([
-                'username' => 'admin',
-                'password' => 'password',
-            ]);
-        }
+        // if (app()->environment('local')) {
+        //     $this->form->fill([
+        //         'username' => 'admin',
+        //         'password' => 'password',
+        //     ]);
+        // }
     }
 
     public function authenticate(): ?LoginResponse
