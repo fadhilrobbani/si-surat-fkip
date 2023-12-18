@@ -23,7 +23,7 @@ class JurusanResource extends Resource
     protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $modelLabel = 'Jurusan';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Manajemen Fakultas';
+    protected static ?string $navigationGroup = 'Manajemen Fakultas *Menghapus data dapat membuat akun hilang!';
     protected static ?string $slug = 'jurusan';
     protected static ?int $navigationSort = 3;
 

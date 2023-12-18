@@ -26,7 +26,7 @@ class ProgramStudiResource extends Resource
     protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $modelLabel = 'Program Studi';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Manajemen Fakultas';
+    protected static ?string $navigationGroup = 'Manajemen Fakultas *Menghapus data dapat membuat akun hilang!';
     protected static ?string $slug = 'program-studi';
     protected static ?int $navigationSort = 2;
 
