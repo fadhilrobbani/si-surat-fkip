@@ -15,7 +15,7 @@ return [
 
     'class_namespace' => 'App\\Livewire',
     // 'asset_url' => 'appname/public/livewire/livewire.js',
-    'asset_url' => env('APP_URL', null),
+    // 'asset_url' =>url('/'),
 
     /*
     |---------------------------------------------------------------------------

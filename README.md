@@ -26,6 +26,23 @@ Pastikan sudah terinstall komponen berikut:
 11. Jalankan `php artisan migrate --seed`
 12. Jalankan `php artisan serve`. Lalu buka alamatnya di browser (biasanya di `http://127.0.0.1:8000/`)
 
+## After deploy
+atur .env
+
+1. atur server smtp untuk layanan email
+```
+MAIL_MAILER=smtp
+MAIL_HOST=smtp-relay.brevo.com
+MAIL_PORT=587
+MAIL_USERNAME=fkipunivbengkulu@gmail.com
+MAIL_PASSWORD=xsmtpsib-189394a98528f034151176b09c324934c2cb2a1375a20c812b366ec7125ed948-MKcXUTzjBrCEVvQy
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=fkipunivbengkulu@gmail.com
+MAIL_FROM_NAME="FKIP UNIB"
+```
+
+
+
 ## Panduan
 
 1. Daftar akun sementara ada pada direktori database/seeders/UserSeeder.php
