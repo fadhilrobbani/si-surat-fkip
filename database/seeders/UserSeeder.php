@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'admin',
                 'name' => 'admin',
-                'email' => 'admin@gmail.com',
+                'email' => 'admin@email.com',
                 'password' => bcrypt('admin'),
                 'role_id' => 1,
                 'nip' => null,
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'mahasiswa_bk',
                 'name' => 'Mahasiswa Bimbingan Konseling',
-                'email' => 'firoclever@gmail.com',
+                'email' => 'mahasiswabk@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 2,
                 'nip' => null,
@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'mahasiswa_fisika',
                 'name' => 'Mahasiswa Fisika',
-                'email' => 'mahasiswafisika@gmail.com',
+                'email' => 'mahasiswafisika@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 2,
                 'nip' => null,
@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'mahasiswa_pgsd',
                 'name' => 'Mahasiswa PGSD',
-                'email' => 'mahasiswapgsd@gmail.com',
+                'email' => 'mahasiswapgsd@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 2,
                 'nip' => null,
@@ -63,7 +63,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_bk',
                 'name' => 'Staff S1 Bimbingan Konseling',
-                'email' => 'staffbk@gmail.com',
+                'email' => 'staffbk@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -74,7 +74,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_bindo',
                 'name' => 'Staff S1 Pendidikan Bahasa Indonesia',
-                'email' => 'staffbindo@gmail.com',
+                'email' => 'staffbindo@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -85,7 +85,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_bing',
                 'name' => 'Staff S1 Pendidikan Bahasa Inggris',
-                'email' => 'staffbing@gmail.com',
+                'email' => 'staffbing@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -96,7 +96,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_biologi',
                 'name' => 'Staff S1 Pendidikan Biologi',
-                'email' => 'staffbiologi@gmail.com',
+                'email' => 'staffbiologi@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -107,7 +107,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_fisika',
                 'name' => 'Staff S1 Pendidikan Fisika',
-                'email' => 'stafffisika@gmail.com',
+                'email' => 'stafffisika@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -118,7 +118,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_paud',
                 'name' => 'Staff S1 Pendidikan PAUD',
-                'email' => 'staffpaud@gmail.com',
+                'email' => 'staffpaud@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -129,7 +129,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_pgsd',
                 'name' => 'Staff S1 PGSD',
-                'email' => 'staffpgsd@gmail.com',
+                'email' => 'staffpgsd@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -140,7 +140,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_penjas',
                 'name' => 'Staff S1 Pendidikan Jasmani',
-                'email' => 'staffpenjas@gmail.com',
+                'email' => 'staffpenjas@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -151,7 +151,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_kimia',
                 'name' => 'Staff S1 Pendidikan Kimia',
-                'email' => 'staffkimia@gmail.com',
+                'email' => 'staffkimia@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -162,7 +162,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_pnf',
                 'name' => 'Staff S1 Pendidikan Non Formal',
-                'email' => 'staffpnf@gmail.com',
+                'email' => 'staffpnf@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -173,7 +173,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_matematika',
                 'name' => 'Staff S1 Pendidikan Matematika',
-                'email' => 'staffmatematika@gmail.com',
+                'email' => 'staffmatematika@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -184,7 +184,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_ipa',
                 'name' => 'Staff S1 Pendidikan IPA',
-                'email' => 'staffipa@gmail.com',
+                'email' => 'staffipa@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -195,7 +195,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_s2ap',
                 'name' => 'Staff S2 Administrasi Pendidikan',
-                'email' => 'staffs2ap@gmail.com',
+                'email' => 'staffs2ap@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -206,7 +206,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_s2bindo',
                 'name' => 'Staff S2 Pendidikan Bahasa Indonesia',
-                'email' => 'staffs2bindo@gmail.com',
+                'email' => 'staffs2bindo@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -217,7 +217,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_s2bing',
                 'name' => 'Staff S2 Pendidikan Bahasa Inggris',
-                'email' => 'staffs2bing@gmail.com',
+                'email' => 'staffs2bing@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -228,7 +228,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_s2pendas',
                 'name' => 'Staff S2 Pendidikan Dasar',
-                'email' => 'staffs2pendas@gmail.com',
+                'email' => 'staffs2pendas@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -239,7 +239,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_s2ipa',
                 'name' => 'Staff S2 Pendidikan IPA',
-                'email' => 'staffs2ipa@gmail.com',
+                'email' => 'staffs2ipa@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -250,7 +250,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_s2matematika',
                 'name' => 'Staff S2 Pendidikan Matematika',
-                'email' => 'staffs2matematika@gmail.com',
+                'email' => 'staffs2matematika@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -261,7 +261,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_s2tp',
                 'name' => 'Staff S2 Teknologi Pendidikan',
-                'email' => 'staffs2tp@gmail.com',
+                'email' => 'staffs2tp@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -272,7 +272,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_s3pendidikan',
                 'name' => 'Staff S3 Pendidikan',
-                'email' => 'staffs3pendidikan@gmail.com',
+                'email' => 'staffs3pendidikan@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -283,7 +283,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_s3lt',
                 'name' => 'Staff S3 Linguistik Terapan',
-                'email' => 'staffs3lt@gmail.com',
+                'email' => 'staffs3lt@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -294,7 +294,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'staff_ppg',
                 'name' => 'Staff Program Profesi Guru',
-                'email' => 'staffppg@gmail.com',
+                'email' => 'staffppg@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 3,
                 'nip' => null,
@@ -306,7 +306,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_bk',
                 'name' => 'Kaprodi S1 Bimbingan Konseling',
-                'email' => 'kaprodibk@gmail.com',
+                'email' => 'kaprodibk@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -317,7 +317,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_bindo',
                 'name' => 'Kaprodi S1 Pendidikan Bahasa Indonesia',
-                'email' => 'kaprodibindo@gmail.com',
+                'email' => 'kaprodibindo@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -328,7 +328,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_bing',
                 'name' => 'Kaprodi S1 Pendidikan Bahasa Inggris',
-                'email' => 'kaprodibing@gmail.com',
+                'email' => 'kaprodibing@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -339,7 +339,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_biologi',
                 'name' => 'Kaprodi S1 Pendidikan Biologi',
-                'email' => 'kaprodibiologi@gmail.com',
+                'email' => 'kaprodibiologi@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -350,7 +350,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_fisika',
                 'name' => 'Kaprodi S1 Pendidikan Fisika',
-                'email' => 'kaprodifisika@gmail.com',
+                'email' => 'kaprodifisika@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -361,7 +361,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_paud',
                 'name' => 'Kaprodi S1 Pendidikan PAUD',
-                'email' => 'kaprodipaud@gmail.com',
+                'email' => 'kaprodipaud@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -372,7 +372,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_pgsd',
                 'name' => 'Kaprodi S1 PGSD',
-                'email' => 'kaprodipgsd@gmail.com',
+                'email' => 'kaprodipgsd@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -383,7 +383,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_penjas',
                 'name' => 'Kaprodi S1 Pendidikan Jasmani',
-                'email' => 'kaprodipenjas@gmail.com',
+                'email' => 'kaprodipenjas@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -394,7 +394,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_kimia',
                 'name' => 'Kaprodi S1 Pendidikan Kimia',
-                'email' => 'kaprodikimia@gmail.com',
+                'email' => 'kaprodikimia@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -405,7 +405,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_pnf',
                 'name' => 'Kaprodi S1 Pendidikan Non Formal',
-                'email' => 'kaprodipnf@gmail.com',
+                'email' => 'kaprodipnf@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -416,7 +416,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_matematika',
                 'name' => 'Kaprodi S1 Pendidikan Matematika',
-                'email' => 'kaprodimatematika@gmail.com',
+                'email' => 'kaprodimatematika@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -427,7 +427,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_ipa',
                 'name' => 'Kaprodi S1 Pendidikan IPA',
-                'email' => 'kaprodiipa@gmail.com',
+                'email' => 'kaprodiipa@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -438,7 +438,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_s2ap',
                 'name' => 'Kaprodi S2 Administrasi Pendidikan',
-                'email' => 'kaprodis2ap@gmail.com',
+                'email' => 'kaprodis2ap@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -449,7 +449,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_s2bindo',
                 'name' => 'Kaprodi S2 Pendidikan Bahasa Indonesia',
-                'email' => 'kaprodis2bindo@gmail.com',
+                'email' => 'kaprodis2bindo@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -460,7 +460,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_s2bing',
                 'name' => 'Kaprodi S2 Pendidikan Bahasa Inggris',
-                'email' => 'kaprodis2bing@gmail.com',
+                'email' => 'kaprodis2bing@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -471,7 +471,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_s2pendas',
                 'name' => 'Kaprodi S2 Pendidikan Dasar',
-                'email' => 'kaprodis2pendas@gmail.com',
+                'email' => 'kaprodis2pendas@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -482,7 +482,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_s2ipa',
                 'name' => 'Kaprodi S2 Pendidikan IPA',
-                'email' => 'kaprodis2ipa@gmail.com',
+                'email' => 'kaprodis2ipa@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -493,7 +493,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_s2matematika',
                 'name' => 'Kaprodi S2 Pendidikan Matematika',
-                'email' => 'kaprodis2matematika@gmail.com',
+                'email' => 'kaprodis2matematika@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -504,7 +504,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_s2tp',
                 'name' => 'Kaprodi S2 Teknologi Pendidikan',
-                'email' => 'kaprodis2tp@gmail.com',
+                'email' => 'kaprodis2tp@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -515,7 +515,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_s3pendidikan',
                 'name' => 'Kaprodi S3 Pendidikan',
-                'email' => 'kaprodis3pendidikan@gmail.com',
+                'email' => 'kaprodis3pendidikan@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -526,7 +526,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_s3lt',
                 'name' => 'Kaprodi S3 Linguistik Terapan',
-                'email' => 'kaprodis3lt@gmail.com',
+                'email' => 'kaprodis3lt@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -537,7 +537,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'kaprodi_ppg',
                 'name' => 'Kaprodi Program Profesi Guru',
-                'email' => 'kaprodippg@gmail.com',
+                'email' => 'kaprodippg@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 4,
                 'nip' => null,
@@ -560,7 +560,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'akademik_jip',
                 'name' => 'Akademik Jurusan Ilmu Pendidikan',
-                'email' => 'akademikjip@gmail.com',
+                'email' => 'akademikjip@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 6,
                 'nip' => null,
@@ -571,7 +571,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'akademik_jmipa',
                 'name' => 'Akademik Jurusan MIPA',
-                'email' => 'akademikjmipa@gmail.com',
+                'email' => 'akademikjmipa@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 6,
                 'nip' => null,
@@ -582,7 +582,7 @@ class UserSeeder extends Seeder
             [
                 'username' => 'akademik_jpbs',
                 'name' => 'Akademik Jurusan Bahasa dan Seni',
-                'email' => 'akademikjpbs@gmail.com',
+                'email' => 'akademikjpbs@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 6,
                 'nip' => null,
