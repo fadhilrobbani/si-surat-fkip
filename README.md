@@ -26,8 +26,8 @@ Pastikan sudah terinstall komponen berikut:
 11. Jalankan `php artisan migrate --seed`
 12. Jalankan `php artisan serve`. Lalu buka alamatnya di browser (biasanya di `http://127.0.0.1:8000/`)
 
-## After deploy
-atur .env
+## catatan untuk deployment
+### atur .env
 
 1. atur server smtp untuk layanan email
 ```
@@ -40,7 +40,20 @@ MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS=fkipunivbengkulu@gmail.com
 MAIL_FROM_NAME="FKIP UNIB"
 ```
+2. isi APP_KEY dengan `php artisan key:generate`
+3. ganti APP_ENV ke `production`
+4. atur database sesuai ketentuan di komputer/server, misal:
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=si_surat_fkip
+DB_USERNAME=root
+DB_PASSWORD=
 
+```
+### Jalankan npm run build
+1. Jalankan perintah `npm run build` untuk meletakkan hasil build vite ke dalam folder public
 
 
 ## Panduan
