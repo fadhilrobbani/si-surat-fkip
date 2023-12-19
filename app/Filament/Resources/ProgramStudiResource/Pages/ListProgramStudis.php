@@ -7,6 +7,7 @@ use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\ProgramStudiResource;
 use Filament\Pages\Concerns\ExposesTableToWidgets;
 use App\Filament\Resources\ProgramStudiResource\Widgets\ProgramStudiOverview;
+use App\Filament\Resources\ProgramStudiResource\Widgets\WarningAction;
 
 class ListProgramStudis extends ListRecords
 {
@@ -23,7 +24,7 @@ class ListProgramStudis extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            // ProgramStudiOverview::class
+            WarningAction::class,
         ];
     }
 }

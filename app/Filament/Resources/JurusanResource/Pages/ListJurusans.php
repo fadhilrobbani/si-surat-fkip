@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\JurusanResource\Pages;
 
-use App\Filament\Resources\JurusanResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\JurusanResource;
+use App\Filament\Resources\JurusanResource\Widgets\WarningAction;
 
 class ListJurusans extends ListRecords
 {
@@ -14,6 +15,13 @@ class ListJurusans extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+        ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            WarningAction::class,
         ];
     }
 }

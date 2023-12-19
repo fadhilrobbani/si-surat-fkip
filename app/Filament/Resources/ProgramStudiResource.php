@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ProgramStudiResource\Pages;
 use App\Filament\Resources\ProgramStudiResource\RelationManagers;
 use App\Filament\Resources\ProgramStudiResource\Widgets\ProgramStudiOverview;
+use App\Filament\Resources\ProgramStudiResource\Widgets\WarningAction;
 
 class ProgramStudiResource extends Resource
 {
@@ -26,7 +27,7 @@ class ProgramStudiResource extends Resource
     protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $modelLabel = 'Program Studi';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Manajemen Fakultas *Menghapus data dapat membuat akun hilang!';
+    protected static ?string $navigationGroup = 'Manajemen Fakultas';
     protected static ?string $slug = 'program-studi';
     protected static ?int $navigationSort = 2;
 
@@ -102,6 +103,13 @@ class ProgramStudiResource extends Resource
             'index' => Pages\ListProgramStudis::route('/'),
             // 'create' => Pages\CreateProgramStudi::route('/create'),
             // 'edit' => Pages\EditProgramStudi::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            WarningAction::class,
         ];
     }
 }

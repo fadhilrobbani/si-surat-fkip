@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\JurusanResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\JurusanResource\RelationManagers;
+use App\Filament\Resources\JurusanResource\Widgets\WarningAction;
 
 class JurusanResource extends Resource
 {
@@ -23,7 +24,7 @@ class JurusanResource extends Resource
     protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $modelLabel = 'Jurusan';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Manajemen Fakultas *Menghapus data dapat membuat akun hilang!';
+    protected static ?string $navigationGroup = 'Manajemen Fakultas';
     protected static ?string $slug = 'jurusan';
     protected static ?int $navigationSort = 3;
 
@@ -91,6 +92,13 @@ class JurusanResource extends Resource
             'index' => Pages\ListJurusans::route('/'),
             // 'create' => Pages\CreateJurusan::route('/create'),
             // 'edit' => Pages\EditJurusan::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            WarningAction::class,
         ];
     }
 }
