@@ -52,18 +52,22 @@ class AdminResource extends Resource
                         ->columnSpan(2),
 
                     TextInput::make('name')
+                        ->label('Nama')
                         ->placeholder('Masukkan nama lengkap')
                         ->required(),
                     TextInput::make('email')
                         ->email()
+                        ->required()
                         ->unique(ignorable: fn ($record) => $record)
                         ->placeholder('email@example.com'),
                     TextInput::make('password')->password()
+                        ->label('Kata Sandi Baru')
                         ->placeholder('********')
                         ->confirmed()
                         ->dehydrated(fn (?string $state): bool => filled($state))
                         ->required(fn (string $operation): bool => $operation === 'create'),
                     TextInput::make('password_confirmation')
+                        ->label('Konfirmasi Kata Sandi Baru')
                         ->placeholder('********')
                         ->password()
                         ->dehydrated(fn (?string $state): bool => filled($state))
@@ -83,6 +87,7 @@ class AdminResource extends Resource
                     ->toggleable()
                     ->sortable(),
                 TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),

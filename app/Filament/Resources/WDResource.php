@@ -43,13 +43,18 @@ class WDResource extends Resource
                 Section::make([
                     Hidden::make('role_id')
                         ->default(5),
-
                     TextInput::make('username')
                         ->placeholder('Username')
                         ->required()
                         ->alphaDash()
                         ->unique(ignorable: fn ($record) => $record),
+                    TextInput::make('email')
+                        ->email()
+                        ->unique(ignorable: fn ($record) => $record)
+                        ->placeholder('email@example.com')
+                        ->required(),
                     TextInput::make('name')
+                        ->label('Nama')
                         ->placeholder('Masukkan nama lengkap')
                         ->required(),
                     TextInput::make('nip')
@@ -57,11 +62,7 @@ class WDResource extends Resource
                         ->placeholder('NIP')
                         ->unique(ignorable: fn ($record) => $record)
                         ->required(),
-                    TextInput::make('email')
-                        ->email()
-                        ->unique(ignorable: fn ($record) => $record)
-                        ->placeholder('email@example.com')
-                        ->required(),
+
 
                     // Select::make('program_studi_id')
                     //     ->relationship('programStudi', 'name'),
@@ -69,11 +70,13 @@ class WDResource extends Resource
                     //     ->relationship('jurusan', 'name'),
 
                     TextInput::make('password')->password()
+                        ->label('Kata sandi baru')
                         ->placeholder('********')
                         ->confirmed()
                         ->dehydrated(fn (?string $state): bool => filled($state))
                         ->required(fn (string $operation): bool => $operation === 'create'),
                     TextInput::make('password_confirmation')
+                        ->label('Konfirmasi kata sandi baru')
                         ->placeholder('********')
                         ->password()
                         ->dehydrated(fn (?string $state): bool => filled($state))
@@ -98,7 +101,12 @@ class WDResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
+                TextColumn::make('email')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
@@ -107,10 +115,7 @@ class WDResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
-                TextColumn::make('email')
-                    ->searchable()
-                    ->toggleable()
-                    ->sortable(),
+
                 // ImageColumn::make('tandatangan')
                 //     ->toggleable(),
                 TextColumn::make('created_at')

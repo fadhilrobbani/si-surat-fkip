@@ -50,7 +50,13 @@ class KaprodiResource extends Resource
                         ->alphaDash()
                         ->unique(ignorable: fn ($record) => $record)
                         ->required(),
+                    TextInput::make('email')
+                        ->email()
+                        ->unique(ignorable: fn ($record) => $record)
+                        ->placeholder('email@example.com')
+                        ->required(),
                     TextInput::make('name')
+                        ->label('Nama')
                         ->placeholder('Masukkan nama lengkap')
                         ->required(),
                     TextInput::make('nip')
@@ -58,23 +64,22 @@ class KaprodiResource extends Resource
                         ->placeholder('NIP')
                         ->unique(ignorable: fn ($record) => $record)
                         ->required(),
-                    TextInput::make('email')
-                        ->email()
-                        ->unique(ignorable: fn ($record) => $record)
-                        ->placeholder('email@example.com')
-                        ->required(),
+
                     Select::make('program_studi_id')
                         ->relationship('programStudi', 'name')
+                        ->required()
                         ->columnSpan(2),
                     // Select::make('jurusan_id')
                     //     ->relationship('jurusan', 'name'),
 
                     TextInput::make('password')->password()
+                        ->label('Kata sandi baru')
                         ->placeholder('********')
                         ->confirmed()
                         ->dehydrated(fn (?string $state): bool => filled($state))
                         ->required(fn (string $operation): bool => $operation === 'create'),
                     TextInput::make('password_confirmation')
+                        ->label('Konfirmasi Kata sandi baru')
                         ->placeholder('********')
                         ->password()
                         ->dehydrated(fn (?string $state): bool => filled($state))
@@ -99,7 +104,12 @@ class KaprodiResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
+                TextColumn::make('email')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
@@ -108,10 +118,7 @@ class KaprodiResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
-                TextColumn::make('email')
-                    ->searchable()
-                    ->toggleable()
-                    ->sortable(),
+
                 TextColumn::make('programStudi.name')
                     ->searchable()
                     ->toggleable()

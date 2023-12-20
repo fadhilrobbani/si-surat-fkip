@@ -48,25 +48,29 @@ class StaffResource extends Resource
                         ->unique(ignorable: fn ($record) => $record)
                         ->alphaDash()
                         ->required(),
-                    TextInput::make('name')
-                        ->placeholder('Masukkan nama lengkap')
-                        ->required(),
                     TextInput::make('email')
                         ->email()
                         ->unique(ignorable: fn ($record) => $record)
                         ->placeholder('email@example.com')
                         ->required(),
+                    TextInput::make('name')
+                        ->label('Nama')
+                        ->placeholder('Masukkan nama lengkap')
+                        ->required(),
                     Select::make('program_studi_id')
+                        ->required()
                         ->relationship('programStudi', 'name'),
                     // Select::make('jurusan_id')
                     //     ->relationship('jurusan', 'name'),
 
                     TextInput::make('password')->password()
+                        ->label('Kata sandi baru')
                         ->placeholder('********')
                         ->confirmed()
                         ->dehydrated(fn (?string $state): bool => filled($state))
                         ->required(fn (string $operation): bool => $operation === 'create'),
                     TextInput::make('password_confirmation')
+                        ->label('Konfirmasi kata sandi baru')
                         ->placeholder('********')
                         ->password()
                         ->dehydrated(fn (?string $state): bool => filled($state))
@@ -87,6 +91,7 @@ class StaffResource extends Resource
                     ->toggleable()
                     ->sortable(),
                 TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),

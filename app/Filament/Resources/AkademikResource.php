@@ -50,25 +50,30 @@ class AkademikResource extends Resource
                         ->alphaDash()
                         ->unique(ignorable: fn ($record) => $record)
                         ->required(),
-                    TextInput::make('name')
-                        ->placeholder('Masukkan nama lengkap')
-                        ->required(),
                     TextInput::make('email')
                         ->email()
                         ->unique(ignorable: fn ($record) => $record)
                         ->placeholder('email@example.com')
                         ->required(),
+                    TextInput::make('name')
+                        ->label('Nama')
+                        ->placeholder('Masukkan nama lengkap')
+                        ->required(),
+
                     // Select::make('program_studi_id')
                     //     ->relationship('programStudi', 'name'),
                     Select::make('jurusan_id')
+                        ->required()
                         ->relationship('jurusan', 'name'),
 
                     TextInput::make('password')->password()
                         ->placeholder('********')
+                        ->label('Kata sandi baru')
                         ->confirmed()
                         ->dehydrated(fn (?string $state): bool => filled($state))
                         ->required(fn (string $operation): bool => $operation === 'create'),
                     TextInput::make('password_confirmation')
+                        ->label('Konfirmasi kata sandi baru')
                         ->placeholder('********')
                         ->password()
                         ->dehydrated(fn (?string $state): bool => filled($state))
@@ -94,6 +99,7 @@ class AkademikResource extends Resource
                     ->toggleable()
                     ->sortable(),
                 TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),

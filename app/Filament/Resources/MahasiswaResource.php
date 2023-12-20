@@ -44,18 +44,20 @@ class MahasiswaResource extends Resource
 
                     Hidden::make('role_id')
                         ->default(2),
+                    TextInput::make('email')
+                        ->email()
+                        ->unique(ignorable: fn ($record) => $record)
+                        ->placeholder('email@example.com')
+                        ->required(),
                     TextInput::make('username')
+                        ->label('NPM')
                         ->unique(ignorable: fn ($record) => $record)
                         ->alphaDash()
                         ->placeholder('Masukkan NPM Anda')
                         ->required(),
                     TextInput::make('name')
+                        ->label('Nama')
                         ->placeholder('Masukkan nama lengkap')
-                        ->required(),
-                    TextInput::make('email')
-                        ->email()
-                        ->unique(ignorable: fn ($record) => $record)
-                        ->placeholder('email@example.com')
                         ->required(),
                     Select::make('program_studi_id')
                         ->relationship('programStudi', 'name')
@@ -63,12 +65,14 @@ class MahasiswaResource extends Resource
                     // Select::make('jurusan_id')
                     //     ->relationship('jurusan', 'name'),
                     TextInput::make('password')->password()
+                        ->label('Kata Sandi Baru')
                         ->placeholder('********')
                         ->confirmed()
                         ->dehydrated(fn (?string $state): bool => filled($state))
                         ->required(fn (string $operation): bool => $operation === 'create'),
                     TextInput::make('password_confirmation')
                         ->placeholder('********')
+                        ->label('Konfirmasi Kata Sandi Baru')
                         ->password()
                         ->dehydrated(fn (?string $state): bool => filled($state))
                         ->required(fn (string $operation): bool => $operation === 'create'),
@@ -81,16 +85,17 @@ class MahasiswaResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('email')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('username')
-                    ->label('Username (NPM)')
+                    ->label('NPM')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
                 TextColumn::make('name')
-                    ->searchable()
-                    ->toggleable()
-                    ->sortable(),
-                TextColumn::make('email')
+                    ->label('Nama')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),

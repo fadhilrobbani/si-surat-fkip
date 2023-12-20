@@ -33,12 +33,12 @@
             method="POST">
             @csrf
             <div class="mb-6">
-                <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NPM,
-                    Username, atau email
+                <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Email atau Username
                 </label>
                 <input type="text" id="username" name="username"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Masukkan NPM, username, atau email" value="{{ old('username') }}" required>
+                    placeholder="Masukkan email atau username" value="{{ old('username') }}" required>
                 @error('username')
                     <span
                         class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">

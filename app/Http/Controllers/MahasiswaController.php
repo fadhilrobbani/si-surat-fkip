@@ -44,7 +44,8 @@ class MahasiswaController extends Controller
             $programStudiKode = ProgramStudi::pluck('kode');
             $request->validate([
                 'username' =>  [
-                    'required', 'unique:users,username', 'size:9',
+                    'required',  'size:9',
+                    'unique:users,username',
                     function ($attribute, $value, $fail) use ($programStudiKode) {
                         // Gunakan callback untuk memeriksa apakah nilai diawali dengan salah satu kode program studi
                         foreach ($programStudiKode as $kode) {

@@ -32,7 +32,8 @@ class AuthController extends Controller
         $formFields = $request->validate([
             // 'username' => 'required|unique:users,username|starts_with:foo,bar',
             'username' => [
-                'required', 'unique:users,username', 'size:9',
+                'required', 'size:9',
+                // 'unique:users,username'
                 function ($attribute, $value, $fail) use ($programStudiKode) {
                     // Gunakan callback untuk memeriksa apakah nilai diawali dengan salah satu kode program studi
                     foreach ($programStudiKode as $kode) {
@@ -47,7 +48,7 @@ class AuthController extends Controller
             ],
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'program-studi' => 'required',
+            'program-studi' => ['required'],
             'password' => 'required|confirmed|min:6'
         ]);
         $user = User::create([
@@ -134,15 +135,23 @@ class AuthController extends Controller
         // $user = User::where('username', $request->input('username'))->where('role_id', '!=', 1)->first();
         $user = User::where(function($query) use ($request) {
             $usernameOrEmail = $request->input('username');
-
             $query->where('username', $usernameOrEmail)
                   ->orWhere('email', $usernameOrEmail);
         })
         ->where('role_id', '!=', 1)
         ->first();
 
+
         if (!$user) {
-            return back()->withErrors(['username' => 'Username/NPM/Email salah atau tidak terdaftar'])->withInput();
+            return back()->withErrors(['username' => 'Username/Email salah atau tidak terdaftar'])->withInput();
+        }
+
+        if($user->role->id == 2){
+            $user = User::where('email', $request->input('username'))->where('role_id', '!=', 1)->first();
+            if(!$user){
+
+                return back()->withErrors(['email' => 'Email yang anda masukkan salah atau tidak terdaftar'])->withInput();
+            }
         }
 
         $this->validate($request, [
