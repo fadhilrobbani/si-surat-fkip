@@ -19,6 +19,7 @@ use App\Http\Controllers\KaprodiController;
 use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\JenisSuratController;
+use App\Models\Akademik;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -91,6 +92,8 @@ Route::middleware('auth')->group(function () {
         });
         Route::get('/profile', [MahasiswaController::class, 'profilePage']);
         Route::put('/profile/update/{user}', [MahasiswaController::class, 'updateProfile'])->name('update-profile');
+        Route::get('/profile/reset-password', [MahasiswaController::class, 'resetPasswordPage']);
+        Route::put('/profile/reset-password/{user}', [MahasiswaController::class, 'resetPassword'])->name('reset-password-mahasiswa');
     });
     Route::prefix('staff')->middleware(['userAccess:3'])->group(function () {
         Route::get('/surat-masuk', [StaffController::class, 'suratMasuk'])->name('surat-masuk-staff');
@@ -106,6 +109,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [StaffController::class, 'dashboard']);
         Route::get('/profile', [StaffController::class, 'profilePage']);
         Route::put('/profile/update/{user}', [StaffController::class, 'updateProfile'])->name('update-profile-staff');
+        Route::get('/profile/reset-password', [StaffController::class, 'resetPasswordPage']);
+        Route::put('/profile/reset-password/{user}', [StaffController::class, 'resetPassword'])->name('reset-password-staff');
     });
     Route::prefix('kaprodi')->middleware(['userAccess:4'])->group(function () {
         Route::get('/surat-masuk', [KaprodiController::class, 'suratMasuk']);
@@ -122,6 +127,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [KaprodiController::class, 'dashboard']);
         Route::get('/profile', [KaprodiController::class, 'profilePage']);
         Route::put('/profile/update/{user}', [KaprodiController::class, 'updateProfile'])->name('update-profile-kaprodi');
+        Route::get('/profile/reset-password', [KaprodiController::class, 'resetPasswordPage']);
+        Route::put('/profile/reset-password/{user}', [KaprodiController::class, 'resetPassword'])->name('reset-password-kaprodi');
     });
     Route::prefix('wd')->middleware(['userAccess:5'])->group(function () {
         Route::get('/surat-masuk', [WDController::class, 'suratMasuk']);
@@ -137,6 +144,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [WDController::class, 'dashboard']);
         Route::get('/profile', [WDController::class, 'profilePage']);
         Route::put('/profile/update/{user}', [WDController::class, 'updateProfile'])->name('update-profile-wd');
+        Route::get('/profile/reset-password', [WDController::class, 'resetPasswordPage']);
+        Route::put('/profile/reset-password/{user}', [WDController::class, 'resetPassword'])->name('reset-password-wd');
     });
     Route::prefix('akademik')->middleware(['userAccess:6'])->group(function () {
         // Route::middleware('verified')->group(function () {
@@ -154,5 +163,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [AkademikController::class, 'dashboard']);
         Route::get('/profile', [AkademikController::class, 'profilePage']);
         Route::put('/profile/update/{user}', [AkademikController::class, 'updateProfile'])->name('update-profile-akademik');
+        Route::get('/profile/reset-password', [AkademikController::class, 'resetPasswordPage']);
+        Route::put('/profile/reset-password/{user}', [AkademikController::class, 'resetPassword'])->name('reset-password-akademik');
     });
 });

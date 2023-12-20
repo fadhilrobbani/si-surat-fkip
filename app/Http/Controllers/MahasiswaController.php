@@ -8,6 +8,7 @@ use App\Models\Surat;
 use App\Models\JenisSurat;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class MahasiswaController extends Controller
 {
@@ -69,11 +70,11 @@ class MahasiswaController extends Controller
             $user->update($request->only('email'));
             $user->email_verified_at = null;
         }
-        if($request->input('program-studi') != $user->program_studi_id ){
-            if(strpos($user->username, $user->programStudi->kode) !== 0){
+        if ($request->input('program-studi') != $user->program_studi_id) {
+            if (strpos($user->username, $user->programStudi->kode) !== 0) {
 
                 return redirect('/mahasiswa/profile')->with('deleted', 'Program Studi tidak sesuai NPM Anda');
-            }else{
+            } else {
 
                 $user->update(['program_studi_id' => $request->input('program-studi')]);
             }
@@ -201,8 +202,21 @@ class MahasiswaController extends Controller
     {
         return view('admin.users.mahasiswa.edit');
     }
-    public function store(Request $request)
+
+    public function resetPasswordPage()
     {
-        //
+        return view('mahasiswa.reset-password');
+    }
+
+    public function resetPassword(Request $request, User $user)
+    {
+        if (!Hash::check($request->input('old-password'), $user->password)) {
+            return back()->withErrors(['password', 'Password yang anda masukkan salah!']);
+        }
+        $request->validate([
+            'password' => 'required|confirmed|min:6'
+        ]);
+        $user->update(['password' => bcrypt($request->input('password'))]);
+        return redirect('/mahasiswa/profile')->with('success', 'Kata sandi sukses diganti!');
     }
 }

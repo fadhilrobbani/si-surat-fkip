@@ -80,7 +80,7 @@
 
             </a>
             <a class="bg-rose-600 p-2 text-white font-medium hover:bg-rose-700  rounded-lg flex {{ $edit ? 'hidden' : '' }}"
-                href="{{ route('password.request') }}">
+                href="/wd/profile/reset-password">
 
                 <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     fill="none" viewBox="0 0 20 20">

@@ -13,6 +13,7 @@ use App\Mail\SuratMahasiswa;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
@@ -427,5 +428,22 @@ class AkademikController extends Controller
             'note' => $request->input('note'),
         ]);
         return redirect('/akademik/surat-masuk')->with('success', 'Surat berhasil ditolak');
+    }
+
+    public function resetPasswordPage()
+    {
+        return view('akademik.reset-password');
+    }
+
+    public function resetPassword(Request $request, User $user)
+    {
+        if (!Hash::check($request->input('old-password'), $user->password)) {
+            return back()->withErrors(['password', 'Password yang anda masukkan salah!']);
+        }
+        $request->validate([
+            'password' => 'required|confirmed|min:6'
+        ]);
+        $user->update(['password' => bcrypt($request->input('password'))]);
+        return redirect('/akademik/profile')->with('success', 'Kata sandi sukses diganti!');
     }
 }

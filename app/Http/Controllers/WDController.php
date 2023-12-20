@@ -10,6 +10,7 @@ use App\Models\JenisSurat;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class WDController extends Controller
@@ -396,5 +397,22 @@ class WDController extends Controller
             'note' => $request->input('note'),
         ]);
         return redirect('/wd/surat-masuk')->with('success', 'Surat berhasil ditolak');
+    }
+
+    public function resetPasswordPage()
+    {
+        return view('wd.reset-password');
+    }
+
+    public function resetPassword(Request $request, User $user)
+    {
+        if (!Hash::check($request->input('old-password'), $user->password)) {
+            return back()->withErrors(['password', 'Password yang anda masukkan salah!']);
+        }
+        $request->validate([
+            'password' => 'required|confirmed|min:6'
+        ]);
+        $user->update(['password' => bcrypt($request->input('password'))]);
+        return redirect('/wd/profile')->with('success', 'Kata sandi sukses diganti!');
     }
 }

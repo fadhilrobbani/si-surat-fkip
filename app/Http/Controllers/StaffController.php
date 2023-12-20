@@ -9,6 +9,7 @@ use App\Models\JenisSurat;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class StaffController extends Controller
 {
@@ -300,5 +301,22 @@ class StaffController extends Controller
             'note' => $request->input('note'),
         ]);
         return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil ditolak');
+    }
+
+    public function resetPasswordPage()
+    {
+        return view('staff.reset-password');
+    }
+
+    public function resetPassword(Request $request, User $user)
+    {
+        if (!Hash::check($request->input('old-password'), $user->password)) {
+            return back()->withErrors(['password', 'Password yang anda masukkan salah!']);
+        }
+        $request->validate([
+            'password' => 'required|confirmed|min:6'
+        ]);
+        $user->update(['password' => bcrypt($request->input('password'))]);
+        return redirect('/staff/profile')->with('success', 'Kata sandi sukses diganti!');
     }
 }

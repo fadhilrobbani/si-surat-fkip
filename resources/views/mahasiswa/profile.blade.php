@@ -39,7 +39,8 @@
                 placeholder="Masukkan Nama Lengkap Anda" value="{{ $authUser->name }}" required>
         </div>
         <div class="mb-6">
-            <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NPM (Nomor Pokok Mahasiswa)
+            <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NPM (Nomor Pokok
+                Mahasiswa)
             </label>
             <input type="text" id="username" name="username" {{ $edit ? '' : 'disabled' }}
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -76,7 +77,7 @@
 
             </a>
             <a class="bg-rose-600 p-2 text-white font-medium hover:bg-rose-700  rounded-lg flex {{ $edit ? 'hidden' : '' }}"
-                href="{{ route('password.request') }}">
+                href="/mahasiswa/profile/reset-password">
 
                 <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     fill="none" viewBox="0 0 20 20">
