@@ -329,6 +329,7 @@ class SuratController extends Controller
                 'email' => 'required|email',
                 'periode-wisuda' => 'required|numeric',
                 'tanggal-wisuda' => 'required|date_format:Y-m',
+                'bukti-lulus' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048'
             ]);
 
             $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
@@ -350,7 +351,7 @@ class SuratController extends Controller
             ];
             if ($request->hasFile('bukti-lulus')) {
                 $request->validate([
-                    'bukti-lulus' => 'file|mimes:jpeg,png,jpg,pdf|max:2048',
+                    'bukti-lulus' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
                 ]);
 
                 $surat->files = [

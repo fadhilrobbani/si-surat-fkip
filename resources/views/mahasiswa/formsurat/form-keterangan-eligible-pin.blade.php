@@ -67,11 +67,11 @@
             <div>
 
                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="bukti-lulus">Upload
-                    Lampiran Bukti Lulus (opsional) </label>
+                    Lampiran Bukti Lulus/Bukti lain<span class="text-red-500">*</span></label>
                 <input
                     class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                     aria-describedby="file_input_help" id="bukti-lulus" type="file" name="bukti-lulus"
-                    accept=".jpg, .jpeg, .png, .pdf" max-size="2048">
+                    accept=".jpg, .jpeg, .png, .pdf" max-size="2048" required>
                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG, JPEG, atau PDF
                     (MAX.
                     2 MB).</p>
