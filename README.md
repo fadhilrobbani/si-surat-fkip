@@ -42,10 +42,11 @@ MAIL_FROM_ADDRESS=fkipunivbengkulu@gmail.com
 MAIL_FROM_NAME="FKIP UNIB"
 ```
 
-2. Jalankan perintah `npm run build` untuk meletakkan hasil build vite ke dalam folder public
-3. jalankan `php artisan db:wipe`
-4. jalankan `php artisan:migrate --seed`
-5.
+2. jalankan `npm install` lagi
+3. Jalankan perintah `npm run build` untuk meletakkan hasil build vite ke dalam folder public
+4. jalankan `php artisan db:wipe`
+5. jalankan `php artisan:migrate --seed`
+6.
 
 ## Panduan
 
