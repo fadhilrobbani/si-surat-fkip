@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\User;
 use App\Models\Surat;
 use App\Models\JenisSurat;
@@ -169,8 +170,14 @@ class SuratController extends Controller
                     'bukti-lulus' => 'file|mimes:jpeg,png,jpg,pdf|max:2048',
                 ]);
 
+                try {
+
+                    $stringStorage = $request->file('bukti-lulus')->store('lampiran');
+                } catch (Exception $e) {
+                    return response()->json(['error' => $e->getMessage()], 500);
+                }
                 $surat->files = [
-                    'buktiLulus' => $request->file('bukti-lulus')->store('lampiran')
+                    'buktiLulus' => $stringStorage,
                 ];
             }
 
