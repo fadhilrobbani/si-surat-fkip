@@ -55,7 +55,7 @@
     </p>
     <table>
         <tr>
-            <td>Nama</td>
+            <td style="width: 93px;">Nama</td>
             <td>:
                 {{ isset($surat->data['private']['namaWD1']) ? $surat->data['private']['namaWD1'] : '(Nama WD1)' }}
             </td>

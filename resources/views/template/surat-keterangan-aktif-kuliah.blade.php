@@ -55,7 +55,7 @@
     </p>
     <table>
         <tr>
-            <td>Nama</td>
+            <td style="width: 127px;">Nama</td>
             <td>:
                 {{ isset($surat->data['private']['namaWD1']) ? $surat->data['private']['namaWD1'] : '(Nama WD1)' }}
             </td>
@@ -78,7 +78,7 @@
     <p style="text-align: justify">Menyatakan dengan sesungguhnya bahwa: </p>
     <table>
         <tr>
-            <td>Nama</td>
+            <td style="width: 127px;">Nama</td>
             <td>: {{ $surat->pengaju->name }}</td>
         </tr>
         <tr>
@@ -121,7 +121,8 @@
     <br>
     <p style="text-align: justify">adalah mahasiswa FKIP Universitas Bengkulu yang <strong><em>terdaftar
                 aktif</em></strong> pada Semester
-        {{ $surat->data['semester'] % 2 == 0 ? 'Genap' : 'Ganjil' }} Tahun Akademik
+        {{-- {{ $surat->data['semester'] % 2 == 0 ? 'Genap' : 'Ganjil' }} Tahun Akademik --}}
+        {{ Str::title($surat->data['jenis-semester']) }} Tahun Akademik
         {{ $surat->data['tahunAkademik'] }}.
     </p>
     <br>
