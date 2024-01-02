@@ -53,6 +53,12 @@ class PDFController extends Controller
                 'chroot' => public_path()
             ]);
         }
+        if ($surat->jenisSurat->slug == 'surat-permohonan-izin-prapenelitian-mahasiswa') {
+            $pdf = Pdf::loadview('template.surat-permohonan-izin-prapenelitian-mahasiswa', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+                'tempDir' => public_path(),
+                'chroot' => public_path()
+            ]);
+        }
 
         if ($surat->jenisSurat->slug == 'surat-keterangan-kesalahan-ijazah') {
             $pdf = Pdf::loadview('template.surat-keterangan-kesalahan-ijazah', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
