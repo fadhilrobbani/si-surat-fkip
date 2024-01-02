@@ -28,7 +28,7 @@
                     <font size="4">KEMENTERIAN PENDIDIKAN, KEBUDAYAAN,</font><br>
                     <font size="4">RISET, DAN TEKNOLOGI</font><br>
                     <font size="4"><b>UNIVERSITAS BENGKULU</b></font><br>
-                    <font size="4"><b>FAKULTAS KEGURUAN DAN PENDIDIKAN</b></font><br>
+                    <font size="4"><b>FAKULTAS KEGURUAN DAN ILMU PENDIDIKAN</b></font><br>
                     <font size="2">Jalan WR. Supratman Kandang Limun Bengkulu 38371A</font>
                     <br>
                     <font size="2">Telepon: (0736) 21170, Psw.203-232, 21186 Faksimile: (0736) 21186</font><br>
