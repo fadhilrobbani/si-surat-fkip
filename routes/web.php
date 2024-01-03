@@ -71,7 +71,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'create']);
     Route::post('/login', [AuthController::class, 'authenticate'])->name('authLogin');
 });
-Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-mahasiswa');
+// Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-mahasiswa');
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::prefix('mahasiswa')->middleware(['userAccess:2'])->group(function () {
@@ -89,7 +89,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/riwayat-pengajuan-surat', [MahasiswaController::class, 'riwayatPengajuanSurat']);
             Route::get('/riwayat-pengajuan-surat/show/{surat}', [MahasiswaController::class, 'lihatSurat'])->can('mahasiswaCanViewShowRiwayatPengajuanSurat', 'surat')->name('lihat-surat-mahasiswa');
             Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->can('mahasiswaCanPrintSurat', 'surat')->name('print-surat-mahasiswa');
-            // Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->can('mahasiswaCanShowLampiranSurat', 'surat')->name('show-file-mahasiswa');
+            Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->can('mahasiswaCanShowLampiranSurat', 'surat')->name('show-file-mahasiswa');
         });
         Route::get('/profile', [MahasiswaController::class, 'profilePage']);
         Route::put('/profile/update/{user}', [MahasiswaController::class, 'updateProfile'])->name('update-profile');
