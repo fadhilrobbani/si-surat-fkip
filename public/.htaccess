@@ -42,9 +42,11 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
-    RewriteCond %{REQUEST_FILENAME} !-d
+    # Send Requests To Front Controller, except for certain file extensions...
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^(?!.*(?:js|ico|gif|jpg|png|pdf|css|swf|flv|libraries|maint|admin|login|logout|reg)) index.php [QSA,L,NC]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} !\.(js|ico|gif|jpg|png|pdf|css|swf|flv|libraries|maint|admin|login|logout|reg)$ [NC]
+    RewriteRule ^ index.php [QSA,L,NC]
 </IfModule>
+
 
