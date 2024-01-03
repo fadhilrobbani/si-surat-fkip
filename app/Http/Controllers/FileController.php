@@ -23,12 +23,12 @@ class FileController extends Controller
         // }
         // $path = Storage::path($filename);
         $path = storage_path('app/lampiran/' . $filename);
-        $expiration = now()->addHours(1);
+        // $expiration = now()->addHours(1);
         // $signedUrl = URL::temporarySignedRoute('show-file', $expiration,$filename);
         // dd($path);
-        $file = Storage::disk('local')->get($path);
+        // $file = Storage::disk('local')->get($path);
         // dd($file);
-        $type       = Storage::mimeType($path);
+        // $type       = Storage::mimeType($path);
         // return response($file, 200)->header('Content-Type', 'application/octet-stream');
         // return Response::make($file, 200, [
         //     'Content-Type'        => $type,

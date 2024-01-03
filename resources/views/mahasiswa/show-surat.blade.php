@@ -113,6 +113,8 @@
                                         href="{{ route('show-file-mahasiswa', ['surat' => $surat->id, 'filename' => basename($value)]) }}">Lihat</a> --}}
                                     <a class="text-blue-700 underline"
                                         href="{{ '/storage/lampiran/' . basename($value) }}">Lihat</a>
+                                    {{-- <a class="text-blue-700 underline"
+                                        href="{{ '/storage/files/' . basename($value) }}">Lihat</a> --}}
                                 </td>
                             </tr>
                         @endforeach

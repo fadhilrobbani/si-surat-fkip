@@ -72,6 +72,22 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'authenticate'])->name('authLogin');
 });
 // Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-mahasiswa');
+
+Route::get('/storage/files/{filename?}', function ($filename) {
+    // Logika untuk memeriksa izin pengguna atau status login
+    if (auth()->check()) {
+        // Jika pengguna login, izinkan akses
+        // dd('hehe boi');
+        $file = public_path('storage/lampiran/' . $filename);
+        $mime = mime_content_type($file);
+
+        return response()->file(public_path('storage/lampiran/' . $filename, ['Content-Type' => $mime]));
+    } else {
+        // Jika pengguna belum login, tolak akses
+        abort(403, 'Unauthorized access');
+    }
+})->where(['filename' => '.*'])->name('show-file');
+
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::prefix('mahasiswa')->middleware(['userAccess:2'])->group(function () {
