@@ -1,38 +1,13 @@
-# <IfModule mod_rewrite.c>
-#     <IfModule mod_negotiation.c>
-#         Options -MultiViews -Indexes
-#     </IfModule>
-#     # <IfModule mod_headers.c>
-#     #     Header set Access-Control-Allow-Origin "*"
-#     # </IfModule>
-
-#     RewriteEngine On
-#     # Header always set Access-Control-Allow-Origin "*"
-#     # Handle Authorization Header
-#     RewriteCond %{HTTP:Authorization} .
-#     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-#     # Redirect Trailing Slashes If Not A Folder...
-#     RewriteCond %{REQUEST_FILENAME} !-d
-#     RewriteCond %{REQUEST_URI} (.+)/$
-#     RewriteRule ^ %1 [L,R=301]
-
-#     # Send Requests To Front Controller...
-#     RewriteCond %{REQUEST_FILENAME} !-d
-#     RewriteCond %{REQUEST_FILENAME} !-f
-#     RewriteRule ^ index.php [L]
-# </IfModule>
-# <IfModule mod_rewrite.c>
-# </IfModule>
-
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
+    # <IfModule mod_headers.c>
+    #     Header set Access-Control-Allow-Origin "*"
+    # </IfModule>
 
     RewriteEngine On
-    Header always set Access-Control-Allow-Origin "*"
-
+    # Header always set Access-Control-Allow-Origin "*"
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -42,11 +17,12 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller, except for certain file extensions...
-    RewriteCond %{REQUEST_FILENAME} !-f
+    # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} !\.(js|ico|gif|jpg|png|pdf|css|swf|flv|libraries|maint|admin|login|logout|reg)$ [NC]
-    RewriteRule ^ index.php [QSA,L,NC]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+<IfModule mod_rewrite.c>
 </IfModule>
 
 
