@@ -5,7 +5,7 @@
     # <IfModule mod_headers.c>
     #     Header set Access-Control-Allow-Origin "*"
     # </IfModule>
-
+z
     RewriteEngine On
     # Header always set Access-Control-Allow-Origin "*"
     # Handle Authorization Header
@@ -17,12 +17,11 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
+      # Allow access to PDF files
+      RewriteRule \.pdf$ - [L]
+
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
-<IfModule mod_rewrite.c>
-</IfModule>
-
-
