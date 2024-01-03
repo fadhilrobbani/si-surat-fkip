@@ -17,8 +17,8 @@ z
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-      # Allow access to PDF files
-      RewriteRule \.pdf$ - [L]
+    #   # Allow access to PDF files
+    #   RewriteRule \.pdf$ - [L]
 
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
