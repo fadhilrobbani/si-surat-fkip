@@ -172,7 +172,7 @@ class SuratController extends Controller
 
                 try {
 
-                    $stringStorage = $request->file('bukti-lulus')->store('lampiran');
+                    $stringStorage = $request->file('bukti-lulus')->store('lampiran', 'public');
                 } catch (Exception $e) {
                     return response()->json(['error' => $e->getMessage()], 500);
                 }
