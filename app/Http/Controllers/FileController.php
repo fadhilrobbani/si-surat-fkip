@@ -13,6 +13,7 @@ class FileController extends Controller
 {
     public function show(Surat $surat, $filename)
     {
+        dd('test');
         if (auth()->guest()) {
             return abort(403);
         }
