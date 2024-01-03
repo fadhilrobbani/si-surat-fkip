@@ -6,6 +6,7 @@
     #     Header set Access-Control-Allow-Origin "*"
     # </IfModule>
 
+
     RewriteEngine On
     # Header always set Access-Control-Allow-Origin "*"
     # Handle Authorization Header
@@ -21,4 +22,7 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+
+    RewriteEngine on
+    RewriteRule !(js|ico|gif|jpg|png|jpeg|pdf|css|swf|flv|libraries|maint|admin|login|logout|reg) index.php [QSA,L,NC]
 </IfModule>
