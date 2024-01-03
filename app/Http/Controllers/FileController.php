@@ -13,7 +13,7 @@ class FileController extends Controller
 {
     public function show(Surat $surat, $filename)
     {
-        if(auth()->guest()){
+        if (auth()->guest()) {
             return abort(403);
         }
 
@@ -21,7 +21,7 @@ class FileController extends Controller
         //     abort(403);
         // }
         // $path = Storage::path($filename);
-        $path = storage_path('app/lampiran/'.$filename);
+        $path = storage_path('app/lampiran/' . $filename);
         $expiration = now()->addHours(1);
         // $signedUrl = URL::temporarySignedRoute('show-file', $expiration,$filename);
         // dd($path);
@@ -33,7 +33,7 @@ class FileController extends Controller
         //     'Content-Type'        => $type,
         //     'Content-Disposition' => 'inline; filename="'.$filename.'"'
         //   ]);
-        return response()->download($path, null, [], null);
+        // return response()->download($path, null, [], null);
+        return response()->file($path);
     }
-
 }
