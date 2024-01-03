@@ -77,8 +77,10 @@
                                 <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Lampiran
                                     {{ Str::title(str_replace('_', ' ', $key)) }}:</td>
                                 <td class="px-6 py-4">
+                                    {{-- <a class="text-blue-700 underline"
+                                        href="{{ route('show-file-akademik', ['surat' => $approval->surat->id, 'filename' => basename($value)]) }}">Lihat</a> --}}
                                     <a class="text-blue-700 underline"
-                                        href="{{ route('show-file-akademik', ['surat' => $approval->surat->id, 'filename' => basename($value)]) }}">Lihat</a>
+                                        href="{{ '/storage/lampiran/' . basename($value) }}">Lihat</a>
                                 </td>
                             </tr>
                         @endforeach
