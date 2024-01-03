@@ -71,7 +71,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'create']);
     Route::post('/login', [AuthController::class, 'authenticate'])->name('authLogin');
 });
-// Route::get('/mahasiswa/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-mahasiswa');
+Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-mahasiswa');
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::prefix('mahasiswa')->middleware(['userAccess:2'])->group(function () {
