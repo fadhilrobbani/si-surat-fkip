@@ -74,7 +74,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'authenticate'])->name('authLogin');
 });
 // Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-mahasiswa');
-
+Route::get('/report-bug', [EmailController::class, 'reportBug'])->name('report-bug');
 Route::get('/storage/{user}/files/{filename?}/{mimeType}/{extension}', function ($user, $filename, $mimeType, $extension) {
     // Logika untuk memeriksa izin pengguna atau status login
     if (auth()->check()) {
