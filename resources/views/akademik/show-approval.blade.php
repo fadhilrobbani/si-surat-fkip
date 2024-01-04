@@ -79,8 +79,22 @@
                                 <td class="px-6 py-4">
                                     {{-- <a class="text-blue-700 underline"
                                         href="{{ route('show-file-akademik', ['surat' => $approval->surat->id, 'filename' => basename($value)]) }}">Lihat</a> --}}
-                                    <a class="text-blue-700 underline"
-                                        href="{{ '/storage/lampiran/' . basename($value) }}">Lihat</a>
+                                    {{-- <a class="text-blue-700 underline"
+                                        href="{{ '/storage/lampiran/' . basename($value) }}">Lihat</a> --}}
+                                    <?php
+                                    $path = public_path('storage/lampiran/' . basename($value));
+                                    $filename = pathInfo(basename($value), PATHINFO_FILENAME);
+                                    $mimeType = str_replace('/', '-', mime_content_type($path));
+                                    $extension = explode('.', basename($value))[1];
+                                    $url = URL::signedRoute('show-file', [
+                                        'user' => $authUser->id,
+                                        'filename' => $filename,
+                                        'mimeType' => $mimeType,
+                                        'extension' => $extension,
+                                    ]);
+                                    ?>
+
+                                    <a class="text-blue-700 underline" href="{{ $url }}">Lihat</a>
                                 </td>
                             </tr>
                         @endforeach

@@ -79,13 +79,18 @@ Route::get('/storage/{user}/files/{filename?}/{mimeType}/{extension}', function 
     // Logika untuk memeriksa izin pengguna atau status login
     if (auth()->check()) {
         if (!request()->hasValidSignature()) {
-            abort(401);
+            return abort(401);
+        }
+        $userId = request()->user;
+        $authUser = auth()->user();
+        if (!($authUser && $authUser->id == $userId)) {
+            return abort(403);
         }
         // Jika pengguna login, izinkan akses
         // dd('hehe boi');
         // dd($mimeType);
         $file = public_path('storage/lampiran/' . $filename . '.' . $extension);
-        $url = url('/storage/lampiran/' . $filename . '.' . $extension);
+        // $url = url('/storage/lampiran/' . $filename . '.' . $extension);
 
         // return redirect($url);
         // return response()->file(public_path($file, ['Content-Type' => str_replace('-', '/', $mimeType)]));

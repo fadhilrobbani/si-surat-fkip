@@ -125,7 +125,7 @@
                                         'extension' => $extension,
                                     ]);
                                     ?>
-                                    {{ $mimeType }}
+
                                     <a class="text-blue-700 underline" href="{{ $url }}">Lihat</a>
                                 </td>
                             </tr>
