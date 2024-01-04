@@ -19,7 +19,7 @@ class EmailController extends Controller
         // Logika atau operasi bisnis yang dibutuhkan sebelum redirect
 
         // Redirect ke Gmail untuk membuat pesan baru
-        return redirect()->away('mailto:fadhil@fadhilrobbani.my.id?subject=ESURAT%20FKIP%20BUG%20REPORT');
+        return redirect()->away('mailto:fkip@fadhilrobbani.my.id?subject=ESURAT%20FKIP%20BUG%20REPORT');
         // Sesuaikan subject dan body sesuai kebutuhan aplikasi Anda
     }
 }
