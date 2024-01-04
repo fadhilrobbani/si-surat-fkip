@@ -1,13 +1,16 @@
 <?php
 
-use App\Events\NotificationCreated;
 use App\Models\User;
+use App\Models\Akademik;
 use Illuminate\Http\Request;
 use Filament\Facades\Filament;
+use App\Events\NotificationCreated;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WDController;
 use App\Http\Controllers\PDFController;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\UserController;
@@ -16,12 +19,11 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\SuratController;
 use App\Http\Controllers\KaprodiController;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\JenisSuratController;
-use App\Models\Akademik;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,15 +75,26 @@ Route::middleware('guest')->group(function () {
 });
 // Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-mahasiswa');
 
-Route::get('/storage/files/{filename?}', function ($filename) {
+Route::get('/storage/{user}/files/{filename?}/{mimeType}/{extension}', function ($user, $filename, $mimeType, $extension) {
     // Logika untuk memeriksa izin pengguna atau status login
     if (auth()->check()) {
+        if (!request()->hasValidSignature()) {
+            abort(401);
+        }
         // Jika pengguna login, izinkan akses
         // dd('hehe boi');
-        $file = public_path('storage/lampiran/' . $filename);
-        $mime = mime_content_type($file);
+        // dd($mimeType);
+        $file = public_path('storage/lampiran/' . $filename . '.' . $extension);
+        $url = url('/storage/lampiran/' . $filename . '.' . $extension);
 
-        return response()->file(public_path('storage/lampiran/' . $filename, ['Content-Type' => $mime]));
+        // return redirect($url);
+        // return response()->file(public_path($file, ['Content-Type' => str_replace('-', '/', $mimeType)]));
+        return response()->file($file, ['Content-Type' => str_replace('-', '/', $mimeType)]);
+
+        // $tempFile = tempnam(sys_get_temp_dir(), $filename . '.' . $extension);
+        // copy($url, $tempFile);
+
+        // return response()->download($tempFile, $filename . '.' . $extension);
     } else {
         // Jika pengguna belum login, tolak akses
         abort(403, 'Unauthorized access');
