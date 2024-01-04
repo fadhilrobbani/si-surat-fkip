@@ -51,8 +51,12 @@ Route::get('/surat-terverifikasi/{surat}/cetak', [PDFController::class, 'preview
 Route::get('/register', [AuthController::class, 'create']);
 Route::post('/register/new', [AuthController::class, 'store'])->name('register-user');
 Route::get('/email/verify', function () {
-    Gate::allowIf(fn (User $user) => $user->email_verified_at == null);
-    return view('auth.verify-email');
+    if (auth()->user()->email_verified_at == null) {
+
+        return view('auth.verify-email');
+    } else {
+        return redirect('/home');
+    }
 })->middleware('auth')->name('verification.notice');
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
