@@ -62,7 +62,7 @@
                 @enderror
             </div>
             <label for="register">
-                <a href="/register" class="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline">Tidak
+                <a href="/register" class="font-semibold text-sm text-blue-600 dark:text-blue-500 hover:underline">Tidak
                     punya akun? Daftar
                     di
                     sini</a>
