@@ -3,6 +3,11 @@
 return [
 
     'backup' => [
+        'dump' => [
+            'dump_binary_path' => env('MYSQL_BIN'), // only the path, so without `mysqldump` or `pg_dump`
+            'use_single_transaction',
+            'timeout' => 60 * 5, // 5 minute timeout
+        ],
 
         /*
          * The name of this application. You can use this name to monitor
