@@ -85,7 +85,12 @@
                                     <?php
                                     $path = public_path('storage/lampiran/' . basename($value));
                                     $filename = pathInfo(basename($value), PATHINFO_FILENAME);
-                                    $mimeType = str_replace('/', '-', mime_content_type($path));
+                                    if (!empty($path) && file_exists($path)) {
+                                        $mimeType = str_replace('/', '-', mime_content_type($path));
+                                    } else {
+                                        // Handle ketika $path kosong atau file tidak ditemukan
+                                        $mimeType = '/file-tidak-ditemukan';
+                                    }
                                     $extension = explode('.', basename($value))[1];
                                     $url = URL::signedRoute('show-file', [
                                         'user' => $authUser->id,
