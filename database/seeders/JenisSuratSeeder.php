@@ -19,6 +19,10 @@ class JenisSuratSeeder extends Seeder
                 'slug' => 'surat-aktif-kuliah'
             ],
             [
+                'name' => 'Surat Pengantaran Pembayaran Uang Yudisium',
+                'slug' => 'surat-pengantar-pembayaran-uang-yudisium'
+            ],
+            [
                 'name' => 'Surat Rekomendasi MBKM',
                 'slug' => 'surat-rekomendasi-mbkm'
             ],
