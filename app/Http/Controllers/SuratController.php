@@ -119,6 +119,17 @@ class SuratController extends Controller
                     ->get()
             ]);
         }
+
+        if ($jenisSurat->slug == 'surat-pengantar-pembayaran-uang-yudisium') {
+            return view('mahasiswa.formsurat.form-pengantar-pembayaran-uang-yudisium', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 3)
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->get()
+            ]);
+        }
         return abort(404);
     }
 
@@ -559,6 +570,47 @@ class SuratController extends Controller
             $surat->files = [
                 'ktm' => $request->file('ktm')->store('lampiran')
             ];
+
+            $surat->save();
+            return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
+        } elseif ($jenisSurat->slug == 'surat-pengantar-pembayaran-uang-yudisium') {
+
+            $request->validate([
+                'name' => 'required',
+                'username' => 'required',
+                'program-studi' => 'required',
+                'email' => 'required|email',
+                'periode-yudisium' => 'required|numeric',
+                'tanggal-yudisium' => 'required|date_format:Y-m',
+                'ktm' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048'
+            ]);
+
+            $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
+
+            $surat = new Surat;
+            $surat->pengaju_id = auth()->user()->id;
+            $surat->current_user_id = $request->input('penerima');
+            $surat->status = 'diproses';
+            $surat->jenis_surat_id = $jenisSurat->id;
+            $surat->expired_at = now()->addDays(30);
+            $surat->data = [
+                'nama' => $request->input('name'),
+                'npm' => $request->input('username'),
+                'programStudi' => $programStudi->name,
+                'email' => $request->input('email'),
+                'periodeYudisium' => $request->input('periode-yudisium'),
+                'tanggalYudisium' => formatTimestampToOnlyMonthIndonesian($request->input('tanggal-yudisium')),
+
+            ];
+            if ($request->hasFile('ktm')) {
+                $request->validate([
+                    'ktm' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+                ]);
+
+                $surat->files = [
+                    'ktm' => $request->file('ktm')->store('lampiran')
+                ];
+            }
 
             $surat->save();
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
