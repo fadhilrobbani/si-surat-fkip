@@ -65,14 +65,76 @@
                     placeholder="Tanggal Yudisium" value="{{ old('tanggal-yudisium') }}" required>
             </div>
 
+            <div>
+
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    for="formulir-biodata">Lembar Formulir biodata wisudawan<span class="text-red-500">*</span></label>
+                <input
+                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    aria-describedby="file_input_help" id="formulir-biodata" type="file" name="formulir-biodata"
+                    accept=".jpg, .jpeg, .png, .pdf" max-size="2048" required>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG, JPEG, atau PDF
+                    (MAX.
+                    2 MB).</p>
+            </div>
 
             <div>
 
-                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="bukti-lulus">Upload
-                    Lampiran Kartu Tanda Mahasiswa<span class="text-red-500">*</span></label>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="bebas-fakultas">Lembar
+                    keterangan bebas fakultas<span class="text-red-500">*</span></label>
                 <input
                     class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    aria-describedby="file_input_help" id="ktm" type="file" name="ktm"
+                    aria-describedby="file_input_help" id="bebas-fakultas" type="file" name="bebas-fakultas"
+                    accept=".jpg, .jpeg, .png, .pdf" max-size="2048" required>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG, JPEG, atau PDF
+                    (MAX.
+                    2 MB).</p>
+            </div>
+
+            <div>
+
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="ttd-sumbangan">Lembar
+                    tanda terima sumbangan LTA/Skripsi/Tesis/Disertasi<span class="text-red-500">*</span></label>
+                <input
+                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    aria-describedby="file_input_help" id="ttd-sumbangan" type="file" name="ttd-sumbangan"
+                    accept=".jpg, .jpeg, .png, .pdf" max-size="2048" required>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG, JPEG, atau PDF
+                    (MAX.
+                    2 MB).</p>
+            </div>
+            <div>
+
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="uji-plagiarisme">Surat
+                    Keterangan Uji Plagiarisme dari Jurusan / UPP FKIP<span class="text-red-500">*</span></label>
+                <input
+                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    aria-describedby="file_input_help" id="uji-plagiarisme" type="file" name="uji-plagiarisme"
+                    accept=".jpg, .jpeg, .png, .pdf" max-size="2048" required>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG, JPEG, atau PDF
+                    (MAX.
+                    2 MB).</p>
+            </div>
+            <div>
+
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    for="sertifikat-kompetensi">Sertifikat Kompetensi (bagi mahasiswa S1)
+                    <input
+                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                        aria-describedby="file_input_help" id="sertifikat-kompetensi" type="file"
+                        name="sertifikat-kompetensi" accept=".jpg, .jpeg, .png, .pdf" max-size="2048">
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG, JPEG, atau
+                        PDF
+                        (MAX.
+                        2 MB).</p>
+            </div>
+            <div>
+
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    for="bukti-pembayaran">Bukti pembayaran biaya yudisium<span class="text-red-500">*</span></label>
+                <input
+                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    aria-describedby="file_input_help" id="bukti-pembayaran" type="file" name="bukti-pembayaran"
                     accept=".jpg, .jpeg, .png, .pdf" max-size="2048" required>
                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG, JPEG, atau PDF
                     (MAX.

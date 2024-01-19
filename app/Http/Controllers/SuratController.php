@@ -582,7 +582,13 @@ class SuratController extends Controller
                 'email' => 'required|email',
                 'periode-yudisium' => 'required|numeric',
                 'tanggal-yudisium' => 'required|date_format:Y-m',
-                'ktm' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048'
+                'formulir-biodata' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+                'bebas-fakultas' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+                'ttd-sumbangan' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+                'uji-plagiarisme' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+                'sertifikat-kompetensi' => 'file|mimes:jpeg,png,jpg,pdf|max:2048',
+                'bukti-pembayaran' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+
             ]);
 
             $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
@@ -602,15 +608,20 @@ class SuratController extends Controller
                 'tanggalYudisium' => formatTimestampToOnlyMonthIndonesian($request->input('tanggal-yudisium')),
 
             ];
-            if ($request->hasFile('ktm')) {
-                $request->validate([
-                    'ktm' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
-                ]);
 
-                $surat->files = [
-                    'ktm' => $request->file('ktm')->store('lampiran')
-                ];
+            $surat->files = [
+                'formulirBiodata' => $request->file('formulir-biodata')->store('lampiran'),
+                'bebasFakultas' => $request->file('bebas-fakultas')->store('lampiran'),
+                'ttdSumbangan' => $request->file('ttd-sumbangan')->store('lampiran'),
+                'ujiPlagiarisme' => $request->file('uji-plagiarisme')->store('lampiran'),
+                'buktiPembayaran' => $request->file('bukti-pembayaran')->store('lampiran'),
+            ];
+
+            $files = $surat->files;
+            if ($request->hasFile('sertifikat-kompetensi')) {
+                $files['sertifikatKompetensi'] = $request->file('sertifikat-kompetensi')->store('lampiran');
             }
+            $surat->files = $files;
 
             $surat->save();
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
