@@ -1,3 +1,4 @@
 User-agent: *
 Disallow: /storage/
 Disallow: /admin/
+Disallow: /surat-terverifikasi/
