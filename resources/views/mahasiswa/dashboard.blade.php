@@ -220,6 +220,7 @@
                         Kami akan mengirimkan pesan bahwa surat Anda telah disetujui melalui email yang Anda daftarkan.
                         Anda juga dapat melihat surat yang disetujui dengan melihat status "selesai" pada surat. File
                         surat akan kami lampirkan di email atau dapat juga dicetak manual di lihat riwayat pengajuan.
+                        Surat yang telah resmi diterbitkan akan mempunyai tanda tangan digital berupa QR Code
                     </p>
 
                 </div>
