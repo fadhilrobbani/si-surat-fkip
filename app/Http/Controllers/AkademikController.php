@@ -229,8 +229,13 @@ class AkademikController extends Controller
         //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
         // }
         $request->validate([
-            'no-surat' => 'required|size:4|unique:surat_tables,data->noSurat',
+            // 'no-surat' => 'required|size:4|unique:surat_tables,data->noSurat',
             // 'no-surat' =>  ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id)],
+
+            'no-surat' => ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')
+                ->where(function ($query) {
+                    $query->whereYear('created_at', date('Y'));
+                })],
         ]);
         // SELECT jt.id FROM users u
         // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
