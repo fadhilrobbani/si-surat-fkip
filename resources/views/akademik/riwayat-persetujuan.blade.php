@@ -150,7 +150,9 @@
 
 
                                 <td class="px-4 py-3">{{ $riwayatSurat->surat->jenisSurat->name }}</td>
-                                <td class="px-4 py-3">{{ $riwayatSurat->surat->data['noSurat'] }}</td>
+                                <td class="px-4 py-3">
+                                    {{ isset($riwayatSurat->surat->data['noSurat']) ? $riwayatSurat->surat->data['noSurat'] : '-' }}
+                                </td>
                                 <td class="px-4 py-3">{{ formatTimestampToIndonesian($riwayatSurat->created_at) }}</td>
                                 <td class="px-4 py-3">{{ $riwayatSurat->isApproved == 1 ? 'Disetujui' : 'Ditolak' }}
                                 </td>
