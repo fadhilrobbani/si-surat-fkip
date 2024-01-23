@@ -79,7 +79,7 @@
     <table>
         <tr>
             <td>Nama</td>
-            <td>: {{ $surat->data['nama'] }}</td>
+            <td>: {{ Str::title($surat->data['nama']) }}</td>
         </tr>
         <tr>
             <td>NPM</td>

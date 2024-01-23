@@ -64,11 +64,11 @@
     <table>
         <tr>
             <td>Nama</td>
-            <td>: {{ $surat->pengaju->name }}</td>
+            <td>: {{ Str::title($surat->data['nama']) }}</td>
         </tr>
         <tr>
             <td>NPM</td>
-            <td>: {{ $surat->pengaju->username }}</td>
+            <td>: {{ $surat->data['npm'] }}</td>
         </tr>
         <tr>
             <td>Program Studi</td>
