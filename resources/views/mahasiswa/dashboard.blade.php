@@ -225,6 +225,29 @@
 
                 </div>
             </div>
+            <h2 id="accordion-color-heading-6">
+                <button type="button"
+                    class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800"
+                    data-accordion-target="#accordion-color-body-6" aria-expanded="false"
+                    aria-controls="accordion-color-body-6">
+                    <span>Saya tidak menerima email, apa yang harus dilakukan?</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5 5 1 1 5" />
+                    </svg>
+                </button>
+            </h2>
+            <div id="accordion-color-body-6" class="hidden" aria-labelledby="accordion-color-heading-6">
+                <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
+                    <p class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
+                        Silahkan cek bagian spam pada email yang anda gunakan. Beri tanda juga pada email bahwa email
+                        yang kami berikan bukan sebagai spam, agar kedepannya email yang kami kirimkan tidak menjadi
+                        spam.
+                    </p>
+
+                </div>
+            </div>
 
         </div>
 
