@@ -475,7 +475,7 @@ class SuratController extends Controller
             ];
             if ($request->hasFile('berkas-proposal')) {
                 $request->validate([
-                    'berkas-proposal' => 'file|mimes:pdf|max:2048',
+                    'berkas-proposal' => 'file|mimes:pdf|max:10240',
                 ]);
 
                 $surat->files = [
