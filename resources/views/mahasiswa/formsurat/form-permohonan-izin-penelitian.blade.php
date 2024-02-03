@@ -51,7 +51,8 @@
                     Surat<span class="text-red-500">*</span></label>
                 <input type="text" name="tujuan1"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Contoh: Kepala SMA Negeri 365 Kota Bengkulu" value="{{ old('tujuan1') }}" required>
+                    placeholder="Contoh: Kepala Badan Kesatuan Bangsa dan Politik Kota Bengkulu"
+                    value="{{ old('tujuan1') }}" required>
             </div>
             <div>
                 <label for="tujuan2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tujuan Surat
@@ -66,8 +67,7 @@
                     Surat Ke-3 (Opsional)</label>
                 <input type="text" name="tujuan3"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Contoh: Kepala Badan Kesatuan Bangsa dan Politik Kota Bengkulu"
-                    value="{{ old('tujuan3') }}">
+                    placeholder="Contoh: Kepala SMA Negeri 365 Kota Bengkulu" value="{{ old('tujuan3') }}">
             </div>
             <div>
                 <label for="judul-skripsi" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Judul

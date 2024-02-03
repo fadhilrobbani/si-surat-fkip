@@ -78,7 +78,7 @@
     @if (isset($surat->data['tujuan2']))
         <p>2. {{ $surat->data['tujuan2'] }}</p>
     @endif
-    @if (isset($surat->data['tujuan2']))
+    @if (isset($surat->data['tujuan3']))
         <p>3. {{ $surat->data['tujuan3'] }}</p>
     @endif
     <br>
