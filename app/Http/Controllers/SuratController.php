@@ -395,7 +395,7 @@ class SuratController extends Controller
                 'tempat-penelitian' => 'required',
                 'waktu-mulai-penelitian' => 'required|date',
                 'waktu-selesai-penelitian' => 'required|date',
-                'berkas-proposal' => 'required',
+                'berkas-proposal' => 'required|file|mimes:pdf|max:10240',
 
             ]);
 
@@ -423,7 +423,7 @@ class SuratController extends Controller
             ];
             if ($request->hasFile('berkas-proposal')) {
                 $request->validate([
-                    'berkas-proposal' => 'file|mimes:pdf|max:2048',
+                    'berkas-proposal' => 'file|mimes:pdf|max:10240',
                 ]);
 
                 $surat->files = [
@@ -447,7 +447,7 @@ class SuratController extends Controller
                 'tempat-prapenelitian' => 'required',
                 'waktu-mulai-prapenelitian' => 'required|date',
                 'waktu-selesai-prapenelitian' => 'required|date',
-                'berkas-proposal' => 'required',
+                'berkas-proposal' => 'required|file|mimes:pdf|max:10240',
 
             ]);
 
