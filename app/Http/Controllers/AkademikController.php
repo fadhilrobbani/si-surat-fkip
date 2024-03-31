@@ -107,7 +107,8 @@ class AkademikController extends Controller
                 ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
                 ->where('users.program_studi_id', $request->get('program-studi'))
                 ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10);
+                ->paginate(10)
+                ->appends(request()->query());
         } elseif ($request->get('program-studi') && $request->get('jenis-surat')) {
             $daftarSuratMasuk = Surat::with('pengaju', 'pengaju.programStudi')
                 ->select('surat_tables.*')
