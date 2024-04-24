@@ -46,7 +46,7 @@
 <body>
     <article>
         <h1>Website sedang dalam maintenance.</h1>
-        <p>Setelah kami selesai melakukan maintenance, websitqe akan pulih seperti semula</p>
+        <p>Setelah kami selesai melakukan maintenance, website akan pulih seperti semula</p>
         <p>Mohon maaf atas ketidaknyamanannya.</p>
         <p id="signature">&mdash; <a href="mailto:fkipunivbengkulu@gmail.com">Contact us</a></p>
     </article>
