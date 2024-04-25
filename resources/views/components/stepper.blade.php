@@ -112,7 +112,7 @@
             @endif
 
         </li>
-        <li class="mb-10 ml-6">
+        {{-- <li class="mb-10 ml-6">
 
             @if ($surat->current_user->role->id == 6 || $surat->current_user->role->id == 2)
                 <span
@@ -152,7 +152,7 @@
                 <p class="text-sm">Menunggu</p>
             @endif
 
-        </li>
+        </li> --}}
         <li class="ml-6">
 
             @if ($surat->current_user->role->id == 2)

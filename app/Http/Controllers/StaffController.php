@@ -319,4 +319,14 @@ class StaffController extends Controller
         $user->update(['password' => bcrypt($request->input('password'))]);
         return redirect('/staff/profile')->with('success', 'Kata sandi sukses diganti!');
     }
+
+    public function pengajuanSurat()
+    {
+        return abort(403, 'Access Denied');
+    }
+
+    public function riwayatPengajuanSurat()
+    {
+        return abort(403, 'Access Denied');
+    }
 }

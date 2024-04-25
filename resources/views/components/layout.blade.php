@@ -49,7 +49,8 @@
                                 aria-expanded="false" data-dropdown-toggle="dropdown-user">
                                 <span class="sr-only">Open user menu</span>
                                 @php
-                                    $avatar = 'https://ui-avatars.com/api/?name=' . $authUser->name . '&background=random';
+                                    $avatar =
+                                        'https://ui-avatars.com/api/?name=' . $authUser->name . '&background=random';
                                 @endphp
                                 <img class="w-8 h-8 rounded-full"
                                     src="{{ $authUser->profile_image ? asset('/storage' . $authUser->profile_image) : $avatar }}"

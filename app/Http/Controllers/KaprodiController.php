@@ -145,11 +145,17 @@ class KaprodiController extends Controller
     public function showSuratMasuk(Surat $surat)
     {
         if ($surat->current_user_id == auth()->user()->id) {
+            $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
+                ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
+                ->where('users.id', $surat->pengaju->id)
+                ->select('jt.id')
+                ->first();
 
             return view('kaprodi.show-surat', [
                 'surat' => $surat,
                 'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->where('role_id', '=', 5)
+                    ->where('role_id', '=', 6)
+                    ->where('jurusan_id', $idJurusan->id)
                     ->get()
             ]);
         }
@@ -273,17 +279,41 @@ class KaprodiController extends Controller
         // SELECT jt.id FROM users u
         // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
         // JOIN jurusan_tables jt ON jt.id = pst.jurusan_id ;
-        $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
-            ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
-            ->where('users.id', $surat->pengaju->id)
-            ->select('jt.id')
-            ->first();
-        $akademik = User::select('id')
-            ->where('role_id', '=', 6)
-            ->where('jurusan_id', '=', $idJurusan->id)
-            ->first();
 
+        // $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
+        //     ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
+        //     ->where('users.id', $surat->pengaju->id)
+        //     ->select('jt.id')
+        //     ->first();
+        // $akademik = User::select('id')
+        //     ->where('role_id', '=', 6)
+        //     ->where('jurusan_id', '=', $idJurusan->id)
+        //     ->first();
+
+        $wd1 = User::where('role_id', '=', 5)->first();
         $surat->current_user_id = $request->input('penerima');
+        $data = $surat->data;
+        if ($data) {
+            if (isset($data['private'])) {
+                $data['private']['namaWD1'] =  $wd1->name;
+                $data['private']['nipWD1'] =  $wd1->nip;
+            } else {
+                $data['private'] = [
+                    'namaWD1' =>  $wd1->name,
+                    'nipWD1' =>  $wd1->nip,
+                ];
+            }
+        } else {
+            $data = [
+                'private' => [
+                    'namaWD1' =>  $wd1->name,
+                    'nipWD1' =>  $wd1->nip
+                ]
+            ];
+        }
+        $surat->data = $data;
+
+
         // $surat->penerima_id = $akademik->id;
         // $file = $surat->files;
         // if ($file) {

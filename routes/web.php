@@ -36,10 +36,6 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 |
 */
 
-Route::get('testnotif', function () {
-    NotificationCreated::dispatch('woi');
-    return view('previews.show-surat-qr');
-});
 
 Route::get('/home', [AuthController::class, 'home']);
 Route::get('/login', function () {
@@ -50,6 +46,7 @@ Route::get('/surat-terverifikasi/{surat}', [SuratController::class, 'previewSura
 Route::get('/surat-terverifikasi/{surat}/cetak', [PDFController::class, 'previewSurat'])->middleware('signed')->name('cetak-surat-qr');
 Route::get('/register', [AuthController::class, 'create']);
 Route::post('/register/new', [AuthController::class, 'store'])->name('register-user');
+
 Route::get('/email/verify', function () {
     if (auth()->user()->email_verified_at == null) {
 
@@ -63,6 +60,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     $request->fulfill();
     return redirect('/home');
 })->middleware(['auth', 'signed'])->name('verification.verify');
+
 Route::post('/email/verification-notification/{user}', [AuthController::class, 'emailVerification'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::get('/forgot-password', [AuthController::class, 'forgotPasswordPage'])->name('password.request');
@@ -79,36 +77,7 @@ Route::middleware('guest')->group(function () {
 });
 // Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-mahasiswa');
 Route::get('/report-bug', [EmailController::class, 'reportBug'])->name('report-bug');
-Route::get('/storage/{user}/files/{filename?}/{mimeType}/{extension}', function ($user, $filename, $mimeType, $extension) {
-    // Logika untuk memeriksa izin pengguna atau status login
-    if (auth()->check()) {
-        if (!request()->hasValidSignature()) {
-            return abort(401);
-        }
-        $userId = request()->user;
-        $authUser = auth()->user();
-        if (!($authUser && $authUser->id == $userId)) {
-            return abort(403);
-        }
-        // Jika pengguna login, izinkan akses
-        // dd('hehe boi');
-        // dd($mimeType);
-        $file = public_path('storage/lampiran/' . $filename . '.' . $extension);
-        // $url = url('/storage/lampiran/' . $filename . '.' . $extension);
 
-        // return redirect($url);
-        // return response()->file(public_path($file, ['Content-Type' => str_replace('-', '/', $mimeType)]));
-        return response()->file($file, ['Content-Type' => str_replace('-', '/', $mimeType)]);
-
-        // $tempFile = tempnam(sys_get_temp_dir(), $filename . '.' . $extension);
-        // copy($url, $tempFile);
-
-        // return response()->download($tempFile, $filename . '.' . $extension);
-    } else {
-        // Jika pengguna belum login, tolak akses
-        abort(403, 'Unauthorized access');
-    }
-})->where(['filename' => '.*'])->name('show-file');
 
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -135,6 +104,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile/reset-password/{user}', [MahasiswaController::class, 'resetPassword'])->name('reset-password-mahasiswa');
     });
     Route::prefix('staff')->middleware(['userAccess:3'])->group(function () {
+        Route::get('/pengajuan-surat', [StaffController::class, 'pengajuanSurat'])->name('staff-pengajuan-surat');
+        Route::get('/riwayat-pengajuan-surat', [StaffController::class, 'riwayatPengajuanSurat'])->name('staff-riwayat-pengajuan-surat');
         Route::get('/surat-masuk', [StaffController::class, 'suratMasuk'])->name('surat-masuk-staff');
         Route::get('/surat-masuk/show/{surat}', [StaffController::class, 'showSuratMasuk'])->can('staffCanShowSuratMasuk', 'surat')->name('show-surat-staff');
         Route::get('/riwayat-persetujuan', [StaffController::class, 'riwayatPersetujuan']);
@@ -206,3 +177,35 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile/reset-password/{user}', [AkademikController::class, 'resetPassword'])->name('reset-password-akademik');
     });
 });
+
+
+Route::get('/storage/{user}/files/{filename?}/{mimeType}/{extension}', function ($user, $filename, $mimeType, $extension) {
+    // Logika untuk memeriksa izin pengguna atau status login
+    if (auth()->check()) {
+        if (!request()->hasValidSignature()) {
+            return abort(401);
+        }
+        $userId = request()->user;
+        $authUser = auth()->user();
+        if (!($authUser && $authUser->id == $userId)) {
+            return abort(403);
+        }
+        // Jika pengguna login, izinkan akses
+        // dd('hehe boi');
+        // dd($mimeType);
+        $file = public_path('storage/lampiran/' . $filename . '.' . $extension);
+        // $url = url('/storage/lampiran/' . $filename . '.' . $extension);
+
+        // return redirect($url);
+        // return response()->file(public_path($file, ['Content-Type' => str_replace('-', '/', $mimeType)]));
+        return response()->file($file, ['Content-Type' => str_replace('-', '/', $mimeType)]);
+
+        // $tempFile = tempnam(sys_get_temp_dir(), $filename . '.' . $extension);
+        // copy($url, $tempFile);
+
+        // return response()->download($tempFile, $filename . '.' . $extension);
+    } else {
+        // Jika pengguna belum login, tolak akses
+        abort(403, 'Unauthorized access');
+    }
+})->where(['filename' => '.*'])->name('show-file');

@@ -84,8 +84,8 @@ class AuthController extends Controller
     public function forgotPassword(Request $request)
     {
         $request->validate(['email' => 'required|email']);
-        if(auth()->check()){
-            if(auth()->user()->email != $request->input('email')){
+        if (auth()->check()) {
+            if (auth()->user()->email != $request->input('email')) {
                 return redirect()->back()->withErrors('Email tidak sesuai dengan yang Anda Daftarkan');
             }
         }
@@ -133,22 +133,22 @@ class AuthController extends Controller
     public function authenticate(Request $request)
     {
         // $user = User::where('username', $request->input('username'))->where('role_id', '!=', 1)->first();
-        $user = User::where(function($query) use ($request) {
+        $user = User::where(function ($query) use ($request) {
             $usernameOrEmail = $request->input('username');
             $query->where('username', $usernameOrEmail)
-                  ->orWhere('email', $usernameOrEmail);
+                ->orWhere('email', $usernameOrEmail);
         })
-        ->where('role_id', '!=', 1)
-        ->first();
+            ->where('role_id', '!=', 1)
+            ->first();
 
 
         if (!$user) {
             return back()->withErrors(['username' => 'Username/Email salah atau tidak terdaftar'])->withInput();
         }
 
-        if($user->role->id == 2){
+        if ($user->role->id == 2) {
             $user = User::where('email', $request->input('username'))->where('role_id', '!=', 1)->first();
-            if(!$user){
+            if (!$user) {
 
                 return back()->withErrors(['email' => 'Email yang anda masukkan salah atau tidak terdaftar'])->withInput();
             }
@@ -159,7 +159,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $login_type = filter_var($request->input('username'), FILTER_VALIDATE_EMAIL )
+        $login_type = filter_var($request->input('username'), FILTER_VALIDATE_EMAIL)
             ? 'email'
             : 'username';
 
