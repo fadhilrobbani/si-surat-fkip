@@ -27,7 +27,7 @@ class JenisSuratResource extends Resource
     protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $modelLabel = 'Jenis Surat';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Manajemen Jenis Surat';
+    protected static ?string $navigationGroup = 'Developer Tools';
     protected static ?string $slug = 'jenis-surat';
     protected static ?int $navigationSort = 4;
 

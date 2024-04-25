@@ -148,18 +148,23 @@ class WDResource extends Resource
 
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DeleteAction::make(),
 
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
 
                 ]),
             ])
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make(),
+                // Tables\Actions\CreateAction::make(),
             ]);
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 
     public static function getRelations(): array
@@ -173,7 +178,7 @@ class WDResource extends Resource
     {
         return [
             'index' => Pages\ListWDS::route('/'),
-            'create' => Pages\CreateWD::route('/create'),
+            // 'create' => Pages\CreateWD::route('/create'),
             // 'edit' => Pages\EditWD::route('/{record}/edit'),
         ];
     }
