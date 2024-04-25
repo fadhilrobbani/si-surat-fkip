@@ -89,7 +89,8 @@ class AkademikController extends Controller
                 $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
             })
             ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-            ->paginate(10);
+            ->paginate(10)
+            ->appends(request()->query());
 
         if ($request->get('search') && $request->get('jenis-surat') && $request->get('program-studi')) {
             $daftarSuratMasuk = Surat::with('pengaju', 'pengaju.programStudi')
@@ -124,7 +125,8 @@ class AkademikController extends Controller
                 ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
                 ->where('users.program_studi_id', $request->get('program-studi'))
                 ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10);
+                ->paginate(10)
+                ->appends(request()->query());
         } elseif ($request->get('program-studi') && $request->get('search')) {
             $daftarSuratMasuk = Surat::with('pengaju', 'pengaju.programStudi')
                 ->select('surat_tables.*')
@@ -140,7 +142,8 @@ class AkademikController extends Controller
                 ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
                 ->where('users.program_studi_id', $request->get('program-studi'))
                 ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10);
+                ->paginate(10)
+                ->appends(request()->query());
         } elseif ($request->get('jenis-surat') && $request->get('search')) {
             $daftarSuratMasuk = Surat::with('pengaju', 'pengaju.programStudi')
                 ->select('surat_tables.*')
@@ -156,7 +159,8 @@ class AkademikController extends Controller
                 ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
                 ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
                 ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10);
+                ->paginate(10)
+                ->appends(request()->query());
         } elseif ($request->get('program-studi')) {
             $daftarSuratMasuk = Surat::with('pengaju', 'pengaju.programStudi')
                 ->select('surat_tables.*')
@@ -171,7 +175,8 @@ class AkademikController extends Controller
                 })
                 ->where('users.program_studi_id', $request->get('program-studi'))
                 ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10);
+                ->paginate(10)
+                ->appends(request()->query());
             // dd($daftarSuratMasuk);
         } elseif ($request->get('jenis-surat')) {
             $daftarSuratMasuk = Surat::with('pengaju', 'pengaju.programStudi')
@@ -187,7 +192,8 @@ class AkademikController extends Controller
                 })
                 ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
                 ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10);
+                ->paginate(10)
+                ->appends(request()->query());
         } elseif ($request->get('search')) {
             $daftarSuratMasuk = Surat::with('pengaju', 'pengaju.programStudi')
                 ->select('surat_tables.*')
@@ -202,7 +208,8 @@ class AkademikController extends Controller
                 })
                 ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
                 ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10);
+                ->paginate(10)
+                ->appends(request()->query());
         }
 
 
@@ -289,7 +296,8 @@ class AkademikController extends Controller
         $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
             ->where('user_id', '=', auth()->user()->id)
             ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-            ->paginate(10);
+            ->paginate(10)
+            ->appends(request()->query());
 
 
         if ($request->get('search') && $request->get('jenis-surat') && $request->get('status')) {
@@ -308,7 +316,8 @@ class AkademikController extends Controller
                 ->where('approvals.user_id', '=', auth()->user()->id)
                 ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10);
+                ->paginate(10)
+                ->appends(request()->query());
         } elseif ($request->get('status') && $request->get('jenis-surat')) {
             $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
                 ->select('approvals.*')
@@ -319,7 +328,8 @@ class AkademikController extends Controller
                 ->where('approvals.user_id', '=', auth()->user()->id)
                 ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10);
+                ->paginate(10)
+                ->appends(request()->query());
         } elseif ($request->get('status') && $request->get('search')) {
             $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
                 ->select('approvals.*')
@@ -334,7 +344,8 @@ class AkademikController extends Controller
                 ->where('approvals.isApproved', $request->get('status') != 'ditolak' ? true : false)
                 ->where('approvals.user_id', '=', auth()->user()->id)
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10);
+                ->paginate(10)
+                ->appends(request()->query());
         } elseif ($request->get('jenis-surat') && $request->get('search')) {
             $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
                 ->select('approvals.*')
@@ -349,7 +360,8 @@ class AkademikController extends Controller
                 ->where('approvals.user_id', '=', auth()->user()->id)
                 ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10);
+                ->paginate(10)
+                ->appends(request()->query());
         } elseif ($request->get('status')) {
             $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
                 ->select('approvals.*')
@@ -359,7 +371,8 @@ class AkademikController extends Controller
                 ->where('approvals.isApproved', $request->get('status') != 'ditolak' ? true : false)
                 ->where('approvals.user_id', '=', auth()->user()->id)
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10);
+                ->paginate(10)
+                ->appends(request()->query());
         } elseif ($request->get('jenis-surat')) {
             $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
                 ->select('approvals.*')
@@ -369,7 +382,8 @@ class AkademikController extends Controller
                 ->where('approvals.user_id', '=', auth()->user()->id)
                 ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10);
+                ->paginate(10)
+                ->appends(request()->query());
         } elseif ($request->get('search')) {
             $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
                 ->select('approvals.*')
@@ -383,7 +397,8 @@ class AkademikController extends Controller
                 })
                 ->where('approvals.user_id', '=', auth()->user()->id)
                 ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10);
+                ->paginate(10)
+                ->appends(request()->query());
         }
 
         return view('akademik.riwayat-persetujuan', [
