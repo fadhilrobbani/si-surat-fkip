@@ -199,7 +199,7 @@
                                 <td class="px-4 py-3 flex ">
 
 
-                                    <a href="{{ route('lihat-surat-mahasiswa', $surat->id) }}">
+                                    <a href="{{ route('show-detail-pengajuan-surat-staff', $surat->id) }}">
                                         <div
                                             class="hover:bg-blue-800 cursor-pointer rounded-lg text-center bg-blue-600 p-2 text-white m-2">
                                             Lihat
@@ -210,7 +210,7 @@
                                     @if ($surat->status == 'diproses')
                                         <form
                                             class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2"
-                                            action="{{ route('destroy-surat', $surat->id) }}" method="POST">
+                                            action="{{ route('staff-destroy-surat', $surat->id) }}" method="POST">
                                             @csrf
                                             @method('delete')
                                             <button type="submit">

@@ -21,6 +21,16 @@ Breadcrumbs::for('pengajuan-surat-form', function (BreadcrumbTrail $trail, Jenis
     $trail->push('Form Pengajuan Surat', route('show-form-surat', $jenisSurat));
 });
 
+Breadcrumbs::for('staff-pengajuan-surat', function (BreadcrumbTrail $trail) {
+    $trail->push('Pilih Surat', '/staff/pengajuan-surat');
+});
+
+Breadcrumbs::for('staff-pengajuan-surat-form', function (BreadcrumbTrail $trail, JenisSurat $jenisSurat) {
+    $trail->parent('staff-pengajuan-surat');
+    $trail->push('Form Pengajuan Surat', route('staff-show-form-surat', $jenisSurat));
+});
+
+
 Breadcrumbs::for('riwayat-pengajuan-surat', function (BreadcrumbTrail $trail) {
     $trail->push('Riwayat Pengajuan Surat', '/mahasiswa/riwayat-pengajuan-surat');
 });
@@ -28,6 +38,15 @@ Breadcrumbs::for('riwayat-pengajuan-surat', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('show-pengajuan-surat', function (BreadcrumbTrail $trail, Surat $surat) {
     $trail->parent('riwayat-pengajuan-surat');
     $trail->push('Detail Pengajuan Surat', route('lihat-surat-mahasiswa', $surat));
+});
+
+Breadcrumbs::for('staff-riwayat-pengajuan-surat', function (BreadcrumbTrail $trail) {
+    $trail->push('Riwayat Pengajuan Surat', '/staff/riwayat-pengajuan-surat');
+});
+
+Breadcrumbs::for('staff-show-pengajuan-surat', function (BreadcrumbTrail $trail, Surat $surat) {
+    $trail->parent('staff-riwayat-pengajuan-surat');
+    $trail->push('Detail Pengajuan Surat', route('show-detail-pengajuan-surat-staff', $surat));
 });
 
 Breadcrumbs::for('surat-masuk', function (BreadcrumbTrail $trail) {

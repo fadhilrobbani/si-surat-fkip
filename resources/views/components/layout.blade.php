@@ -202,18 +202,18 @@
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
-                // [
-                //     'link' => 'staff/pengajuan-surat',
-                //     'title' => 'Pengajuan Surat',
-                //     'icon' => asset('svg/letterpencil.svg'),
-                //     'dropdown' => [],
-                // ],
-                // [
-                //     'link' => 'staff/riwayat-pengajuan',
-                //     'title' => 'Riwayat Pengajuan ',
-                //     'icon' => asset('svg/letterline.svg'),
-                //     'dropdown' => [],
-                // ],
+                [
+                    'link' => 'staff/pengajuan-surat',
+                    'title' => 'Pengajuan Surat',
+                    'icon' => asset('svg/letterpencil.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'staff/riwayat-pengajuan-surat',
+                    'title' => 'Riwayat Pengajuan ',
+                    'icon' => asset('svg/letterline.svg'),
+                    'dropdown' => [],
+                ],
                 [
                     'link' => 'staff/surat-masuk',
                     'title' => 'Surat Masuk',

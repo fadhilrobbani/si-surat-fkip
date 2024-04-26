@@ -217,7 +217,12 @@ class WDController extends Controller
 
     public function showSuratMasuk(Surat $surat)
     {
-        if ($surat->current_user_id == auth()->user()->id) {
+        if ($surat->current_user_id != auth()->user()->id) {
+
+            return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
+        }
+
+        if ($surat->jenisSurat->user_tpe == 'mahasiswa') {
             $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
                 ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
                 ->where('users.id', $surat->pengaju->id)
@@ -232,7 +237,32 @@ class WDController extends Controller
                     ->get()
             ]);
         }
-        return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
+
+        if ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'berita-acara-nilai') {
+
+            return view('wd.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 6)
+                    ->get()
+            ]);
+        }
+
+        if ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug != 'berita-acara-nilai') {
+            $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
+                ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
+                ->where('users.id', $surat->pengaju->id)
+                ->select('jt.id')
+                ->first();
+
+            return view('wd.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 6)
+                    ->where('jurusan_id', $idJurusan->id)
+                    ->get()
+            ]);
+        }
     }
 
     public function setujuiSurat(Request $request, Surat $surat)
@@ -274,6 +304,11 @@ class WDController extends Controller
         ]);
         return redirect('wd/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
+
+    public function setujuiSuratStaff()
+    {
+    }
+
     public function riwayatPersetujuan(Request $request)
     {
         $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')

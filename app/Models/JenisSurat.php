@@ -10,7 +10,7 @@ class JenisSurat extends Model
 {
     use HasFactory;
     protected $table = 'jenis_surat_tables';
-    protected $fillable = ['name', 'slug'];
+    protected $fillable = ['name', 'slug', 'user_type'];
 
     public function surat()
     {

@@ -8,7 +8,7 @@
     <x-slot:title>
         Staff | Detail Surat
     </x-slot:title>
-    {{ Breadcrumbs::render('detail-surat-masuk', $surat) }}
+    {{ Breadcrumbs::render('staff-show-pengajuan-surat', $surat) }}
     <h1 class="mx-auto text-center font-bold">{{ $surat->jenisSurat->name }}</h1>
     <br>
     <div class="flex flex-col gap-4 md:flex-row justify-evenly items-start">
@@ -146,7 +146,11 @@
     </div>
 
 
-    @if ($surat->current_user_id == auth()->user()->id && $surat->status == 'diproses')
+    {{-- ACTION BAR UNTUK SURAT MASUK MAHASISWA --}}
+    @if (
+        $surat->current_user_id == auth()->user()->id &&
+            $surat->status == 'diproses' &&
+            $surat->jenisSurat->user_type == 'mahasiswa')
         <form action="{{ route('setujui-surat-staff', $surat->id) }}" method="POST"
             class="bg-slate-100 rounded-lg w-full">
             @csrf
@@ -188,6 +192,25 @@
                     </a>
                 </div>
     @endif
+
+
+    {{-- ACTION BAR UNTUK DETAIL RIWAYAT PENGAJUAN SURAT DARI STAFF (TIDAK TERMASUK BERITA ACARA NILAI) --}}
+    @if ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug != 'berita-acara-nilai')
+
+        @if ($surat->status == 'selesai')
+            <a href="{{ route('preview-surat-staff', $surat->id) }}"> <button type="button"
+                    class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button></a>
+        @else
+            <a href="{{ route('preview-surat-staff', $surat->id) }}"> <button type="button"
+                    class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
+            <p class="italic text-slate-500">Surat akan resmi diterbitkan jika telah ditandatangani secara digital (QR
+                Code). Jika terdapat kesalahan dalam surat, silahkan
+                batalkan
+                pengajuan surat
+            </p>
+        @endif
+    @endif
+
     </div>
     </form>
 

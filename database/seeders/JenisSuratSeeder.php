@@ -64,7 +64,7 @@ class JenisSuratSeeder extends Seeder
             //     'slug' => 'surat-permohonan-sinkronisasi-skdosen-forlapdikti'
             // ],
             [
-                'name' => 'Surat Permohonan Izin Pra-Penelitian Mahasiswa',
+                'name' => 'Surat Permohonan Izin Prapenelitian Mahasiswa',
                 'slug' => 'surat-permohonan-izin-prapenelitian-mahasiswa'
             ],
             [

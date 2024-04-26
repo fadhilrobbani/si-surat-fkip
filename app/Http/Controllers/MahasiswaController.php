@@ -90,7 +90,7 @@ class MahasiswaController extends Controller
     public function pengajuanSurat()
     {
         return view('mahasiswa.pengajuan-surat', [
-            'daftarJenisSurat' => JenisSurat::all(),
+            'daftarJenisSurat' => JenisSurat::where('user_type', 'mahasiswa')->get(),
         ]);
     }
 

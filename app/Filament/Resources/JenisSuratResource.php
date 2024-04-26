@@ -11,6 +11,7 @@ use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -37,22 +38,30 @@ class JenisSuratResource extends Resource
             ->schema([
                 Section::make()->schema(
                     [
-                        // TextInput::make('slug')
-                        //     ->label('Slug')
-                        //     ->placeholder('Contoh: surat-keterangan-contoh')
-                        //     ->readOnly()
-                        //     ->required(),
+                        TextInput::make('slug')
+                            ->label('Slug')
+                            ->placeholder('Contoh: surat-keterangan-contoh')
+                            ->rules(['alpha_dash'])
+                            ->disabledOn('edit')
+                            ->required(),
                         Hidden::make('slug')
                             ->label('Slug')
                             ->required(),
                         TextInput::make('name')
                             ->label('Nama Surat')
                             ->placeholder('Surat Keterangan Contoh')
-                            ->required(function (Set $set, $state) {
-                                $newSlug = Str::slug($state);
-                                $set('slug', $newSlug); // Set the `title` field to `Blog Post`.
-                                //...
-                            }),
+                            ->required(),
+                        // ->required(function (Set $set, $state) {
+                        //     $newSlug = Str::slug($state);
+                        //     $set('slug', $newSlug); // Set the `title` field to `Blog Post`.
+                        //     //...
+                        // }),
+                        // ->disabledOn('edit'),
+                        Select::make('user_type')
+                            ->label('Tipe Pengguna')
+                            ->required()
+                            ->options(['mahasiswa' => 'mahasiswa', 'staff' => 'staff']),
+
                     ]
                 )->columnSpan(2)
             ]);
@@ -72,12 +81,17 @@ class JenisSuratResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
+                TextColumn::make('user_type')
+                    ->label('Tipe Pengguna')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

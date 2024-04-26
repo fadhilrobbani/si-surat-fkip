@@ -130,6 +130,17 @@ class SuratController extends Controller
                     ->get()
             ]);
         }
+
+        // SURAT STAFF
+        if ($jenisSurat->slug == 'berita-acara-nilai') {
+            return view('staff.formsurat.form-berita-acara-nilai', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 5)
+                    ->get()
+            ]);
+        }
         return abort(404);
     }
 
@@ -628,8 +639,44 @@ class SuratController extends Controller
         }
     }
 
-    public function storeByStaff(Request $request, Surat $surat)
+    public function storeByStaff(Request $request, JenisSurat $jenisSurat)
     {
+    }
+
+    public function storeBeritaAcaraNilaiByStaff(Request $request, JenisSurat $jenisSurat)
+    {
+        if ($jenisSurat->slug != 'berita-acara-nilai') {
+            return redirect()->back()->with('error', 'Jenis surat tidak sesuai');
+        }
+
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'program-studi' => 'required',
+            'email' => 'required|email',
+            'berita-acara-nilai' => 'required|file|mimes:jpeg,png,jpg,pdf|max:10240',
+        ]);
+
+        $surat = new Surat;
+        $surat->pengaju_id = auth()->user()->id;
+        $surat->current_user_id = $request->input('penerima');
+        $surat->status = 'diproses';
+        $surat->jenis_surat_id = $jenisSurat->id;
+        $surat->expired_at = now()->addDays(30);
+
+        $surat->data = [
+            'nama' => $request->input('name'),
+            'npm' => $request->input('username'),
+            'programStudi' => auth()->user()->programStudi->name,
+            'email' => $request->input('email'),
+        ];
+
+        $surat->files = [
+            'beritaAcaraNilai' => $request->file('berita-acara-nilai')->store('lampiran'),
+        ];
+
+        $surat->save();
+        return redirect('/staff/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
     }
 
     public function destroy(Surat $surat)

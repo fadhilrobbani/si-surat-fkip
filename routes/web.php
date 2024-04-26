@@ -105,7 +105,14 @@ Route::middleware('auth')->group(function () {
     });
     Route::prefix('staff')->middleware(['userAccess:3'])->group(function () {
         Route::get('/pengajuan-surat', [StaffController::class, 'pengajuanSurat'])->name('staff-pengajuan-surat');
+        Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->name('staff-redirect-form-surat');
+        Route::get('/pengajuan-surat/{jenisSurat:slug}', [SuratController::class, 'create'])->name('staff-show-form-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}', [SuratController::class, 'storeByStaff'])->name('staff-store-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/berita-acara-nilai', [SuratController::class, 'storeBeritaAcaraNilaiByStaff'])->name('staff-store-berita-acara-nilai');
+        Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->can('staffCanCancelSurat', 'surat')->name('staff-destroy-surat');
         Route::get('/riwayat-pengajuan-surat', [StaffController::class, 'riwayatPengajuanSurat'])->name('staff-riwayat-pengajuan-surat');
+        Route::get('/riwayat-pengajuan-surat/show/{surat}', [StaffController::class, 'showDetailPengajuanSuratByStaff'])->can('staffCanViewShowDetailPengajuanSuratByStaff', 'surat')->name('show-detail-pengajuan-surat-staff');
+
         Route::get('/surat-masuk', [StaffController::class, 'suratMasuk'])->name('surat-masuk-staff');
         Route::get('/surat-masuk/show/{surat}', [StaffController::class, 'showSuratMasuk'])->can('staffCanShowSuratMasuk', 'surat')->name('show-surat-staff');
         Route::get('/riwayat-persetujuan', [StaffController::class, 'riwayatPersetujuan']);
@@ -146,6 +153,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/riwayat-persetujuan/show/{approval}', [WDController::class, 'showApproval'])->can('wdCanShowRiwayatPersetujuan', 'approval')->name('show-approval-wd');
         Route::get('/surat-masuk/show/{surat}', [WDController::class, 'showSuratMasuk'])->name('show-surat-wd');
         Route::put('/surat-disetujui/{surat}', [WDController::class, 'setujuiSurat'])->name('setujui-surat-wd');
+        Route::put('/surat-staff-disetujui/{surat}', [WDController::class, 'setujuiSuratStaff'])->name('setujui-surat-staff-wd');
         Route::get('/surat-ditolak/{surat}', [WDController::class, 'confirmTolakSurat'])->name('confirm-tolak-surat-wd');
         Route::put('/surat-ditolak/{surat}', [WDController::class, 'tolakSurat'])->name('tolak-surat-wd');
         Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-wd');

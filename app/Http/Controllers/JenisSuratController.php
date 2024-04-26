@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 
 class JenisSuratController extends Controller
 {
-    public function redirectToFormSurat(Request $request){
+    public function redirectToFormSurat(Request $request)
+    {
+        $jenisSurat = JenisSurat::where('slug', $request->input('jenisSurat'))->first();
         $inputValue = $request->input('jenisSurat');
-            return redirect('/mahasiswa/pengajuan-surat/'. $inputValue);
+        return redirect('/' . $jenisSurat->user_type . '/' . 'pengajuan-surat/' . $inputValue);
     }
 }
