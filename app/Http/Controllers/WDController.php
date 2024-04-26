@@ -243,7 +243,7 @@ class WDController extends Controller
             return view('wd.show-surat', [
                 'surat' => $surat,
                 'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->where('role_id', '=', 6)
+                    ->where('role_id', '=', 7)
                     ->get()
             ]);
         }
