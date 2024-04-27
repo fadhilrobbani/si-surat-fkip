@@ -8,7 +8,7 @@
     <x-slot:title>
         Staff Nilai | Detail Riwayat Persetujuan
     </x-slot:title>
-    {{ Breadcrumbs::render('staff-nilai-detail-persetujuan', $approval) }}
+    {{ Breadcrumbs::render('detail-persetujuan', $approval) }}
 
     <h1 class="mx-auto text-center font-bold">{{ $approval->surat->jenisSurat->name }}</h1>
     <br>

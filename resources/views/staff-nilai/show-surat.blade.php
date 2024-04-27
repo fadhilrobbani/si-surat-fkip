@@ -8,7 +8,7 @@
     <x-slot:title>
         Staff Nilai | Detail
     </x-slot:title>
-    {{ Breadcrumbs::render('staff-nilai-detail-surat-masuk', $surat) }}
+    {{ Breadcrumbs::render('detail-surat-masuk', $surat) }}
     <h1 class="mx-auto text-center font-bold">{{ $surat->jenisSurat->name }}</h1>
     <br>
     <div class="flex flex-col gap-10 justify-evenly items-start">

@@ -66,23 +66,3 @@ Breadcrumbs::for('detail-persetujuan', function (BreadcrumbTrail $trail, Approva
     $trail->parent('riwayat-persetujuan');
     $trail->push('Detail Surat', '/' . auth()->user()->role->name . '/riwayat-persetujuan' . '/show' . '/' . $approval->id);
 });
-
-
-// KHUSUS UNTUK STAFF NILAI GARA2 PENAMAAN ROLENYA BEDA
-Breadcrumbs::for('staff-nilai-surat-masuk', function (BreadcrumbTrail $trail) {
-    $trail->push('Surat Masuk', '/' . 'staff-nilai' . '/surat-masuk');
-});
-
-Breadcrumbs::for('staff-nilai-detail-surat-masuk', function (BreadcrumbTrail $trail, Surat $surat) {
-    $trail->parent('staff-nilai-surat-masuk');
-    $trail->push('Detail Surat', '/' . 'staff-nilai' . '/surat-masuk' . '/show' . '/' . $surat->id);
-});
-
-Breadcrumbs::for('staff-nilai-riwayat-persetujuan', function (BreadcrumbTrail $trail) {
-    $trail->push('Riwayat Persetujuan', '/' . 'staff-nilai' . '/riwayat-persetujuan');
-});
-
-Breadcrumbs::for('staff-nilai-detail-persetujuan', function (BreadcrumbTrail $trail, Approval $approval) {
-    $trail->parent('staff-nilai-riwayat-persetujuan');
-    $trail->push('Detail Surat', '/' . 'staff-nilai' . '/riwayat-persetujuan' . '/show' . '/' . $approval->id);
-});

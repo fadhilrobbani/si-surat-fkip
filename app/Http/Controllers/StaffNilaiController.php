@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Surat;
+use Ramsey\Uuid\Uuid;
 use App\Models\Approval;
 use App\Models\JenisSurat;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 
 class StaffNilaiController extends Controller
@@ -26,6 +29,39 @@ class StaffNilaiController extends Controller
             })->get()->toArray())
         ]);
     }
+
+    public function profilePage()
+    {
+        return view('staff-nilai.profile');
+    }
+
+    public function updateProfile(Request $request, User $user)
+    {
+        $request->validate([
+            'username' => 'string|required|alpha_dash',
+            'name' => 'string|required',
+            'email' => 'email|required',
+        ]);
+
+        if ($request->input('username') != $user->username) {
+            $request->validate([
+                'username' => 'unique:users,username'
+            ]);
+            $user->update($request->only('username'));
+        }
+
+        if ($request->input('email') != $user->email) {
+            $request->validate([
+                'email' => 'unique:users,email'
+            ]);
+            $user->update($request->only('email'));
+            $user->email_verified_at = null;
+        }
+
+        $user->update($request->only('name'));
+        return redirect('/staff-nilai/profile')->with('success', 'Sukses mengupdate data');
+    }
+
 
     public function suratMasuk(Request $request)
     {
@@ -392,5 +428,22 @@ class StaffNilaiController extends Controller
         ]);
         // }
         // return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil disetujui');
+    }
+
+    public function resetPasswordPage()
+    {
+        return view('staff-nilai.reset-password');
+    }
+
+    public function resetPassword(Request $request, User $user)
+    {
+        if (!Hash::check($request->input('old-password'), $user->password)) {
+            return back()->withErrors(['password', 'Password yang anda masukkan salah!']);
+        }
+        $request->validate([
+            'password' => 'required|confirmed|min:6'
+        ]);
+        $user->update(['password' => bcrypt($request->input('password'))]);
+        return redirect('/staff-nilai/profile')->with('success', 'Kata sandi sukses diganti!');
     }
 }
