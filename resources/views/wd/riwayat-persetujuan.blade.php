@@ -24,7 +24,7 @@
                         </div>
                         <input type="text" id="search" name="search"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Cari (NPM)" value="{{ request()->get('search') }}">
+                            placeholder="Cari (NPM/Username)" value="{{ request()->get('search') }}">
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                         <tr>
                             <th scope="col" class="px-4 py-3">Foto</th>
                             <th scope="col" class="px-4 py-3">Nama</th>
-                            <th scope="col" class="px-4 py-3">NPM</th>
+                            <th scope="col" class="px-4 py-3">NPM/Username</th>
                             <th scope="col" class="px-4 py-3">Surat yang Diajukan</th>
                             <th scope="col" class="px-4 py-3">Tanggal disetujui/ditolak</th>
                             <th scope="col" class="px-4 py-3">Konfirmasi Anda</th>
@@ -132,7 +132,10 @@
                     <tbody>
                         @foreach ($daftarRiwayatSurat as $riwayatSurat)
                             @php
-                                $avatar = 'https://ui-avatars.com/api/?name=' . $riwayatSurat->surat->data['nama'] . '&background=random';
+                                $avatar =
+                                    'https://ui-avatars.com/api/?name=' .
+                                    $riwayatSurat->surat->data['nama'] .
+                                    '&background=random';
                             @endphp
                             <tr class=" border-b dark:border-gray-700 hover:bg-slate-100">
                                 <th scope="row"
@@ -144,7 +147,9 @@
                                     {{ $riwayatSurat->surat->data['nama'] }}
                                 </th>
 
-                                <td class="px-4 py-3">{{ $riwayatSurat->surat->data['npm'] }}</td>
+                                <td class="px-4 py-3">
+                                    {{ $riwayatSurat->surat->jenisSurat->user_type == 'mahasiswa' ? $riwayatSurat->surat->data['npm'] : $riwayatSurat->surat->data['username'] }}
+                                </td>
 
                                 <td class="px-4 py-3">{{ $riwayatSurat->surat->jenisSurat->name }}</td>
                                 <td class="px-4 py-3">{{ formatTimestampToIndonesian($riwayatSurat->created_at) }}</td>

@@ -3,8 +3,9 @@
 @endphp
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Kaprodi | Surat Masuk
+        Staff Nilai | Surat Masuk
     </x-slot:title>
+
     <div class="overflow-x-auto">
         <h1 class="mx-auto text-center font-bold">Surat Masuk</h1>
         <form id="filter-form" method="GET"
@@ -23,7 +24,7 @@
                         </div>
                         <input type="text" id="search" name="search"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Cari (NPM)" value="{{ request()->get('search') }}">
+                            placeholder="Cari (Username)" value="{{ request()->get('search') }}">
                     </div>
                 </div>
             </div>
@@ -95,13 +96,12 @@
             <p class="text-slate-500 text-xl font-semibold text-center mx-auto">Tidak terdapat Surat Masuk</p>
         @else
             <div class="w-full overflow-x-auto">
-
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="px-4 py-3">Foto</th>
                             <th scope="col" class="px-4 py-3">Nama</th>
-                            <th scope="col" class="px-4 py-3">NPM</th>
+                            <th scope="col" class="px-4 py-3">Username</th>
                             <th scope="col" class="px-4 py-3">Email</th>
                             <th scope="col" class="px-4 py-3">Surat yang Diajukan</th>
                             <th scope="col" class="px-4 py-3">Tanggal</th>
@@ -128,7 +128,7 @@
                                     {{ $surat->data['nama'] }}
                                 </th>
 
-                                <td class="px-4 py-3">{{ $surat->data['npm'] }}</td>
+                                <td class="px-4 py-3">{{ $surat->data['username'] }}</td>
                                 <td class="px-4 py-3">{{ $surat->data['email'] }}</td>
                                 @php
                                     $jenisSurat = App\Models\JenisSurat::find($surat->jenis_surat_id);
@@ -139,28 +139,30 @@
                                 <td class="px-4 py-3 flex ">
 
 
-                                    <a href="{{ route('show-surat-kaprodi', $surat->id) }}">
+                                    <a href="{{ route('show-surat-staff-nilai', $surat->id) }}">
                                         <div
                                             class="hover:bg-blue-800 cursor-pointer rounded-lg text-center bg-blue-600 p-2 text-white m-2">
                                             Lihat
 
                                         </div>
                                     </a>
-                                    {{-- <form action="{{ route('setujui-surat-kaprodi', $surat->id) }}" method="POST">
+                                    {{-- <form action="{{ route('setujui-surat', $surat->id) }}" method="POST">
                                     @csrf
                                     @method('put')
+                                    <x-modal-send :daftarPenerima='$daftarPenerima'/>
                                     <button
                                         class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
-                                        type="submit">
+                                        data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
                                         Setuju </button>
                                 </form>
-                                <a href="{{ route('confirm-tolak-surat-kaprodi', $surat->id) }}">
+                                <a href="{{ route('confirm-tolak-surat', $surat->id) }}">
                                     <div
                                         class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
                                         Tolak
 
                                     </div>
                                 </a> --}}
+
 
                                 </td>
                             </tr>

@@ -3,7 +3,7 @@
 @endphp
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Staff | Dashboard
+        Staff Nilai | Dashboard
     </x-slot:title>
     <div
         class="flex sm:flex-row flex-col-reverse items-center justify-evenly min-h-fit  p-4 mb-4 rounded bg-gray-50 dark:bg-gray-800">
@@ -16,7 +16,7 @@
         <img class="h-48 m-2 p-2" src="{{ asset('images/man-laptop.png') }}" alt="">
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
-        <a href="/staff/surat-masuk">
+        <a href="/staff-nilai/surat-masuk">
             <div
                 class="flex items-center gap-2 flex-col hover:bg-slate-300 justify-center rounded p-4  bg-gray-50 h-28 dark:bg-gray-800">
 
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </a>
-        <a href="/staff/riwayat-persetujuan">
+        <a href="/staff-nilai/riwayat-persetujuan">
             <div
                 class="flex items-center gap-2 flex-col hover:bg-slate-300 justify-center rounded p-4  bg-gray-50 h-28 dark:bg-gray-800">
 
@@ -38,7 +38,7 @@
                 </div>
             </div>
         </a>
-        <a href="/staff/profile">
+        <a href="/staff-nilai/profile">
             <div
                 class="flex hover:bg-slate-300 items-center justify-center gap-4  rounded bg-gray-50 h-28 dark:bg-gray-800">
                 <p class="font-semibold cursor-pointer hover:text-slate-900 text-slate-600 text-lg">Pengaturan Akun</p>

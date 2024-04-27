@@ -119,6 +119,7 @@
                             <th scope="col" class="px-4 py-3">NPM</th>
                             <th scope="col" class="px-4 py-3">Program Studi</th>
                             <th scope="col" class="px-4 py-3">Surat yang Diajukan</th>
+                            <th scope="col" class="px-4 py-3">Tanggal</th>
                             <th scope="col" class="px-4 py-3">Masa Aktif</th>
                             <th scope="col" class="px-4 py-3">
                                 Aksi
@@ -129,7 +130,8 @@
                     <tbody>
                         @foreach ($daftarSuratMasuk as $surat)
                             @php
-                                $avatar = 'https://ui-avatars.com/api/?name=' . $surat->data['nama'] . '&background=random';
+                                $avatar =
+                                    'https://ui-avatars.com/api/?name=' . $surat->data['nama'] . '&background=random';
                             @endphp
                             <tr class=" border-b dark:border-gray-700 hover:bg-slate-100">
                                 <th scope="row"
@@ -147,6 +149,7 @@
                                     $jenisSurat = App\Models\JenisSurat::find($surat->jenis_surat_id);
                                 @endphp
                                 <td class="px-4 py-3">{{ $jenisSurat->name }}</td>
+                                <td class="px-4 py-3">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
                                 <td class="px-4 py-3">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
                                 <td class="px-4 py-3 flex ">
 

@@ -23,6 +23,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\JenisSuratController;
+use App\Http\Controllers\StaffNilaiController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
@@ -183,6 +184,26 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile/update/{user}', [AkademikController::class, 'updateProfile'])->name('update-profile-akademik');
         Route::get('/profile/reset-password', [AkademikController::class, 'resetPasswordPage']);
         Route::put('/profile/reset-password/{user}', [AkademikController::class, 'resetPassword'])->name('reset-password-akademik');
+    });
+
+    Route::prefix('staff-nilai')->middleware(['userAccess:7'])->group(function () {
+        // Route::middleware('verified')->group(function () {
+        Route::get('/surat-masuk', [StaffNilaiController::class, 'suratMasuk']);
+        Route::get('/riwayat-persetujuan', [StaffNilaiController::class, 'riwayatPersetujuan']);
+        Route::get('/riwayat-persetujuan/show/{approval}', [StaffNilaiController::class, 'showApproval'])->name('show-approval-staff-nilai');
+        Route::get('/surat-masuk/show/{surat}', [StaffNilaiController::class, 'showSuratMasuk'])->name('show-surat-staff-nilai');
+        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->name('preview-surat-staff-nilai');
+        Route::put('/surat-disetujui/{surat}', [StaffNilaiController::class, 'setujuiSurat'])->name('setujui-surat-staff-nilai');
+        Route::get('/surat-ditolak/{surat}', [StaffNilaiController::class, 'confirmTolakSurat'])->name('confirm-tolak-surat-staff-nilai');
+        Route::put('/surat-ditolak/{surat}', [StaffNilaiController::class, 'tolakSurat'])->name('tolak-surat-staff-nilai');
+        Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-staff-nilai');
+        Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-staff-nilai');
+        // });
+        Route::get('/', [StaffNilaiController::class, 'dashboard']);
+        Route::get('/profile', [StaffNilaiController::class, 'profilePage']);
+        Route::put('/profile/update/{user}', [StaffNilaiController::class, 'updateProfile'])->name('update-profile-staff-nilai');
+        Route::get('/profile/reset-password', [StaffNilaiController::class, 'resetPasswordPage']);
+        Route::put('/profile/reset-password/{user}', [StaffNilaiController::class, 'resetPassword'])->name('reset-password-staff-nilai');
     });
 });
 

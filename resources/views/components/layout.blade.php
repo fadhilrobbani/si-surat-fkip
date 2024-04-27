@@ -311,6 +311,32 @@
                     'dropdown' => [],
                 ],
             ],
+            'staffNilai' => [
+                [
+                    'link' => 'staff-nilai',
+                    'title' => 'Dasbor',
+                    'icon' => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'staff-nilai/surat-masuk',
+                    'title' => 'Surat Masuk',
+                    'icon' => asset('svg/letter.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'staff-nilai/riwayat-persetujuan',
+                    'title' => 'Riwayat Persetujuan',
+                    'icon' => asset('svg/lettercheck.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Keluar',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
         ];
     @endphp
     @if ($authUser->role_id == 1)
@@ -325,6 +351,8 @@
         <x-sidebar :listsData="$listsData['wd']" />
     @elseif ($authUser->role_id == 6)
         <x-sidebar :listsData="$listsData['akademik']" />
+    @elseif ($authUser->role_id == 7)
+        <x-sidebar :listsData="$listsData['staffNilai']" />
     @endif
 
 

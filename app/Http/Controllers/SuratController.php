@@ -666,7 +666,7 @@ class SuratController extends Controller
 
         $surat->data = [
             'nama' => $request->input('name'),
-            'npm' => $request->input('username'),
+            'username' => $request->input('username'),
             'programStudi' => auth()->user()->programStudi->name,
             'email' => $request->input('email'),
         ];

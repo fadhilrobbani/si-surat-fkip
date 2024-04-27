@@ -208,6 +208,8 @@ class AuthController extends Controller
                 return redirect('/wd');
             } elseif (auth()->user()->role_id == 6) {
                 return redirect('/akademik');
+            } elseif (auth()->user()->role_id == 7) {
+                return redirect('/staff-nilai');
             }
         }
         return redirect('/');

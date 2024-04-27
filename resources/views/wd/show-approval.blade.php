@@ -76,7 +76,7 @@
                             @endif
                             <tr class="border-b border-gray-200 dark:border-gray-700">
                                 <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Lampiran
-                                    {{ Str::title(str_replace('_', ' ', $key)) }}:</td>
+                                    {{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:</td>
                                 <td class="px-6 py-4">
                                     {{-- <a class="text-blue-700 underline"
                                         href="{{ route('show-file-wd', ['surat' => $approval->surat->id, 'filename' => basename($value)]) }}">Lihat</a> --}}
@@ -113,14 +113,16 @@
         <x-stepper :surat='$surat' />
     </div>
 
-
-    @if ($approval->surat->status == 'selesai')
-        <a href="{{ route('print-surat-wd', $approval->surat->id) }}"><button type="button"
-                class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button></a>
-    @else
-        <button type="button" disabled
-            class="text-white cursor-not-allowed mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button>
-        <p class="italic text-slate-500">Surat belum dapat dicetak selama surat belum selesai / disetujui akademik</p>
+    @if ($approval->surat->jenisSurat->slug != 'berita-acara-nilai')
+        @if ($approval->surat->status == 'selesai')
+            <a href="{{ route('print-surat-wd', $approval->surat->id) }}"><button type="button"
+                    class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button></a>
+        @else
+            <button type="button" disabled
+                class="text-white cursor-not-allowed mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button>
+            <p class="italic text-slate-500">Surat belum dapat dicetak selama surat belum selesai / disetujui akademik
+            </p>
+        @endif
     @endif
 
 </x-layout>

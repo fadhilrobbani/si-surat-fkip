@@ -3,10 +3,11 @@
 @endphp
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Kaprodi | Surat Masuk
+        Staff Nilai | Riwayat Persetujuan
     </x-slot:title>
     <div class="overflow-x-auto">
-        <h1 class="mx-auto text-center font-bold">Surat Masuk</h1>
+        <h1 class="mx-auto text-center font-bold">Riwayat Persetujuan</h1>
+
         <form id="filter-form" method="GET"
             class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
             <div class="w-full md:w-1/2">
@@ -23,7 +24,7 @@
                         </div>
                         <input type="text" id="search" name="search"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Cari (NPM)" value="{{ request()->get('search') }}">
+                            placeholder="Cari (Username)" value="{{ request()->get('search') }}">
                     </div>
                 </div>
             </div>
@@ -44,7 +45,22 @@
 
 
                 </div>
+                <div class="flex items-center space-x-3 w-full md:max-w-[250px] md:w-auto">
 
+                    <select id="status" name="status"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="">Status (Semua)</option>
+                        <option
+                            {{ request()->get('status') != 'ditolak' && request()->get('status') ? 'selected' : '' }}
+                            value="disetujui">Disetujui</option>
+                        <option {{ request()->get('status') == 'ditolak' ? 'selected' : '' }} value="ditolak">Ditolak
+                        </option>
+
+
+                    </select>
+
+
+                </div>
                 <div class="flex items-center space-x-3 w-full md:max-w-[250px] md:w-auto">
 
                     <select id="order" name="order"
@@ -72,9 +88,10 @@
                 <script>
                     const resetFilter = () => {
                         document.getElementById('filter-form').reset();
+                        document.getElementById('status').value = null;
                         document.getElementById('search').value = null;
-                        document.getElementById('jenis-surat').value = null;
                         document.getElementById('order').value = null;
+                        document.getElementById('jenis-surat').value = null;
                         return false;
                     }
                 </script>
@@ -91,21 +108,20 @@
                 </button>
             </div>
         </form>
-        @if ($daftarSuratMasuk->isEmpty())
-            <p class="text-slate-500 text-xl font-semibold text-center mx-auto">Tidak terdapat Surat Masuk</p>
+        @if ($daftarRiwayatSurat->isEmpty())
+            <p class="text-slate-500 text-xl font-semibold text-center mx-auto">Tidak terdapat Riwayat Persetujuan Surat
+            </p>
         @else
             <div class="w-full overflow-x-auto">
-
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="px-4 py-3">Foto</th>
                             <th scope="col" class="px-4 py-3">Nama</th>
-                            <th scope="col" class="px-4 py-3">NPM</th>
-                            <th scope="col" class="px-4 py-3">Email</th>
+                            <th scope="col" class="px-4 py-3">Username</th>
                             <th scope="col" class="px-4 py-3">Surat yang Diajukan</th>
-                            <th scope="col" class="px-4 py-3">Tanggal</th>
-                            <th scope="col" class="px-4 py-3">Masa Aktif</th>
+                            <th scope="col" class="px-4 py-3">Tanggal disetujui/ditolak</th>
+                            <th scope="col" class="px-4 py-3">Konfirmasi Anda</th>
                             <th scope="col" class="px-4 py-3">
                                 Aksi
                                 <span class="sr-only">Aksi</span>
@@ -113,10 +129,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($daftarSuratMasuk as $surat)
+                        @foreach ($daftarRiwayatSurat as $riwayatSurat)
                             @php
                                 $avatar =
-                                    'https://ui-avatars.com/api/?name=' . $surat->data['nama'] . '&background=random';
+                                    'https://ui-avatars.com/api/?name=' .
+                                    $riwayatSurat->surat->data['nama'] .
+                                    '&background=random';
                             @endphp
                             <tr class=" border-b dark:border-gray-700 hover:bg-slate-100">
                                 <th scope="row"
@@ -125,42 +143,25 @@
                                 </th>
                                 <th scope="row"
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ $surat->data['nama'] }}
+                                    {{ $riwayatSurat->surat->data['nama'] }}
                                 </th>
 
-                                <td class="px-4 py-3">{{ $surat->data['npm'] }}</td>
-                                <td class="px-4 py-3">{{ $surat->data['email'] }}</td>
-                                @php
-                                    $jenisSurat = App\Models\JenisSurat::find($surat->jenis_surat_id);
-                                @endphp
-                                <td class="px-4 py-3">{{ $jenisSurat->name }}</td>
-                                <td class="px-4 py-3">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
-                                <td class="px-4 py-3">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
+                                <td class="px-4 py-3">{{ $riwayatSurat->surat->data['username'] }}</td>
+
+                                <td class="px-4 py-3">{{ $riwayatSurat->surat->jenisSurat->name }}</td>
+                                <td class="px-4 py-3">{{ formatTimestampToIndonesian($riwayatSurat->created_at) }}</td>
+                                <td class="px-4 py-3">{{ $riwayatSurat->isApproved == 1 ? 'Disetujui' : 'Ditolak' }}
+                                </td>
                                 <td class="px-4 py-3 flex ">
 
-
-                                    <a href="{{ route('show-surat-kaprodi', $surat->id) }}">
+                                    <a href="{{ route('show-approval-staff-nilai', $riwayatSurat->id) }}">
                                         <div
                                             class="hover:bg-blue-800 cursor-pointer rounded-lg text-center bg-blue-600 p-2 text-white m-2">
                                             Lihat
 
                                         </div>
                                     </a>
-                                    {{-- <form action="{{ route('setujui-surat-kaprodi', $surat->id) }}" method="POST">
-                                    @csrf
-                                    @method('put')
-                                    <button
-                                        class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
-                                        type="submit">
-                                        Setuju </button>
-                                </form>
-                                <a href="{{ route('confirm-tolak-surat-kaprodi', $surat->id) }}">
-                                    <div
-                                        class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
-                                        Tolak
 
-                                    </div>
-                                </a> --}}
 
                                 </td>
                             </tr>
@@ -171,9 +172,9 @@
             </div>
         @endif
 
-    </div>
-    <div class="mt-4">
+        <div class="mt-4">
 
-        {{ $daftarSuratMasuk->links() }}
+            {{ $daftarRiwayatSurat->links() }}
+        </div>
     </div>
 </x-layout>
