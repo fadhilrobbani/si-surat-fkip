@@ -39,7 +39,7 @@ class RoleResource extends Resource
                     ->disabledOn('edit'),
                 TextInput::make('name')
                     ->label('Nama Role')
-                    ->placeholder('Contoh: ddministrator')
+                    ->placeholder('Contoh: staff-rekap')
                     ->disabledOn('edit')
                     ->required(),
                 TextInput::make('description')

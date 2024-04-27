@@ -141,7 +141,13 @@
                 </table>
             </div>
 
-            <x-stepper :surat='$surat' />
+            @if ($surat->jenisSurat->user_type == 'mahasiswa')
+                <x-stepper :surat='$surat' />
+            @elseif ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'berita-acara-nilai')
+                <x-stepper-staff-berita-acara-nilai :surat='$surat' />
+            @elseif($surat->jenisSurat->user_type == 'staff')
+            @endif
+
         </div>
 
 
