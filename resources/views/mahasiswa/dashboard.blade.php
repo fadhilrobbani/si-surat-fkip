@@ -18,7 +18,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
         <a href="/mahasiswa/riwayat-pengajuan-surat">
             <div
-                class="flex items-center h-full gap-2 flex-col hover:bg-slate-300 justify-center rounded p-4  bg-gray-50 h-28 dark:bg-gray-800">
+                class="flex items-center gap-2 flex-col hover:bg-slate-300 justify-center rounded p-4  bg-gray-50 h-28 dark:bg-gray-800">
 
                 <p class="font-semibold text-slate-600 text-lg">Riwayat Pengajuan Surat Anda</p>
                 <div class="text-white flex-col sm:flex-row text-sm font-semibold flex gap-2 ">

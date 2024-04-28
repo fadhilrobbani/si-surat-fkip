@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Surat;
 use Ramsey\Uuid\Uuid;
+use App\Mail\SuratStaff;
 use App\Models\Approval;
 use App\Models\JenisSurat;
 use App\Models\ProgramStudi;
@@ -269,7 +270,7 @@ class StaffNilaiController extends Controller
             'isApproved' => true,
             'note' => $request->input('note'),
         ]);
-        // Mail::to($surat->pengaju->email)->send(new SuratMahasiswa($surat));
+        Mail::to($surat->data['email'] ? $surat->data['email'] : $surat->pengaju->email)->send(new SuratStaff($surat));
         return redirect('/staff-nilai/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 

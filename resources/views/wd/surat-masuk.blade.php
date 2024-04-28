@@ -120,8 +120,7 @@
                             <th scope="col" class="px-4 py-3">NPM/Username</th>
                             <th scope="col" class="px-4 py-3">Program Studi</th>
                             <th scope="col" class="px-4 py-3">Surat yang Diajukan</th>
-                            <th scope="col" class="px-4 py-3">Tanggal</th>
-                            <th scope="col" class="px-4 py-3">Masa Aktif</th>
+                            <th scope="col" class="px-4 py-3">Tanggal Diajukan</th>
                             <th scope="col" class="px-4 py-3">
                                 Aksi
                                 <span class="sr-only">Aksi</span>
@@ -153,7 +152,6 @@
                                 @endphp
                                 <td class="px-4 py-3">{{ $jenisSurat->name }}</td>
                                 <td class="px-4 py-3">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
-                                <td class="px-4 py-3">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
                                 <td class="px-4 py-3 flex ">
 
 

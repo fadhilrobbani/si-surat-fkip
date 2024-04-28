@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SuratMahasiswa extends Mailable
+class SuratStaff extends Mailable
 {
     use Queueable, SerializesModels;
     public Surat $surat;
@@ -31,7 +31,7 @@ class SuratMahasiswa extends Mailable
     {
         return new Envelope(
             from: new Address(env('MAIL_FROM_ADDRESS'), 'FKIP UNIB'),
-            subject: 'E-Surat ' . $this->surat->jenisSurat->name . ' Anda telah selesai dan disetujui!',
+            subject: 'E-Surat ' . $this->surat->jenisSurat->name . ' Anda telah selesai atau disetujui!',
         );
     }
 
@@ -41,7 +41,7 @@ class SuratMahasiswa extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.surat',
+            markdown: 'emails.surat-staff',
         );
     }
 
