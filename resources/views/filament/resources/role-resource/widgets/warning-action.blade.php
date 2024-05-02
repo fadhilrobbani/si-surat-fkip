@@ -22,7 +22,7 @@
                 </li>
                 <li> 6 = akademik
                 </li>
-                <li>7 = staff_nilai</li>
+                <li>7 = staff-nilai</li>
                 <li>8 = dekan</li>
                 <li>9 = staff_dekan</li>
                 <li>10 = wd2</li>
