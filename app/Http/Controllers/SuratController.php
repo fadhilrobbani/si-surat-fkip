@@ -740,26 +740,34 @@ class SuratController extends Controller
             return redirect()->back()->with('error', 'Jenis surat tidak sesuai');
         }
 
-
         $request->validate([
             'name' => 'required',
             'username' => 'required',
             'program-studi' => 'required',
             'email' => 'required|email',
-            'nama-dosen' => 'required',
-            'nip-dosen' => 'required',
-            'pangkat-dosen' => 'required',
-            'jabatan-fungsional-dosen' => 'required',
+            'nama-dosen.*' => 'required',
+            'nip-dosen.*' => 'required',
+            'jabatan-dosen.*' => 'required',
             'acara' => 'required',
             'tempat' => 'required',
             'waktu-mulai-penugasan' => 'required|date',
             'waktu-selesai-penugasan' => 'required|date',
-            'dasar-penugasan' => 'required',
             'lampiran' => 'file|mimes:jpeg,png,jpg,pdf|max:10240',
-
         ]);
 
         $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
+
+        $dosen = [];
+        $namaDosenArray = $request->input('nama-dosen');
+        $nipDosenArray = $request->input('nip-dosen');
+        $jabatanDosenArray = $request->input('jabatan-dosen');
+        for ($i = 0; $i < count($namaDosenArray); $i++) {
+            $dosen[] = [
+                'namaDosen' . $i + 1 => $namaDosenArray[$i],
+                'nipDosen' . $i + 1 => $nipDosenArray[$i],
+                'jabatanDosen' . $i + 1 => $jabatanDosenArray[$i],
+            ];
+        }
 
         $surat = new Surat;
         $surat->pengaju_id = auth()->user()->id;
@@ -772,29 +780,13 @@ class SuratController extends Controller
             'username' => $request->input('username'),
             'programStudi' => $programStudi->name,
             'email' => $request->input('email'),
-            'dosen' => [
-                [
-
-                    'namaDosen' => $request->input('nama-dosen'),
-                    'nipDosen' => $request->input('nip-dosen'),
-                    'pangkatDosen' => $request->input('pangkat-dosen'),
-                    'jabatanFungsionalDosen' => $request->input('jabatan-fungsional-dosen'),
-                ]
-            ],
-            // 'namaDosen' => $request->input('nama-dosen'),
-            // 'nipDosen' => $request->input('nip-dosen'),
-            // 'pangkatDosen' => $request->input('pangkat-dosen'),
-            // 'jabatanFungsionalDosen' => $request->input('jabatan-fungsional-dosen'),
+            'dosen' => $dosen,
             'acara' => $request->input('acara'),
             'tempat' => $request->input('tempat'),
-            'waktuPelaksanaan' => formatTimestampToDayIndonesian($request->input('waktu-mulai-penugasan')) . ' .s.d. ' . formatTimestampToDayIndonesian($request->input('waktu-selesai-penugasan')) . ', ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-mulai-penugasan')) . ' .s.d. ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-selesai-penugasan')),
-            'dasarPenugasan' => $request->input('dasar-penugasan'),
+            'waktuPelaksanaan' => formatTimestampToDayIndonesian($request->input('waktu-mulai-penugasan')) . ' s.d. ' . formatTimestampToDayIndonesian($request->input('waktu-selesai-penugasan')) . ', ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-mulai-penugasan')) . ' s.d. ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-selesai-penugasan')),
         ];
-        if ($request->hasFile('lampiran')) {
-            $request->validate([
-                'lampiran' => 'file|mimes:jpeg,png,jpg,pdf|max:10240',
-            ]);
 
+        if ($request->hasFile('lampiran')) {
             $surat->files = [
                 'lampiran' => $request->file('lampiran')->store('lampiran')
             ];

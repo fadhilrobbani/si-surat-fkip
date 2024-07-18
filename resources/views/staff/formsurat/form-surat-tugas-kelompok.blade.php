@@ -8,7 +8,8 @@
     {{-- <x-breadcumb /> --}}
     {{ Breadcrumbs::render('staff-pengajuan-surat-form', $jenisSurat) }}
     <p class="font-bold text-lg mx-auto text-center mb-2">Surat Tugas (Kelompok)</p>
-    <form action="{{ route('staff-store-surat-tugas', $jenisSurat->slug) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('staff-store-surat-tugas-kelompok', $jenisSurat->slug) }}" method="POST"
+        enctype="multipart/form-data">
         @csrf
         @method('post')
         <p class="font-semibold text-slate-500 text-md mx-auto mb-2">Data Staff:</p>
@@ -76,7 +77,7 @@
             <template x-for="(lecturer, index) in lecturers" :key="index">
                 <div class="mb-6 p-4 bg-slate-50 rounded-lg shadow-lg">
                     <p class="font-semibold text-slate-700 text-md mb-3" x-text="`Data Dosen ${index + 1}`"></p>
-                    <div class="grid gap-6 mb-6 md:grid-cols-2">
+                    {{-- <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div>
                             <label :for="'nama-dosen' + (index + 1)"
                                 class="block mb-2 text-sm font-medium text-gray-900">Nama<span
@@ -99,6 +100,32 @@
                                     class="text-red-500">*</span></label>
                             <input type="text" :name="'jabatan-dosen' + (index + 1)"
                                 :id="'jabatan-dosen' + (index + 1)"
+                                class="bg-gray-50 border border-gray    -300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="Contoh: Ketua Prodi PNF" x-model="lecturer.position" required>
+                        </div>
+                    </div> --}}
+                    <div class="grid gap-6 mb-6 md:grid-cols-2">
+                        <div>
+                            <label :for="'nama-dosen-' + index"
+                                class="block mb-2 text-sm font-medium text-gray-900">Nama<span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" :name="`nama-dosen[]`" :id="'nama-dosen-' + index"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="Masukkan nama lengkap dan gelar" x-model="lecturer.name" required>
+                        </div>
+                        <div>
+                            <label :for="'nip-dosen-' + index"
+                                class="block mb-2 text-sm font-medium text-gray-900">NIP<span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" :name="`nip-dosen[]`" :id="'nip-dosen-' + index"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="Masukkan NIP" x-model="lecturer.nip" required>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label :for="'jabatan-dosen-' + index"
+                                class="block mb-2 text-sm font-medium text-gray-900">Jabatan<span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" :name="`jabatan-dosen[]`" :id="'jabatan-dosen-' + index"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                 placeholder="Contoh: Ketua Prodi Magister (S2) Pendidikan Bahasa Indonesia"
                                 x-model="lecturer.position" required>

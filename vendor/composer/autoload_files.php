@@ -51,4 +51,5 @@ return array(
     '0c3c22e27afa83be19b4c938f4c6e9ea' => $vendorDir . '/spatie/laravel-backup/src/Helpers/functions.php',
     '320163ac6b93aebe3dc25b60a0533d56' => $vendorDir . '/spatie/laravel-ignition/src/helpers.php',
     '0097fb94b02ff2c3e8770e1ddb5280f8' => $baseDir . '/app/Helpers/CarbonHelper.php',
+    '4b3a92b58aec00c831e01f5ac1ebd5cd' => $baseDir . '/app/Helpers/CaseHelper.php',
 );

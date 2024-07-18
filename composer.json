@@ -36,7 +36,8 @@
     },
     "autoload": {
         "files": [
-            "app/Helpers/CarbonHelper.php"
+            "app/Helpers/CarbonHelper.php",
+            "app/Helpers/CaseHelper.php"
         ],
         "psr-4": {
             "App\\": "app/",
