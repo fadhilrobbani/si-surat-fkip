@@ -702,19 +702,19 @@ class SuratController extends Controller
             'username' => $request->input('username'),
             'programStudi' => $programStudi->name,
             'email' => $request->input('email'),
-            // 'dosen' => [
-            //     [
+            'dosen' => [
+                [
 
-            //         'namaDosen' => $request->input('nama-dosen'),
-            //         'nipDosen' => $request->input('nip-dosen'),
-            //         'pangkatDosen' => $request->input('pangkat-dosen'),
-            //         'jabatanFungsionalDosen' => $request->input('jabatan-fungsional-dosen'),
-            //     ]
-            // ],
-            'namaDosen' => $request->input('nama-dosen'),
-            'nipDosen' => $request->input('nip-dosen'),
-            'pangkatDosen' => $request->input('pangkat-dosen'),
-            'jabatanFungsionalDosen' => $request->input('jabatan-fungsional-dosen'),
+                    'namaDosen' => $request->input('nama-dosen'),
+                    'nipDosen' => $request->input('nip-dosen'),
+                    'pangkatDosen' => $request->input('pangkat-dosen'),
+                    'jabatanFungsionalDosen' => $request->input('jabatan-fungsional-dosen'),
+                ]
+            ],
+            // 'namaDosen' => $request->input('nama-dosen'),
+            // 'nipDosen' => $request->input('nip-dosen'),
+            // 'pangkatDosen' => $request->input('pangkat-dosen'),
+            // 'jabatanFungsionalDosen' => $request->input('jabatan-fungsional-dosen'),
             'acara' => $request->input('acara'),
             'tempat' => $request->input('tempat'),
             'waktuPelaksanaan' => formatTimestampToDayIndonesian($request->input('waktu-mulai-penugasan')) . ' .s.d. ' . formatTimestampToDayIndonesian($request->input('waktu-selesai-penugasan')) . ', ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-mulai-penugasan')) . ' .s.d. ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-selesai-penugasan')),
@@ -733,6 +733,77 @@ class SuratController extends Controller
         $surat->save();
         return redirect('/staff/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
     }
+
+    public function storeSuratTugasKelompokByStaff(Request $request, JenisSurat $jenisSurat)
+    {
+        if ($jenisSurat->slug != 'surat-tugas-kelompok') {
+            return redirect()->back()->with('error', 'Jenis surat tidak sesuai');
+        }
+
+
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'program-studi' => 'required',
+            'email' => 'required|email',
+            'nama-dosen' => 'required',
+            'nip-dosen' => 'required',
+            'pangkat-dosen' => 'required',
+            'jabatan-fungsional-dosen' => 'required',
+            'acara' => 'required',
+            'tempat' => 'required',
+            'waktu-mulai-penugasan' => 'required|date',
+            'waktu-selesai-penugasan' => 'required|date',
+            'dasar-penugasan' => 'required',
+            'lampiran' => 'file|mimes:jpeg,png,jpg,pdf|max:10240',
+
+        ]);
+
+        $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
+
+        $surat = new Surat;
+        $surat->pengaju_id = auth()->user()->id;
+        $surat->current_user_id = $request->input('penerima');
+        $surat->status = 'diproses';
+        $surat->jenis_surat_id = $jenisSurat->id;
+        $surat->expired_at = now()->addDays(30);
+        $surat->data = [
+            'nama' => $request->input('name'),
+            'username' => $request->input('username'),
+            'programStudi' => $programStudi->name,
+            'email' => $request->input('email'),
+            'dosen' => [
+                [
+
+                    'namaDosen' => $request->input('nama-dosen'),
+                    'nipDosen' => $request->input('nip-dosen'),
+                    'pangkatDosen' => $request->input('pangkat-dosen'),
+                    'jabatanFungsionalDosen' => $request->input('jabatan-fungsional-dosen'),
+                ]
+            ],
+            // 'namaDosen' => $request->input('nama-dosen'),
+            // 'nipDosen' => $request->input('nip-dosen'),
+            // 'pangkatDosen' => $request->input('pangkat-dosen'),
+            // 'jabatanFungsionalDosen' => $request->input('jabatan-fungsional-dosen'),
+            'acara' => $request->input('acara'),
+            'tempat' => $request->input('tempat'),
+            'waktuPelaksanaan' => formatTimestampToDayIndonesian($request->input('waktu-mulai-penugasan')) . ' .s.d. ' . formatTimestampToDayIndonesian($request->input('waktu-selesai-penugasan')) . ', ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-mulai-penugasan')) . ' .s.d. ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-selesai-penugasan')),
+            'dasarPenugasan' => $request->input('dasar-penugasan'),
+        ];
+        if ($request->hasFile('lampiran')) {
+            $request->validate([
+                'lampiran' => 'file|mimes:jpeg,png,jpg,pdf|max:10240',
+            ]);
+
+            $surat->files = [
+                'lampiran' => $request->file('lampiran')->store('lampiran')
+            ];
+        }
+
+        $surat->save();
+        return redirect('/staff/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
+    }
+
     public function storeBeritaAcaraNilaiByStaff(Request $request, JenisSurat $jenisSurat)
     {
         if ($jenisSurat->slug != 'berita-acara-nilai') {
