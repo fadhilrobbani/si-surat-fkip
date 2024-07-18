@@ -56,22 +56,24 @@
     <br>
 
     <table>
-        <tr>
-            <td>Nama</td>
-            <td>: {{ Str::title($surat->data['namaDosen']) }}</td>
-        </tr>
-        <tr>
-            <td>NIP</td>
-            <td>: {{ $surat->data['nipDosen'] }}</td>
-        </tr>
-        <tr>
-            <td>Pangkat/Golongan</td>
-            <td>: {{ $surat->data['pangkatDosen'] }}</td>
-        </tr>
-        <tr>
-            <td>Jabatan Fungsional</td>
-            <td>: {{ $surat->data['jabatanFungsionalDosen'] }}</td>
-        </tr>
+        @foreach ($surat->data['dosen'] as $dosen)
+            <tr>
+                <td>Nama</td>
+                <td>: {{ Str::title($dosen['namaDosen']) }}</td>
+            </tr>
+            <tr>
+                <td>NIP</td>
+                <td>: {{ $dosen['nipDosen'] }}</td>
+            </tr>
+            <tr>
+                <td>Pangkat/Golongan</td>
+                <td>: {{ $dosen['pangkatDosen'] }}</td>
+            </tr>
+            <tr>
+                <td>Jabatan Fungsional</td>
+                <td>: {{ $dosen['jabatanFungsionalDosen'] }}</td>
+            </tr>
+        @endforeach
         <tr>
             <td>Unit Kerja</td>
             <td>: FKIP Universitas Bengkulu</td>
