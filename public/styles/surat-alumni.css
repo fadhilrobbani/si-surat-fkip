@@ -10,6 +10,19 @@ table.kop {
     width: 100%;
 }
 
+table.border {
+    width: 100%;
+    border-collapse: collapse;
+    /* border-spacing: -1px; */
+    border: 1px solid #000000;
+}
+
+table.border td,
+table.border th {
+    border: 1px solid #000000;
+    padding: 5px;
+}
+
 body {
     margin-left: 2.5cm;
     margin-right: 2.5cm;
