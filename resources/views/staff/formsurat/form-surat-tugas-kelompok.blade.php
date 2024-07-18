@@ -72,7 +72,7 @@
 
 
         <p class="font-semibold text-slate-500 text-md mx-auto mb-4">Data dosen:</p>
-        <div x-data="{ lecturers: [{ name: '', nip: '', position: '' }] }" class=" mb-6 ">
+        <div x-data="{ lecturers: [{ name: '', nip: '', position: '' }] }" class=" mb-6  ">
 
             <template x-for="(lecturer, index) in lecturers" :key="index">
                 <div class="mb-6 p-4 bg-slate-50 rounded-lg shadow-lg">
@@ -143,7 +143,16 @@
             <div class="mt-4">
                 <button type="button" @click="lecturers.push({ name: '', nip: '', position: '' })"
                     class="text-white bg-slate-500 hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Tambah Dosen
+                    <span class="flex flex-row items-center justify-center gap-2">
+                        <svg class="w-6 h-6 text-white   dark:text-white" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                            viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 12h14m-7 7V5" />
+                        </svg>
+                        <p>Tambah Dosen</p>
+                    </span>
+
                 </button>
             </div>
         </div>
