@@ -5,7 +5,8 @@
     <x-slot:title>
         WD FKIP | Dashboard
     </x-slot:title>
-    <div class="flex sm:flex-row flex-col-reverse items-center justify-evenly min-h-fit  p-4 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+    <div
+        class="flex sm:flex-row flex-col-reverse items-center justify-evenly min-h-fit  p-4 mb-4 rounded bg-gray-50 dark:bg-gray-800">
         <div>
             <p class="font-bold text-2xl text-indigo-400">Selamat Datang {{ $authUser->name }}!</p>
             <br>

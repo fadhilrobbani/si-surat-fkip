@@ -249,17 +249,11 @@ class WDController extends Controller
         }
 
         if (($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas') || ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas-kelompok')) {
-            $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
-                ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
-                ->where('users.id', $surat->pengaju->id)
-                ->select('jt.id')
-                ->first();
 
             return view('wd.show-surat', [
                 'surat' => $surat,
                 'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->where('role_id', '=', 6)
-                    ->where('jurusan_id', $idJurusan->id)
+                    ->where('role_id', '=', 11)
                     ->get()
             ]);
         }
@@ -322,7 +316,40 @@ class WDController extends Controller
 
         if ($surat->jenisSurat->slug == 'surat-tugas' || $surat->jenisSurat->slug == 'surat-tugas-kelompok') {
             $surat->current_user_id = $request->input('penerima');
-            // teruskan ke staff wd1
+
+            $data = $surat->data;
+            if ($data) {
+                if (isset($data['private'])) {
+                    $data['private']['namaWD'] =  auth()->user()->name;
+                    $data['private']['nipWD'] =  auth()->user()->nip;
+                    $data['private']['deskripsiWD'] =  auth()->user()->role->description;
+                } else {
+                    $data['private'] = [
+                        'namaWD' =>  auth()->user()->name,
+                        'nipWD' =>  auth()->user()->nip,
+                        'deskripsiWD' =>  auth()->user()->role->description,
+                    ];
+                }
+            } else {
+                $data = [
+                    'private' => [
+                        'namaWD' =>  auth()->user()->name,
+                        'nipWD' =>  auth()->user()->nip,
+                        'deskripsiWD' =>  auth()->user()->role->description,
+                    ]
+                ];
+            }
+            $surat->data = $data;
+
+            $surat->save();
+
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => 'setuju',
+            ]);
+
             return redirect('wd/surat-masuk')->with('success', 'Surat berhasil disetujui');
         }
     }
