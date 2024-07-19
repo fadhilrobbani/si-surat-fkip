@@ -2,31 +2,35 @@
 
 namespace App\Filament\Resources;
 
+use App\Models\WD3;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
-use App\Models\StaffNilai;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\TernaryFilter;
+use App\Filament\Resources\WD3Resource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\StaffNilaiResource\Pages;
-use App\Filament\Resources\StaffNilaiResource\RelationManagers;
+use App\Filament\Resources\WD3Resource\Pages\ListWD3S;
+use App\Filament\Resources\WD3Resource\RelationManagers;
 
-class StaffNilaiResource extends Resource
+class WD3Resource extends Resource
 {
-    protected static ?string $model = StaffNilai::class;
+    protected static ?string $model = WD3::class;
 
     protected static ?string $recordTitleAttribute = 'name';
-    protected static ?string $modelLabel = 'Staff Nilai';
+    protected static ?string $modelLabel = 'Wakil Dekan 3';
     protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?string $navigationGroup = 'Manajemen Akun';
-    protected static ?string $slug = 'akun-staff-nilai';
-    protected static ?int $navigationSort = 10;
+    protected static ?string $slug = 'akun-wd3';
+    protected static ?int $navigationSort = 7;
 
     public static function form(Form $form): Form
     {
@@ -34,7 +38,7 @@ class StaffNilaiResource extends Resource
             ->schema([
                 Section::make([
                     Hidden::make('role_id')
-                        ->default(7),
+                        ->default(10),
                     TextInput::make('username')
                         ->placeholder('Username')
                         ->required()
@@ -48,6 +52,11 @@ class StaffNilaiResource extends Resource
                     TextInput::make('name')
                         ->label('Nama')
                         ->placeholder('Masukkan nama lengkap')
+                        ->required(),
+                    TextInput::make('nip')
+                        ->label('NIP')
+                        ->placeholder('NIP')
+                        ->unique(ignorable: fn ($record) => $record)
                         ->required(),
 
 
@@ -75,6 +84,7 @@ class StaffNilaiResource extends Resource
                     //     ->columnSpan(2)
 
                 ])->columns(2),
+
             ]);
     }
 
@@ -96,22 +106,62 @@ class StaffNilaiResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
+                TextColumn::make('nip')
+                    ->label('NIP')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
+
+                // ImageColumn::make('tandatangan')
+                //     ->toggleable(),
+                TextColumn::make('created_at')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->filters([
-                //
+                TernaryFilter::make('email_verified_at')
+                    ->label('Terverifikasi')
+                    ->nullable(),
+                Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('created_from'),
+                        DatePicker::make('created_until'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    }),
             ])
+
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
+
                 ]),
             ])
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make(),
+                // Tables\Actions\CreateAction::make(),
             ]);
     }
+
+    // public static function canCreate(): bool
+    // {
+    //     return false;
+    // }
 
     public static function getRelations(): array
     {
@@ -123,15 +173,15 @@ class StaffNilaiResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListStaffNilais::route('/'),
-            'create' => Pages\CreateStaffNilai::route('/create'),
-            // 'edit' => Pages\EditStaffNilai::route('/{record}/edit'),
+            'index' => ListWD3S::route('/'),
+            // 'create' => Pages\CreateWD::route('/create'),
+            // 'edit' => Pages\EditWD::route('/{record}/edit'),
         ];
     }
 
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->where('role_id', 7);
+            ->where('role_id', 10);
     }
 }

@@ -24,9 +24,9 @@
                 </li>
                 <li>7 = staff-nilai</li>
                 <li>8 = dekan</li>
-                <li>9 = staff_dekan</li>
-                <li>10 = wd2</li>
-                <li>11 = wd3</li>
+                <li>9 = wd2</li>
+                <li>10 = wd3</li>
+
             </ol>
         </div>
     </x-filament::section>

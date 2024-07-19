@@ -30,7 +30,7 @@ class WDResource extends Resource
     protected static ?string $model = WD::class;
 
     protected static ?string $recordTitleAttribute = 'name';
-    protected static ?string $modelLabel = 'Wakil Dekan I';
+    protected static ?string $modelLabel = 'Wakil Dekan 1';
     protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?string $navigationGroup = 'Manajemen Akun';
     protected static ?string $slug = 'akun-wd1';
