@@ -103,7 +103,7 @@
                     {{ isset($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '' }}
                 </p>
                 <p>a.n. Dekan </p>
-                <p>Wakil Dekan Bidang Akademik </p>
+                <p> {{ isset($surat->data['private']['deskripsiWD']) ? $surat->data['private']['deskripsiWD'] : '(Wakil Dekan Bidang...)' }}
             </div>
             <div class="parent">
                 {{-- @if (isset($surat->files['private']['ttdWD1']))
@@ -123,9 +123,9 @@
                 @endif
             </div>
             <div>
-                <p> {{ isset($surat->data['private']['namaWD1']) ? $surat->data['private']['namaWD1'] : '(Nama WD1)' }}
+                <p> {{ isset($surat->data['private']['namaWD']) ? $surat->data['private']['namaWD'] : '(Nama WD)' }}
                 </p>
-                <p>NIP {{ isset($surat->data['private']['nipWD1']) ? $surat->data['private']['nipWD1'] : '(NIP WD1)' }}
+                <p>NIP {{ isset($surat->data['private']['nipWD']) ? $surat->data['private']['nipWD'] : '(NIP WD)' }}
                 </p>
             </div>
         </div>

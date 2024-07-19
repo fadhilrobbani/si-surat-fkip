@@ -13,11 +13,11 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-class WDController extends Controller
+class DekanController extends Controller
 {
     public function dashboard()
     {
-        return view('wd.dashboard', [
+        return view('dekan.dashboard', [
             'suratDisetujui' => count(Approval::where('user_id', '=', auth()->user()->id)->where('isApproved', '=', true)->get()),
             'suratDitolak' => count(Approval::where('user_id', '=', auth()->user()->id)->where('isApproved', '=', false)->get()),
             'suratMenunggu' => count(Surat::where('current_user_id', '=', auth()->user()->id)->where('status', 'diproses')->where(function ($query) {
@@ -208,7 +208,7 @@ class WDController extends Controller
         }
 
 
-        return view('wd.surat-masuk', [
+        return view('dekan.surat-masuk', [
             'daftarSuratMasuk' => $daftarSuratMasuk,
             'daftarJenisSurat' => JenisSurat::all(),
             'daftarProgramStudi' => ProgramStudi::all(),
@@ -222,88 +222,79 @@ class WDController extends Controller
             return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
         }
 
-        if ($surat->jenisSurat->user_type == 'mahasiswa') {
-            $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
-                ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
-                ->where('users.id', $surat->pengaju->id)
-                ->select('jt.id')
-                ->first();
+        // if ($surat->jenisSurat->user_type == 'mahasiswa') {
+        //     $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
+        //         ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
+        //         ->where('users.id', $surat->pengaju->id)
+        //         ->select('jt.id')
+        //         ->first();
 
-            return view('wd.show-surat', [
-                'surat' => $surat,
-                'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->where('role_id', '=', 6)
-                    ->where('jurusan_id', $idJurusan->id)
-                    ->get()
-            ]);
-        }
-
-        if ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'berita-acara-nilai') {
-
-            return view('wd.show-surat', [
-                'surat' => $surat,
-                'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->where('role_id', '=', 7)
-                    ->get()
-            ]);
-        }
-
-        if ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug != 'berita-acara-nilai') {
-            $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
-                ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
-                ->where('users.id', $surat->pengaju->id)
-                ->select('jt.id')
-                ->first();
-
-            return view('wd.show-surat', [
-                'surat' => $surat,
-                'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->where('role_id', '=', 6)
-                    ->where('jurusan_id', $idJurusan->id)
-                    ->get()
-            ]);
-        }
-    }
-
-    public function setujuiSurat(Request $request, Surat $surat)
-    {
-        // if (!auth()->user()->tandatangan) {
-        //     return redirect()->back()->withErrors('Tanda Tangan tidak boleh kosong, silahkan atur terlebih dahulu di profil');
+        //     return view('dekan.show-surat', [
+        //         'surat' => $surat,
+        //         'daftarPenerima' => User::select('id', 'name', 'username')
+        //             ->where('role_id', '=', 6)
+        //             ->where('jurusan_id', $idJurusan->id)
+        //             ->get()
+        //     ]);
         // }
-        $surat->current_user_id = $request->input('penerima');
-        $data = $surat->data;
-        if ($data) {
-            if (isset($data['private'])) {
-                $data['private']['namaWD1'] =  auth()->user()->name;
-                $data['private']['nipWD1'] =  auth()->user()->nip;
-            } else {
-                $data['private'] = [
-                    'namaWD1' =>  auth()->user()->name,
-                    'nipWD1' =>  auth()->user()->nip,
-                ];
-            }
-        } else {
-            $data = [
-                'private' => [
-                    'namaWD1' =>  auth()->user()->name,
-                    'nipWD1' =>  auth()->user()->nip
-                ]
-            ];
-        }
-        $surat->data = $data;
-        // $surat->current_user_id = $surat->penerima_id;
-        $surat->current_user_id = $request->input('penerima');
-        // $surat->penerima_id = $surat->pengaju_id;
-        $surat->save();
 
-        Approval::create([
-            'user_id' => auth()->user()->id,
-            'surat_id' => $surat->id,
-            'isApproved' => true,
-            'note' => 'setuju',
-        ]);
-        return redirect('wd/surat-masuk')->with('success', 'Surat berhasil disetujui');
+        // if ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'berita-acara-nilai') {
+
+        //     return view('dekan.show-surat', [
+        //         'surat' => $surat,
+        //         'daftarPenerima' => User::select('id', 'name', 'username')
+        //             ->where('role_id', '=', 7)
+        //             ->get()
+        //     ]);
+        // }
+
+        // if ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug != 'berita-acara-nilai') {
+        //     $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
+        //         ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
+        //         ->where('users.id', $surat->pengaju->id)
+        //         ->select('jt.id')
+        //         ->first();
+
+        //     return view('dekan.show-surat', [
+        //         'surat' => $surat,
+        //         'daftarPenerima' => User::select('id', 'name', 'username')
+        //             ->where('role_id', '=', 6)
+        //             ->where('jurusan_id', $idJurusan->id)
+        //             ->get()
+        //     ]);
+        // }
+
+        if (($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas') || ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas-kelompok')) {
+
+            return view('dekan.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->whereIn('role_id', [5, 9, 10])
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
     }
+
+    // public function setujuiSurat(Request $request, Surat $surat)
+    // {
+    //     // if (!auth()->user()->tandatangan) {
+    //     //     return redirect()->back()->withErrors('Tanda Tangan tidak boleh kosong, silahkan atur terlebih dahulu di profil');
+    //     // }
+    //     $surat->current_user_id = $request->input('penerima');
+    //     $data = $surat->data;
+
+    //     // $surat->penerima_id = $surat->pengaju_id;
+    //     $surat->save();
+
+    //     Approval::create([
+    //         'user_id' => auth()->user()->id,
+    //         'surat_id' => $surat->id,
+    //         'isApproved' => true,
+    //         'note' => 'setuju',
+    //     ]);
+    //     return redirect('dekan/surat-masuk')->with('success', 'Surat berhasil disetujui');
+    // }
 
     public function setujuiSuratStaff(Request $request, Surat $surat)
     {
@@ -317,13 +308,20 @@ class WDController extends Controller
                 'isApproved' => true,
                 'note' => 'setuju',
             ]);
-            return redirect('wd/surat-masuk')->with('success', 'Surat berhasil disetujui');
+            return redirect('dekan/surat-masuk')->with('success', 'Surat berhasil disetujui');
         }
 
         if ($surat->jenisSurat->slug == 'surat-tugas' || $surat->jenisSurat->slug == 'surat-tugas-kelompok') {
             $surat->current_user_id = $request->input('penerima');
-            // teruskan ke staff wd1
-            return redirect('wd/surat-masuk')->with('success', 'Surat berhasil disetujui');
+            $surat->save();
+
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => 'setuju',
+            ]);
+            return redirect('dekan/surat-masuk')->with('success', 'Surat berhasil disetujui');
         }
     }
 
@@ -420,7 +418,7 @@ class WDController extends Controller
                 ->appends(request()->query());
         }
 
-        return view('wd.riwayat-persetujuan', [
+        return view('dekan.riwayat-persetujuan', [
             'daftarRiwayatSurat' => $daftarRiwayatSurat,
             'daftarJenisSurat' => JenisSurat::all(),
             'daftarStatus' => [true => 'Disetujui', false => 'Ditolak'],
@@ -432,7 +430,7 @@ class WDController extends Controller
     {
         // if ($surat->current_user_id == auth()->user()->id) {
 
-        return view('wd.show-approval', [
+        return view('dekan.show-approval', [
             'approval' => $approval,
             'surat' => Surat::join('approvals', 'approvals.surat_id', '=', 'surat_tables.id')
                 ->where('approvals.user_id', auth()->user()->id)
@@ -446,7 +444,7 @@ class WDController extends Controller
 
     public function confirmTolakSurat(Surat $surat)
     {
-        return view('wd.confirm-tolak', [
+        return view('dekan.confirm-tolak', [
             'surat' => $surat
         ]);
     }
@@ -465,7 +463,7 @@ class WDController extends Controller
             'isApproved' => false,
             'note' => $request->input('note'),
         ]);
-        return redirect('/wd/surat-masuk')->with('success', 'Surat berhasil ditolak');
+        return redirect('/dekan/surat-masuk')->with('success', 'Surat berhasil ditolak');
     }
 
     public function resetPasswordPage()

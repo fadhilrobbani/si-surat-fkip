@@ -148,7 +148,8 @@ class SuratController extends Controller
                 'jenisSurat' => $jenisSurat,
                 'daftarProgramStudi' => ProgramStudi::all(),
                 'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->where('role_id', '=', 5)
+                    ->whereIn('role_id', [8, 5, 9, 10])
+                    ->orderBy('name', 'asc')
                     ->get()
             ]);
         }
@@ -158,7 +159,8 @@ class SuratController extends Controller
                 'jenisSurat' => $jenisSurat,
                 'daftarProgramStudi' => ProgramStudi::all(),
                 'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->where('role_id', '=', 5)
+                    ->whereIn('role_id', [8, 5, 9, 10])
+                    ->orderBy('name', 'asc')
                     ->get()
             ]);
         }

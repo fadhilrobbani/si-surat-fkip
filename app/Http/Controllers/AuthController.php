@@ -187,6 +187,10 @@ class AuthController extends Controller
                 return redirect('/wd')->with('success', 'Anda berhasil login');
             } elseif (auth()->user()->role_id == 6) {
                 return redirect('/akademik')->with('success', 'Anda berhasil login');
+            } elseif (auth()->user()->role_id == 7) {
+                return redirect('/staff-nilai')->with('success', 'Anda berhasil login');
+            } elseif (auth()->user()->role_id == 8) {
+                return redirect('/dekan')->with('success', 'Anda berhasil login');
             }
         }
 
@@ -210,6 +214,8 @@ class AuthController extends Controller
                 return redirect('/akademik');
             } elseif (auth()->user()->role_id == 7) {
                 return redirect('/staff-nilai');
+            } elseif (auth()->user()->role_id == 8) {
+                return redirect('/dekan');
             }
         }
         return redirect('/');

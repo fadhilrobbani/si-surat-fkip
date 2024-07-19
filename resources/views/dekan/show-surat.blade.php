@@ -6,7 +6,7 @@
 
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        WD | Detail Surat
+        Dekan | Detail Surat
     </x-slot:title>
     {{ Breadcrumbs::render('detail-surat-masuk', $surat) }}
     <h1 class="mx-auto text-center font-bold">{{ $surat->jenisSurat->name }}</h1>
@@ -194,7 +194,7 @@
         $surat->current_user_id == auth()->user()->id &&
             $surat->status == 'diproses' &&
             $surat->jenisSurat->user_type == 'mahasiswa')
-        <form action="{{ route('setujui-surat-wd', $surat->id) }}" method="POST"
+        <form action="{{ route('setujui-surat-dekan', $surat->id) }}" method="POST"
             class="bg-slate-100 rounded-lg w-full">
             @csrf
             @method('put')
@@ -216,7 +216,7 @@
                 </div> --}}
 
             <div class="flex mt-8 justify-between flex-col sm:flex-row ">
-                <a href="{{ route('preview-surat-wd', $surat->id) }}"><button type="button"
+                <a href="{{ route('preview-surat-dekan', $surat->id) }}"><button type="button"
                         class="text-white w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
                 <div class="flex flex-col sm:flex-row">
 
@@ -226,7 +226,7 @@
                         data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
                         Setuju </button>
 
-                    <a href="{{ route('confirm-tolak-surat-wd', $surat->id) }}">
+                    <a href="{{ route('confirm-tolak-surat-dekan', $surat->id) }}">
                         <div
                             class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
                             Tolak
@@ -242,7 +242,7 @@
         $surat->current_user_id == auth()->user()->id &&
             $surat->status == 'diproses' &&
             $surat->jenisSurat->user_type == 'staff')
-        <form action="{{ route('setujui-surat-staff-wd', $surat->id) }}" method="POST"
+        <form action="{{ route('setujui-surat-staff-dekan', $surat->id) }}" method="POST"
             class="bg-slate-100 rounded-lg w-full">
             @csrf
             @method('put')
@@ -265,7 +265,7 @@
 
             <div class="flex mt-8 justify-between flex-col sm:flex-row ">
 
-                <a href="{{ route('preview-surat-wd', $surat->id) }}"><button type="button"
+                <a href="{{ route('preview-surat-dekan', $surat->id) }}"><button type="button"
                         {{ $surat->jenisSurat->slug == 'berita-acara-nilai' ? 'disabled' : '' }}
                         class="text-white   {{ $surat->jenisSurat->slug == 'berita-acara-nilai' ? 'cursor-not-allowed' : '' }} w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
 
@@ -277,7 +277,7 @@
                         data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
                         Setuju </button>
 
-                    <a href="{{ route('confirm-tolak-surat-wd', $surat->id) }}">
+                    <a href="{{ route('confirm-tolak-surat-dekan', $surat->id) }}">
                         <div
                             class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
                             Tolak
