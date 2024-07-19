@@ -34,7 +34,7 @@ class DekanController extends Controller
 
     public function profilePage()
     {
-        return view('wd.profile');
+        return view('dekan.profile');
     }
 
     public function updateProfile(Request $request, User $user)
@@ -79,7 +79,7 @@ class DekanController extends Controller
             $user->update(['tandatangan' => 'ttd/' . $uuid]);
         }
         $user->update($request->only('name'));
-        return redirect('/wd/profile')->with('success', 'Sukses mengupdate data');
+        return redirect('/dekan/profile')->with('success', 'Sukses mengupdate data');
     }
 
 
@@ -468,7 +468,7 @@ class DekanController extends Controller
 
     public function resetPasswordPage()
     {
-        return view('wd.reset-password');
+        return view('dekan.reset-password');
     }
 
     public function resetPassword(Request $request, User $user)
@@ -480,6 +480,6 @@ class DekanController extends Controller
             'password' => 'required|confirmed|min:6'
         ]);
         $user->update(['password' => bcrypt($request->input('password'))]);
-        return redirect('/wd/profile')->with('success', 'Kata sandi sukses diganti!');
+        return redirect('/dekan/profile')->with('success', 'Kata sandi sukses diganti!');
     }
 }
