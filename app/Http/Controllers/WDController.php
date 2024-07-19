@@ -248,7 +248,7 @@ class WDController extends Controller
             ]);
         }
 
-        if ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug != 'berita-acara-nilai') {
+        if (($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas') || ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas-kelompok')) {
             $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
                 ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
                 ->where('users.id', $surat->pengaju->id)

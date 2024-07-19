@@ -26,6 +26,9 @@
                 <li>8 = dekan</li>
                 <li>9 = wd2</li>
                 <li>10 = wd3</li>
+                <li>11 = staff-wd1</li>
+                <li>12 = staff-wd2</li>
+                <li>13 = staff-wd3</li>
 
             </ol>
         </div>
