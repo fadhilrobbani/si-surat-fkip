@@ -4,8 +4,8 @@
 if (!function_exists('convertToTitleCase')) {
     function convertToTitleCase($variableName)
     {
-        // Memisahkan kata berdasarkan huruf besar dan angka menggunakan preg_split
-        $words = preg_split('/(?=[A-Z0-9])/', $variableName);
+        // Memisahkan kata berdasarkan huruf besar, tetapi mempertahankan angka
+        $words = preg_split('/(?<=\D)(?=\d)|(?=\D)(?<=\d)|(?=[A-Z])/', $variableName);
 
         // Menggabungkan kata-kata yang telah dipisahkan dengan spasi
         $joinedWords = implode(' ', $words);

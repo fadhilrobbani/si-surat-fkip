@@ -15,13 +15,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DekanController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\SuratController;
 use App\Http\Controllers\KaprodiController;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Controllers\AkademikController;
-use App\Http\Controllers\DekanController;
+use App\Http\Controllers\StaffWD1Controller;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\JenisSuratController;
 use App\Http\Controllers\StaffNilaiController;
@@ -225,6 +226,25 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile/update/{user}', [StaffNilaiController::class, 'updateProfile'])->name('update-profile-staff-nilai');
         Route::get('/profile/reset-password', [StaffNilaiController::class, 'resetPasswordPage']);
         Route::put('/profile/reset-password/{user}', [StaffNilaiController::class, 'resetPassword'])->name('reset-password-staff-nilai');
+    });
+    Route::prefix('staff-wd1')->middleware(['userAccess:11'])->group(function () {
+        // Route::middleware('verified')->group(function () {
+        Route::get('/surat-masuk', [StaffWD1Controller::class, 'suratMasuk']);
+        Route::get('/riwayat-persetujuan', [StaffWD1Controller::class, 'riwayatPersetujuan']);
+        Route::get('/riwayat-persetujuan/show/{approval}', [StaffWD1Controller::class, 'showApproval'])->name('show-approval-staff-wd1');
+        Route::get('/surat-masuk/show/{surat}', [StaffWD1Controller::class, 'showSuratMasuk'])->name('show-surat-staff-wd1');
+        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->name('preview-surat-staff-wd1');
+        Route::put('/surat-disetujui/{surat}', [StaffWD1Controller::class, 'setujuiSurat'])->name('setujui-surat-staff-wd1');
+        Route::get('/surat-ditolak/{surat}', [StaffWD1Controller::class, 'confirmTolakSurat'])->name('confirm-tolak-surat-staff-wd1');
+        Route::put('/surat-ditolak/{surat}', [StaffWD1Controller::class, 'tolakSurat'])->name('tolak-surat-staff-wd1');
+        Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-staff-wd1');
+        Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-staff-wd1');
+        // });
+        Route::get('/', [StaffWD1Controller::class, 'dashboard']);
+        Route::get('/profile', [StaffWD1Controller::class, 'profilePage']);
+        Route::put('/profile/update/{user}', [StaffWD1Controller::class, 'updateProfile'])->name('update-profile-staff-wd1');
+        Route::get('/profile/reset-password', [StaffWD1Controller::class, 'resetPasswordPage']);
+        Route::put('/profile/reset-password/{user}', [StaffWD1Controller::class, 'resetPassword'])->name('reset-password-staff-wd1');
     });
 });
 

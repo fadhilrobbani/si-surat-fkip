@@ -83,7 +83,7 @@
                         </tr> --}}
                             @continue
                         @endif
-                        @if ($key == 'ttdWD1')
+                        @if ($key == 'ttdWD1' || $key == 'ttdWD')
                             @continue
                         @endif
                         @if ($key == 'private')

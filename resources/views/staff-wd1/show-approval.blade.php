@@ -6,7 +6,7 @@
 
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Dekan| Detail Riwayat Persetujuan
+        Staff WD1 | Detail Riwayat Persetujuan
     </x-slot:title>
     {{ Breadcrumbs::render('detail-persetujuan', $approval) }}
     <h1 class="mx-auto text-center font-bold">{{ $approval->surat->jenisSurat->name }}</h1>
@@ -92,7 +92,7 @@
                                     {{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:</td>
                                 <td class="px-6 py-4">
                                     {{-- <a class="text-blue-700 underline"
-                                        href="{{ route('show-file-wd', ['surat' => $approval->surat->id, 'filename' => basename($value)]) }}">Lihat</a> --}}
+                                        href="{{ route('show-file-staff-wd1', ['surat' => $approval->surat->id, 'filename' => basename($value)]) }}">Lihat</a> --}}
                                     {{-- <a class="text-blue-700 underline"
                                         href="{{ '/storage/lampiran/' . basename($value) }}">Lihat</a> --}}
                                     <?php
@@ -134,10 +134,10 @@
 
     @if ($approval->surat->jenisSurat->slug != 'berita-acara-nilai')
         @if ($approval->surat->status == 'selesai')
-            <a href="{{ route('print-surat-dekan', $approval->surat->id) }}"><button type="button"
+            <a href="{{ route('print-surat-staff-wd1', $approval->surat->id) }}"><button type="button"
                     class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button></a>
         @else
-            <a href="{{ route('preview-surat-dekan', $approval->surat->id) }}"><button type="button"
+            <a href="{{ route('preview-surat-staff-wd1', $approval->surat->id) }}"><button type="button"
                     class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
             <p class="italic text-slate-500">Surat dianggap sah jika status surat adalah selesai dan sudah terdapat
                 tanda tangan berupa QR Code.
