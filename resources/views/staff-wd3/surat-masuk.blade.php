@@ -3,7 +3,7 @@
 @endphp
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Staff WD1 | Surat Masuk
+        Staff WD3 | Surat Masuk
     </x-slot:title>
 
     <div class="overflow-x-auto">
@@ -137,7 +137,7 @@
                                 <td class="px-4 py-3 flex ">
 
 
-                                    <a href="{{ route('show-surat-staff-wd1', $surat->id) }}">
+                                    <a href="{{ route('show-surat-staff-wd3', $surat->id) }}">
                                         <div
                                             class="hover:bg-blue-800 cursor-pointer rounded-lg text-center bg-blue-600 p-2 text-white m-2">
                                             Lihat

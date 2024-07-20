@@ -17,7 +17,7 @@
 
         <h1 class="mx-auto text-center font-bold">Halaman Validasi Keaslian Surat</h1>
         <h1 class=" text-sm mt-0 text-slate-700  text-center mb-4 mx-auto">Dengan ini menyatakan bahwa surat ini adalah
-            asli atau resmi diterbikan dari FKIP UNIB </h1>
+            asli atau resmi diterbitkan dari FKIP UNIB </h1>
 
         <br>
         <div class="flex flex-col gap-4 md:flex-row justify-evenly items-start">
@@ -36,7 +36,8 @@
                             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Nomor Pokok Mahasiswa
                                 (NPM):&nbsp;
                             </td>
-                            <td class="px-6 py-4">{{ $surat->data['npm'] }}
+                            <td class="px-6 py-4">
+                                {{ isset($surat->data['npm']) ? $surat->data['npm'] : $surat->data['username'] }}
                             </td>
                         </tr>
                         <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -54,7 +55,8 @@
                         <tr class="border-b border-gray-200 dark:border-gray-700">
                             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Yang menandatangani:&nbsp;
                             </td>
-                            <td class="px-6 py-4">{{ $surat->data['private']['namaWD1'] }}
+                            <td class="px-6 py-4">
+                                {{ isset($surat->data['private']['namaWD1']) ? $surat->data['private']['namaWD1'] : $surat->data['private']['namaWD'] }}
                             </td>
                         </tr>
                         <tr class="border-b border-gray-200 dark:border-gray-700">
