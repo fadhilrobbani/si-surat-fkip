@@ -57,10 +57,81 @@ img.logo {
     position: absolute;
     top: 8px;
     left: 0;
-    z-index: 100;
+    z-index: 10;
 }
 
 .stempel {
     position: absolute;
     top: -30px;
+}
+
+.page_break {
+    page-break-before: always;
+}
+
+.sppd-container {
+    font-size: small;
+}
+
+.sppd-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.sppd-table td {
+    border: 1px solid #000;
+    padding: 10px;
+    vertical-align: top;
+}
+
+.sppd-number-cell {
+    width: 7px;
+    height: 130px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.sppd-header-row td {
+    /* border-top: none;     */
+    height: 130px;
+}
+
+.sppd-header-cell-left {
+    width: 50%;
+    border-left: none;
+    /* position: relative; */
+}
+
+.sppd-header-cell-right {
+    width: 50%;
+    border-right: none;
+    /* position: relative; */
+}
+
+.sppd-footer {
+    font-size: 0.8em;
+    /* margin-top: 20px; */
+}
+
+.ttd-sppd1 {
+    position: absolute;
+    /* bottom: 10px; */
+    right: 2px;
+    transform: translateY(30px);
+    z-index: 1;
+}
+
+.ttd-sppd2 {
+    position: absolute;
+    /* bottom: 10px; */
+    /* right: 2px; */
+    transform: translate(190px, 25px);
+    z-index: 1;
+}
+
+.sppd-cell-content {
+    position: relative;
+    /* background-color: red; */
+    z-index: 2;
 }
