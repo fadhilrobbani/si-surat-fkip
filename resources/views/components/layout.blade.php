@@ -310,6 +310,58 @@
                     'dropdown' => [],
                 ],
             ],
+            'wd2' => [
+                [
+                    'link' => 'wd2',
+                    'title' => 'Dasbor',
+                    'icon' => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'wd2/surat-masuk',
+                    'title' => 'Surat Masuk',
+                    'icon' => asset('svg/letter.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'wd2/riwayat-persetujuan',
+                    'title' => 'Riwayat Persetujuan',
+                    'icon' => asset('svg/lettercheck.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Keluar',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
+            'wd3' => [
+                [
+                    'link' => 'wd3',
+                    'title' => 'Dasbor',
+                    'icon' => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'wd3/surat-masuk',
+                    'title' => 'Surat Masuk',
+                    'icon' => asset('svg/letter.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'wd3/riwayat-persetujuan',
+                    'title' => 'Riwayat Persetujuan',
+                    'icon' => asset('svg/lettercheck.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Keluar',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
             'akademik' => [
                 [
                     'link' => 'akademik',
@@ -388,6 +440,58 @@
                     'dropdown' => [],
                 ],
             ],
+            'staffWD2' => [
+                [
+                    'link' => 'staff-wd2',
+                    'title' => 'Dasbor',
+                    'icon' => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'staff-wd2/surat-masuk',
+                    'title' => 'Surat Masuk',
+                    'icon' => asset('svg/letter.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'staff-wd2/riwayat-persetujuan',
+                    'title' => 'Riwayat Persetujuan',
+                    'icon' => asset('svg/lettercheck.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Keluar',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
+            'staffWD3' => [
+                [
+                    'link' => 'staff-wd3',
+                    'title' => 'Dasbor',
+                    'icon' => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'staff-wd3/surat-masuk',
+                    'title' => 'Surat Masuk',
+                    'icon' => asset('svg/letter.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'staff-wd3/riwayat-persetujuan',
+                    'title' => 'Riwayat Persetujuan',
+                    'icon' => asset('svg/lettercheck.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Keluar',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
         ];
     @endphp
     @if ($authUser->role_id == 1)
@@ -406,8 +510,16 @@
         <x-sidebar :listsData="$listsData['staffNilai']" />
     @elseif ($authUser->role_id == 8)
         <x-sidebar :listsData="$listsData['dekan']" />
+    @elseif ($authUser->role_id == 9)
+        <x-sidebar :listsData="$listsData['wd2']" />
+    @elseif ($authUser->role_id == 10)
+        <x-sidebar :listsData="$listsData['wd3']" />
     @elseif ($authUser->role_id == 11)
         <x-sidebar :listsData="$listsData['staffWD1']" />
+    @elseif ($authUser->role_id == 12)
+        <x-sidebar :listsData="$listsData['staffWD2']" />
+    @elseif ($authUser->role_id == 13)
+        <x-sidebar :listsData="$listsData['staffWD3']" />
     @endif
 
 

@@ -191,8 +191,16 @@ class AuthController extends Controller
                 return redirect('/staff-nilai')->with('success', 'Anda berhasil login');
             } elseif (auth()->user()->role_id == 8) {
                 return redirect('/dekan')->with('success', 'Anda berhasil login');
+            } elseif (auth()->user()->role_id == 9) {
+                return redirect('/wd2')->with('success', 'Anda berhasil login');
+            } elseif (auth()->user()->role_id == 10) {
+                return redirect('/wd3')->with('success', 'Anda berhasil login');
             } elseif (auth()->user()->role_id == 11) {
                 return redirect('/staff-wd1')->with('success', 'Anda berhasil login');
+            } elseif (auth()->user()->role_id == 12) {
+                return redirect('/staff-wd2')->with('success', 'Anda berhasil login');
+            } elseif (auth()->user()->role_id == 13) {
+                return redirect('/staff-wd3')->with('success', 'Anda berhasil login');
             }
         }
 
@@ -218,8 +226,16 @@ class AuthController extends Controller
                 return redirect('/staff-nilai');
             } elseif (auth()->user()->role_id == 8) {
                 return redirect('/dekan');
+            } elseif (auth()->user()->role_id == 9) {
+                return redirect('/wd2');
+            } elseif (auth()->user()->role_id == 10) {
+                return redirect('/wd3');
             } elseif (auth()->user()->role_id == 11) {
                 return redirect('/staff-wd1');
+            } elseif (auth()->user()->role_id == 12) {
+                return redirect('/staff-wd2');
+            } elseif (auth()->user()->role_id == 13) {
+                return redirect('/staff-wd3');
             }
         }
         return redirect('/');
