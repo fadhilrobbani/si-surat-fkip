@@ -213,7 +213,6 @@ class WD2Controller extends Controller
     public function showSuratMasuk(Surat $surat)
     {
         if ($surat->current_user_id != auth()->user()->id) {
-
             return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
         }
 
@@ -318,11 +317,13 @@ class WD2Controller extends Controller
                     $data['private']['namaWD'] =  auth()->user()->name;
                     $data['private']['nipWD'] =  auth()->user()->nip;
                     $data['private']['deskripsiWD'] =  auth()->user()->role->description;
+                    $data['private']['stepper'][] = auth()->user()->role->id;
                 } else {
                     $data['private'] = [
                         'namaWD' =>  auth()->user()->name,
                         'nipWD' =>  auth()->user()->nip,
                         'deskripsiWD' =>  auth()->user()->role->description,
+                        'stepper' => [auth()->user()->role->id]
                     ];
                 }
             } else {
@@ -331,6 +332,7 @@ class WD2Controller extends Controller
                         'namaWD' =>  auth()->user()->name,
                         'nipWD' =>  auth()->user()->nip,
                         'deskripsiWD' =>  auth()->user()->role->description,
+                        'stepper' => [auth()->user()->role->id]
                     ]
                 ];
             }

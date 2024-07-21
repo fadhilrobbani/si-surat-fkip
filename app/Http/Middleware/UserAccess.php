@@ -19,6 +19,7 @@ class UserAccess
         if (auth()->user()->role_id == $role_id) {
             return $next($request);
         }
+        // dd(auth()->user()->role_id . ' dan '    . $role_id);
         return redirect()->back()->with('deleted', 'Anda tidak bisa mengakses halaman yang dituju');
     }
 }

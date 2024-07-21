@@ -245,7 +245,7 @@
         $surat->current_user_id == auth()->user()->id &&
             $surat->status == 'diproses' &&
             $surat->jenisSurat->user_type == 'staff')
-        <form action="{{ route('setujui-surat-staff-wd', $surat->id) }}" method="POST"
+        <form action="{{ route('setujui-surat-from-staff-wd', $surat->id) }}" method="POST"
             class="bg-slate-100 rounded-lg w-full">
             @csrf
             @method('put')

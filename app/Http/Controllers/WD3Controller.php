@@ -318,11 +318,13 @@ class WD3Controller extends Controller
                     $data['private']['namaWD'] =  auth()->user()->name;
                     $data['private']['nipWD'] =  auth()->user()->nip;
                     $data['private']['deskripsiWD'] =  auth()->user()->role->description;
+                    $data['private']['stepper'][] = auth()->user()->role->id;
                 } else {
                     $data['private'] = [
                         'namaWD' =>  auth()->user()->name,
                         'nipWD' =>  auth()->user()->nip,
                         'deskripsiWD' =>  auth()->user()->role->description,
+                        'stepper' => [auth()->user()->role->id]
                     ];
                 }
             } else {
@@ -331,6 +333,7 @@ class WD3Controller extends Controller
                         'namaWD' =>  auth()->user()->name,
                         'nipWD' =>  auth()->user()->nip,
                         'deskripsiWD' =>  auth()->user()->role->description,
+                        'stepper' => [auth()->user()->role->id]
                     ]
                 ];
             }

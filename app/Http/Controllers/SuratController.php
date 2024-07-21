@@ -782,7 +782,7 @@ class SuratController extends Controller
         $surat->expired_at = now()->addDays(30);
         $surat->data = [
             'private' => [
-                'stepper' => [3]
+                'stepper' => [auth()->user()->role->id]
             ],
             'nama' => $request->input('name'),
             'username' => $request->input('username'),
