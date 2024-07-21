@@ -479,6 +479,23 @@ class WD3Controller extends Controller
         $surat->expired_at = null;
         $data = $surat->data;
         $data['alasanPenolakan'] = $request->input('note');
+        if ($data) {
+            if (isset($data['private'])) {
+
+                $data['private']['stepper'][] = auth()->user()->role->id;
+            } else {
+                $data['private'] = [
+                    'stepper' => [auth()->user()->role->id]
+
+                ];
+            }
+        } else {
+            $data = [
+                'private' => [
+                    'stepper' => [auth()->user()->role->id]
+                ]
+            ];
+        }
         $surat->data = $data;
         $surat->save();
         Approval::create([

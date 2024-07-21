@@ -700,6 +700,9 @@ class SuratController extends Controller
         $surat->jenis_surat_id = $jenisSurat->id;
         $surat->expired_at = now()->addDays(30);
         $surat->data = [
+            'private' => [
+                'stepper' => [3]
+            ],
             'nama' => $request->input('name'),
             'username' => $request->input('username'),
             'programStudi' => $programStudi->name,
@@ -778,6 +781,9 @@ class SuratController extends Controller
         $surat->jenis_surat_id = $jenisSurat->id;
         $surat->expired_at = now()->addDays(30);
         $surat->data = [
+            'private' => [
+                'stepper' => [3]
+            ],
             'nama' => $request->input('name'),
             'username' => $request->input('username'),
             'programStudi' => $programStudi->name,

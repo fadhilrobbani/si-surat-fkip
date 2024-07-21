@@ -323,11 +323,13 @@ class WDController extends Controller
                     $data['private']['namaWD'] =  auth()->user()->name;
                     $data['private']['nipWD'] =  auth()->user()->nip;
                     $data['private']['deskripsiWD'] =  auth()->user()->role->description;
+                    $data['private']['stepper'][] = auth()->user()->role->id;
                 } else {
                     $data['private'] = [
                         'namaWD' =>  auth()->user()->name,
                         'nipWD' =>  auth()->user()->nip,
                         'deskripsiWD' =>  auth()->user()->role->description,
+                        'stepper' => [auth()->user()->role->id],
                     ];
                 }
             } else {
@@ -336,6 +338,7 @@ class WDController extends Controller
                         'namaWD' =>  auth()->user()->name,
                         'nipWD' =>  auth()->user()->nip,
                         'deskripsiWD' =>  auth()->user()->role->description,
+                        'stepper' => [auth()->user()->role->id],
                     ]
                 ];
             }
@@ -484,6 +487,23 @@ class WDController extends Controller
         $surat->expired_at = null;
         $data = $surat->data;
         $data['alasanPenolakan'] = $request->input('note');
+        if ($data) {
+            if (isset($data['private'])) {
+
+                $data['private']['stepper'][] = auth()->user()->role->id;
+            } else {
+                $data['private'] = [
+                    'stepper' => [auth()->user()->role->id]
+
+                ];
+            }
+        } else {
+            $data = [
+                'private' => [
+                    'stepper' => [auth()->user()->role->id]
+                ]
+            ];
+        }
         $surat->data = $data;
         $surat->save();
         Approval::create([

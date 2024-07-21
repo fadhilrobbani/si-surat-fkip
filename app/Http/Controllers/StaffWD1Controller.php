@@ -255,6 +255,25 @@ class StaffWD1Controller extends Controller
         // $data['stempel'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg';
         $data['noSurat'] = $request->input('no-surat');
         $data['note'] = $request->input('note');
+
+        if ($data) {
+            if (isset($data['private'])) {
+
+                $data['private']['stepper'][] = auth()->user()->role->id;
+            } else {
+                $data['private'] = [
+                    'stepper' => [auth()->user()->role->id]
+
+                ];
+            }
+        } else {
+            $data = [
+                'private' => [
+                    'stepper' => [auth()->user()->role->id]
+                ]
+            ];
+        }
+
         $surat->data = $data;
         // $file = $surat->files;
         // if ($file) {
@@ -292,6 +311,23 @@ class StaffWD1Controller extends Controller
         $surat->expired_at = null;
         $data = $surat->data;
         $data['alasanPenolakan'] = $request->input('note');
+        if ($data) {
+            if (isset($data['private'])) {
+
+                $data['private']['stepper'][] = auth()->user()->role->id;
+            } else {
+                $data['private'] = [
+                    'stepper' => [auth()->user()->role->id]
+
+                ];
+            }
+        } else {
+            $data = [
+                'private' => [
+                    'stepper' => [auth()->user()->role->id]
+                ]
+            ];
+        }
         $surat->data = $data;
         $surat->save();
         Approval::create([

@@ -113,12 +113,17 @@
         </div>
 
 
-        @if ($surat->jenisSurat->user_type == 'mahasiswa')
+        {{-- @if ($surat->jenisSurat->user_type == 'mahasiswa')
             <x-stepper :surat='$surat' />
         @elseif ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'berita-acara-nilai')
             <x-stepper-staff-berita-acara-nilai :surat='$surat' />
-        @elseif($surat->jenisSurat->user_type == 'staff')
-        @endif
+        @elseif(
+            ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas') ||
+                ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas-kelompok'))
+            <x-stepper-flexible :surat='$surat' />
+        @else
+            <p>Debug: user_type: {{ $surat->jenisSurat->user_type }}, slug: {{ $surat->jenisSurat->slug }}</p>
+        @endif --}}
 
     </div>
 

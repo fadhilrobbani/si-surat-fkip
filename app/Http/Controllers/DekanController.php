@@ -313,6 +313,26 @@ class DekanController extends Controller
 
         if ($surat->jenisSurat->slug == 'surat-tugas' || $surat->jenisSurat->slug == 'surat-tugas-kelompok') {
             $surat->current_user_id = $request->input('penerima');
+            $data = $surat->data;
+            if ($data) {
+                if (isset($data['private'])) {
+
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                } else {
+                    $data['private'] = [
+                        'stepper' => [auth()->user()->role->id]
+
+                    ];
+                }
+            } else {
+                $data = [
+                    'private' => [
+                        'stepper' => [auth()->user()->role->id]
+                    ]
+                ];
+            }
+            $surat->data = $data;
+
             $surat->save();
 
             Approval::create([
@@ -455,6 +475,24 @@ class DekanController extends Controller
         $surat->expired_at = null;
         $data = $surat->data;
         $data['alasanPenolakan'] = $request->input('note');
+        if ($data) {
+            if (isset($data['private'])) {
+
+                $data['private']['stepper'][] = auth()->user()->role->id;
+            } else {
+                $data['private'] = [
+                    'stepper' => [auth()->user()->role->id]
+
+                ];
+            }
+        } else {
+            $data = [
+                'private' => [
+                    'stepper' => [auth()->user()->role->id]
+                ]
+            ];
+        }
+
         $surat->data = $data;
         $surat->save();
         Approval::create([
