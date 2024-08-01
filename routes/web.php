@@ -273,6 +273,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/riwayat-persetujuan', [StaffWD1Controller::class, 'riwayatPersetujuan']);
         Route::get('/riwayat-persetujuan/show/{approval}', [StaffWD1Controller::class, 'showApproval'])->name('show-approval-staff-wd1');
         Route::get('/surat-masuk/show/{surat}', [StaffWD1Controller::class, 'showSuratMasuk'])->name('show-surat-staff-wd1');
+        Route::get('/surat-masuk/edit/{surat}', [SuratController::class, 'edit'])->name('edit-surat-staff-wd1');
         Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->name('preview-surat-staff-wd1');
         Route::put('/surat-disetujui/{surat}', [StaffWD1Controller::class, 'setujuiSurat'])->name('setujui-surat-staff-wd1');
         Route::get('/surat-ditolak/{surat}', [StaffWD1Controller::class, 'confirmTolakSurat'])->name('confirm-tolak-surat-staff-wd1');

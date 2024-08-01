@@ -701,7 +701,9 @@ class SuratController extends Controller
         $surat->expired_at = now()->addDays(30);
         $surat->data = [
             'private' => [
-                'stepper' => [3]
+                'stepper' => [3],
+                'waktuMulaiPenugasan' => $request->input('waktu-mulai-penugasan'),
+                'waktuSelesaiPenugasan' => $request->input('waktu-selesai-penugasan'),
             ],
             'nama' => $request->input('name'),
             'username' => $request->input('username'),
@@ -782,7 +784,9 @@ class SuratController extends Controller
         $surat->expired_at = now()->addDays(30);
         $surat->data = [
             'private' => [
-                'stepper' => [auth()->user()->role->id]
+                'stepper' => [auth()->user()->role->id],
+                'waktuMulaiPenugasan' => $request->input('waktu-mulai-penugasan'),
+                'waktuSelesaiPenugasan' => $request->input('waktu-selesai-penugasan'),
             ],
             'nama' => $request->input('name'),
             'username' => $request->input('username'),
@@ -847,6 +851,17 @@ class SuratController extends Controller
             return redirect()->back()->with('success', 'Berhasil membatalkan pengajuan surat');
         }
         return redirect()->back()->with('deleted', 'Gagal membatalkan pengajuan surat');
+    }
+
+    public function edit(Surat $surat)
+    {
+        if ($surat->jenisSurat->slug == 'surat-tugas-kelompok') {
+            return view('staff-wd1.formsurat.edit-form-surat-tugas-kelompok', [
+                'surat' => $surat,
+
+            ]);
+        }
+        return redirect()->back()->with('deleted', 'Jenis Surat ini tidak dapat diedit');
     }
 
     public function previewSuratQR(Surat $surat)

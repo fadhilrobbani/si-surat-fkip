@@ -279,8 +279,14 @@
             </div>
 
             <div class="flex mt-8 justify-between flex-col sm:flex-row ">
-                <a href="{{ route('preview-surat-staff-wd1', $surat->id) }}"><button type="button"
-                        class="text-white w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
+                <div class="flex flex-col gap-4 sm:flex-row">
+                    <a href="{{ route('preview-surat-staff-wd1', $surat->id) }}"><button type="button"
+                            class="text-white w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
+                    <a href="{{ route('edit-surat-staff-wd1', $surat->id) }}"><button type="button"
+                            class="text-white w-full p-2 m-2 bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button></a>
+
+                </div>
+
                 <div class="flex flex-col sm:flex-row">
 
 
