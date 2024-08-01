@@ -143,7 +143,7 @@ class WD2Resource extends Resource
 
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DeleteAction::make(),
 
             ])
             ->bulkActions([
