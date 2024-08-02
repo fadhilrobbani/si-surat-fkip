@@ -856,12 +856,70 @@ class SuratController extends Controller
     public function edit(Surat $surat)
     {
         if ($surat->jenisSurat->slug == 'surat-tugas-kelompok') {
-            return view('staff-wd1.formsurat.edit-form-surat-tugas-kelompok', [
+            $viewPrefix = auth()->user()->role->name;
+            $viewName = "{$viewPrefix}.formsurat.edit-form-surat-tugas-kelompok";
+            // dd($viewName);
+            return view($viewName, [
                 'surat' => $surat,
-
             ]);
         }
         return redirect()->back()->with('deleted', 'Jenis Surat ini tidak dapat diedit');
+    }
+
+    public function update(Request $request, Surat $surat)
+    {
+        if ($surat->jenisSurat->slug == 'surat-tugas-kelompok') {
+            // dd($request->all());
+            $newData = $request->validate([
+                'acara' => 'required',
+                'tempat' => 'required',
+                'waktu-mulai-penugasan' => 'required|date',
+                'waktu-selesai-penugasan' => 'required|date',
+
+            ]);
+
+
+            $updatedSurat = Surat::find($surat->id);
+
+            // Dekode data JSON
+            $data = $surat->data;
+
+            // Perbarui atribut yang diinginkan dalam array data
+            $data['acara'] = $newData['acara'];
+            $data['tempat'] = $newData['tempat'];
+            $data['private']['waktuMulaiPenugasan'] = $newData['waktu-mulai-penugasan'];
+            $data['private']['waktuSelesaiPenugasan'] = $newData['waktu-selesai-penugasan'];
+            $data['waktuPenugasan'] = formatTimestampToDayIndonesian($newData['waktu-mulai-penugasan']) . ' s.d. ' . formatTimestampToDayIndonesian($newData['waktu-selesai-penugasan']) . ', ' . formatTimestampToOnlyDateIndonesian($newData['waktu-mulai-penugasan']) . ' s.d. ' . formatTimestampToOnlyDateIndonesian($newData['waktu-selesai-penugasan']);
+
+            // Perbarui data dosen
+            // foreach ($newData['nama-dosen'] as $index => $namaDosen) {
+            //     $data['dosen'][$index]['namaDosen' . ($index + 1)] = $namaDosen;
+            //     $data['dosen'][$index]['nipDosen' . ($index + 1)] = $newData['nip-dosen'][$index];
+            //     $data['dosen'][$index]['jabatanDosen' . ($index + 1)] = $newData['jabatan-dosen'][$index];
+            // }
+
+            $dosen = [];
+            $index = 1;
+            while ($request->has("namaDosen{$index}")) {
+                $dosen[] = [
+                    "namaDosen{$index}" => $request->input("namaDosen{$index}"),
+                    "nipDosen{$index}" => $request->input("nipDosen{$index}"),
+                    "jabatanDosen{$index}" => $request->input("jabatanDosen{$index}"),
+                ];
+                $index++;
+            }
+            $data['dosen'] = $dosen;
+
+
+            // Encode kembali data menjadi JSON
+            $updatedSurat->data = $data;
+
+            // Simpan data yang diperbarui ke database
+            $updatedSurat->save();
+        }
+        $routePrefix = auth()->user()->role->name;
+        $routeName = "show-surat-{$routePrefix}";
+        return redirect(route($routeName, $surat->id))->with('success', 'Berhasil memperbarui surat');
     }
 
     public function previewSuratQR(Surat $surat)

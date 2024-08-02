@@ -6,11 +6,11 @@
 
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Staff WD1 | Edit Surat
+        Staff WD3 | Edit Surat
     </x-slot:title>
     <h1 class="mx-auto text-center font-bold">Edit {{ $surat->jenisSurat->name }}</h1>
     <br>
-    <form action="{{ route('update-surat-staff-wd1', $surat->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('update-surat-staff-wd3', $surat->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('put')
         <p class="font-semibold text-slate-500 text-md mx-auto mb-4">Data dosen:</p>
@@ -121,7 +121,7 @@
         <div class="flex justify-center gap-4">
             <button type="submit"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan</button>
-            <button type="button" onclick="window.location.href='{{ route('show-surat-staff-wd1', $surat->id) }}'"
+            <button type="button" onclick="window.location.href='{{ route('show-surat-staff-wd3', $surat->id) }}'"
                 class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Batal</button>
         </div>
 
