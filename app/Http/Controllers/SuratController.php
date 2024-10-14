@@ -662,9 +662,7 @@ class SuratController extends Controller
         }
     }
 
-    public function storeByStaff(Request $request, JenisSurat $jenisSurat)
-    {
-    }
+    public function storeByStaff(Request $request, JenisSurat $jenisSurat) {}
 
     public function storeSuratTugasByStaff(Request $request, JenisSurat $jenisSurat)
     {

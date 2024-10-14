@@ -29,6 +29,7 @@ use App\Http\Controllers\StaffWD2Controller;
 use App\Http\Controllers\StaffWD3Controller;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\JenisSuratController;
+use App\Http\Controllers\StaffDekanController;
 use App\Http\Controllers\StaffNilaiController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -329,6 +330,28 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile/update/{user}', [StaffWD3Controller::class, 'updateProfile'])->name('update-profile-staff-wd3');
         Route::get('/profile/reset-password', [StaffWD3Controller::class, 'resetPasswordPage']);
         Route::put('/profile/reset-password/{user}', [StaffWD3Controller::class, 'resetPassword'])->name('reset-password-staff-wd3');
+    });
+
+    Route::prefix('staff-dekan')->middleware(['userAccess:14'])->group(function () {
+        // Route::middleware('verified')->group(function () {
+        Route::get('/surat-masuk', [StaffDekanController::class, 'suratMasuk']);
+        Route::get('/riwayat-persetujuan', [StaffDekanController::class, 'riwayatPersetujuan']);
+        Route::get('/riwayat-persetujuan/show/{approval}', [StaffDekanController::class, 'showApproval'])->name('show-approval-staff-dekan');
+        Route::get('/surat-masuk/show/{surat}', [StaffDekanController::class, 'showSuratMasuk'])->name('show-surat-staff-dekan');
+        Route::get('/surat-masuk/edit/{surat}', [SuratController::class, 'edit'])->name('edit-surat-staff-dekan');
+        Route::put('/surat-masuk/edit/{surat}', [SuratController::class, 'update'])->name('update-surat-staff-dekan');
+        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->name('preview-surat-staff-dekan');
+        Route::put('/surat-disetujui/{surat}', [StaffDekanController::class, 'setujuiSurat'])->name('setujui-surat-staff-staff-dekan');
+        Route::get('/surat-ditolak/{surat}', [StaffDekanController::class, 'confirmTolakSurat'])->name('confirm-tolak-surat-staff-dekan');
+        Route::put('/surat-ditolak/{surat}', [StaffDekanController::class, 'tolakSurat'])->name('tolak-surat-staff-dekan');
+        Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-staff-dekan');
+        Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-staff-dekan');
+        // });
+        Route::get('/', [StaffDekanController::class, 'dashboard']);
+        Route::get('/profile', [StaffDekanController::class, 'profilePage']);
+        Route::put('/profile/update/{user}', [StaffDekanController::class, 'updateProfile'])->name('update-profile-staff-dekan');
+        Route::get('/profile/reset-password', [StaffDekanController::class, 'resetPasswordPage']);
+        Route::put('/profile/reset-password/{user}', [StaffDekanController::class, 'resetPassword'])->name('reset-password-staff-dekan');
     });
 });
 

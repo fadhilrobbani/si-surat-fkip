@@ -32,7 +32,8 @@ class AuthController extends Controller
         $formFields = $request->validate([
             // 'username' => 'required|unique:users,username|starts_with:foo,bar',
             'username' => [
-                'required', 'size:9',
+                'required',
+                'size:9',
                 // 'unique:users,username'
                 function ($attribute, $value, $fail) use ($programStudiKode) {
                     // Gunakan callback untuk memeriksa apakah nilai diawali dengan salah satu kode program studi
@@ -201,6 +202,8 @@ class AuthController extends Controller
                 return redirect('/staff-wd2')->with('success', 'Anda berhasil login');
             } elseif (auth()->user()->role_id == 13) {
                 return redirect('/staff-wd3')->with('success', 'Anda berhasil login');
+            } elseif (auth()->user()->role_id == 14) {
+                return redirect('/staff-dekan')->with('success', 'Anda berhasil login');
             }
         }
 
@@ -236,6 +239,8 @@ class AuthController extends Controller
                 return redirect('/staff-wd2');
             } elseif (auth()->user()->role_id == 13) {
                 return redirect('/staff-wd3');
+            } elseif (auth()->user()->role_id == 14) {
+                return redirect('/staff-dekan');
             }
         }
         return redirect('/');

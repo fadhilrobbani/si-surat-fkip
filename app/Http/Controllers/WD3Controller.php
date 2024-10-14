@@ -248,7 +248,7 @@ class WD3Controller extends Controller
             return view('wd3.show-surat', [
                 'surat' => $surat,
                 'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->where('role_id', '=', 13)
+                    ->where('role_id', '=', 14)
                     ->get()
             ]);
         }

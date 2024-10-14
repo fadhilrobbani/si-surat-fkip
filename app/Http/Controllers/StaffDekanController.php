@@ -2,22 +2,27 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\User;
 use App\Models\Surat;
 use Ramsey\Uuid\Uuid;
+use App\Mail\SuratStaff;
 use App\Models\Approval;
 use App\Models\JenisSurat;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
 
-class WDController extends Controller
+class StaffDekanController extends Controller
 {
     public function dashboard()
     {
-        return view('wd.dashboard', [
+        return view('staff-dekan.dashboard', [
             'suratDisetujui' => count(Approval::where('user_id', '=', auth()->user()->id)->where('isApproved', '=', true)->get()),
             'suratDitolak' => count(Approval::where('user_id', '=', auth()->user()->id)->where('isApproved', '=', false)->get()),
             'suratMenunggu' => count(Surat::where('current_user_id', '=', auth()->user()->id)->where('status', 'diproses')->where(function ($query) {
@@ -27,14 +32,9 @@ class WDController extends Controller
         ]);
     }
 
-    public function index()
-    {
-        return view('admin.users.wd.index');
-    }
-
     public function profilePage()
     {
-        return view('wd.profile');
+        return view('staff-dekan.profile');
     }
 
     public function updateProfile(Request $request, User $user)
@@ -43,7 +43,6 @@ class WDController extends Controller
             'username' => 'string|required|alpha_dash',
             'name' => 'string|required',
             'email' => 'email|required',
-            'nip' => 'required'
         ]);
 
         if ($request->input('username') != $user->username) {
@@ -61,25 +60,8 @@ class WDController extends Controller
             $user->email_verified_at = null;
         }
 
-        if ($request->input('nip') != $user->nip) {
-            $request->validate([
-                'nip' => 'unique:users,nip'
-            ]);
-            $user->update($request->only('nip'));
-        }
-
-
-        if ($request->hasFile('ttd')) {
-            $request->validate([
-                'ttd' => 'file|mimes:png|max:2048'
-            ]);
-            $uuid = Uuid::uuid4();
-            $file = $request->file('ttd');
-            Storage::disk('public')->put('ttd/' . $uuid, file_get_contents($file));
-            $user->update(['tandatangan' => 'ttd/' . $uuid]);
-        }
         $user->update($request->only('name'));
-        return redirect('/wd/profile')->with('success', 'Sukses mengupdate data');
+        return redirect('/staff-dekan/profile')->with('success', 'Sukses mengupdate data');
     }
 
 
@@ -208,9 +190,9 @@ class WDController extends Controller
         }
 
 
-        return view('wd.surat-masuk', [
+        return view('staff-dekan.surat-masuk', [
             'daftarSuratMasuk' => $daftarSuratMasuk,
-            'daftarJenisSurat' => JenisSurat::all(),
+            'daftarJenisSurat' => JenisSurat::where('slug', '=', 'berita-acara-nilai')->get(),
             'daftarProgramStudi' => ProgramStudi::all(),
         ]);
     }
@@ -222,25 +204,10 @@ class WDController extends Controller
             return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
         }
 
-        if ($surat->jenisSurat->user_type == 'mahasiswa') {
-            $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
-                ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
-                ->where('users.id', $surat->pengaju->id)
-                ->select('jt.id')
-                ->first();
-
-            return view('wd.show-surat', [
-                'surat' => $surat,
-                'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->where('role_id', '=', 6)
-                    ->where('jurusan_id', $idJurusan->id)
-                    ->get()
-            ]);
-        }
 
         if ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'berita-acara-nilai') {
 
-            return view('wd.show-surat', [
+            return view('staff-dekan.show-surat', [
                 'surat' => $surat,
                 'daftarPenerima' => User::select('id', 'name', 'username')
                     ->where('role_id', '=', 7)
@@ -248,12 +215,13 @@ class WDController extends Controller
             ]);
         }
 
+
         if (($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas') || ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas-kelompok')) {
 
-            return view('wd.show-surat', [
+            return view('staff-dekan.show-surat', [
                 'surat' => $surat,
                 'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->where('role_id', '=', 14)
+                    ->where('role_id', '=', 11)
                     ->get()
             ]);
         }
@@ -262,223 +230,79 @@ class WDController extends Controller
     public function setujuiSurat(Request $request, Surat $surat)
     {
         // if (!auth()->user()->tandatangan) {
-        //     return redirect()->back()->withErrors('Tanda Tangan tidak boleh kosong, silahkan atur terlebih dahulu di profil');
+        //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
         // }
-        $surat->current_user_id = $request->input('penerima');
+        $request->validate([
+            // 'no-surat' => 'required|size:4|unique:surat_tables,data->noSurat',
+            // 'no-surat' =>  ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id)],
+
+            'no-surat' => ['required', Rule::unique('surat_tables', 'data->noSurat')
+                ->where(function ($query) {
+                    $query->whereYear('created_at', date('Y'));
+                })],
+        ]);
+        // SELECT jt.id FROM users u
+        // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
+        // JOIN jurusan_tables jt ON jt.id = pst.jurusan_id ;
+        $surat->current_user_id = $surat->pengaju_id;
+        // $surat->penerima_id = $surat->pengaju_id;
+        $surat->expired_at = null;
         $data = $surat->data;
+        $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+        // $data['ttdWD1'] = $request->input('ttd') ;
+        // $data['stempel'] = $request->input('stempel') ;
+        // $data['ttdWD1'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg' ;
+        // $data['stempel'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg';
+        $data['noSurat'] = $request->input('no-surat');
+        $data['note'] = $request->input('note');
+
         if ($data) {
             if (isset($data['private'])) {
-                $data['private']['namaWD1'] =  auth()->user()->name;
-                $data['private']['nipWD1'] =  auth()->user()->nip;
+
+                $data['private']['stepper'][] = auth()->user()->role->id;
             } else {
                 $data['private'] = [
-                    'namaWD1' =>  auth()->user()->name,
-                    'nipWD1' =>  auth()->user()->nip,
+                    'stepper' => [auth()->user()->role->id]
+
                 ];
             }
         } else {
             $data = [
                 'private' => [
-                    'namaWD1' =>  auth()->user()->name,
-                    'nipWD1' =>  auth()->user()->nip
+                    'stepper' => [auth()->user()->role->id]
                 ]
             ];
         }
+
         $surat->data = $data;
-        // $surat->current_user_id = $surat->penerima_id;
-        $surat->current_user_id = $request->input('penerima');
-        // $surat->penerima_id = $surat->pengaju_id;
+        // $file = $surat->files;
+        // if ($file) {
+        //     if (isset($file['private'])) {
+        //         $file['private']['stempel'] =  'storage/' . auth()->user()->tandatangan;
+        //     } else {
+        //         $file['private'] = [
+        //             'stempel' => 'storage/' . auth()->user()->tandatangan
+        //         ];
+        //     }
+        // } else {
+        //     $file = [
+        //         'private' => [
+        //             'stempel' => 'storage/' . auth()->user()->tandatangan,
+        //         ]
+        //     ];
+        // }
+        // $surat->files = $file;
+        $surat->status = 'selesai';
         $surat->save();
 
         Approval::create([
             'user_id' => auth()->user()->id,
             'surat_id' => $surat->id,
             'isApproved' => true,
-            'note' => 'setuju',
+            'note' => $request->input('note'),
         ]);
-        return redirect('wd/surat-masuk')->with('success', 'Surat berhasil disetujui');
-    }
-
-    public function setujuiSuratStaff(Request $request, Surat $surat)
-    {
-        if ($surat->jenisSurat->slug == 'berita-acara-nilai') {
-            $surat->current_user_id = $request->input('penerima');
-            $surat->save();
-
-            Approval::create([
-                'user_id' => auth()->user()->id,
-                'surat_id' => $surat->id,
-                'isApproved' => true,
-                'note' => 'setuju',
-            ]);
-            return redirect('wd/surat-masuk')->with('success', 'Surat berhasil disetujui');
-        }
-
-        if ($surat->jenisSurat->slug == 'surat-tugas' || $surat->jenisSurat->slug == 'surat-tugas-kelompok') {
-            $surat->current_user_id = $request->input('penerima');
-
-            $data = $surat->data;
-            if ($data) {
-                if (isset($data['private'])) {
-                    $data['private']['namaWD'] =  auth()->user()->name;
-                    $data['private']['nipWD'] =  auth()->user()->nip;
-                    $data['private']['deskripsiWD'] =  auth()->user()->role->description;
-                    $data['private']['stepper'][] = auth()->user()->role->id;
-                } else {
-                    $data['private'] = [
-                        'namaWD' =>  auth()->user()->name,
-                        'nipWD' =>  auth()->user()->nip,
-                        'deskripsiWD' =>  auth()->user()->role->description,
-                        'stepper' => [auth()->user()->role->id],
-                    ];
-                }
-            } else {
-                $data = [
-                    'private' => [
-                        'namaWD' =>  auth()->user()->name,
-                        'nipWD' =>  auth()->user()->nip,
-                        'deskripsiWD' =>  auth()->user()->role->description,
-                        'stepper' => [auth()->user()->role->id],
-                    ]
-                ];
-            }
-            $surat->data = $data;
-
-            $surat->save();
-
-            Approval::create([
-                'user_id' => auth()->user()->id,
-                'surat_id' => $surat->id,
-                'isApproved' => true,
-                'note' => 'setuju',
-            ]);
-
-            return redirect('wd/surat-masuk')->with('success', 'Surat berhasil disetujui');
-        }
-    }
-
-    public function riwayatPersetujuan(Request $request)
-    {
-        $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
-            ->where('user_id', '=', auth()->user()->id)
-            ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-            ->paginate(10)
-            ->appends(request()->query());
-
-
-        if ($request->get('search') && $request->get('jenis-surat') && $request->get('status')) {
-            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
-                ->select('approvals.*')
-                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
-                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
-                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
-                ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
-                ->where('approvals.isApproved', $request->get('status') != 'ditolak' ? true : false)
-                ->where('approvals.user_id', '=', auth()->user()->id)
-                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
-                ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10)
-                ->appends(request()->query());
-        } elseif ($request->get('status') && $request->get('jenis-surat')) {
-            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
-                ->select('approvals.*')
-                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
-                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
-                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
-                ->where('approvals.isApproved', $request->get('status') != 'ditolak' ? true : false)
-                ->where('approvals.user_id', '=', auth()->user()->id)
-                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
-                ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10)
-                ->appends(request()->query());
-        } elseif ($request->get('status') && $request->get('search')) {
-            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
-                ->select('approvals.*')
-                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
-                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
-                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
-                ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
-                ->where('approvals.isApproved', $request->get('status') != 'ditolak' ? true : false)
-                ->where('approvals.user_id', '=', auth()->user()->id)
-                ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10)
-                ->appends(request()->query());
-        } elseif ($request->get('jenis-surat') && $request->get('search')) {
-            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
-                ->select('approvals.*')
-                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
-                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
-                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
-                ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
-                ->where('approvals.user_id', '=', auth()->user()->id)
-                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
-                ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10)
-                ->appends(request()->query());
-        } elseif ($request->get('status')) {
-            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
-                ->select('approvals.*')
-                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
-                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
-                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
-                ->where('approvals.isApproved', $request->get('status') != 'ditolak' ? true : false)
-                ->where('approvals.user_id', '=', auth()->user()->id)
-                ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10)
-                ->appends(request()->query());
-        } elseif ($request->get('jenis-surat')) {
-            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
-                ->select('approvals.*')
-                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
-                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
-                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
-                ->where('approvals.user_id', '=', auth()->user()->id)
-                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
-                ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10)
-                ->appends(request()->query());
-        } elseif ($request->get('search')) {
-            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
-                ->select('approvals.*')
-                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
-                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
-                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
-                ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
-                ->where('approvals.user_id', '=', auth()->user()->id)
-                ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
-                ->paginate(10)
-                ->appends(request()->query());
-        }
-
-        return view('wd.riwayat-persetujuan', [
-            'daftarRiwayatSurat' => $daftarRiwayatSurat,
-            'daftarJenisSurat' => JenisSurat::all(),
-            'daftarStatus' => [true => 'Disetujui', false => 'Ditolak'],
-        ]);
-    }
-
-
-    public function showApproval(Approval $approval)
-    {
-        // if ($surat->current_user_id == auth()->user()->id) {
-
-        return view('wd.show-approval', [
-            'approval' => $approval,
-            'surat' => Surat::join('approvals', 'approvals.surat_id', '=', 'surat_tables.id')
-                ->where('approvals.user_id', auth()->user()->id)
-                ->where('approvals.id', $approval->id)
-                ->first()
-        ]);
-        // }
-        // return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil disetujui');
-    }
-
-
-    public function confirmTolakSurat(Surat $surat)
-    {
-        return view('wd.confirm-tolak', [
-            'surat' => $surat
-        ]);
+        Mail::to($surat->pengaju->email)->send(new SuratStaff($surat));
+        return redirect('/staff-dekan/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 
     public function tolakSurat(Request $request, Surat $surat)
@@ -512,12 +336,152 @@ class WDController extends Controller
             'isApproved' => false,
             'note' => $request->input('note'),
         ]);
-        return redirect('/wd/surat-masuk')->with('success', 'Surat berhasil ditolak');
+        return redirect('/staff-dekan/surat-masuk')->with('success', 'Surat berhasil ditolak');
+    }
+
+    public function confirmTolakSurat(Surat $surat)
+    {
+        return view('staff-dekan.confirm-tolak', [
+            'surat' => $surat
+        ]);
+    }
+
+    public function riwayatPersetujuan(Request $request)
+    {
+        $keyword = $request->get('search');
+        $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+            ->where('user_id', '=', auth()->user()->id)
+            ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+            ->paginate(10)
+            ->appends(request()->query());
+
+
+        if ($request->get('search') && $request->get('jenis-surat') && $request->get('status')) {
+            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+                ->select('approvals.*')
+                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
+                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                // ->where('users.username', 'LIKE', '%' . $request->get('search') . '%')
+                ->where(function (Builder $query) use ($keyword) {
+
+                    return $query->where('users.username', 'LIKE', '%' .  $keyword . '%')
+                        ->orWhere('surat_tables.data->noSurat', 'LIKE', '%' .  $keyword . '%');
+                })
+                ->where('approvals.isApproved', $request->get('status') != 'ditolak' ? true : false)
+                ->where('approvals.user_id', '=', auth()->user()->id)
+                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
+                ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10)
+                ->appends(request()->query());
+        } elseif ($request->get('status') && $request->get('jenis-surat')) {
+            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+                ->select('approvals.*')
+                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
+                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->where('approvals.isApproved', $request->get('status') != 'ditolak' ? true : false)
+                ->where('approvals.user_id', '=', auth()->user()->id)
+                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
+                ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10)
+                ->appends(request()->query());
+        } elseif ($request->get('status') && $request->get('search')) {
+            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+                ->select('approvals.*')
+                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
+                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->where(function (Builder $query) use ($keyword) {
+
+                    return $query->where('users.username', 'LIKE', '%' .  $keyword . '%')
+                        ->orWhere('surat_tables.data->noSurat', 'LIKE', '%' .  $keyword . '%');
+                })
+                ->where('approvals.isApproved', $request->get('status') != 'ditolak' ? true : false)
+                ->where('approvals.user_id', '=', auth()->user()->id)
+                ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10)
+                ->appends(request()->query());
+        } elseif ($request->get('jenis-surat') && $request->get('search')) {
+            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+                ->select('approvals.*')
+                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
+                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->where(function (Builder $query) use ($keyword) {
+
+                    return $query->where('users.username', 'LIKE', '%' .  $keyword . '%')
+                        ->orWhere('surat_tables.data->noSurat', 'LIKE', '%' .  $keyword . '%');
+                })
+                ->where('approvals.user_id', '=', auth()->user()->id)
+                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
+                ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10)
+                ->appends(request()->query());
+        } elseif ($request->get('status')) {
+            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+                ->select('approvals.*')
+                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
+                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->where('approvals.isApproved', $request->get('status') != 'ditolak' ? true : false)
+                ->where('approvals.user_id', '=', auth()->user()->id)
+                ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10)
+                ->appends(request()->query());
+        } elseif ($request->get('jenis-surat')) {
+            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+                ->select('approvals.*')
+                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
+                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->where('approvals.user_id', '=', auth()->user()->id)
+                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
+                ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10)
+                ->appends(request()->query());
+        } elseif ($request->get('search')) {
+            $daftarRiwayatSurat = Approval::with('surat', 'surat.pengaju', 'surat.jenisSurat')
+                ->select('approvals.*')
+                ->join('surat_tables', 'surat_tables.id', '=', 'approvals.surat_id')
+                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->where(function (Builder $query) use ($keyword) {
+
+                    return $query->where('users.username', 'LIKE', '%' .  $keyword . '%')
+                        ->orWhere('surat_tables.data->noSurat', 'LIKE', '%' .  $keyword . '%');
+                })
+                ->where('approvals.user_id', '=', auth()->user()->id)
+                ->orderBy('approvals.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10)
+                ->appends(request()->query());
+        }
+
+        return view('staff-dekan.riwayat-persetujuan', [
+            'daftarRiwayatSurat' => $daftarRiwayatSurat,
+            'daftarJenisSurat' => JenisSurat::where('slug', 'berita-acara-nilai')->get(),
+            'daftarStatus' => [true => 'Disetujui', false => 'Ditolak'],
+        ]);
+    }
+
+    public function showApproval(Approval $approval)
+    {
+        // if ($surat->current_user_id == auth()->user()->id) {
+
+        return view('staff-dekan.show-approval', [
+            'approval' => $approval,
+            'surat' => Surat::join('approvals', 'approvals.surat_id', '=', 'surat_tables.id')
+                ->where('approvals.user_id', auth()->user()->id)
+                ->where('approvals.id', $approval->id)
+                ->first()
+        ]);
+        // }
+        // return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 
     public function resetPasswordPage()
     {
-        return view('wd.reset-password');
+        return view('staff-dekan.reset-password');
     }
 
     public function resetPassword(Request $request, User $user)
@@ -529,6 +493,6 @@ class WDController extends Controller
             'password' => 'required|confirmed|min:6'
         ]);
         $user->update(['password' => bcrypt($request->input('password'))]);
-        return redirect('/wd/profile')->with('success', 'Kata sandi sukses diganti!');
+        return redirect('/staff-dekan/profile')->with('success', 'Kata sandi sukses diganti!');
     }
 }
