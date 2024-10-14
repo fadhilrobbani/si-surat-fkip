@@ -29,6 +29,7 @@
                 <li>11 = staff-wd1</li>
                 <li>12 = staff-wd2</li>
                 <li>13 = staff-wd3</li>
+                <li>14 = staff-dekan</li>
 
             </ol>
         </div>
