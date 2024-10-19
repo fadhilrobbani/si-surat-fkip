@@ -688,6 +688,54 @@
             "install-path": "./semver"
         },
         {
+            "name": "cyberwizard/dbsafeguard",
+            "version": "dev-main",
+            "version_normalized": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cyberwizard-dev/DBSafeGuard.git",
+                "reference": "7894728e2a4a000d716e245384aeff9c9645b8e4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cyberwizard-dev/DBSafeGuard/zipball/7894728e2a4a000d716e245384aeff9c9645b8e4",
+                "reference": "7894728e2a4a000d716e245384aeff9c9645b8e4",
+                "shasum": ""
+            },
+            "time": "2024-01-17T09:14:24+00:00",
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Dbsafeguard\\Providers\\BackupServiceProvider"
+                    ]
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Dbsafeguard\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cyberwizard",
+                    "email": "eminibest@gmail.com"
+                }
+            ],
+            "description": "A Laravel package for safeguarding your database with easy-to-use backup commands.",
+            "support": {
+                "issues": "https://github.com/cyberwizard-dev/DBSafeGuard/issues",
+                "source": "https://github.com/cyberwizard-dev/DBSafeGuard/tree/main"
+            },
+            "install-path": "../cyberwizard/dbsafeguard"
+        },
+        {
             "name": "danharrin/date-format-converter",
             "version": "v0.3.0",
             "version_normalized": "0.3.0.0",

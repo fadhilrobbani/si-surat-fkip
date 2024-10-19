@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.1",
         "barryvdh/laravel-dompdf": "^2.0",
+        "cyberwizard/dbsafeguard": "dev-main",
         "diglactic/laravel-breadcrumbs": "^8.1",
         "filament/filament": "3.0-stable",
         "guzzlehttp/guzzle": "^7.2",

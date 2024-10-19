@@ -229,6 +229,7 @@ class ComposerStaticInita9833cf3cae40e0aa8d1b66bda606518
             'Dflydev\\DotAccessData\\' => 22,
             'DeepCopy\\' => 9,
             'DebugBar\\' => 9,
+            'Dbsafeguard\\' => 12,
             'Database\\Seeders\\' => 17,
             'Database\\Factories\\' => 19,
             'DanHarrin\\LivewireRateLimiting\\' => 31,
@@ -780,6 +781,10 @@ class ComposerStaticInita9833cf3cae40e0aa8d1b66bda606518
         array (
             0 => __DIR__ . '/..' . '/maximebf/debugbar/src/DebugBar',
         ),
+        'Dbsafeguard\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/cyberwizard/dbsafeguard/src',
+        ),
         'Database\\Seeders\\' => 
         array (
             0 => __DIR__ . '/../..' . '/database/seeders',
@@ -908,6 +913,10 @@ class ComposerStaticInita9833cf3cae40e0aa8d1b66bda606518
         'App\\Filament\\Resources\\RoleResource\\Pages\\EditRole' => __DIR__ . '/../..' . '/app/Filament/Resources/RoleResource/Pages/EditRole.php',
         'App\\Filament\\Resources\\RoleResource\\Pages\\ListRoles' => __DIR__ . '/../..' . '/app/Filament/Resources/RoleResource/Pages/ListRoles.php',
         'App\\Filament\\Resources\\RoleResource\\Widgets\\WarningAction' => __DIR__ . '/../..' . '/app/Filament/Resources/RoleResource/Widgets/WarningAction.php',
+        'App\\Filament\\Resources\\StaffDekanResource' => __DIR__ . '/../..' . '/app/Filament/Resources/StaffDekanResource.php',
+        'App\\Filament\\Resources\\StaffDekanResource\\Pages\\CreateStaffDekan' => __DIR__ . '/../..' . '/app/Filament/Resources/StaffDekanResource/Pages/CreateStaffDekan.php',
+        'App\\Filament\\Resources\\StaffDekanResource\\Pages\\EditStaffDekan' => __DIR__ . '/../..' . '/app/Filament/Resources/StaffDekanResource/Pages/EditStaffDekan.php',
+        'App\\Filament\\Resources\\StaffDekanResource\\Pages\\ListStaffDekans' => __DIR__ . '/../..' . '/app/Filament/Resources/StaffDekanResource/Pages/ListStaffDekans.php',
         'App\\Filament\\Resources\\StaffNilaiResource' => __DIR__ . '/../..' . '/app/Filament/Resources/StaffNilaiResource.php',
         'App\\Filament\\Resources\\StaffNilaiResource\\Pages\\CreateStaffNilai' => __DIR__ . '/../..' . '/app/Filament/Resources/StaffNilaiResource/Pages/CreateStaffNilai.php',
         'App\\Filament\\Resources\\StaffNilaiResource\\Pages\\EditStaffNilai' => __DIR__ . '/../..' . '/app/Filament/Resources/StaffNilaiResource/Pages/EditStaffNilai.php',
@@ -953,6 +962,7 @@ class ComposerStaticInita9833cf3cae40e0aa8d1b66bda606518
         'App\\Http\\Controllers\\MahasiswaController' => __DIR__ . '/../..' . '/app/Http/Controllers/MahasiswaController.php',
         'App\\Http\\Controllers\\PDFController' => __DIR__ . '/../..' . '/app/Http/Controllers/PDFController.php',
         'App\\Http\\Controllers\\StaffController' => __DIR__ . '/../..' . '/app/Http/Controllers/StaffController.php',
+        'App\\Http\\Controllers\\StaffDekanController' => __DIR__ . '/../..' . '/app/Http/Controllers/StaffDekanController.php',
         'App\\Http\\Controllers\\StaffNilaiController' => __DIR__ . '/../..' . '/app/Http/Controllers/StaffNilaiController.php',
         'App\\Http\\Controllers\\StaffWD1Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/StaffWD1Controller.php',
         'App\\Http\\Controllers\\StaffWD2Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/StaffWD2Controller.php',
@@ -986,6 +996,7 @@ class ComposerStaticInita9833cf3cae40e0aa8d1b66bda606518
         'App\\Models\\ProgramStudi' => __DIR__ . '/../..' . '/app/Models/ProgramStudi.php',
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
         'App\\Models\\Staff' => __DIR__ . '/../..' . '/app/Models/Staff.php',
+        'App\\Models\\StaffDekan' => __DIR__ . '/../..' . '/app/Models/StaffDekan.php',
         'App\\Models\\StaffNilai' => __DIR__ . '/../..' . '/app/Models/StaffNilai.php',
         'App\\Models\\StaffWD1' => __DIR__ . '/../..' . '/app/Models/StaffWD1.php',
         'App\\Models\\StaffWD2' => __DIR__ . '/../..' . '/app/Models/StaffWD2.php',
@@ -1303,6 +1314,9 @@ class ComposerStaticInita9833cf3cae40e0aa8d1b66bda606518
         'DateMalformedStringException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateMalformedStringException.php',
         'DateObjectError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateObjectError.php',
         'DateRangeError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateRangeError.php',
+        'Dbsafeguard\\Console\\Commands\\BackupDatabase' => __DIR__ . '/..' . '/cyberwizard/dbsafeguard/src/Console/Commands/BackupDatabase.php',
+        'Dbsafeguard\\Message' => __DIR__ . '/..' . '/cyberwizard/dbsafeguard/src/Message.php',
+        'Dbsafeguard\\Providers\\BackupServiceProvider' => __DIR__ . '/..' . '/cyberwizard/dbsafeguard/src/Providers/BackupServiceProvider.php',
         'DebugBar\\Bridge\\CacheCacheCollector' => __DIR__ . '/..' . '/maximebf/debugbar/src/DebugBar/Bridge/CacheCacheCollector.php',
         'DebugBar\\Bridge\\DoctrineCollector' => __DIR__ . '/..' . '/maximebf/debugbar/src/DebugBar/Bridge/DoctrineCollector.php',
         'DebugBar\\Bridge\\MonologCollector' => __DIR__ . '/..' . '/maximebf/debugbar/src/DebugBar/Bridge/MonologCollector.php',

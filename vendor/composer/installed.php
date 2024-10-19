@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '4fe055d19ac08b251eafefe998af02c708b67a73',
+        'reference' => 'a3952cc51f5beebe9c8ee6ff43d52c17e2439b85',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -105,6 +105,17 @@
             'replaced' => array(
                 0 => '*',
             ),
+        ),
+        'cyberwizard/dbsafeguard' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '7894728e2a4a000d716e245384aeff9c9645b8e4',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../cyberwizard/dbsafeguard',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'dev_requirement' => false,
         ),
         'danharrin/date-format-converter' => array(
             'pretty_version' => 'v0.3.0',
@@ -760,7 +771,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '4fe055d19ac08b251eafefe998af02c708b67a73',
+            'reference' => 'a3952cc51f5beebe9c8ee6ff43d52c17e2439b85',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
