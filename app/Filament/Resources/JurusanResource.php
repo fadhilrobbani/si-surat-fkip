@@ -32,44 +32,43 @@ class JurusanResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-        ->schema([
-            Section::make()->schema(
-                [
-                    TextInput::make('name')
-                        ->label('Nama Jurusan')
-                        ->placeholder('Contoh: Jurusan Ilmu Pengetahuan Akhirat')
-                        ->required(),
+            ->schema([
+                Section::make()->schema(
+                    [
+                        TextInput::make('name')
+                            ->label('Nama Jurusan')
+                            ->placeholder('Contoh: Jurusan Ilmu Pengetahuan Akhirat')
+                            ->required(),
 
-                ]
-            )->columnSpan(2)
+                    ]
+                )->columnSpan(2)
 
-        ]);
+            ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-        ->columns([
-            TextColumn::make('name')
-                ->label('Nama Jurusan')
-                ->searchable()
-                ->sortable()
-                ->toggleable(),
-        ])
-        ->filters([
-        ])
-        ->actions([
-            Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make(),
-        ])
-        ->bulkActions([
-            Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]),
-        ])
-        ->emptyStateActions([
-            Tables\Actions\CreateAction::make(),
-        ]);
+            ->columns([
+                TextColumn::make('name')
+                    ->label('Nama Jurusan')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+            ])
+            ->filters([])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                // Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    // Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ])
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make(),
+            ]);
     }
 
     public static function getRelations(): array
@@ -82,7 +81,6 @@ class JurusanResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
-
     }
 
 

@@ -39,10 +39,10 @@ class StaffNilaiResource extends Resource
                         ->placeholder('Username')
                         ->required()
                         ->alphaDash()
-                        ->unique(ignorable: fn ($record) => $record),
+                        ->unique(ignorable: fn($record) => $record),
                     TextInput::make('email')
                         ->email()
-                        ->unique(ignorable: fn ($record) => $record)
+                        ->unique(ignorable: fn($record) => $record)
                         ->placeholder('email@example.com')
                         ->required(),
                     TextInput::make('name')
@@ -60,14 +60,14 @@ class StaffNilaiResource extends Resource
                         ->label('Kata sandi baru')
                         ->placeholder('********')
                         ->confirmed()
-                        ->dehydrated(fn (?string $state): bool => filled($state))
-                        ->required(fn (string $operation): bool => $operation === 'create'),
+                        ->dehydrated(fn(?string $state): bool => filled($state))
+                        ->required(fn(string $operation): bool => $operation === 'create'),
                     TextInput::make('password_confirmation')
                         ->label('Konfirmasi kata sandi baru')
                         ->placeholder('********')
                         ->password()
-                        ->dehydrated(fn (?string $state): bool => filled($state))
-                        ->required(fn (string $operation): bool => $operation === 'create'),
+                        ->dehydrated(fn(?string $state): bool => filled($state))
+                        ->required(fn(string $operation): bool => $operation === 'create'),
                     // FileUpload::make('tandatangan')
                     //     ->image()
                     //     ->label('Tanda Tangan (Background Image Transparent PNG & Max. 2 MB)')
@@ -102,6 +102,7 @@ class StaffNilaiResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
