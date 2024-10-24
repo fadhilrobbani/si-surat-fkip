@@ -19,6 +19,8 @@ use App\Filament\Resources\StaffWD1Resource\RelationManagers;
 
 class StaffWD1Resource extends Resource
 {
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $model = StaffWD1::class;
     protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $modelLabel = 'Staff Wakil Dekan 1';
@@ -38,10 +40,10 @@ class StaffWD1Resource extends Resource
                         ->placeholder('Username')
                         ->required()
                         ->alphaDash()
-                        ->unique(ignorable: fn ($record) => $record),
+                        ->unique(ignorable: fn($record) => $record),
                     TextInput::make('email')
                         ->email()
-                        ->unique(ignorable: fn ($record) => $record)
+                        ->unique(ignorable: fn($record) => $record)
                         ->placeholder('email@example.com')
                         ->required(),
                     TextInput::make('name')
@@ -59,14 +61,14 @@ class StaffWD1Resource extends Resource
                         ->label('Kata sandi baru')
                         ->placeholder('********')
                         ->confirmed()
-                        ->dehydrated(fn (?string $state): bool => filled($state))
-                        ->required(fn (string $operation): bool => $operation === 'create'),
+                        ->dehydrated(fn(?string $state): bool => filled($state))
+                        ->required(fn(string $operation): bool => $operation === 'create'),
                     TextInput::make('password_confirmation')
                         ->label('Konfirmasi kata sandi baru')
                         ->placeholder('********')
                         ->password()
-                        ->dehydrated(fn (?string $state): bool => filled($state))
-                        ->required(fn (string $operation): bool => $operation === 'create'),
+                        ->dehydrated(fn(?string $state): bool => filled($state))
+                        ->required(fn(string $operation): bool => $operation === 'create'),
                     // FileUpload::make('tandatangan')
                     //     ->image()
                     //     ->label('Tanda Tangan (Background Image Transparent PNG & Max. 2 MB)')
