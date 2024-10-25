@@ -53,7 +53,7 @@
     <br>
     <p style="text-align: justify">Yang bertanda tangan di bawah ini:
     </p>
-    <table>
+    <table class="data-table">
         <tr>
             <td style="width: 127px;">Nama</td>
             <td>:
@@ -76,7 +76,7 @@
 
     <br>
     <p style="text-align: justify">Menyatakan dengan sesungguhnya bahwa: </p>
-    <table>
+    <table class="data-table">
         <tr>
             <td style="width: 127px;">Nama</td>
             <td>: {{ Str::title($surat->data['nama']) }}</td>
@@ -98,7 +98,7 @@
     </table>
     <br>
     <p style="text-align: justify">Orang tua / wali dari mahasiswa tersebut: </p>
-    <table>
+    <table class="data-table">
         <tr>
             <td>Nama</td>
             <td>: {{ $surat->data['namaOrangTuaAtauWali'] }}</td>
@@ -148,9 +148,7 @@
                         alt="stempel">
                 @endif --}}
                 @if ($surat->status == 'selesai')
-                    <img class="ttd" src="data:image/svg;base64, {!! base64_encode(
-                        QrCode::format('svg')->size(90)->generate($url),
-                    ) !!}"
+                    <img class="ttd" src="data:image/svg;base64, {!! base64_encode(QrCode::format('svg')->size(90)->generate($url)) !!}"
                         style="position: absolute; bottom:70px">
                 @endif
             </div>

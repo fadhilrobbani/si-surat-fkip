@@ -73,7 +73,7 @@
     <br>
     <p style="text-align: justify">Untuk melaksanakan kegiatan {{ $surat->data['acara'] }}, yang dilaksanakan pada:</p>
     <br>
-    <table>
+    <table class="data-table">
         <tr>
             <td>Hari/Tanggal</td>
             <td>: {{ $surat->data['waktuPelaksanaan'] }}</td>

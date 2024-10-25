@@ -5,6 +5,21 @@
     padding: 0;
 }
 
+table {
+    width: 100%;
+}
+
+/* Aturan ini hanya berlaku untuk tabel dengan kelas .data-table */
+.data-table td:first-child {
+    width: 150px; /* Sesuaikan lebar kolom pertama */
+    vertical-align: top;
+}
+
+.data-table td:nth-child(2) {
+    padding-left: 10px; /* Jarak antara titik dua dan teks */
+    text-indent: -8px; /* Menggeser baris kedua ke kiri */
+}
+
 table.kop {
     margin: 0 auto;
     width: 100%;

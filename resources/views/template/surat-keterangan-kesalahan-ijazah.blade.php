@@ -54,7 +54,7 @@
     <p style="text-align: justify">Wakil Dekan Bidang Akademik FKIP Universitas Bengkulu dengan ini menerangkan bahwa:
     </p>
     <br>
-    <table>
+    <table class="data-table">
         <tr>
             <td>Nama</td>
             <td>: {{ Str::title($surat->data['nama']) }}</td>
@@ -110,9 +110,7 @@
                 @endif --}}
 
                 @if ($surat->status == 'selesai')
-                    <img class="ttd" src="data:image/svg;base64, {!! base64_encode(
-                        QrCode::format('svg')->size(90)->generate($url),
-                    ) !!}"
+                    <img class="ttd" src="data:image/svg;base64, {!! base64_encode(QrCode::format('svg')->size(90)->generate($url)) !!}"
                         style="position: absolute; bottom:70px">
                 @endif
             </div>

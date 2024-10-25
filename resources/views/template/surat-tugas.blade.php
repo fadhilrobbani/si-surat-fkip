@@ -55,7 +55,7 @@
     </p>
     <br>
 
-    <table>
+    <table class="data-table">
         @foreach ($surat->data['dosen'] as $dosen)
             <tr>
                 <td>Nama</td>
