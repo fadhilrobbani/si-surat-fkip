@@ -76,7 +76,7 @@
 
     <br>
     <p style="text-align: justify">Menyatakan dengan sesungguhnya bahwa: </p>
-    <table>
+    <table class="data-table">
         <tr>
             <td>Nama</td>
             <td>: {{ Str::title($surat->data['nama']) }}</td>

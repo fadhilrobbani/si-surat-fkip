@@ -49,7 +49,7 @@
 
     </table>
     <br>
-    <table class="data-table">
+    <table>
         <tr>
             <td>Nomor</td>
             <td>:
@@ -85,7 +85,7 @@
     <p style="text-align: justify">Sehubungan dengan kegiatan penelitian dan penulisan skripsi mahasiswa berikut, Kami
         mohon bantuan Bapak/Ibu untuk dapat memberikan izin melakukan pra-penelitian/pra-pengambilan data kepada:</p>
     <br>
-    <table>
+    <table class="data-table">
         <tr>
             <td>Nama</td>
             <td>: {{ Str::title($surat->data['nama']) }}</td>

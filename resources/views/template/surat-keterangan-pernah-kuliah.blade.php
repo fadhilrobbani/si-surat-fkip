@@ -53,7 +53,7 @@
     <br>
     <p style="text-align: justify">Yang bertanda tangan di bawah ini:
     </p>
-    <table>
+    <table class="data-table">
         <tr>
             <td style="width: 93px;">Nama</td>
             <td>:
