@@ -59,7 +59,7 @@
         @foreach ($surat->data['dosen'] as $dosen)
             <tr>
                 <td>Nama</td>
-                <td>: {{ Str::title($dosen['namaDosen']) }}</td>
+                <td>: {{ $dosen['namaDosen'] }}</td>
             </tr>
             <tr>
                 <td>NIP</td>
