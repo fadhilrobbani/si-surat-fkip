@@ -5,12 +5,13 @@
     <x-slot:title>
         Akademik | Dashboard
     </x-slot:title>
-    <div class="flex sm:flex-row flex-col-reverse items-center justify-evenly min-h-fit  p-4 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+    <div
+        class="flex sm:flex-row flex-col-reverse items-center justify-evenly min-h-fit  p-4 mb-4 rounded bg-gray-50 dark:bg-gray-800">
         <div>
             <p class="font-bold text-2xl text-indigo-400">Selamat Datang {{ $authUser->name }}!</p>
             <br>
             <p class="text-slate-500 font-semibold">Website ini merupakan terobosan baru dari Fakultas Keguruan dan Ilmu
-                Pendidikan dalam mempermudah proses kebutuhan surat menyurat mahasiswa</p>
+                Pendidikan dalam mempermudah administrasi surat menyurat di lingkungan FKIP Universitas Bengkulu</p>
         </div>
         <img class="h-48 m-2 p-2" src="{{ asset('images/man-laptop.png') }}" alt="">
     </div>
