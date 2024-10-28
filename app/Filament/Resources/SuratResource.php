@@ -96,7 +96,9 @@ class SuratResource extends Resource
             ])
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
-            ]);
+            ])->recordUrl(
+                fn(Surat $surat): string => route('print-surat-admin', ['surat' => $surat]),
+            );;
     }
 
     public static function getRelations(): array
