@@ -45,6 +45,16 @@ class SuratResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
+                TextColumn::make('pengaju.username')
+                    ->label('Username')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+                TextColumn::make('pengaju.name')
+                    ->label('Nama')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('status')
                     ->label('Status')
                     ->searchable()
@@ -71,7 +81,13 @@ class SuratResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('download')
+                    ->label('PDF')
+                    ->url(
+                        fn(Surat $surat): string => route('print-surat-admin', ['surat' => $surat]),
+                        shouldOpenInNewTab: true
+                    )
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -89,6 +89,9 @@ Route::get('/report-bug', [EmailController::class, 'reportBug'])->name('report-b
 
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::prefix('admin')->middleware(['userAccess:1'])->group(function () {
+        Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-admin');
+    });
     Route::prefix('mahasiswa')->middleware(['userAccess:2'])->group(function () {
         Route::get('/', [MahasiswaController::class, 'dashboard']);
         Route::middleware('verified')->group(function () {
