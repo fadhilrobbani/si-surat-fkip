@@ -33,8 +33,7 @@
                             </td>
                         </tr>
                         <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Nomor Pokok Mahasiswa
-                                (NPM):&nbsp;
+                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Username:&nbsp;
                             </td>
                             <td class="px-6 py-4">
                                 {{ isset($surat->data['npm']) ? $surat->data['npm'] : $surat->data['username'] }}
