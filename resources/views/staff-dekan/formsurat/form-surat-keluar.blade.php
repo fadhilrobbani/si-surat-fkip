@@ -18,6 +18,18 @@
                     },
                 ]);
 
+                const form = document.querySelector('form');
+                form.addEventListener('submit', function(event) {
+                    const paragrafAwal = document.getElementById('wysiwyg-text-example')
+                    .innerHTML; // Ambil isi editor paragraf awal
+                    const paragrafAkhir = document.getElementById('wysiwyg-text-example2')
+                    .innerHTML; // Ambil isi editor paragraf akhir
+                    document.getElementById('paragraf-awal').value =
+                    paragrafAwal; // Masukkan nilai ke hidden input
+                    document.getElementById('paragraf-akhir').value =
+                    paragrafAkhir; // Masukkan nilai ke hidden input
+                });
+
             });
 
             function toggleWaktuInput() {
@@ -150,7 +162,7 @@
                 <label for="paragraf-awal"
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Untuk
                     membuat baris baru, tekan Ctrl + Enter pada keyboard</label>
-                <input type="hidden" name="paragraf-awal" id="paragraf-awal">
+                <input type="hidden" name="paragraf-awal" id="paragraf-awal" required>
                 <x-editor :numberId="''" />
                 {{-- <button type="button"
                     onclick="window.alert(document.getElementById('wysiwyg-text-example').innerHTML)">Click
@@ -217,7 +229,7 @@
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Untuk
                     membuat baris baru, tekan Ctrl + Enter pada keyboard</label>
                 <x-editor :numberId="'2'" />
-                <input type="hidden" name="paragraf-akhir" id="paragraf-akhir">
+                <input type="hidden" name="paragraf-akhir" id="paragraf-akhir" required>
                 {{-- <button type="button"
                     onclick="alert(document.getElementById('wysiwyg-text-example2').innerHTML)">Click
                     to Get

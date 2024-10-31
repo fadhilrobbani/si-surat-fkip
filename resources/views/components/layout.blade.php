@@ -570,7 +570,10 @@
             {{ $slot }}
         </div>
     </div>
-    {{ $script }}
+    @isset($script)
+        {{ $script }} <!-- Hanya ditampilkan jika $script ada -->
+    @endisset
+
 </body>
 
 </html>

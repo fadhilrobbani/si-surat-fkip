@@ -674,7 +674,70 @@ class SuratController extends Controller
         }
     }
 
-    public function storeByStaffDekan(Request $request, JenisSurat $jenisSurat) {}
+    public function storeByStaffDekan(Request $request, JenisSurat $jenisSurat)
+    {
+        if ($jenisSurat->slug == 'surat-keluar') {
+
+            $request->validate([
+                'name' => 'required',
+                'username' => 'required',
+                'email' => 'required|email',
+                'perihal' => 'required',
+                'jumlah-lampiran' => 'required|integer',
+                'lampiran' => 'file|mimes:jpeg,png,jpg,pdf|max:10240',
+                'tujuan1' => 'required',
+                'tujuan2' => '',
+                'tujuan3' => '',
+                'paragraf-awal' => 'required',
+                'tanggal-mulai-kegiatan' => 'required|date',
+                'tanggal-selesai-kegiatan' => 'required|date',
+                'waktu' => 'required',
+                'tempat' => 'required',
+                'paragraf-akhir' => 'required',
+            ]);
+
+            $surat = new Surat;
+            $surat->pengaju_id = auth()->user()->id;
+            $surat->current_user_id = $request->input('penerima');
+            $surat->status = 'diproses';
+            $surat->jenis_surat_id = $jenisSurat->id;
+            $surat->expired_at = now()->addDays(30);
+            $surat->data = [
+                'private' => [
+                    'stepper' => [auth()->user()->role->id],
+                    // 'waktuMulaiPenugasan' => $request->input('waktu-mulai-penugasan'),
+                    // 'waktuSelesaiPenugasan' => $request->input('waktu-selesai-penugasan'),
+                ],
+                'nama' => $request->input('name'),
+                'username' => $request->input('username'),
+                'email' => $request->input('email'),
+                'perihal' => $request->input('perihal'),
+                'jumlahLampiran' => $request->input('jumlah-lampiran'),
+                'tujuan1' => $request->input('tujuan1'),
+                'tujuan2' => $request->input('tujuan2'),
+                'tujuan3' => $request->input('tujuan3'),
+                'paragrafAwal' => $request->input('paragraf-awal'),
+                'tanggalPelaksanaan' => formatTimestampToDayIndonesian($request->input('tanggal-mulai-kegiatan')) . ' .s.d. ' . formatTimestampToDayIndonesian($request->input('tanggal-selesai-kegiatan')) . ', ' . formatTimestampToOnlyDateIndonesian($request->input('tanggal-mulai-kegiatan')) . ' .s.d. ' . formatTimestampToOnlyDateIndonesian($request->input('tanggal-selesai-kegiatan')),
+                'waktu' => $request->input('waktu'),
+                'tempat' => $request->input('tempat'),
+                'paragrafAkhir' => $request->input('paragraf-akhir'),
+
+
+            ];
+            if ($request->hasFile('lampiran')) {
+                $request->validate([
+                    'lampiran' => 'file|mimes:jpeg,png,jpg,pdf|max:10240',
+                ]);
+
+                $surat->files = [
+                    'lampiran' => $request->file('lampiran')->store('lampiran')
+                ];
+            }
+
+            $surat->save();
+            return redirect('/staff-dekan/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
+        }
+    }
 
     public function storeSuratTugasByStaff(Request $request, JenisSurat $jenisSurat)
     {
