@@ -58,8 +58,34 @@
 
         </div>
 
-        <p class="font-semibold text-slate-500 text-md mx-auto mb-2">Data Surat:</p>
+
+        <p class="font-semibold text-slate-500 text-md mx-auto mb-2">Header Surat:</p>
         <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div>
+                <label for="perihal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Perihal
+                    Surat<span class="text-red-500">*</span></label>
+                <input type="text" name="perihal"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Masukkan Perihal / Hal" value="{{ old('perihal') }}" required>
+            </div>
+            <div>
+                <label for="jumlah-lampiran" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah
+                    Lampiran yang disertakan<span class="text-red-500">*</span></label>
+                <input type="number" name="jumlah-lampiran"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Masukkan 0 jika tidak ada lampiran" min="0" value="{{ old('jumlah-lampiran') }}"
+                    required>
+            </div>
+            <div class="md:col-span-2">
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="lampiran">Lampiran
+                    (opsional) </label>
+                <input
+                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    aria-describedby="file_input_help" id="lampiran" type="file" name="lampiran"
+                    accept=".jpg, .jpeg, .png, .pdf" max-size="10240">
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG, JPEG, atau PDF
+                    (MAX. 10 MB).</p>
+            </div>
             <div>
                 <label for="tujuan1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tujuan
                     Surat<span class="text-red-500">*</span></label>
@@ -81,6 +107,19 @@
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="(Opsional / boleh dikosongkan)" value="{{ old('tujuan3') }}">
             </div>
+        </div>
+        <p class="font-semibold text-slate-500 text-md mx-auto mb-2">Badan Surat:</p>
+        <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div class="md:col-span-2">
+                <label for="paragraf1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Paragraf
+                    Awal (yang biasanya setelah salam)<span class="text-red-500">*</span></label>
+                <label for="paragraf1" class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Untuk
+                    membuat baris baru, tekan Ctrl + Enter pada keyboard</label>
+                <x-richtext />
+                <button type="button" onclick="alert(document.getElementById('wysiwyg-text-example').innerHTML)">Click
+                    to Get
+                    HTML</button>
+            </div>
             <div>
                 <label for="acara"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Acara/kegiatan<span
@@ -99,8 +138,8 @@
             </div>
             <div>
                 <label for="waktu-mulai-kegiatan"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waktu Mulai Kegiatan<span
-                        class="text-red-500">*</span></label>
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waktu
+                    Mulai Kegiatan<span class="text-red-500">*</span></label>
                 <input type="date" id="waktu-mulai-kegiatan" name="waktu-mulai-kegiatan"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Pilih waktu kapan kegiatan dimulai" value="{{ old('waktu-mulai-kegiatan') }}"
@@ -131,20 +170,19 @@
                     placeholder="Dengan format +KodeNegara Nomor (contoh: +62 813 6326 4386)"
                     pattern="^\+\d{1,3}\s?\d{1,4}(\s?\d{3,4}){2,3}$" value="{{ old('no-kontak') }}" required>
             </div>
-
-            <div>
-
-                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="lampiran">Lampiran
-                    (opsional) </label>
-                <input
-                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    aria-describedby="file_input_help" id="lampiran" type="file" name="lampiran"
-                    accept=".jpg, .jpeg, .png, .pdf" max-size="10240">
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG, JPEG, atau PDF
-                    (MAX.
-                    10 MB).</p>
-
+            <div class="md:col-span-2">
+                <label for="paragraf1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Paragraf
+                    Awal (yang biasanya setelah salam)<span class="text-red-500">*</span></label>
+                <label for="paragraf1"
+                    class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Untuk
+                    membuat baris baru, tekan Ctrl + Enter pada keyboard</label>
+                <x-richtext2 />
+                <button type="button"
+                    onclick="alert(document.getElementById('wysiwyg-text-example2').innerHTML)">Click
+                    to Get
+                    HTML</button>
             </div>
+
         </div>
 
 
