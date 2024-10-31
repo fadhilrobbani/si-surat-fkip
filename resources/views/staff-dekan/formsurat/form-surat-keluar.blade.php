@@ -5,6 +5,22 @@
     <x-slot:title>
         Staff Dekan| Pengajuan Surat
     </x-slot:title>
+    <x-slot:script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                window.setupEditors([{
+                        elementId: "wysiwyg-text-example",
+                        content: "Sehubungan akan dilaksanakan kegiatan Diklat Literasi dan Numerasi bagi Guru Pamong Pendidikan Profesi Guru FKIP Universitas Bengkulu, maka bersama ini kami mohon bantuan Bapak/Ibu mengirimkan narasumber untuk kegiatan tersebut. Kegiatan ini akan dilaksanakan pada:",
+                    },
+                    {
+                        elementId: "wysiwyg-text-example2",
+                        content: "Sehubungan akan dilaksanakan kegiatan Diklat Literasi dan Numerasi bagi Guru Pamong Pendidikan Profesi Guru FKIP Universitas Bengkulu, maka bersama ini kami mohon bantuan Bapak/Ibu mengirimkan narasumber untuk kegiatan tersebut. Kegiatan ini akan dilaksanakan pada:",
+                    },
+                ]);
+
+            });
+        </script>
+    </x-slot:script>
     {{-- <x-breadcumb /> --}}
     {{ Breadcrumbs::render('staff-dekan-pengajuan-surat-form', $jenisSurat) }}
     <p class="font-bold text-lg mx-auto text-center mb-2">Surat Keluar</p>
@@ -115,7 +131,7 @@
                     Awal (yang biasanya setelah salam)<span class="text-red-500">*</span></label>
                 <label for="paragraf1" class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Untuk
                     membuat baris baru, tekan Ctrl + Enter pada keyboard</label>
-                <x-richtext />
+                <x-editor :numberId="''" />
                 <button type="button" onclick="alert(document.getElementById('wysiwyg-text-example').innerHTML)">Click
                     to Get
                     HTML</button>
@@ -176,11 +192,11 @@
                 <label for="paragraf1"
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Untuk
                     membuat baris baru, tekan Ctrl + Enter pada keyboard</label>
-                <x-richtext2 />
+                {{-- <x-editor :numberId="'2'" />
                 <button type="button"
                     onclick="alert(document.getElementById('wysiwyg-text-example2').innerHTML)">Click
                     to Get
-                    HTML</button>
+                    HTML</button> --}}
             </div>
 
         </div>

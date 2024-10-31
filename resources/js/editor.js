@@ -9,160 +9,106 @@ import FontFamily from "https://esm.sh/@tiptap/extension-font-family@2.6.6";
 import { Color } from "https://esm.sh/@tiptap/extension-color@2.6.6";
 import Bold from "https://esm.sh/@tiptap/extension-bold@2.6.6";
 
-window.addEventListener("DOMContentLoaded", function () {
-    if (document.getElementById("wysiwyg-text-example")) {
-        const CustomBold = Bold.extend({
-            // Override the renderHTML method
-            renderHTML({ HTMLAttributes }) {
-                return [
-                    "span",
-                    {
-                        ...HTMLAttributes,
-                        style: "font-weight: bold;",
-                    },
-                    0,
-                ];
-            },
-            // Ensure it doesn't exclude other marks
-            excludes: "",
-        });
-
-        // tip tap editor setup
-        const editor = new Editor({
-            element: document.querySelector("#wysiwyg-text-example"),
-            extensions: [
-                // Exclude the default Bold mark
-                StarterKit.configure({
-                    marks: {
-                        bold: false,
-                    },
-                }),
-                // Include the custom Bold extension
-                CustomBold,
-                Highlight,
-                Underline,
-                Subscript,
-                Superscript,
-            ],
-            content:
-                "Sehubungan akan dilaksanakan kegiatan Diklat Literasi dan Numerasi bagi Guru Pamong Pendidikan Profesi Guru FKIP Universitas Bengkulu, maka bersama ini kami mohon bantuan Bapak/Ibu mengirimkan narasumber untuk kegiatan tersebut. Kegiatan ini akan dilaksanakan pada:",
-            editorProps: {
-                attributes: {
-                    class: "format lg:format-lg dark:format-invert focus:outline-none format-blue max-w-none",
+// Fungsi untuk membuat editor
+function createEditor(elementId, content) {
+    const CustomBold = Bold.extend({
+        // Override the renderHTML method
+        renderHTML({ HTMLAttributes }) {
+            return [
+                "span",
+                {
+                    ...HTMLAttributes,
+                    style: "font-weight: bold;",
                 },
-            },
-        });
-        // console.log("EDITOR1" + ":  " + editor.getHTML());
-        // set up custom event listeners for the buttons
-        document
-            .getElementById("toggleBoldButton")
-            .addEventListener("click", () =>
-                editor.chain().focus().toggleBold().run()
-            );
-        document
-            .getElementById("toggleItalicButton")
-            .addEventListener("click", () =>
-                editor.chain().focus().toggleItalic().run()
-            );
-        document
-            .getElementById("toggleUnderlineButton")
-            .addEventListener("click", () =>
-                editor.chain().focus().toggleUnderline().run()
-            );
-        document
-            .getElementById("toggleStrikeButton")
-            .addEventListener("click", () =>
-                editor.chain().focus().toggleStrike().run()
-            );
-        document
-            .getElementById("toggleSubscriptButton")
-            .addEventListener("click", () =>
-                editor.chain().focus().toggleSubscript().run()
-            );
-        document
-            .getElementById("toggleSuperscriptButton")
-            .addEventListener("click", () =>
-                editor.chain().focus().toggleSuperscript().run()
-            );
-    }
-});
+                0,
+            ];
+        },
+        // Ensure it doesn't exclude other marks
+        excludes: "",
+    });
 
-// editor2
-window.addEventListener("DOMContentLoaded", function () {
-    if (document.getElementById("wysiwyg-text-example2")) {
-        const CustomBold = Bold.extend({
-            // Override the renderHTML method
-            renderHTML({ HTMLAttributes }) {
-                return [
-                    "span",
-                    {
-                        ...HTMLAttributes,
-                        style: "font-weight: bold;",
-                    },
-                    0,
-                ];
-            },
-            // Ensure it doesn't exclude other marks
-            excludes: "",
-        });
-
-        // tip tap editor setup
-        const editor2 = new Editor({
-            element: document.querySelector("#wysiwyg-text-example2"),
-            extensions: [
-                // Exclude the default Bold mark
-                StarterKit.configure({
-                    marks: {
-                        bold: false,
-                    },
-                }),
-                // Include the custom Bold extension
-                CustomBold,
-                Highlight,
-                Underline,
-                Subscript,
-                Superscript,
-            ],
-            content:
-                "Sehubungan akan dilaksanakan kegiatan Diklat Literasi dan Numerasi bagi Guru Pamong Pendidikan Profesi Guru FKIP Universitas Bengkulu, maka bersama ini kami mohon bantuan Bapak/Ibu mengirimkan narasumber untuk kegiatan tersebut. Kegiatan ini akan dilaksanakan pada:",
-            editorProps: {
-                attributes: {
-                    class: "format lg:format-lg dark:format-invert focus:outline-none format-blue max-w-none",
+    // tip tap editor setup
+    const editor = new Editor({
+        element: document.querySelector(`#${elementId}`),
+        extensions: [
+            // Exclude the default Bold mark
+            StarterKit.configure({
+                marks: {
+                    bold: false,
                 },
+            }),
+            // Include the custom Bold extension
+            CustomBold,
+            Highlight,
+            Underline,
+            Subscript,
+            Superscript,
+        ],
+        content,
+        editorProps: {
+            attributes: {
+                class: "format lg:format-lg dark:format-invert focus:outline-none format-blue max-w-none",
             },
-        });
-        // console.log("EDITOR2" + ":  " + editor2.getHTML());
+        },
+    });
 
-        // set up custom event listeners for the buttons
-        document
-            .getElementById("toggleBoldButton2")
-            .addEventListener("click", () =>
-                editor2.chain().focus().toggleBold().run()
-            );
-        document
-            .getElementById("toggleItalicButton2")
-            .addEventListener("click", () =>
-                editor2.chain().focus().toggleItalic().run()
-            );
-        document
-            .getElementById("toggleUnderlineButton2")
-            .addEventListener("click", () =>
-                editor2.chain().focus().toggleUnderline().run()
-            );
-        document
-            .getElementById("toggleStrikeButton2")
-            .addEventListener("click", () =>
-                editor2.chain().focus().toggleStrike().run()
-            );
-        document
-            .getElementById("toggleSubscriptButton2")
-            .addEventListener("click", () =>
-                editor2.chain().focus().toggleSubscript().run()
-            );
-        document
-            .getElementById("toggleSuperscriptButton2")
-            .addEventListener("click", () =>
-                editor2.chain().focus().toggleSuperscript().run()
-            );
-    }
-});
+    return editor;
+}
+
+// Fungsi untuk menambahkan event listener pada tombol
+function addEventListener(editor, buttonId, command) {
+    document
+        .getElementById(buttonId)
+        .addEventListener("click", () =>
+            editor.chain().focus()[command]().run()
+        );
+}
+
+// Fungsi untuk mengatur editor
+function setupEditor(elementId, content) {
+    const editor = createEditor(elementId, content);
+
+    // set up custom event listeners for the buttons
+    addEventListener(
+        editor,
+        `toggleBoldButton${elementId.replace("wysiwyg-text-example", "")}`,
+        "toggleBold"
+    );
+    addEventListener(
+        editor,
+        `toggleItalicButton${elementId.replace("wysiwyg-text-example", "")}`,
+        "toggleItalic"
+    );
+    addEventListener(
+        editor,
+        `toggleUnderlineButton${elementId.replace("wysiwyg-text-example", "")}`,
+        "toggleUnderline"
+    );
+    addEventListener(
+        editor,
+        `toggleStrikeButton${elementId.replace("wysiwyg-text-example", "")}`,
+        "toggleStrike"
+    );
+    addEventListener(
+        editor,
+        `toggleSubscriptButton${elementId.replace("wysiwyg-text-example", "")}`,
+        "toggleSubscript"
+    );
+    addEventListener(
+        editor,
+        `toggleSuperscriptButton${elementId.replace(
+            "wysiwyg-text-example",
+            ""
+        )}`,
+        "toggleSuperscript"
+    );
+}
+
+// Fungsi untuk mengatur editor saat DOMContentLoaded
+export default function setupEditors(editors) {
+    editors.forEach((editor) => {
+        if (document.getElementById(editor.elementId)) {
+            setupEditor(editor.elementId, editor.content);
+        }
+    });
+}

@@ -570,7 +570,7 @@
             {{ $slot }}
         </div>
     </div>
-
+    {{ $script }}
 </body>
 
 </html>
