@@ -14,11 +14,26 @@
                     },
                     {
                         elementId: "wysiwyg-text-example2",
-                        content: "Sehubungan akan dilaksanakan kegiatan Diklat Literasi dan Numerasi bagi Guru Pamong Pendidikan Profesi Guru FKIP Universitas Bengkulu, maka bersama ini kami mohon bantuan Bapak/Ibu mengirimkan narasumber untuk kegiatan tersebut. Kegiatan ini akan dilaksanakan pada:",
+                        content: "Kami harapkan kepada narasumber untuk membawa Biodata (terlampir) serta membawa Surat Tugas dari instansi Bapak/Ibu. Konfirmasi dan informasi lebih lanjut terkait kegiatan ini dapat menghubungi Saudari Dian Maharani (+62 852-7352-2886).<br><br> Demikianlah atas perhatian dan kerjasama yang baik, kami sampaikan ucapan terima kasih.",
                     },
                 ]);
 
             });
+
+            function toggleWaktuInput() {
+                const checkbox = document.getElementById('jadwal-terlampir-checkbox');
+                const timeInput = document.getElementById('waktu');
+                const hiddenInput = document.getElementById('hidden-waktu');
+
+                if (checkbox.checked) {
+                    timeInput.classList.add('hidden'); // Sembunyikan input waktu dengan menambahkan kelas 'hidden'
+                    hiddenInput.value = "Jadwal terlampir"; // Set nilai tersembunyi menjadi "Jadwal terlampir"
+                } else {
+                    timeInput.classList.remove('hidden'); // Tampilkan kembali input waktu dengan menghapus kelas 'hidden'
+                    hiddenInput.value = timeInput
+                        .value; // Set nilai tersembunyi menjadi nilai waktu jika checkbox tidak dicentang
+                }
+            }
         </script>
     </x-slot:script>
     {{-- <x-breadcumb /> --}}
@@ -125,26 +140,52 @@
             </div>
         </div>
         <p class="font-semibold text-slate-500 text-md mx-auto mb-2">Badan Surat:</p>
-        <div class="grid gap-6 mb-6 md:grid-cols-2">
+        <div class="grid gap-6 mb-6 md:grid-cols-2 ">
             <div class="md:col-span-2">
-                <label for="paragraf1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Paragraf
+                <label for="paragraf-awal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Paragraf
                     Awal (yang biasanya setelah salam)<span class="text-red-500">*</span></label>
-                <label for="paragraf1" class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Untuk
+                <label for="paragraf-awal"
+                    class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Silahkan edit contoh
+                    paragraf berikut</label>
+                <label for="paragraf-awal"
+                    class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Untuk
                     membuat baris baru, tekan Ctrl + Enter pada keyboard</label>
+                <input type="hidden" name="paragraf-awal" id="paragraf-awal">
                 <x-editor :numberId="''" />
-                <button type="button" onclick="alert(document.getElementById('wysiwyg-text-example').innerHTML)">Click
+                {{-- <button type="button"
+                    onclick="window.alert(document.getElementById('wysiwyg-text-example').innerHTML)">Click
                     to Get
-                    HTML</button>
+                    HTML</button> --}}
             </div>
-            <div>
-                <label for="acara"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Acara/kegiatan<span
-                        class="text-red-500">*</span></label>
-                <input type="text"name="acara" id="acara"
-                    class="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Contoh: International Doctoral Supervision Bootcamp" value="{{ old('acara') }}"
+
+            <div class="mt-4">
+                <label for="tanggal-mulai-kegiatan"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Hari/tanggal
+                    Mulai Kegiatan<span class="text-red-500">*</span></label>
+                <input type="date" id="tanggal-mulai-kegiatan" name="tanggal-mulai-kegiatan"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Pilih tanggal kapan kegiatan dimulai" value="{{ old('tanggal-mulai-kegiatan') }}"
                     required>
             </div>
+            <div class="mt-4">
+                <label for="tanggal-selesai-kegiatan"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Hari/tanggal Selesai
+                    Kegiatan<span class="text-red-500">*</span></label>
+                <input type="date" id="tanggal-selesai-kegiatan"" name="tanggal-selesai-kegiatan""
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Pilih tanggal kapan kegiatan selesai" value="{{ old('tanggal-selesai-kegiatan"') }}"
+                    required>
+            </div>
+
+            <div class="">
+                <label for="waktu" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waktu
+                    Kegiatan<span class="text-red-500">*</span></label>
+                <input type="time" id="waktu" name="waktu"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Pilih waktu kapan kegiatan dilaksanakan" value="{{ old('waktu') }}" required>
+            </div>
+
+
             <div>
                 <label for="tempat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tempat<span
                         class="text-red-500">*</span></label>
@@ -152,48 +193,32 @@
                     class="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Masukkan tempat pelaksanaan" value="{{ old('tempat') }}" required>
             </div>
-            <div>
-                <label for="waktu-mulai-kegiatan"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waktu
-                    Mulai Kegiatan<span class="text-red-500">*</span></label>
-                <input type="date" id="waktu-mulai-kegiatan" name="waktu-mulai-kegiatan"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Pilih waktu kapan kegiatan dimulai" value="{{ old('waktu-mulai-kegiatan') }}"
-                    required>
+
+            <div class="flex items-center mt-[-16px]">
+                <input type="checkbox" id="jadwal-terlampir-checkbox" class="mr-2" onchange="toggleWaktuInput()">
+                <label for="jadwal-terlampir-checkbox"
+                    class="text-sm font-medium text-gray-500 dark:text-white">Jadwal ada di lampiran (Spesifik waktu
+                    tidak akan ditulis di surat)</label>
             </div>
-            <div>
-                <label for="waktu-selesai-kegiatan"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waktu Selesai Kegiatan<span
-                        class="text-red-500">*</span></label>
-                <input type="date" id="waktu-selesai-kegiatan"" name="waktu-selesai-kegiatan""
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Pilih waktu kapan kegiatan selesai" value="{{ old('waktu-selesai-kegiatan"') }}"
-                    required>
-            </div>
-            <div>
-                <label for="nama-kontak" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
-                    Kontak yang dapat dihubungi<span class="text-red-500">*</span></label>
-                <input type="text"name="nama-kontak" id="nama-kontak"
-                    class="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Nama Kontak yang dapat dihubungi" value="{{ old('nama-kontak') }}" required>
-            </div>
-            <div>
-                <label for="no-kontak" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    No. Telepon/HP yang dapat dihubungi <span class="text-red-500">*</span>
-                </label>
-                <input type="tel" name="no-kontak" id="no-kontak"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Dengan format +KodeNegara Nomor (contoh: +62 813 6326 4386)"
-                    pattern="^\+\d{1,3}\s?\d{1,4}(\s?\d{3,4}){2,3}$" value="{{ old('no-kontak') }}" required>
-            </div>
-            <div class="md:col-span-2">
-                <label for="paragraf1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Paragraf
+
+            <input type="hidden" name="waktu" id="hidden-waktu" value="Jadwal terlampir">
+
+
+
+
+            <div class="md:col-span-2 mt-4">
+                <label for="paragraf-akhir"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Paragraf
                     Awal (yang biasanya setelah salam)<span class="text-red-500">*</span></label>
-                <label for="paragraf1"
+                <label for="paragraf-akhir"
+                    class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Silahkan edit contoh
+                    paragraf berikut</label>
+                <label for="paragraf-akhir"
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Untuk
                     membuat baris baru, tekan Ctrl + Enter pada keyboard</label>
-                {{-- <x-editor :numberId="'2'" />
-                <button type="button"
+                <x-editor :numberId="'2'" />
+                <input type="hidden" name="paragraf-akhir" id="paragraf-akhir">
+                {{-- <button type="button"
                     onclick="alert(document.getElementById('wysiwyg-text-example2').innerHTML)">Click
                     to Get
                     HTML</button> --}}
