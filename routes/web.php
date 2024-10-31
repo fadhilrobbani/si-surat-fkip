@@ -345,6 +345,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->can('staffDekanCanCancelSurat', 'surat')->name('staff-destroy-surat');
         Route::get('/riwayat-pengajuan-surat', [StaffDekanController::class, 'riwayatPengajuanSurat'])->name('staff-dekan-riwayat-pengajuan-surat');
         Route::get('/riwayat-pengajuan-surat/show/{surat}', [StaffDekanController::class, 'showDetailPengajuanSuratByStaffDekan'])->can('staffDekanCanViewShowDetailPengajuanSuratByStaff', 'surat')->name('show-detail-pengajuan-surat-staff-dekan');
+        Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->can('staffDekanCanCancelSurat', 'surat')->name('staff-dekan-destroy-surat');
 
         Route::get('/surat-masuk', [StaffDekanController::class, 'suratMasuk']);
         Route::get('/riwayat-persetujuan', [StaffDekanController::class, 'riwayatPersetujuan']);

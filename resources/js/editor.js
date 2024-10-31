@@ -4,7 +4,7 @@ import Highlight from "https://esm.sh/@tiptap/extension-highlight@2.6.6";
 import Underline from "https://esm.sh/@tiptap/extension-underline@2.6.6";
 import Subscript from "https://esm.sh/@tiptap/extension-subscript@2.6.6";
 import Superscript from "https://esm.sh/@tiptap/extension-superscript@2.6.6";
-import TextStyle from "https://esm.sh/@tiptap/extension-text-style@2.6.6";
+import TextAlign from "https://esm.sh/@tiptap/extension-text-align@2.6.6";
 import FontFamily from "https://esm.sh/@tiptap/extension-font-family@2.6.6";
 import { Color } from "https://esm.sh/@tiptap/extension-color@2.6.6";
 import Bold from "https://esm.sh/@tiptap/extension-bold@2.6.6";
@@ -37,6 +37,7 @@ function createEditor(elementId, content) {
                     bold: false,
                 },
             }),
+
             // Include the custom Bold extension
             CustomBold,
             Highlight,

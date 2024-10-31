@@ -96,6 +96,14 @@ class PDFController extends Controller
                 'chroot' => public_path()
             ]);
         }
+
+        // STAFF DEKAN
+        if ($surat->jenisSurat->slug == 'surat-keluar') {
+            $pdf = Pdf::loadview('template.surat-keluar', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+                'tempDir' => public_path(),
+                'chroot' => public_path()
+            ]);
+        }
         return $pdf->stream();
     }
 

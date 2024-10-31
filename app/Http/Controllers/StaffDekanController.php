@@ -598,7 +598,7 @@ class StaffDekanController extends Controller
         ]);
     }
 
-    public function showDetailPengajuanSuratByStaff(Surat $surat)
+    public function showDetailPengajuanSuratByStaffDekan(Surat $surat)
     {
         return view('staff-dekan.show-surat', [
             'surat' => $surat

@@ -8,27 +8,51 @@
     <x-slot:script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
+                const paragrafAwal = document.getElementById("paragraf-awal").value;
+                const paragrafAkhir = document.getElementById("paragraf-akhir").value;
                 window.setupEditors([{
                         elementId: "wysiwyg-text-example",
-                        content: "Sehubungan akan dilaksanakan kegiatan Diklat Literasi dan Numerasi bagi Guru Pamong Pendidikan Profesi Guru FKIP Universitas Bengkulu, maka bersama ini kami mohon bantuan Bapak/Ibu mengirimkan narasumber untuk kegiatan tersebut. Kegiatan ini akan dilaksanakan pada:",
+                        content: (paragrafAwal ? paragrafAwal :
+                            'Sehubungan akan dilaksanakan kegiatan Diklat Literasi dan Numerasi bagi Guru Pamong Pendidikan Profesi Guru FKIP Universitas Bengkulu, maka bersama ini kami mohon bantuan Bapak/Ibu mengirimkan narasumber untuk kegiatan tersebut. Kegiatan ini akan dilaksanakan pada:'
+                        ),
                     },
                     {
                         elementId: "wysiwyg-text-example2",
-                        content: "Kami harapkan kepada narasumber untuk membawa Biodata (terlampir) serta membawa Surat Tugas dari instansi Bapak/Ibu. Konfirmasi dan informasi lebih lanjut terkait kegiatan ini dapat menghubungi Saudari Dian Maharani (+62 852-7352-2886).<br><br> Demikianlah atas perhatian dan kerjasama yang baik, kami sampaikan ucapan terima kasih.",
+                        content: (paragrafAkhir ? paragrafAkhir :
+                            "Kami harapkan kepada narasumber untuk membawa Biodata (terlampir) serta membawa Surat Tugas dari instansi Bapak/Ibu. Konfirmasi dan informasi lebih lanjut terkait kegiatan ini dapat menghubungi Saudari Dian Maharani (+62 852-7352-2886).<br><br> Demikianlah atas perhatian dan kerjasama yang baik, kami sampaikan ucapan terima kasih."
+                        ),
                     },
                 ]);
 
+                // const form = document.querySelector('form');
+                // form.addEventListener('submit', function(event) {
+                //     const paragrafAwal = document.getElementById('wysiwyg-text-example')
+                //         .innerHTML; // Ambil isi editor paragraf awal
+                //     const paragrafAkhir = document.getElementById('wysiwyg-text-example2')
+                //         .innerHTML; // Ambil isi editor paragraf akhir
+                //     document.getElementById('paragraf-awal').value =
+                //         paragrafAwal; // Masukkan nilai ke hidden input
+                //     document.getElementById('paragraf-akhir').value =
+                //         paragrafAkhir; // Masukkan nilai ke hidden input
+                // });
+
                 const form = document.querySelector('form');
                 form.addEventListener('submit', function(event) {
-                    const paragrafAwal = document.getElementById('wysiwyg-text-example')
-                    .innerHTML; // Ambil isi editor paragraf awal
-                    const paragrafAkhir = document.getElementById('wysiwyg-text-example2')
-                    .innerHTML; // Ambil isi editor paragraf akhir
-                    document.getElementById('paragraf-awal').value =
-                    paragrafAwal; // Masukkan nilai ke hidden input
-                    document.getElementById('paragraf-akhir').value =
-                    paragrafAkhir; // Masukkan nilai ke hidden input
+                    // Ambil elemen editor paragraf awal dan akhir
+                    const paragrafAwalEl = document.getElementById('wysiwyg-text-example');
+                    const paragrafAkhirEl = document.getElementById('wysiwyg-text-example2');
+
+                    // Gabungkan isi dari semua elemen <p> untuk paragraf awal dan akhir
+                    const paragrafAwal = Array.from(paragrafAwalEl.querySelectorAll('p')).map(p => p.innerHTML)
+                        .join("\n");
+                    const paragrafAkhir = Array.from(paragrafAkhirEl.querySelectorAll('p')).map(p => p
+                        .innerHTML).join("\n");
+
+                    // Masukkan hasil ke dalam hidden input
+                    document.getElementById('paragraf-awal').value = paragrafAwal;
+                    document.getElementById('paragraf-akhir').value = paragrafAkhir;
                 });
+
 
             });
 
@@ -162,7 +186,8 @@
                 <label for="paragraf-awal"
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Untuk
                     membuat baris baru, tekan Ctrl + Enter pada keyboard</label>
-                <input type="hidden" name="paragraf-awal" id="paragraf-awal" required>
+                <input type="hidden" name="paragraf-awal" id="paragraf-awal" value="{{ old('paragraf-awal') }}"
+                    required>
                 <x-editor :numberId="''" />
                 {{-- <button type="button"
                     onclick="window.alert(document.getElementById('wysiwyg-text-example').innerHTML)">Click
@@ -229,7 +254,8 @@
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Untuk
                     membuat baris baru, tekan Ctrl + Enter pada keyboard</label>
                 <x-editor :numberId="'2'" />
-                <input type="hidden" name="paragraf-akhir" id="paragraf-akhir" required>
+                <input type="hidden" name="paragraf-akhir" id="paragraf-akhir" value="{{ old('paragraf-akhir') }}"
+                    required>
                 {{-- <button type="button"
                     onclick="alert(document.getElementById('wysiwyg-text-example2').innerHTML)">Click
                     to Get
