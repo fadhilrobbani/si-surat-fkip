@@ -4,7 +4,7 @@
 @endphp
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Staff | Riwayat Pengajuan
+        Staff Dekan | Riwayat Pengajuan
     </x-slot:title>
     <h1 class="mx-auto text-center font-bold">Riwayat Pengajuan Surat</h1>
 

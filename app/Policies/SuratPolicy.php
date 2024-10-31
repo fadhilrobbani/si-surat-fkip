@@ -31,6 +31,16 @@ class SuratPolicy
         return $user->id === $surat->pengaju->id;
     }
 
+    public function staffDekanCanViewShowDetailPengajuanSuratByStaff(User $user, Surat $surat)
+    {
+        return $user->id === $surat->pengaju->id;
+    }
+
+    public function staffDekanCanCancelSurat(User $user, Surat $surat): bool
+    {
+        return $user->id === $surat->pengaju->id;
+    }
+
     public function staffCanViewShowDetailPengajuanSuratByStaff(User $user, Surat $surat)
     {
         return $user->id === $surat->pengaju->id;

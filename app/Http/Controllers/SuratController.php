@@ -164,6 +164,18 @@ class SuratController extends Controller
                     ->get()
             ]);
         }
+
+        //staff dekan
+        if ($jenisSurat->slug == 'surat-keluar') {
+            return view('staff-dekan.formsurat.form-surat-keluar', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->whereIn('role_id', [8])
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
         return abort(404);
     }
 
@@ -662,7 +674,7 @@ class SuratController extends Controller
         }
     }
 
-    public function storeByStaff(Request $request, JenisSurat $jenisSurat) {}
+    public function storeByStaffDekan(Request $request, JenisSurat $jenisSurat) {}
 
     public function storeSuratTugasByStaff(Request $request, JenisSurat $jenisSurat)
     {

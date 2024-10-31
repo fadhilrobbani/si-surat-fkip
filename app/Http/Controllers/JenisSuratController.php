@@ -12,6 +12,7 @@ class JenisSuratController extends Controller
     {
         $jenisSurat = JenisSurat::where('slug', $request->input('jenisSurat'))->first();
         $inputValue = $request->input('jenisSurat');
+        // return redirect('/' . auth()->user()->role->name . '/' . 'pengajuan-surat/' . $inputValue);
         return redirect('/' . $jenisSurat->user_type . '/' . 'pengajuan-surat/' . $inputValue);
     }
 }

@@ -336,7 +336,16 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('staff-dekan')->middleware(['userAccess:14'])->group(function () {
+
+        Route::get('/pengajuan-surat', [StaffDekanController::class, 'pengajuanSurat'])->name('staff-dekan-pengajuan-surat');
+        Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->name('staff-dekan-redirect-form-surat');
+        Route::get('/pengajuan-surat/{jenisSurat:slug}', [SuratController::class, 'create'])->name('staff-dekan-show-form-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}', [SuratController::class, 'storeByStaffDekan'])->name('staff-dekan-store-surat');
         // Route::middleware('verified')->group(function () {
+        Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->can('staffDekanCanCancelSurat', 'surat')->name('staff-destroy-surat');
+        Route::get('/riwayat-pengajuan-surat', [StaffDekanController::class, 'riwayatPengajuanSurat'])->name('staff-dekan-riwayat-pengajuan-surat');
+        Route::get('/riwayat-pengajuan-surat/show/{surat}', [StaffDekanController::class, 'showDetailPengajuanSuratByStaffDekan'])->can('staffDekanCanViewShowDetailPengajuanSuratByStaff', 'surat')->name('show-detail-pengajuan-surat-staff-dekan');
+
         Route::get('/surat-masuk', [StaffDekanController::class, 'suratMasuk']);
         Route::get('/riwayat-persetujuan', [StaffDekanController::class, 'riwayatPersetujuan']);
         Route::get('/riwayat-persetujuan/show/{approval}', [StaffDekanController::class, 'showApproval'])->name('show-approval-staff-dekan');
