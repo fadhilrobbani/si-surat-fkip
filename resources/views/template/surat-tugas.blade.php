@@ -95,11 +95,7 @@
             <td>: {{ $surat->data['dasarPenugasan'] }}</td>
         </tr>
     </table>
-    {{-- <p>Nama&emsp; {{ $surat->pengaju->name }}</p>
-    <p>NPM&emsp;: {{ $surat->pengaju->username }}</p>
-    <p>Tempat/Tanggal Lahir&emsp;: {{ Str::title($surat->data['birthplace']) . ', ' . $surat->data['birthdate'] }}</p>
-    <p>Program Studi&emsp;: {{ $surat->data['programStudi'] }}</p>
-    <p>Nomor Seri Ijazah&emsp;: {{ $surat->data['noIjazah'] }}</p> --}}
+
     <br>
 
     <p style="text-align: justify">Demikianlah surat tugas ini dibuat untuk dapat dilaksanakan dengan sebaik-baiknya,
@@ -107,43 +103,91 @@
     </p>
     <br><br>
     <div>
-        <div class="tandatangan">
-            <div>
-                <p>Bengkulu,
-                    {{ isset($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '' }}
-                </p>
-                <p>a.n. Dekan </p>
-                <p> {{ isset($surat->data['private']['deskripsiWD']) ? $surat->data['private']['deskripsiWD'] : '(Wakil Dekan Bidang...)' }}
-            </div>
-            <div class="parent">
-                {{-- @if (isset($surat->files['private']['ttdWD1']))
-                    <img class="ttd" style="margin-left: 40px" width="100px"
-                        src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path($surat->files['private']['ttdWD1']))) }}"
-                        alt="ttd">
-                @endif
-                @if (isset($surat->files['private']['stempel']))
-                    <img class="stempel" style="margin-left: 40px" width="120px"
-                        src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path($surat->files['private']['stempel']))) }}"
-                        alt="stempel">
-                @endif --}}
 
-                @if ($surat->status == 'selesai')
-                    <img class="ttd" src="data:image/svg;base64, {!! base64_encode(QrCode::format('svg')->size(90)->generate($url)) !!}"
-                        style="position: absolute; bottom:70px">
-                @endif
+
+        {{-- ttd wd --}}
+
+        @if (isset($surat->data['private']['nipWD']) &&
+                isset($surat->data['private']['namaWD']) &&
+                isset($surat->data['private']['deskripsiWD']))
+            <div class="tandatangan">
+                <div>
+                    <p>Bengkulu,
+                        {{ isset($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '' }}
+                    </p>
+                    <p>a.n. Dekan</p>
+
+
+                    <p> {{ isset($surat->data['private']['deskripsiWD']) ? $surat->data['private']['deskripsiWD'] : '(Wakil Dekan Bidang... / Dekan)' }}
+                </div>
+                <div class="parent">
+
+                    @if ($surat->status == 'selesai')
+                        <img class="ttd" src="data:image/svg;base64, {!! base64_encode(QrCode::format('svg')->size(90)->generate($url)) !!}"
+                            style="position: absolute; bottom:70px">
+                    @endif
+                </div>
+                <div>
+                    <p> {{ isset($surat->data['private']['namaWD']) ? $surat->data['private']['namaWD'] : '(Nama)' }}
+                    </p>
+                    <p>NIP {{ isset($surat->data['private']['nipWD']) ? $surat->data['private']['nipWD'] : '(NIP)' }}
+                    </p>
+                </div>
             </div>
-            <div>
-                <p> {{ isset($surat->data['private']['namaWD']) ? $surat->data['private']['namaWD'] : '(Nama WD)' }}
-                </p>
-                <p>NIP {{ isset($surat->data['private']['nipWD']) ? $surat->data['private']['nipWD'] : '(NIP WD)' }}
-                </p>
+            {{-- ttd dekan --}}
+        @elseif (isset($surat->data['private']['nipDekan']) &&
+                isset($surat->data['private']['namaDekan']) &&
+                isset($surat->data['private']['deskripsiDekan']))
+            <div class="tandatangan">
+                <div>
+                    <p>Bengkulu,
+                        {{ isset($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '' }}
+                    </p>
+                    <p>Dekan</p>
+                </div>
+                <div class="parent">
+
+                    @if ($surat->status == 'selesai')
+                        <img class="ttd" src="data:image/svg;base64, {!! base64_encode(QrCode::format('svg')->size(90)->generate($url)) !!}"
+                            style="position: absolute; bottom:70px">
+                    @endif
+                </div>
+                <div>
+                    <p> {{ isset($surat->data['private']['namaDekan']) ? $surat->data['private']['namaDekan'] : '(Nama)' }}
+                    </p>
+                    <p>NIP
+                        {{ isset($surat->data['private']['nipDekan']) ? $surat->data['private']['nipDekan'] : '(NIP)' }}
+                    </p>
+                </div>
             </div>
-        </div>
-        {{-- @if ($surat->status == 'selesai' && !request()->hasValidSignature())
-            <img src="data:image/svg;base64, {!! base64_encode(
-                QrCode::format('svg')->size(90)->generate($url),
-            ) !!}" style="position: absolute; bottom:70px">
-        @endif --}}
+        @else
+            {{-- placeholder ttd --}}
+            <div class="tandatangan">
+                <div>
+                    <p>Bengkulu,
+                        {{ '' }}
+                    </p>
+                    <p>a.n. Dekan</p>
+
+
+                    <p> {{ '(Wakil Dekan Bidang... / Dekan)' }}
+                </div>
+                <div class="parent">
+
+                </div>
+                <div>
+                    <p> {{ '(Nama)' }}
+                    </p>
+                    <p>NIP {{ '(NIP)' }}
+                    </p>
+                </div>
+            </div>
+
+        @endif
+
+
+
+
     </div>
     <div class="page_break"></div>
     @include('template.sppd')
