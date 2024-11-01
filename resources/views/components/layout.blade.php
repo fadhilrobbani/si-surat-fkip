@@ -15,7 +15,7 @@
 
 <body class="overflow-x-hidden">
     <x-notification />
-    <nav class="fixed top-0 z-50 w-full bg-[rgba(58,79,105,1)]  dark:bg-gray-800 dark:border-gray-700">
+    <nav class="fixed top-0 z-50 w-full bg-[#223b5d]  dark:bg-gray-800 dark:border-gray-700">
         <div class="px-4 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <!-- Left Section -->
