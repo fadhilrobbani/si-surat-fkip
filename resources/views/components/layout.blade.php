@@ -15,14 +15,14 @@
 
 <body class="overflow-x-hidden">
     <x-notification />
-    <nav class="fixed top-0 z-50 w-full bg-[#141F2E] dark:bg-gray-800 dark:border-gray-700">
+    <nav class="fixed top-0 z-50 w-full bg-[rgba(58,79,105,1)]  dark:bg-gray-800 dark:border-gray-700">
         <div class="px-4 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <!-- Left Section -->
                 <div class="flex items-center justify-start">
                     <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
                         aria-controls="logo-sidebar" type="button"
-                        class="inline-flex items-center p-2 text-gray-500 rounded-lg sm:hidden hover:bg-[#141F2E] focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                        class="inline-flex items-center p-2 text-gray-100 rounded-lg sm:hidden hover:bg-[rgba(58,79,105,0.7)] focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                         <span class="sr-only">Open sidebar</span>
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                             <path clip-rule="evenodd" fill-rule="evenodd"
@@ -49,7 +49,7 @@
                         @php
                             $avatar = 'https://ui-avatars.com/api/?name=' . $authUser->name . '&background=random';
                         @endphp
-                        <img class="w-8 h-8 rounded-full border-2 border-white dark:border-gray-700"
+                        <img class="w-8 h-8 rounded-full  dark:border-gray-700"
                             src="{{ $authUser->profile_image ? asset('/storage' . $authUser->profile_image) : $avatar }}"
                             alt="user photo">
                     </button>
