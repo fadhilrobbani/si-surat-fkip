@@ -250,7 +250,7 @@
         $surat->current_user_id == auth()->user()->id &&
             $surat->status == 'diproses' &&
             $surat->jenisSurat->user_type == 'staff')
-        <form action="{{ route('setujui-surat-staff-staff', $surat->id) }}" method="POST"
+        <form action="{{ route('setujui-surat-staff-staff-dekan', $surat->id) }}" method="POST"
             class="bg-slate-100 mt-4 p-2 rounded-lg w-full">
             @csrf
             @method('put')
@@ -284,9 +284,9 @@
 
             <div class="flex mt-8 justify-between flex-col sm:flex-row ">
                 <div class="flex flex-col gap-4 sm:flex-row">
-                    <a href="{{ route('preview-surat-staff', $surat->id) }}"><button type="button"
+                    <a href="{{ route('preview-surat-staff-dekan', $surat->id) }}"><button type="button"
                             class="text-white w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
-                    <a href="{{ route('edit-surat-staff', $surat->id) }}"><button type="button"
+                    <a href="{{ route('edit-surat-staff-dekan', $surat->id) }}"><button type="button"
                             class="text-white w-full p-2 m-2 bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button></a>
 
                 </div>
@@ -378,18 +378,22 @@
     @endif
     {{-- ACTION BAR UNTUK DETAIL RIWAYAT PENGAJUAN SURAT DARI STAFF DEKAN --}}
 
-    @if ($surat->status == 'selesai')
-        <a href="{{ route('preview-surat-staff-dekan', $surat->id) }}"> <button type="button"
-                class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button></a>
-    @else
-        <a href="{{ route('preview-surat-staff-dekan', $surat->id) }}"> <button type="button"
-                class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
-        <p class="italic text-slate-500">Surat akan resmi diterbitkan jika telah ditandatangani secara digital (QR
-            Code). Jika terdapat kesalahan dalam surat, silahkan
-            batalkan
-            pengajuan surat
-        </p>
+    @if (Route::is('show-detail-pengajuan-surat-staff-dekan'))
+        @if ($surat->status == 'selesai')
+            <a href="{{ route('preview-surat-staff-dekan', $surat->id) }}">
+                <button type="button"
+                    class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button>
+            </a>
+        @elseif($surat->pengaju_id != $surat->current_user_id)
+            <a href="{{ route('preview-surat-staff-dekan', $surat->id) }}">
+                <button type="button"
+                    class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button>
+            </a>
+            <p class="italic text-slate-500">Surat akan resmi diterbitkan jika telah ditandatangani secara digital (QR
+                Code). Jika terdapat kesalahan dalam surat, silahkan batalkan pengajuan surat</p>
+        @endif
     @endif
+
     </div>
     </form>
 

@@ -225,6 +225,16 @@ class StaffDekanController extends Controller
                     ->get()
             ]);
         }
+
+        if (($surat->jenisSurat->user_type == 'staff-dekan')) {
+
+            return view('staff-dekan.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 14)
+                    ->get()
+            ]);
+        }
     }
 
     public function setujuiSurat(Request $request, Surat $surat)

@@ -274,6 +274,17 @@ class DekanController extends Controller
                     ->get()
             ]);
         }
+
+        if (($surat->jenisSurat->user_type == 'staff-dekan')) {
+
+            return view('dekan.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->whereIn('role_id', [14])
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
     }
 
     // public function setujuiSurat(Request $request, Surat $surat)
@@ -327,6 +338,52 @@ class DekanController extends Controller
             } else {
                 $data = [
                     'private' => [
+                        'stepper' => [auth()->user()->role->id]
+                    ]
+                ];
+            }
+            $surat->data = $data;
+
+            $surat->save();
+
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => 'setuju',
+            ]);
+            return redirect('dekan/surat-masuk')->with('success', 'Surat berhasil disetujui');
+        }
+    }
+
+
+    public function setujuiSuratStaffDekan(Request $request, Surat $surat)
+    {
+
+
+        if ($surat->jenisSurat->slug == 'surat-keluar') {
+            $surat->current_user_id = $request->input('penerima');
+            $data = $surat->data;
+            if ($data) {
+                if (isset($data['private'])) {
+                    $data['private']['namaDekan'] =  auth()->user()->name;
+                    $data['private']['nipDekan'] =  auth()->user()->nip;
+                    $data['private']['deskripsiDekan'] =  auth()->user()->role->description;
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                } else {
+                    $data['private'] = [
+                        'namaDekan' =>  auth()->user()->name,
+                        'nipDekan' =>  auth()->user()->nip,
+                        'deskripsiDekan' =>  auth()->user()->role->description,
+                        'stepper' => [auth()->user()->role->id]
+                    ];
+                }
+            } else {
+                $data = [
+                    'private' => [
+                        'namaDekan' =>  auth()->user()->name,
+                        'nipDekan' =>  auth()->user()->nip,
+                        'deskripsiDekan' =>  auth()->user()->role->description,
                         'stepper' => [auth()->user()->role->id]
                     ]
                 ];

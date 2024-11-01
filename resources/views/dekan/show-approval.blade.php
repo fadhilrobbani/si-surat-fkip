@@ -78,7 +78,8 @@
                         <tr class="border-b border-gray-200 dark:border-gray-700">
                             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">
                                 {{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:&nbsp;</td>
-                            <td class="px-6 py-4">{{ $value }}</td>
+                            {{-- <td class="px-6 py-4">{{ $value }}</td> --}}
+                            <td class="px-6 py-4">{!! html_entity_decode($value) !!}</td>
                         </tr>
                     @endforeach
                     @if (isset($approval->surat->files))
@@ -130,6 +131,8 @@
         @elseif(
             ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas') ||
                 ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas-kelompok'))
+            <x-stepper-flexible :surat='$surat' />
+        @elseif($surat->jenisSurat->user_type == 'staff-dekan')
             <x-stepper-flexible :surat='$surat' />
         @endif
 

@@ -24,7 +24,7 @@
                         </div>
                         <input type="text" id="search" name="search"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Cari (NPM/Username)" value="{{ request()->get('search') }}">
+                            placeholder="Cari (Username)" value="{{ request()->get('search') }}">
                     </div>
                 </div>
             </div>
@@ -117,7 +117,7 @@
                         <tr>
                             <th scope="col" class="px-4 py-3">Foto</th>
                             <th scope="col" class="px-4 py-3">Nama</th>
-                            <th scope="col" class="px-4 py-3">NPM/Username</th>
+                            <th scope="col" class="px-4 py-3">Username</th>
                             <th scope="col" class="px-4 py-3">Program Studi</th>
                             <th scope="col" class="px-4 py-3">Surat yang Diajukan</th>
                             <th scope="col" class="px-4 py-3">Tanggal Diajukan</th>
@@ -146,7 +146,7 @@
                                 <td class="px-4 py-3">
                                     {{ $surat->jenisSurat->user_type == 'mahasiswa' ? $surat->data['npm'] : $surat->data['username'] }}
                                 </td>
-                                <td class="px-4 py-3">{{ $surat->data['programStudi'] }}</td>
+                                <td class="px-4 py-3">{{ $surat->data['programStudi'] ?? '-' }}</td>
                                 @php
                                     $jenisSurat = App\Models\JenisSurat::find($surat->jenis_surat_id);
                                 @endphp

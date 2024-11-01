@@ -167,6 +167,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/surat-masuk/show/{surat}', [DekanController::class, 'showSuratMasuk'])->name('show-surat-dekan');
         Route::put('/surat-disetujui/{surat}', [DekanController::class, 'setujuiSurat'])->name('setujui-surat-dekan');
         Route::put('/surat-staff-disetujui/{surat}', [DekanController::class, 'setujuiSuratStaff'])->name('setujui-surat-staff-dekan');
+        Route::put('/surat-staff-dekan-disetujui/{surat}', [DekanController::class, 'setujuiSuratStaffDekan'])->name('setujui-surat-staff-dekan-dekan');
         Route::get('/surat-ditolak/{surat}', [DekanController::class, 'confirmTolakSurat'])->name('confirm-tolak-surat-dekan');
         Route::put('/surat-ditolak/{surat}', [DekanController::class, 'tolakSurat'])->name('tolak-surat-dekan');
         Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-dekan');
