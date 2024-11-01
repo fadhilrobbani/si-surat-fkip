@@ -192,7 +192,7 @@ class StaffDekanController extends Controller
 
         return view('staff-dekan.surat-masuk', [
             'daftarSuratMasuk' => $daftarSuratMasuk,
-            'daftarJenisSurat' => JenisSurat::where('slug', '=', 'berita-acara-nilai')->get(),
+            'daftarJenisSurat' => JenisSurat::where('user_type', 'staff-dekan')->orWhere('user_type', 'staff')->get(),
             'daftarProgramStudi' => ProgramStudi::all(),
         ]);
     }
@@ -459,7 +459,7 @@ class StaffDekanController extends Controller
 
         return view('staff-dekan.riwayat-persetujuan', [
             'daftarRiwayatSurat' => $daftarRiwayatSurat,
-            'daftarJenisSurat' => JenisSurat::where('slug', 'berita-acara-nilai')->get(),
+            'daftarJenisSurat' => JenisSurat::where('user_type', 'staff-dekan')->orWhere('user_type', 'staff')->get(),
             'daftarStatus' => [true => 'Disetujui', false => 'Ditolak'],
         ]);
     }
@@ -592,7 +592,7 @@ class StaffDekanController extends Controller
 
         return view('staff-dekan.riwayat-pengajuan', [
             'daftarPengajuan' => $daftarPengajuan,
-            'daftarJenisSurat' => JenisSurat::where('user_type', '=', 'staff')->get(),
+            'daftarJenisSurat' => JenisSurat::where('user_type', '=', 'staff-dekan')->get(),
             'daftarStatus' => ['diproses', 'ditolak', 'selesai'],
 
         ]);

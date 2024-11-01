@@ -96,62 +96,7 @@
                 </div>
 
 
-                <button id="toggleLeftAlignButton" type="button" data-tooltip-target="tooltip-left-align"
-                    class="p-1.5 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                        height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 6h8m-8 4h12M6 14h8m-8 4h12" />
-                    </svg>
-                    <span class="sr-only">Align left</span>
-                </button>
-                <div id="tooltip-left-align" role="tooltip"
-                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                    Align left
-                    <div class="tooltip-arrow" data-popper-arrow></div>
-                </div>
-                <button id="toggleCenterAlignButton" type="button" data-tooltip-target="tooltip-center-align"
-                    class="p-1.5 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                        height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 6h8M6 10h12M8 14h8M6 18h12" />
-                    </svg>
-                    <span class="sr-only">Align center</span>
-                </button>
-                <div id="tooltip-center-align" role="tooltip"
-                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                    Align center
-                    <div class="tooltip-arrow" data-popper-arrow></div>
-                </div>
-                <button id="toggleRightAlignButton" type="button" data-tooltip-target="tooltip-right-align"
-                    class="p-1.5 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                        height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M18 6h-8m8 4H6m12 4h-8m8 4H6" />
-                    </svg>
-                    <span class="sr-only">Align right</span>
-                </button>
-                <div id="tooltip-right-align" role="tooltip"
-                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                    Align right
-                    <div class="tooltip-arrow" data-popper-arrow></div>
-                </div>
-                <button id="toggleJustifyButton" type="button" data-tooltip-target="tooltip-justify"
-                    class="p-1.5 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                        height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M18 6H6m12 4H6m12 4H6m12 4H6" />
-                    </svg>
-                    <span class="sr-only">Justify</span>
-                </button>
-                <div id="tooltip-justify" role="tooltip"
-                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                    Justify text
-                    <div class="tooltip-arrow" data-popper-arrow></div>
-                </div>
+
             </div>
         </div>
     </div>

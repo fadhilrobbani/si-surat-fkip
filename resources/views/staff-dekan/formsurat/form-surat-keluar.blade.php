@@ -24,17 +24,7 @@
                     },
                 ]);
 
-                // const form = document.querySelector('form');
-                // form.addEventListener('submit', function(event) {
-                //     const paragrafAwal = document.getElementById('wysiwyg-text-example')
-                //         .innerHTML; // Ambil isi editor paragraf awal
-                //     const paragrafAkhir = document.getElementById('wysiwyg-text-example2')
-                //         .innerHTML; // Ambil isi editor paragraf akhir
-                //     document.getElementById('paragraf-awal').value =
-                //         paragrafAwal; // Masukkan nilai ke hidden input
-                //     document.getElementById('paragraf-akhir').value =
-                //         paragrafAkhir; // Masukkan nilai ke hidden input
-                // });
+
 
                 const form = document.querySelector('form');
                 form.addEventListener('submit', function(event) {
@@ -54,11 +44,33 @@
                 });
 
 
+                // form.addEventListener('submit', function(event) {
+                //     // Cek status checkbox dan update hidden input sesuai dengan status
+                //     const checkbox = document.getElementById('jadwal-terlampir-checkbox');
+                //     const hiddenInput = document.getElementById('hidden-waktu');
+                //     const timeInput = document.getElementById('waktu');
+
+                //     if (checkbox.checked) {
+                //         hiddenInput.value = "Jadwal terlampir";
+                //     } else {
+                //         hiddenInput.value = timeInput.value;
+                //     }
+
+                //     // Ambil elemen paragraf dan masukkan nilainya ke hidden input
+                //     const paragrafAwalEl = document.getElementById('wysiwyg-text-example');
+                //     const paragrafAkhirEl = document.getElementById('wysiwyg-text-example2');
+                //     document.getElementById('paragraf-awal').value = Array.from(paragrafAwalEl.querySelectorAll(
+                //         'p')).map(p => p.innerHTML).join("\n");
+                //     document.getElementById('paragraf-akhir').value = Array.from(paragrafAkhirEl
+                //         .querySelectorAll('p')).map(p => p.innerHTML).join("\n");
+                // });
+
             });
 
             function toggleWaktuInput() {
                 const checkbox = document.getElementById('jadwal-terlampir-checkbox');
                 const timeInput = document.getElementById('waktu');
+
                 const hiddenInput = document.getElementById('hidden-waktu');
 
                 if (checkbox.checked) {
@@ -210,11 +222,11 @@
                     Kegiatan<span class="text-red-500">*</span></label>
                 <input type="date" id="tanggal-selesai-kegiatan"" name="tanggal-selesai-kegiatan""
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Pilih tanggal kapan kegiatan selesai" value="{{ old('tanggal-selesai-kegiatan"') }}"
+                    placeholder="Pilih tanggal kapan kegiatan selesai" value="{{ old('tanggal-selesai-kegiatan') }}"
                     required>
             </div>
 
-            <div class="">
+            <div>
                 <label for="waktu" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waktu
                     Kegiatan<span class="text-red-500">*</span></label>
                 <input type="time" id="waktu" name="waktu"
@@ -238,7 +250,7 @@
                     tidak akan ditulis di surat)</label>
             </div>
 
-            <input type="hidden" name="waktu" id="hidden-waktu" value="Jadwal terlampir">
+            <input type="hidden" name="waktu" id="hidden-waktu">
 
 
 
