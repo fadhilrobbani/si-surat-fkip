@@ -129,7 +129,7 @@
 
 
         <p class="font-semibold text-slate-500 text-md mx-auto mb-2">Header Surat:</p>
-        <div class="grid gap-6 mb-6 md:grid-cols-2">
+        <div class="grid gap-6 mb-6 md:grid-cols-2 bg-slate-100 p-4 rounded-lg">
             <div>
                 <label for="perihal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Perihal
                     Surat<span class="text-red-500">*</span></label>
@@ -170,7 +170,7 @@
             </div>
         </div>
         <p class="font-semibold text-slate-500 text-md mx-auto mb-2">Badan Surat:</p>
-        <div class="grid gap-6 mb-6 md:grid-cols-2 ">
+        <div class="grid gap-6 mb-2 md:grid-cols-2 bg-slate-100 p-4 rounded-lg ">
             <div class="md:col-span-2">
                 <label for="paragraf-awal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Paragraf
                     Awal (yang biasanya setelah salam)<span class="text-red-500">*</span></label>
@@ -188,7 +188,8 @@
                     to Get
                     HTML</button> --}}
             </div>
-
+        </div>
+        <div class="grid gap-6 mb-2 md:grid-cols-2 bg-slate-100 p-4 rounded-lg">
             <div class="mt-4">
                 <label for="tanggal-mulai-kegiatan"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Hari/tanggal
@@ -234,7 +235,8 @@
 
             <input type="hidden" name="waktu" id="hidden-waktu" value="{{ $surat->data['waktu'] }}">
 
-
+        </div>
+        <div class="grid gap-6 mb-6 md:grid-cols-2 bg-slate-100 p-4 rounded-lg">
 
 
             <div class="md:col-span-2 mt-4">

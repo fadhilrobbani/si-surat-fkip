@@ -11,81 +11,53 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
-    <main class="mt-10 flex flex-col justify-center items-center">
+<body class="bg-gray-100 text-gray-800 font-sans">
+    <main class="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
         <img class="w-28 mx-auto mb-5" src="{{ asset('images/logounib.png') }}" alt="logounib" />
 
-        <h1 class="mx-auto text-center font-bold">Halaman Validasi Keaslian Surat</h1>
-        <h1 class=" text-sm mt-0 text-slate-700  text-center mb-4 mx-auto">Dengan ini menyatakan bahwa surat ini adalah
-            asli atau resmi diterbitkan dari FKIP UNIB </h1>
+        <h1 class="text-2xl font-bold text-center text-blue-800">Halaman Validasi Keaslian Surat</h1>
+        <p class="text-center text-gray-700 mt-2 mb-6">Dengan ini menyatakan bahwa surat ini adalah asli atau resmi
+            diterbitkan dari FKIP UNIB</p>
 
-        <br>
-        <div class="flex flex-col gap-4 md:flex-row justify-evenly items-start">
-
-            <div class="relative overflow-x-auto shadow-lg sm:rounded-lg">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <tbody>
-
-                        <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Nama:&nbsp;
-                            </td>
-                            <td class="px-6 py-4">{{ $surat->data['nama'] }}
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Username:&nbsp;
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ isset($surat->data['npm']) ? $surat->data['npm'] : $surat->data['username'] }}
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Jenis Surat:&nbsp;
-                            </td>
-                            <td class="px-6 py-4">{{ $surat->jenisSurat->name }}
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Nomor Surat:&nbsp;
-                            </td>
-                            <td class="px-6 py-4">{{ $surat->data['noSurat'] }}
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Yang menandatangani:&nbsp;
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $surat->data['private']['namaWD1'] ?? ($surat->data['private']['namaWD'] ?? ($surat->data['private']['namaDekan'] ?? '(Nama tidak tersedia)')) }}
-                            </td>
-
-                        </tr>
-                        <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Surat
-                                Diterbitkan:&nbsp;
-                            </td>
-                            <td class="px-6 py-4">{{ $surat->data['tanggal_selesai'] }}
-                            </td>
-                        </tr>
-
-
-
-
-                    </tbody>
-                </table>
-            </div>
-
-
+        <div class="overflow-x-auto shadow-lg rounded-lg">
+            <table class="w-full text-sm text-left text-gray-700 bg-white">
+                <tbody>
+                    <tr class="border-b">
+                        <td class="px-4 py-3 font-semibold bg-gray-50">Nama:</td>
+                        <td class="px-4 py-3">{{ $surat->data['nama'] }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="px-4 py-3 font-semibold bg-gray-50">Username:</td>
+                        <td class="px-4 py-3">
+                            {{ isset($surat->data['npm']) ? $surat->data['npm'] : $surat->data['username'] }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="px-4 py-3 font-semibold bg-gray-50">Jenis Surat:</td>
+                        <td class="px-4 py-3">{{ $surat->jenisSurat->name }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="px-4 py-3 font-semibold bg-gray-50">Nomor Surat:</td>
+                        <td class="px-4 py-3">{{ $surat->data['noSurat'] }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="px-4 py-3 font-semibold bg-gray-50">Yang menandatangani:</td>
+                        <td class="px-4 py-3">
+                            {{ $surat->data['private']['namaWD1'] ?? ($surat->data['private']['namaWD'] ?? ($surat->data['private']['namaDekan'] ?? '(Nama tidak tersedia)')) }}
+                        </td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="px-4 py-3 font-semibold bg-gray-50">Tanggal Surat Diterbitkan:</td>
+                        <td class="px-4 py-3">{{ $surat->data['tanggal_selesai'] }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         @php
-            $url = URL::signedRoute('cetak-surat-qr', [
-                'surat' => $surat->id,
-            ]);
+            $url = URL::signedRoute('cetak-surat-qr', ['surat' => $surat->id]);
         @endphp
         <a href="{{ $url }}"
-            class="m-10 p-2 px-10 mt-4 text-white   text-center bg-blue-600 hover:bg-blue-700 rounded-lg"><button>Cetak</button></a>
-
-
+            class="block text-center mt-8 px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700">Cetak</a>
     </main>
 </body>
 

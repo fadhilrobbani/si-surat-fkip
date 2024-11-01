@@ -20,6 +20,7 @@ class UserAccess
             return $next($request);
         }
         // dd(auth()->user()->role_id . ' dan '    . $role_id);
-        return redirect()->back()->with('deleted', 'Anda tidak bisa mengakses halaman yang dituju. ini halaman ' . $role_id . ' sedangkan seharusnya ' . auth()->user()->role_id);
+        return redirect()->back()->with('deleted', 'Anda tidak bisa mengakses halaman yang dituju!');
+        // return redirect()->back()->with('deleted', 'Anda tidak bisa mengakses halaman yang dituju. ini halaman ' . $role_id . ' sedangkan seharusnya ' . auth()->user()->role_id);
     }
 }
