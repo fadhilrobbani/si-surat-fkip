@@ -67,21 +67,45 @@
 
             });
 
+            // function toggleWaktuInput() {
+            //     const checkbox = document.getElementById('jadwal-terlampir-checkbox');
+            //     const timeInput = document.getElementById('waktu');
+
+            //     const hiddenInput = document.getElementById('hidden-waktu');
+
+            //     if (checkbox.checked) {
+            //         timeInput.classList.add('hidden'); // Sembunyikan input waktu dengan menambahkan kelas 'hidden'
+            //         hiddenInput.value = "Jadwal terlampir"; // Set nilai tersembunyi menjadi "Jadwal terlampir"
+            //     } else {
+            //         timeInput.classList.remove('hidden'); // Tampilkan kembali input waktu dengan menghapus kelas 'hidden'
+            //         hiddenInput.value = timeInput
+            //             .value; // Set nilai tersembunyi menjadi nilai waktu jika checkbox tidak dicentang
+            //     }
+            // }
+
             function toggleWaktuInput() {
                 const checkbox = document.getElementById('jadwal-terlampir-checkbox');
                 const timeInput = document.getElementById('waktu');
-
                 const hiddenInput = document.getElementById('hidden-waktu');
 
                 if (checkbox.checked) {
-                    timeInput.classList.add('hidden'); // Sembunyikan input waktu dengan menambahkan kelas 'hidden'
-                    hiddenInput.value = "Jadwal terlampir"; // Set nilai tersembunyi menjadi "Jadwal terlampir"
+                    timeInput.classList.add('hidden');
+                    hiddenInput.value = "Jadwal terlampir";
                 } else {
-                    timeInput.classList.remove('hidden'); // Tampilkan kembali input waktu dengan menghapus kelas 'hidden'
-                    hiddenInput.value = timeInput
-                        .value; // Set nilai tersembunyi menjadi nilai waktu jika checkbox tidak dicentang
+                    timeInput.classList.remove('hidden');
+                    hiddenInput.value = timeInput.value;
                 }
             }
+
+            // Tambahkan event listener ke input waktu untuk memperbarui hidden-waktu saat berubah
+            document.getElementById('waktu').addEventListener('change', function() {
+                const checkbox = document.getElementById('jadwal-terlampir-checkbox');
+                const hiddenInput = document.getElementById('hidden-waktu');
+
+                if (!checkbox.checked) {
+                    hiddenInput.value = this.value; // Perbarui nilai hidden-waktu
+                }
+            });
         </script>
     </x-slot:script>
     {{-- <x-breadcumb /> --}}
@@ -231,7 +255,7 @@
                     Kegiatan<span class="text-red-500">*</span></label>
                 <input type="time" id="waktu" name="waktu"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Pilih waktu kapan kegiatan dilaksanakan" value="{{ old('waktu') }}" required>
+                    placeholder="Pilih waktu kapan kegiatan dilaksanakan" value="{{ old('waktu') }}">
             </div>
 
 
