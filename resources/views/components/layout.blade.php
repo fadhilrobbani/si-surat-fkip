@@ -68,7 +68,7 @@
                                         <path
                                             d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
                                     </svg>
-                                    Dasbor
+                                    Dashboard
                                 </a>
                             </li>
                             <li>
@@ -107,7 +107,7 @@
             // 'admin' => [
             //     [
             //         'link' => 'admin',
-            //         'title' => 'Dasbor',
+            //         'title' => 'Dashboard',
             //         'icon' => asset('svg/piechart.svg'),
             //         'dropdown' => [],
             //     ],
@@ -154,7 +154,7 @@
             'mahasiswa' => [
                 [
                     'link' => 'mahasiswa',
-                    'title' => 'Dasbor',
+                    'title' => 'Dashboard',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -180,7 +180,7 @@
             'staff' => [
                 [
                     'link' => 'staff',
-                    'title' => 'Dasbor',
+                    'title' => 'Dashboard',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -218,7 +218,7 @@
             'kaprodi' => [
                 [
                     'link' => 'kaprodi',
-                    'title' => 'Dasbor',
+                    'title' => 'Dashboard',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -244,7 +244,7 @@
             'dekan' => [
                 [
                     'link' => 'dekan',
-                    'title' => 'Dasbor',
+                    'title' => 'Dashboard',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -270,7 +270,7 @@
             'wd' => [
                 [
                     'link' => 'wd',
-                    'title' => 'Dasbor',
+                    'title' => 'Dashboard',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -296,7 +296,7 @@
             'wd2' => [
                 [
                     'link' => 'wd2',
-                    'title' => 'Dasbor',
+                    'title' => 'Dashboard',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -322,7 +322,7 @@
             'wd3' => [
                 [
                     'link' => 'wd3',
-                    'title' => 'Dasbor',
+                    'title' => 'Dashboard',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -348,7 +348,7 @@
             'akademik' => [
                 [
                     'link' => 'akademik',
-                    'title' => 'Dasbor',
+                    'title' => 'Dashboard',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -374,7 +374,7 @@
             'staffNilai' => [
                 [
                     'link' => 'staff-nilai',
-                    'title' => 'Dasbor',
+                    'title' => 'Dashboard',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -400,7 +400,7 @@
             'staffWD1' => [
                 [
                     'link' => 'staff-wd1',
-                    'title' => 'Dasbor',
+                    'title' => 'Dashboard',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -426,7 +426,7 @@
             'staffWD2' => [
                 [
                     'link' => 'staff-wd2',
-                    'title' => 'Dasbor',
+                    'title' => 'Dashboard',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -452,7 +452,7 @@
             'staffWD3' => [
                 [
                     'link' => 'staff-wd3',
-                    'title' => 'Dasbor',
+                    'title' => 'Dashboard',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
@@ -478,7 +478,7 @@
             'staffDekan' => [
                 [
                     'link' => 'staff-dekan',
-                    'title' => 'Dasbor',
+                    'title' => 'Dashboard',
                     'icon' => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
