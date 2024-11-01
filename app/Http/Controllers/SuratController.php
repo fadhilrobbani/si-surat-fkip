@@ -705,14 +705,15 @@ class SuratController extends Controller
             $surat->data = [
                 'private' => [
                     'stepper' => [auth()->user()->role->id],
-                    // 'waktuMulaiPenugasan' => $request->input('waktu-mulai-penugasan'),
-                    // 'waktuSelesaiPenugasan' => $request->input('waktu-selesai-penugasan'),
+                    'tanggalMulaiKegiatan' => $request->input('tanggal-mulai-kegiatan'),
+                    'tanggalSelesaiKegiatan' => $request->input('tanggal-selesai-kegiatan'),
                 ],
                 'nama' => $request->input('name'),
                 'username' => $request->input('username'),
                 'email' => $request->input('email'),
                 'perihal' => $request->input('perihal'),
                 'jumlahLampiran' => $request->input('jumlah-lampiran'),
+                'lampiran' => 'file|mimes:jpeg,png,jpg,pdf|max:10240',
                 'tujuan1' => $request->input('tujuan1'),
                 'tujuan2' => $request->input('tujuan2'),
                 'tujuan3' => $request->input('tujuan3'),
@@ -724,15 +725,13 @@ class SuratController extends Controller
 
 
             ];
-            if ($request->hasFile('lampiran')) {
-                $request->validate([
-                    'lampiran' => 'file|mimes:jpeg,png,jpg,pdf|max:10240',
-                ]);
 
+            if ($request->hasFile('lampiran')) {
                 $surat->files = [
                     'lampiran' => $request->file('lampiran')->store('lampiran')
                 ];
             }
+
 
             $surat->save();
             return redirect('/staff-dekan/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
@@ -944,6 +943,15 @@ class SuratController extends Controller
                 'surat' => $surat,
             ]);
         }
+
+        if ($surat->jenisSurat->slug == 'surat-keluar') {
+            $viewPrefix = auth()->user()->role->name;
+            $viewName = "{$viewPrefix}.formsurat.edit-form-surat-keluar";
+            // dd($viewName);
+            return view($viewName, [
+                'surat' => $surat,
+            ]);
+        }
         return redirect()->back()->with('deleted', 'Jenis Surat ini tidak dapat diedit');
     }
 
@@ -1047,6 +1055,55 @@ class SuratController extends Controller
             // Simpan data yang diperbarui ke database
             $updatedSurat->save();
         }
+
+        if ($surat->jenisSurat->slug == 'surat-keluar') {
+            // dd($request->all());
+
+
+            $newData = $request->validate([
+                'perihal' => 'required',
+                'jumlah-lampiran' => 'required|integer',
+                'tujuan1' => 'required',
+                'tujuan2' => '',
+                'tujuan3' => '',
+                'paragraf-awal' => 'required',
+                'tanggal-mulai-kegiatan' => 'required|date',
+                'tanggal-selesai-kegiatan' => 'required|date',
+                'waktu' => 'required',
+                'tempat' => 'required',
+                'paragraf-akhir' => 'required',
+            ]);
+
+
+
+
+            $updatedSurat = Surat::find($surat->id);
+
+            // Dekode data JSON
+            $data = $surat->data;
+
+            // Perbarui atribut yang diinginkan dalam array data
+            $data['perihal'] = $newData['perihal'];
+            $data['jumlahLampiran'] = $newData['jumlah-lampiran'];
+            $data['tujuan1'] = $newData['tujuan1'];
+            $data['tujuan2'] = $newData['tujuan2'];
+            $data['tujuan3'] = $newData['tujuan3'];
+            $data['paragrafAwal'] = $newData['paragraf-awal'];
+            $data['private']['tanggalMulaiKegiatan'] = $newData['tanggal-mulai-kegiatan'];
+            $data['private']['tanggalSelesaiKegiatan'] = $newData['tanggal-selesai-kegiatan'];
+            $data['tanggalPelaksanaan'] = formatTimestampToDayIndonesian($newData['tanggal-mulai-kegiatan']) . ' .s.d. ' . formatTimestampToDayIndonesian($newData['tanggal-selesai-kegiatan']) . ', ' . formatTimestampToOnlyDateIndonesian($newData['tanggal-mulai-kegiatan']) . ' .s.d. ' . formatTimestampToOnlyDateIndonesian($newData['tanggal-selesai-kegiatan']);
+            $data['waktu'] = $newData['waktu'];
+            $data['tempat'] = $newData['tempat'];
+            $data['paragrafAkhir'] = $newData['paragraf-akhir'];
+
+
+            // Encode kembali data menjadi JSON
+            $updatedSurat->data = $data;
+
+            // Simpan data yang diperbarui ke database
+            $updatedSurat->save();
+        }
+
         $routePrefix = auth()->user()->role->name;
         $routeName = "show-surat-{$routePrefix}";
         return redirect(route($routeName, $surat->id))->with('success', 'Berhasil memperbarui surat');
