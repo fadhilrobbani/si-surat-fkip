@@ -8,6 +8,17 @@
     <x-slot:script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
+
+                // Mengecek nilai waktu dan mengatur checkbox dan input waktu
+                const waktuInput = document.getElementById("waktu");
+                const jadwalCheckbox = document.getElementById("jadwal-terlampir-checkbox");
+                const hiddenInput = document.getElementById("hidden-waktu");
+
+                if (hiddenInput.value == "Jadwal terlampir") {
+                    jadwalCheckbox.checked = true;
+                    waktuInput.classList.add('hidden'); // Sembunyikan input waktu
+                }
+
                 const paragrafAwal = document.getElementById("paragraf-awal").value;
                 const paragrafAkhir = document.getElementById("paragraf-akhir").value;
                 window.setupEditors([{
