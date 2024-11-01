@@ -242,7 +242,8 @@
             <div class="md:col-span-2 mt-4">
                 <label for="paragraf-akhir"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Paragraf
-                    Awal (yang biasanya setelah salam)<span class="text-red-500">*</span></label>
+                    Bagian Akhir (yang biasanya setelah data informasi surat di atas, termasuk kalimat penutup)<span
+                        class="text-red-500">*</span></label>
                 <label for="paragraf-akhir"
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Silahkan edit contoh
                     paragraf berikut</label>
