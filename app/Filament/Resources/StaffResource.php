@@ -45,12 +45,12 @@ class StaffResource extends Resource
 
                     TextInput::make('username')
                         ->placeholder('Username')
-                        ->unique(ignorable: fn ($record) => $record)
+                        ->unique(ignorable: fn($record) => $record)
                         ->alphaDash()
                         ->required(),
                     TextInput::make('email')
                         ->email()
-                        ->unique(ignorable: fn ($record) => $record)
+                        ->unique(ignorable: fn($record) => $record)
                         ->placeholder('email@example.com')
                         ->required(),
                     TextInput::make('name')
@@ -67,14 +67,14 @@ class StaffResource extends Resource
                         ->label('Kata sandi baru')
                         ->placeholder('********')
                         ->confirmed()
-                        ->dehydrated(fn (?string $state): bool => filled($state))
-                        ->required(fn (string $operation): bool => $operation === 'create'),
+                        ->dehydrated(fn(?string $state): bool => filled($state))
+                        ->required(fn(string $operation): bool => $operation === 'create'),
                     TextInput::make('password_confirmation')
                         ->label('Konfirmasi kata sandi baru')
                         ->placeholder('********')
                         ->password()
-                        ->dehydrated(fn (?string $state): bool => filled($state))
-                        ->required(fn (string $operation): bool => $operation === 'create'),
+                        ->dehydrated(fn(?string $state): bool => filled($state))
+                        ->required(fn(string $operation): bool => $operation === 'create'),
 
                 ])->columns(2),
 
@@ -129,22 +129,22 @@ class StaffResource extends Resource
                         return $query
                             ->when(
                                 $data['created_from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
                             )
                             ->when(
                                 $data['created_until'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
                     })
             ])
 
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
             ->emptyStateActions([
