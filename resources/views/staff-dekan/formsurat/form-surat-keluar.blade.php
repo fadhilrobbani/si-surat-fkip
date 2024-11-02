@@ -192,21 +192,31 @@
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Pilih tanggal kapan kegiatan selesai" value="{{ old('tanggal-selesai-kegiatan') }}">
             </div>
-            <div>
+            <div id="waktu-container">
                 <label for="waktu" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waktu Mulai
                     dalam WIB
                     <span class="text-red-500">*</span></label>
                 <input type="time" id="waktu" name="waktu"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Pilih waktu kapan kegiatan dilaksanakan" value="{{ old('waktu') }}">
+                <span class="text-pink-500 text-xs underline
+                 cursor-pointer"
+                    onclick="document.getElementById('waktu').value='';" title="Reset waktu">Klik di sini untuk
+                    reset waktu
+                    mulai</span>
             </div>
-            <div>
+            <div id="waktu-selesai-container">
                 <label for="waktu-selesai" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waktu
                     Selesai dalam WIB (Opsional, jika dikosongkan maka akan ditulis s.d selesai)</label>
                 <input type="time" id="waktu-selesai" name="waktu-selesai"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Pilih waktu kapan kegiatan selesai dilaksanakan" value="{{ old('waktu-selesai') }}">
+                <span class="text-pink-500 text-xs underline cursor-pointer"
+                    onclick="document.getElementById('waktu-selesai').value='';" title="Reset waktu">Klik di sini
+                    untuk reset waktu
+                    selesai</span>
             </div>
+
             <div class="flex items-center mt-[-16px]">
                 <input type="checkbox" id="jadwal-terlampir-checkbox" class="mr-2" onchange="toggleWaktuInput()">
                 <label for="jadwal-terlampir-checkbox"
