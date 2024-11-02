@@ -15,7 +15,7 @@
 
         <div class="flex flex-col md:flex-row gap-10 w-full justify-evenly">
             <div class="w-full overflow-x-auto shadow-lg sm:rounded-lg">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-700 dark:text-gray-400">
                     <tbody>
                         <tr class="border-b border-gray-200 dark:border-gray-700">
 
