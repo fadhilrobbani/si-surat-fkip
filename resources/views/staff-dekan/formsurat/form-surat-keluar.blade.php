@@ -13,7 +13,7 @@
                 window.setupEditors([{
                         elementId: "wysiwyg-text-example",
                         content: (paragrafAwal ? paragrafAwal :
-                            'Sehubungan akan dilaksanakan kegiatan Diklat Literasi dan Numerasi bagi Guru Pamong Pendidikan Profesi Guru FKIP Universitas Bengkulu, maka bersama ini kami mohon bantuan Bapak/Ibu mengirimkan narasumber untuk kegiatan tersebut. Kegiatan ini akan dilaksanakan pada:'
+                            'Dengan hormat,<br>Sehubungan akan dilaksanakan kegiatan Diklat Literasi dan Numerasi bagi Guru Pamong Pendidikan Profesi Guru FKIP Universitas Bengkulu, maka bersama ini kami mohon bantuan Bapak/Ibu mengirimkan narasumber untuk kegiatan tersebut. Kegiatan ini akan dilaksanakan pada:'
                         ),
                     },
                     {
@@ -161,7 +161,7 @@
         <div class="grid gap-6 mb-2 md:grid-cols-2 bg-slate-100 p-4 rounded-lg ">
             <div class="md:col-span-2">
                 <label for="paragraf-awal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Paragraf
-                    Awal (yang biasanya setelah salam)<span class="text-red-500">*</span></label>
+                    Awal (termasuk salam)<span class="text-red-500">*</span></label>
                 <label for="paragraf-awal"
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Silahkan edit contoh
                     paragraf berikut</label>
