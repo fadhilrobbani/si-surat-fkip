@@ -23,7 +23,7 @@
     <div class="flex flex-col gap-4 md:flex-row justify-evenly items-start">
 
         <div class="w-full overflow-x-auto shadow-lg sm:rounded-lg">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-700 dark:text-gray-400">
                 <tbody>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
 
@@ -136,7 +136,7 @@
                                     <?php
                                     $path = public_path('storage/lampiran/' . basename($value));
                                     $filename = pathInfo(basename($value), PATHINFO_FILENAME);
-                                    
+
                                     if (!empty($path) && file_exists($path)) {
                                         $mimeType = str_replace('/', '-', mime_content_type($path));
                                     } else {

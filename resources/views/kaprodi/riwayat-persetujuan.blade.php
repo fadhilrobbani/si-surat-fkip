@@ -114,7 +114,7 @@
         @else
             <div class="w-full overflow-x-auto">
 
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <table class="w-full text-sm text-left text-gray-700 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="px-4 py-3">Foto</th>
@@ -133,7 +133,10 @@
                     <tbody>
                         @foreach ($daftarRiwayatSurat as $riwayatSurat)
                             @php
-                                $avatar = 'https://ui-avatars.com/api/?name=' . $riwayatSurat->surat->data['nama'] . '&background=random';
+                                $avatar =
+                                    'https://ui-avatars.com/api/?name=' .
+                                    $riwayatSurat->surat->data['nama'] .
+                                    '&background=random';
                             @endphp
                             <tr class=" border-b dark:border-gray-700 hover:bg-slate-100">
                                 <th scope="row"
