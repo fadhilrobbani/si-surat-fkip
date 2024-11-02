@@ -549,7 +549,7 @@
 
 
     <div class="p-6 sm:ml-64">
-        <div class="p-4 relative bg-white border-[2px] border-dotted border-slate-200 overflow-x-hidden rounded-xl dark:border-gray-700 mt-14"
+        <div class="p-4 relative bg-white border-[2px] border-dashed border-slate-200 overflow-x-hidden rounded-xl dark:border-gray-700 mt-14"
             style="min-height: calc(100vh - 90px);">
             {{ $slot }}
         </div>
