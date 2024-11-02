@@ -72,6 +72,189 @@
         </a>
     </div>
 
+    <div class="flex items-center justify-center flex-col gap-4 h-full p-4 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+        <p class="font-semibold  text-slate-600 text-lg">F.A.Q</p>
+
+        <div id="accordion-color " class="w-full" data-accordion="collapse"
+            data-active-classes="bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-white">
+            <h2 id="accordion-color-heading-1">
+                <button type="button"
+                    class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800"
+                    data-accordion-target="#accordion-color-body-1" aria-expanded="true"
+                    aria-controls="accordion-color-body-1">
+                    <span>Bagaimana cara mengajukan surat?</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5 5 1 1 5" />
+                    </svg>
+                </button>
+            </h2>
+            <div id="accordion-color-body-1" class="hidden" aria-labelledby="accordion-color-heading-1">
+                <div class="p-5 border border-b-0 w-full border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                    <ol class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
+                        <li>
+                            Buka tab <a class="underline"
+                                href="{{ '/' . auth()->user()->role->name . '/pengajuan-surat' }}">Pengajuan Surat</a>
+                        </li>
+                        <li>
+                            Pilih surat yang ingin diajukan. Lalu tekan tombol "Selanjutnya"
+                        </li>
+                        <li>
+                            Isi form yang disediakan beserta persyaratannya seperti lampiran file jika diperlukan. Jika
+                            sudah tekan tombol Ajukan Surat. Lalu pilih tujuan kirim yang tersedia
+                        </li>
+                        <li>
+                            Surat berhasil diajukan
+                        </li>
+                        <li>
+                            Anda dapat mereview dan melihat surat di halaman <a class="underline"
+                                href="{{ '/' . auth()->user()->role->name . '/riwayat-pengajuan-surat' }}">Riwayat
+                                Pengajuan</a>
+                        </li>
+
+                    </ol>
+
+                </div>
+            </div>
+            <h2 id="accordion-color-heading-2">
+                <button type="button"
+                    class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800"
+                    data-accordion-target="#accordion-color-body-2" aria-expanded="false"
+                    aria-controls="accordion-color-body-2">
+                    <span>Apa yang harus saya lakukan saat surat berhasil diajukan?</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5 5 1 1 5" />
+                    </svg>
+                </button>
+            </h2>
+            <div id="accordion-color-body-2" class="hidden" aria-labelledby="accordion-color-heading-2">
+                <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
+                    <p class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
+                        Anda cukup menunggu hingga surat yang diajukan disetujui oleh semua yang terkait. Untuk melihat
+                        proses dan riwayat pengajuan, Anda bisa lihat di menu <a class="underline"
+                            href="{{ '/' . auth()->user()->role->name . '/riwayat-pengajuan-surat' }}">Riwayat
+                            Pengajuan</a>. Anda dapat melihat detail
+                        surat yang anda ajukan dengan menekan tombol lihat atau membatalkan surat dengan tombol batal
+                        jika terjadi kesalahan. Surat yang dibatalkan tidak akan diteruskan lagi.
+                    </p>
+
+                </div>
+            </div>
+            <h2 id="accordion-color-heading-3">
+                <button type="button"
+                    class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800"
+                    data-accordion-target="#accordion-color-body-3" aria-expanded="false"
+                    aria-controls="accordion-color-body-3">
+                    <span>Apa maksud status diproses, ditolak, selesai, dan expired pada surat?</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5 5 1 1 5" />
+                    </svg>
+                </button>
+            </h2>
+            <div id="accordion-color-body-3" class="hidden" aria-labelledby="accordion-color-heading-3">
+                <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
+                    <ul class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
+                        <li>
+                            Status diproses berarti surat sedang dalam proses menunggu untuk disetujui oleh semua
+                            pihak
+                        </li>
+                        <li>
+                            Status ditolak berarti surat ditolak oleh salah satu pihak yang artinya surat tidak dapat
+                            diteruskan lagi. Anda dapat melihat alasan penolakan dan siapa yang menolak di detail lihat
+                            surat.
+                        </li>
+                        <li>
+                            Status selesai berarti surat sudah disetujui oleh semua pihak. Surat yang anda ajukan akan
+                            dikirim ke email Anda. Anda juga dapat mencetaknya di detail lihat surat.
+                        </li>
+                        <li>
+                            Status expired berarti surat sudah melewati masa aktif pengajuan. Artinya surat tidak dapat
+                            diteruskan lagi
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+            <h2 id="accordion-color-heading-4">
+                <button type="button"
+                    class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800"
+                    data-accordion-target="#accordion-color-body-4" aria-expanded="false"
+                    aria-controls="accordion-color-body-4">
+                    <span>Apa yang harus saya lakukan jika surat ditolak?</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5 5 1 1 5" />
+                    </svg>
+                </button>
+            </h2>
+            <div id="accordion-color-body-4" class="hidden" aria-labelledby="accordion-color-heading-4">
+                <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
+                    <p class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
+                        Anda dapat melihat alasan mengapa surat anda ditolak di detail lihat riwayat pengajuan surat.
+                        Anda dapat mengajukan surat kembali mengikuti saran dari alasan penolakan tersebut
+                    </p>
+
+                </div>
+            </div>
+            <h2 id="accordion-color-heading-5">
+                <button type="button"
+                    class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800"
+                    data-accordion-target="#accordion-color-body-5" aria-expanded="false"
+                    aria-controls="accordion-color-body-5">
+                    <span>Bagaimana cara mengetahui surat saya sudah disetujui dan di mana saya dapat
+                        mencetaknya?</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5 5 1 1 5" />
+                    </svg>
+                </button>
+            </h2>
+            <div id="accordion-color-body-5" class="hidden" aria-labelledby="accordion-color-heading-5">
+                <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
+                    <p class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
+                        Kami akan mengirimkan pesan bahwa surat Anda telah disetujui melalui email yang Anda daftarkan.
+                        Anda juga dapat melihat surat yang disetujui dengan melihat status "selesai" pada surat. File
+                        surat dapat dicetak manual di lihat riwayat pengajuan.
+                        Surat yang telah resmi diterbitkan akan mempunyai tanda tangan digital berupa QR Code
+                    </p>
+
+                </div>
+            </div>
+            <h2 id="accordion-color-heading-6">
+                <button type="button"
+                    class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800"
+                    data-accordion-target="#accordion-color-body-6" aria-expanded="false"
+                    aria-controls="accordion-color-body-6">
+                    <span>Saya tidak menerima email, apa yang harus dilakukan?</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5 5 1 1 5" />
+                    </svg>
+                </button>
+            </h2>
+            <div id="accordion-color-body-6" class="hidden" aria-labelledby="accordion-color-heading-6">
+                <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
+                    <p class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
+                        Silahkan cek bagian spam pada email yang anda gunakan. Beri tanda juga pada email bahwa email
+                        yang kami berikan bukan sebagai spam, agar kedepannya email yang kami kirimkan tidak menjadi
+                        spam.
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+
+
     </div>
 
 </x-layout>

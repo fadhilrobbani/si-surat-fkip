@@ -8,7 +8,16 @@
     <x-slot:title>
         Staff | Detail Surat
     </x-slot:title>
-    {{ Breadcrumbs::render('staff-show-pengajuan-surat', $surat) }}
+    @php
+        $urlPath = request()->path();
+    @endphp
+
+    @if (strpos($urlPath, 'surat-masuk') !== false)
+        {{ Breadcrumbs::render('detail-surat-masuk', $surat) }}
+    @else
+        {{ Breadcrumbs::render('staff-show-pengajuan-surat', $surat) }}
+    @endif
+
     <h1 class="mx-auto text-center font-bold">{{ $surat->jenisSurat->name }}</h1>
     <br>
     <div class="flex flex-col gap-4 md:flex-row justify-evenly items-start">
