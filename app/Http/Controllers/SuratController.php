@@ -678,6 +678,8 @@ class SuratController extends Controller
     {
         if ($jenisSurat->slug == 'surat-keluar') {
 
+
+
             $request->validate([
                 'name' => 'required',
                 'username' => 'required',
@@ -690,11 +692,11 @@ class SuratController extends Controller
                 'tujuan3' => '',
                 'paragraf-awal' => 'required',
                 'tanggal-mulai-kegiatan' => 'required|date',
-                'tanggal-selesai-kegiatan' => 'required|date',
                 'waktu' => 'required',
                 'tempat' => 'required',
                 'paragraf-akhir' => 'required',
             ]);
+
 
             $surat = new Surat;
             $surat->pengaju_id = auth()->user()->id;
@@ -706,7 +708,10 @@ class SuratController extends Controller
                 'private' => [
                     'stepper' => [auth()->user()->role->id],
                     'tanggalMulaiKegiatan' => $request->input('tanggal-mulai-kegiatan'),
-                    'tanggalSelesaiKegiatan' => $request->input('tanggal-selesai-kegiatan'),
+                    'tanggalSelesaiKegiatan' => $request->input('tanggal-selesai-kegiatan') ?? '',
+                    'waktuMulaiKegiatan' => $request->input('waktu'),
+                    'waktuSelesaiKegiatan' => $request->input('waktu-selesai')
+
                 ],
                 'nama' => $request->input('name'),
                 'username' => $request->input('username'),
@@ -718,8 +723,13 @@ class SuratController extends Controller
                 'tujuan2' => $request->input('tujuan2'),
                 'tujuan3' => $request->input('tujuan3'),
                 'paragrafAwal' => $request->input('paragraf-awal'),
-                'tanggalPelaksanaan' => formatTimestampToDayIndonesian($request->input('tanggal-mulai-kegiatan')) . ' .s.d. ' . formatTimestampToDayIndonesian($request->input('tanggal-selesai-kegiatan')) . ', ' . formatTimestampToOnlyDateIndonesian($request->input('tanggal-mulai-kegiatan')) . ' .s.d. ' . formatTimestampToOnlyDateIndonesian($request->input('tanggal-selesai-kegiatan')),
-                'waktu' => $request->input('waktu'),
+                'tanggalPelaksanaan' => $request->has('tanggal-selesai-kegiatan') && !empty($request->input('tanggal-selesai-kegiatan')) ? formatTimestampToDayIndonesian($request->input('tanggal-mulai-kegiatan')) . ' .s.d. ' . formatTimestampToDayIndonesian($request->input('tanggal-selesai-kegiatan')) . ', ' . formatTimestampToOnlyDateIndonesian($request->input('tanggal-mulai-kegiatan')) . ' .s.d. ' . formatTimestampToOnlyDateIndonesian($request->input('tanggal-selesai-kegiatan')) : formatTimestampToDateIndonesian($request->input('tanggal-mulai-kegiatan')),
+                'waktu' => $request->input('waktu') == 'Jadwal terlampir'
+                    ? $request->input('waktu')
+                    : ($request->has('waktu-selesai') && !empty($request->input('waktu-selesai'))
+                        ? $request->input('waktu') . ' WIB .s.d. ' . $request->input('waktu-selesai') . ' WIB'
+                        : $request->input('waktu') . ' WIB' . ' s.d. ' . 'selesai'),
+
                 'tempat' => $request->input('tempat'),
                 'paragrafAkhir' => $request->input('paragraf-akhir'),
 
@@ -1064,16 +1074,14 @@ class SuratController extends Controller
                 'perihal' => 'required',
                 'jumlah-lampiran' => 'required|integer',
                 'tujuan1' => 'required',
-                'tujuan2' => '',
-                'tujuan3' => '',
-                'paragraf-awal' => 'required',
+                'tujuan2' => 'nullable|string', // Use 'nullable' instead of '' for optional fields
+                'tujuan3' => 'nullable|string',
+                'paragraf-awal' => 'required|string',
                 'tanggal-mulai-kegiatan' => 'required|date',
-                'tanggal-selesai-kegiatan' => 'required|date',
-                'waktu' => 'required',
-                'tempat' => 'required',
-                'paragraf-akhir' => 'required',
+                'waktu' => 'required', // Ensure 'waktu' is in HH:MM format
+                'tempat' => 'required|string',
+                'paragraf-akhir' => 'required|string',
             ]);
-
 
 
 
@@ -1090,9 +1098,42 @@ class SuratController extends Controller
             $data['tujuan3'] = $newData['tujuan3'];
             $data['paragrafAwal'] = $newData['paragraf-awal'];
             $data['private']['tanggalMulaiKegiatan'] = $newData['tanggal-mulai-kegiatan'];
-            $data['private']['tanggalSelesaiKegiatan'] = $newData['tanggal-selesai-kegiatan'];
-            $data['tanggalPelaksanaan'] = formatTimestampToDayIndonesian($newData['tanggal-mulai-kegiatan']) . ' .s.d. ' . formatTimestampToDayIndonesian($newData['tanggal-selesai-kegiatan']) . ', ' . formatTimestampToOnlyDateIndonesian($newData['tanggal-mulai-kegiatan']) . ' .s.d. ' . formatTimestampToOnlyDateIndonesian($newData['tanggal-selesai-kegiatan']);
-            $data['waktu'] = $newData['waktu'];
+
+            // Validate `tanggal-selesai-kegiatan` if it exists
+            if (!empty($request->input('tanggal-selesai-kegiatan') && $request->has('tanggal-selesai-kegiatan'))) {
+                $request->validate([
+                    'tanggal-selesai-kegiatan' => 'date|after_or_equal:tanggal-mulai-kegiatan', // Ensure it is a date and after the start date
+                ]);
+                $newData['tanggal-selesai-kegiatan'] = $request->input('tanggal-selesai-kegiatan');
+                $data['private']['tanggalSelesaiKegiatan'] = $newData['tanggal-selesai-kegiatan'];
+                $data['tanggalPelaksanaan'] = formatTimestampToDayIndonesian($newData['tanggal-mulai-kegiatan']) . ' .s.d. ' . formatTimestampToDayIndonesian($newData['tanggal-selesai-kegiatan']) . ', ' . formatTimestampToOnlyDateIndonesian($newData['tanggal-mulai-kegiatan']) . ' .s.d. ' . formatTimestampToOnlyDateIndonesian($newData['tanggal-selesai-kegiatan']);
+            } else {
+                $data['tanggalPelaksanaan'] = formatTimestampToDateIndonesian($newData['tanggal-mulai-kegiatan']);
+            }
+
+
+
+
+            // Validate `waktu-selesai` if it exists
+            if ($request->input('waktu') == "Jadwal terlampir") {
+                $data['waktu'] = $newData['waktu'];
+                $data['private']['waktuMulaiKegiatan'] = 'Jadwal terlampir';
+                $data['private']['waktuSelesaiKegiatan'] = '';
+            } elseif (!empty($request->input('waktu-selesai')) && $request->has('waktu-selesai')) {
+                $request->validate([
+                    'waktu-selesai' => 'date_format:H:i|after:waktu', // Pastikan format HH:MM dan setelah waktu mulai
+                ]);
+                $newData['waktu-selesai'] = $request->input('waktu-selesai');
+                $data['private']['waktuMulaiKegiatan'] = $newData['waktu'];
+                $data['private']['waktuSelesaiKegiatan'] = $newData['waktu-selesai'];
+                $data['waktu'] = $newData['waktu']  . ' WIB' . ' s.d. ' . $newData['waktu-selesai'] . ' WIB'; // Menambahkan WIB di akhir
+            } else {
+                $data['waktu'] = $newData['waktu'] . ' WIB' . ' s.d. ' . 'selesai'; // Menambahkan WIB di akhir jika tidak ada waktu selesai
+                $data['private']['waktuMulaiKegiatan'] = $newData['waktu'];
+                $data['private']['waktuSelesaiKegiatan'] = '';
+            }
+
+
             $data['tempat'] = $newData['tempat'];
             $data['paragrafAkhir'] = $newData['paragraf-akhir'];
 

@@ -8,17 +8,6 @@
     <x-slot:script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-
-                // Mengecek nilai waktu dan mengatur checkbox dan input waktu
-                const waktuInput = document.getElementById("waktu");
-                const jadwalCheckbox = document.getElementById("jadwal-terlampir-checkbox");
-                const hiddenInput = document.getElementById("hidden-waktu");
-
-                if (hiddenInput.value == "Jadwal terlampir") {
-                    jadwalCheckbox.checked = true;
-                    waktuInput.classList.add('hidden'); // Sembunyikan input waktu
-                }
-
                 const paragrafAwal = document.getElementById("paragraf-awal").value;
                 const paragrafAkhir = document.getElementById("paragraf-akhir").value;
                 window.setupEditors([{
@@ -35,89 +24,66 @@
                     },
                 ]);
 
-
-
                 const form = document.querySelector('form');
                 form.addEventListener('submit', function(event) {
-                    // Ambil elemen editor paragraf awal dan akhir
                     const paragrafAwalEl = document.getElementById('wysiwyg-text-example');
                     const paragrafAkhirEl = document.getElementById('wysiwyg-text-example2');
 
-                    // Gabungkan isi dari semua elemen <p> untuk paragraf awal dan akhir
                     const paragrafAwal = Array.from(paragrafAwalEl.querySelectorAll('p')).map(p => p.innerHTML)
                         .join("\n");
                     const paragrafAkhir = Array.from(paragrafAkhirEl.querySelectorAll('p')).map(p => p
                         .innerHTML).join("\n");
 
-                    // Masukkan hasil ke dalam hidden input
                     document.getElementById('paragraf-awal').value = paragrafAwal;
                     document.getElementById('paragraf-akhir').value = paragrafAkhir;
                 });
 
+                function toggleWaktuInput() {
+                    const checkbox = document.getElementById('jadwal-terlampir-checkbox');
+                    const timeInput = document.getElementById('waktu');
+                    const endTimeInput = document.getElementById('waktu-selesai');
+                    const hiddenInput = document.getElementById('hidden-waktu');
 
-                // form.addEventListener('submit', function(event) {
-                //     // Cek status checkbox dan update hidden input sesuai dengan status
-                //     const checkbox = document.getElementById('jadwal-terlampir-checkbox');
-                //     const hiddenInput = document.getElementById('hidden-waktu');
-                //     const timeInput = document.getElementById('waktu');
-
-                //     if (checkbox.checked) {
-                //         hiddenInput.value = "Jadwal terlampir";
-                //     } else {
-                //         hiddenInput.value = timeInput.value;
-                //     }
-
-                //     // Ambil elemen paragraf dan masukkan nilainya ke hidden input
-                //     const paragrafAwalEl = document.getElementById('wysiwyg-text-example');
-                //     const paragrafAkhirEl = document.getElementById('wysiwyg-text-example2');
-                //     document.getElementById('paragraf-awal').value = Array.from(paragrafAwalEl.querySelectorAll(
-                //         'p')).map(p => p.innerHTML).join("\n");
-                //     document.getElementById('paragraf-akhir').value = Array.from(paragrafAkhirEl
-                //         .querySelectorAll('p')).map(p => p.innerHTML).join("\n");
-                // });
-
-            });
-
-            // function toggleWaktuInput() {
-            //     const checkbox = document.getElementById('jadwal-terlampir-checkbox');
-            //     const timeInput = document.getElementById('waktu');
-
-            //     const hiddenInput = document.getElementById('hidden-waktu');
-
-            //     if (checkbox.checked) {
-            //         timeInput.classList.add('hidden'); // Sembunyikan input waktu dengan menambahkan kelas 'hidden'
-            //         hiddenInput.value = "Jadwal terlampir"; // Set nilai tersembunyi menjadi "Jadwal terlampir"
-            //     } else {
-            //         timeInput.classList.remove('hidden'); // Tampilkan kembali input waktu dengan menghapus kelas 'hidden'
-            //         hiddenInput.value = timeInput
-            //             .value; // Set nilai tersembunyi menjadi nilai waktu jika checkbox tidak dicentang
-            //     }
-            // }
-
-            function toggleWaktuInput() {
-                const checkbox = document.getElementById('jadwal-terlampir-checkbox');
-                const timeInput = document.getElementById('waktu');
-                const hiddenInput = document.getElementById('hidden-waktu');
-
-                if (checkbox.checked) {
-                    timeInput.classList.add('hidden');
-                    hiddenInput.value = "Jadwal terlampir";
-                } else {
-                    timeInput.classList.remove('hidden');
-                    hiddenInput.value = timeInput.value;
+                    if (checkbox.checked) {
+                        timeInput.classList.add('hidden');
+                        endTimeInput.classList.add('hidden'); // Sembunyikan input waktu
+                        hiddenInput.value = "Jadwal terlampir";
+                    } else {
+                        timeInput.classList.remove('hidden');
+                        endTimeInput.classList.remove('hidden'); // Tampilkan kembali input waktu
+                        hiddenInput.value = timeInput.value; // Perbarui nilai hidden input
+                    }
                 }
-            }
 
-            // Tambahkan event listener ke input waktu untuk memperbarui hidden-waktu saat berubah
-            document.getElementById('waktu').addEventListener('change', function() {
-                const checkbox = document.getElementById('jadwal-terlampir-checkbox');
-                const hiddenInput = document.getElementById('hidden-waktu');
+                // Add event listener for checkbox to toggle inputs
+                document.getElementById('jadwal-terlampir-checkbox').addEventListener('change', toggleWaktuInput);
 
-                if (!checkbox.checked) {
-                    hiddenInput.value = this.value; // Perbarui nilai hidden-waktu
+                // Check the initial value of 'waktu' and hide inputs if necessary
+                const waktuInput = document.getElementById('waktu').value;
+                const hiddenWaktuInput = document.getElementById('hidden-waktu').value;
+                console.log("ini waktu input " + hiddenWaktuInput);
+                // Pastikan keduanya tersembunyi saat halaman mulai dimuat
+                if (hiddenWaktuInput === "Jadwal terlampir") {
+                    const checkbox = document.getElementById('jadwal-terlampir-checkbox');
+                    checkbox.checked = true;
+                    toggleWaktuInput(); // Panggil fungsi untuk menyembunyikan input pada saat muat
                 }
+
+                // Periksa perubahan dari input waktu
+                document.getElementById('waktu').addEventListener('change', function() {
+                    const checkbox = document.getElementById('jadwal-terlampir-checkbox');
+                    const hiddenInput = document.getElementById('hidden-waktu');
+
+                    if (!checkbox.checked) {
+                        hiddenInput.value = this.value; // Perbarui hidden input jika checkbox tidak dicentang
+                    }
+                });
+
+                // Panggil fungsi untuk menginisialisasi kondisi awal
+                toggleWaktuInput(); // Panggil ini untuk memastikan keadaan yang benar saat halaman dimuat
             });
         </script>
+
     </x-slot:script>
     {{-- <x-breadcumb /> --}}
     {{-- {{ Breadcrumbs::render('staff-dekan-pengajuan-surat-form', $jenisSurat) }} --}}
@@ -189,11 +155,14 @@
                     HTML</button> --}}
             </div>
         </div>
-        <div class="grid gap-6 mb-2 md:grid-cols-2 bg-slate-100 p-4 rounded-lg">
+
+
+
+        <div class="grid gap-6 mb-2 md:grid-cols-1 bg-slate-100 p-4 rounded-lg ">
             <div class="mt-4">
                 <label for="tanggal-mulai-kegiatan"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Hari/tanggal
-                    Mulai Kegiatan<span class="text-red-500">*</span></label>
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Hari/tanggal Mulai
+                    <span class="text-red-500">*</span></label>
                 <input type="date" id="tanggal-mulai-kegiatan" name="tanggal-mulai-kegiatan"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Pilih tanggal kapan kegiatan dimulai"
@@ -202,40 +171,46 @@
             <div class="mt-4">
                 <label for="tanggal-selesai-kegiatan"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Hari/tanggal Selesai
-                    Kegiatan<span class="text-red-500">*</span></label>
-                <input type="date" id="tanggal-selesai-kegiatan"" name="tanggal-selesai-kegiatan""
+                    (Opsional, kosongkan jika hanya 1 hari)</label>
+                <input type="date" id="tanggal-selesai-kegiatan" name="tanggal-selesai-kegiatan"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Pilih tanggal kapan kegiatan selesai"
-                    value="{{ $surat->data['private']['tanggalSelesaiKegiatan'] }}" required>
+                    value="{{ $surat->data['private']['tanggalSelesaiKegiatan'] }}">
             </div>
-
             <div>
-                <label for="waktu" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waktu
-                    Kegiatan<span class="text-red-500">*</span></label>
+                <label for="waktu" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waktu Mulai
+                    dalam WIB
+                    <span class="text-red-500">*</span></label>
                 <input type="time" id="waktu" name="waktu"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Pilih waktu kapan kegiatan dilaksanakan" value="{{ $surat->data['waktu'] }}">
+                    placeholder="Pilih waktu kapan kegiatan dilaksanakan"
+                    value="{{ $surat->data['private']['waktuMulaiKegiatan'] }}">
             </div>
-
-
             <div>
-                <label for="tempat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tempat<span
-                        class="text-red-500">*</span></label>
-                <input type="text"name="tempat" id="tempat"
-                    class="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Masukkan tempat pelaksanaan" value="{{ $surat->data['tempat'] }}" required>
+                <label for="waktu-selesai" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waktu
+                    Selesai dalam WIB (Opsional, jika dikosongkan maka akan ditulis s.d selesai)</label>
+                <input type="time" id="waktu-selesai" name="waktu-selesai"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Pilih waktu kapan kegiatan selesai dilaksanakan"
+                    value="{{ $surat->data['private']['waktuSelesaiKegiatan'] }}">
             </div>
-
             <div class="flex items-center mt-[-16px]">
                 <input type="checkbox" id="jadwal-terlampir-checkbox" class="mr-2" onchange="toggleWaktuInput()">
                 <label for="jadwal-terlampir-checkbox"
-                    class="text-sm font-medium text-gray-500 dark:text-white">Jadwal ada di lampiran (Spesifik waktu
-                    tidak akan ditulis di surat)</label>
+                    class="text-sm font-medium text-gray-500 dark:text-white">Centang ini jika jadwal / waktu ada di
+                    lampiran (Di surat akan tertulis "Jadwal terlampir")</label>
             </div>
-
-            <input type="hidden" name="waktu" id="hidden-waktu" value="{{ $surat->data['waktu'] }}">
-
+            <input type="hidden" name="waktu" id="hidden-waktu"
+                value="{{ $surat->data['private']['waktuMulaiKegiatan'] }}">
+            <div>
+                <label for="tempat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tempat<span
+                        class="text-red-500">*</span></label>
+                <input type="text" name="tempat" id="tempat"
+                    class="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Masukkan tempat pelaksanaan" value="{{ $surat->data['tempat'] }}" required>
+            </div>
         </div>
+
         <div class="grid gap-6 mb-6 md:grid-cols-2 bg-slate-100 p-4 rounded-lg">
 
 
