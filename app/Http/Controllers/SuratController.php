@@ -238,6 +238,17 @@ class SuratController extends Controller
                 ];
             }
 
+
+            if (
+                Surat::where('jenis_surat_id', $jenisSurat->id)
+                ->where('pengaju_id', auth()->user()->id)
+                ->where('status', 'diproses')
+                ->where('created_at', '>=', now()->subDays(30)) // Menambahkan kondisi untuk created_at
+                ->count() > 0
+            ) {
+                return redirect()->back()->with('deleted', 'Anda masih memiliki surat dengan jenis ini yang sedang diproses. Silahkan tunggu hingga selesai/ditolak atau batalkan pengajuan sebelumnya');
+            }
+
             $surat->save();
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
         } elseif ($jenisSurat->slug == 'surat-keterangan-alumni') {
@@ -279,6 +290,16 @@ class SuratController extends Controller
             $surat->files = [
                 'ijazah' => $request->file('ijazah')->store('lampiran')
             ];
+
+            if (
+                Surat::where('jenis_surat_id', $jenisSurat->id)
+                ->where('pengaju_id', auth()->user()->id)
+                ->where('status', 'diproses')
+                ->where('created_at', '>=', now()->subDays(30)) // Menambahkan kondisi untuk created_at
+                ->count() > 0
+            ) {
+                return redirect()->back()->with('deleted', 'Anda masih memiliki surat dengan jenis ini yang sedang diproses. Silahkan tunggu hingga selesai/ditolak atau batalkan pengajuan sebelumnya');
+            }
 
             $surat->save();
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
@@ -327,6 +348,16 @@ class SuratController extends Controller
             }
             $surat->files = $files;
 
+
+            if (
+                Surat::where('jenis_surat_id', $jenisSurat->id)
+                ->where('pengaju_id', auth()->user()->id)
+                ->where('status', 'diproses')
+                ->where('created_at', '>=', now()->subDays(30)) // Menambahkan kondisi untuk created_at
+                ->count() > 0
+            ) {
+                return redirect()->back()->with('deleted', 'Anda masih memiliki surat dengan jenis ini yang sedang diproses. Silahkan tunggu hingga selesai/ditolak atau batalkan pengajuan sebelumnya');
+            }
             $surat->save();
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
         } elseif ($jenisSurat->slug == 'surat-aktif-kuliah') {
@@ -384,6 +415,16 @@ class SuratController extends Controller
             }
             $surat->files = $files;
 
+
+            if (
+                Surat::where('jenis_surat_id', $jenisSurat->id)
+                ->where('pengaju_id', auth()->user()->id)
+                ->where('status', 'diproses')
+                ->where('created_at', '>=', now()->subDays(30)) // Menambahkan kondisi untuk created_at
+                ->count() > 0
+            ) {
+                return redirect()->back()->with('deleted', 'Anda masih memiliki surat dengan jenis ini yang sedang diproses. Silahkan tunggu hingga selesai/ditolak atau batalkan pengajuan sebelumnya');
+            }
             $surat->save();
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
         } elseif ($jenisSurat->slug == 'surat-keterangan-eligible-pin') {
@@ -423,6 +464,16 @@ class SuratController extends Controller
                 $surat->files = [
                     'buktiLulus' => $request->file('bukti-lulus')->store('lampiran')
                 ];
+            }
+
+            if (
+                Surat::where('jenis_surat_id', $jenisSurat->id)
+                ->where('pengaju_id', auth()->user()->id)
+                ->where('status', 'diproses')
+                ->where('created_at', '>=', now()->subDays(30)) // Menambahkan kondisi untuk created_at
+                ->count() > 0
+            ) {
+                return redirect()->back()->with('deleted', 'Anda masih memiliki surat dengan jenis ini yang sedang diproses. Silahkan tunggu hingga selesai/ditolak atau batalkan pengajuan sebelumnya');
             }
 
             $surat->save();
@@ -477,6 +528,16 @@ class SuratController extends Controller
                 ];
             }
 
+
+            if (
+                Surat::where('jenis_surat_id', $jenisSurat->id)
+                ->where('pengaju_id', auth()->user()->id)
+                ->where('status', 'diproses')
+                ->where('created_at', '>=', now()->subDays(30)) // Menambahkan kondisi untuk created_at
+                ->count() > 0
+            ) {
+                return redirect()->back()->with('deleted', 'Anda masih memiliki surat dengan jenis ini yang sedang diproses. Silahkan tunggu hingga selesai/ditolak atau batalkan pengajuan sebelumnya');
+            }
             $surat->save();
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
         } elseif ($jenisSurat->slug == 'surat-permohonan-izin-prapenelitian-mahasiswa') {
@@ -529,6 +590,16 @@ class SuratController extends Controller
                 ];
             }
 
+
+            if (
+                Surat::where('jenis_surat_id', $jenisSurat->id)
+                ->where('pengaju_id', auth()->user()->id)
+                ->where('status', 'diproses')
+                ->where('created_at', '>=', now()->subDays(30)) // Menambahkan kondisi untuk created_at
+                ->count() > 0
+            ) {
+                return redirect()->back()->with('deleted', 'Anda masih memiliki surat dengan jenis ini yang sedang diproses. Silahkan tunggu hingga selesai/ditolak atau batalkan pengajuan sebelumnya');
+            }
             $surat->save();
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
         } elseif ($jenisSurat->slug == 'surat-keterangan-kesalahan-ijazah') {
@@ -575,6 +646,16 @@ class SuratController extends Controller
                 'ijazah' => $request->file('ijazah')->store('lampiran')
             ];
 
+
+            if (
+                Surat::where('jenis_surat_id', $jenisSurat->id)
+                ->where('pengaju_id', auth()->user()->id)
+                ->where('status', 'diproses')
+                ->where('created_at', '>=', now()->subDays(30)) // Menambahkan kondisi untuk created_at
+                ->count() > 0
+            ) {
+                return redirect()->back()->with('deleted', 'Anda masih memiliki surat dengan jenis ini yang sedang diproses. Silahkan tunggu hingga selesai/ditolak atau batalkan pengajuan sebelumnya');
+            }
             $surat->save();
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
         } elseif ($jenisSurat->slug == 'surat-rekomendasi-mbkm') {
@@ -617,6 +698,15 @@ class SuratController extends Controller
                 'ktm' => $request->file('ktm')->store('lampiran')
             ];
 
+            if (
+                Surat::where('jenis_surat_id', $jenisSurat->id)
+                ->where('pengaju_id', auth()->user()->id)
+                ->where('status', 'diproses')
+                ->where('created_at', '>=', now()->subDays(30)) // Menambahkan kondisi untuk created_at
+                ->count() > 0
+            ) {
+                return redirect()->back()->with('deleted', 'Anda masih memiliki surat dengan jenis ini yang sedang diproses. Silahkan tunggu hingga selesai/ditolak atau batalkan pengajuan sebelumnya');
+            }
             $surat->save();
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
         } elseif ($jenisSurat->slug == 'surat-pengantar-pembayaran-uang-yudisium') {
@@ -669,6 +759,16 @@ class SuratController extends Controller
             }
             $surat->files = $files;
 
+
+            if (
+                Surat::where('jenis_surat_id', $jenisSurat->id)
+                ->where('pengaju_id', auth()->user()->id)
+                ->where('status', 'diproses')
+                ->where('created_at', '>=', now()->subDays(30)) // Menambahkan kondisi untuk created_at
+                ->count() > 0
+            ) {
+                return redirect()->back()->with('deleted', 'Anda masih memiliki surat dengan jenis ini yang sedang diproses. Silahkan tunggu hingga selesai/ditolak atau batalkan pengajuan sebelumnya');
+            }
             $surat->save();
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
         }
