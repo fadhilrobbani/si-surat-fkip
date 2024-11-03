@@ -71,7 +71,7 @@
             </div>
         </a>
     </div>
-    <div class="flex items-center justify-center flex-col gap-4 h-full p-4 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+    <div class="flex items-center justify-center flex-col gap-4 p-4 mb-4 rounded bg-gray-50 dark:bg-gray-800">
         <p class="font-semibold  text-slate-600 text-lg">F.A.Q</p>
 
         <div id="accordion-color " class="w-full" data-accordion="collapse"

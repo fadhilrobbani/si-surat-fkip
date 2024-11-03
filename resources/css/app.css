@@ -10,3 +10,31 @@
     box-sizing: border-box;
     font-family: "Montserrat", sans-serif;
 } */
+
+/* CSS file */
+.scrollable {
+    @apply max-h-[400px] overflow-y-auto;
+}
+
+.scrollable::-webkit-scrollbar {
+    width: 2px;
+}
+
+.scrollable::-webkit-scrollbar-track {
+    @apply rounded-full bg-gray-100; /* Definisi ini harus di luar @apply */
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-gray-300; /* Definisi ini tidak bisa di dalam apply */
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+    .scrollable::-webkit-scrollbar-track {
+        background: #4b5563; /* neutral-700 */
+    }
+
+    .scrollable::-webkit-scrollbar-thumb {
+        background: #6b7280; /* neutral-500 */
+    }
+}

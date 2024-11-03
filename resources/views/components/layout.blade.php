@@ -13,9 +13,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="overflow-x-hidden bg-white">
+<body class="overflow-x-hidden bg-slate-100">
     <x-notification />
-    <nav class="fixed top-0 z-50 w-full bg-[#FFFF]  border-b-2 border-slate-100  dark:bg-gray-800 dark:border-gray-700">
+    <nav class="fixed top-0 z-50 w-full bg-slate-100   border-slate-100  dark:bg-gray-800 dark:border-gray-700">
         <div class="px-4 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <!-- Left Section -->
@@ -548,9 +548,9 @@
 
 
 
-    <div class="p-6 sm:ml-64">
-        <div class="p-4 relative bg-white border-[2px] border-dashed border-slate-200 overflow-x-hidden rounded-xl dark:border-gray-700 mt-14"
-            style="min-height: calc(100vh - 7rem);">
+    <div class="px-4 py-2 sm:ml-60">
+        <div class="p-4 relative bg-white  border-dashed shadow-sm border-slate-300 overflow-x-hidden rounded-xl dark:border-gray-700 mt-14 "
+            style="height: calc(100vh - 5rem);">
             {{ $slot }}
         </div>
 

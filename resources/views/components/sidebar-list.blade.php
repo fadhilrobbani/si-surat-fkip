@@ -3,7 +3,7 @@
 @if (!$list['dropdown'])
     <li>
         <a href="/{{ $list['link'] }}"
-            class="{{ request()->is($list['link']) ? 'bg-slate-200' : '' }} flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-slate-100 dark:hover:bg-gray-700 group">
+            class="{{ request()->is($list['link']) ? 'bg-blue-200' : '' }} flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-indigo-100 dark:hover:bg-gray-700 group">
             <img class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                 src="{{ $list['icon'] }}" alt="">
             <span class="ml-3">{{ $list['title'] }}</span>
@@ -13,7 +13,7 @@
 @else
     <li>
         <button type="button"
-            class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
+            class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-200 dark:text-white dark:hover:bg-gray-700"
             aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
             <img class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                 src="{{ $list['icon'] }}" alt="">
@@ -28,7 +28,7 @@
             @foreach ($list['dropdown'] as $sublist)
                 <li>
                     <a href="{{ $sublist['link'] }}"
-                        class="{{ request()->url() == $sublist['link'] ? 'bg-slate-200' : '' }} flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">{{ $sublist['title'] }}</a>
+                        class="{{ request()->url() == $sublist['link'] ? 'bg-blue-200' : '' }} flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">{{ $sublist['title'] }}</a>
 
                 </li>
             @endforeach
