@@ -87,7 +87,7 @@
     </x-slot:script>
     {{-- <x-breadcumb /> --}}
     {{-- {{ Breadcrumbs::render('staff-dekan-pengajuan-surat-form', $jenisSurat) }} --}}
-    <p class="font-bold text-lg mx-auto text-center mb-2">Surat Keluar</p>
+    <p class="font-bold text-lg mx-auto text-center mb-2">Edit Surat Keluar</p>
     <form action="{{ route('update-surat-staff-dekan', $surat->id) }}" method="POST" enctype="multipart/form-data">
         {{-- <form action="" method="POST" enctype="multipart/form-data"> --}}
         @csrf @method('put')
