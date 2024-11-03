@@ -818,7 +818,6 @@ class SuratController extends Controller
                 'email' => $request->input('email'),
                 'perihal' => $request->input('perihal'),
                 'jumlahLampiran' => $request->input('jumlah-lampiran'),
-                'lampiran' => 'file|mimes:jpeg,png,jpg,pdf|max:10240',
                 'tujuan1' => $request->input('tujuan1'),
                 'tujuan2' => $request->input('tujuan2'),
                 'tujuan3' => $request->input('tujuan3'),
