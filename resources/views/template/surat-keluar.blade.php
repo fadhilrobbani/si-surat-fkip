@@ -84,28 +84,38 @@
     <br>
     <p style="text-align: justify">{!! html_entity_decode($surat->data['paragrafAwal']) !!}</p>
     <br>
-    <table class="data-table">
+    @if ($surat->data['tanggalPelaksanaan'] != null || $surat->data['waktu'] != null || $surat->data['tempat'] != null)
+        <table class="data-table">
+            @if ($surat->data['tanggalPelaksanaan'] != null)
+                <tr>
+                    <td valign='top'>Hari, tanggal</td>
+                    <td>: {{ $surat->data['tanggalPelaksanaan'] }}</td>
+                </tr>
+            @endif
 
-        <tr>
-            <td valign='top'>Hari, tanggal</td>
-            <td>: {{ $surat->data['tanggalPelaksanaan'] }}</td>
-        </tr>
+            @if ($surat->data['waktu'] != null)
+                <tr>
+                    <td>Waktu</td>
+                    <td>: {{ $surat->data['waktu'] }}</td>
+                </tr>
+            @endif
 
-        <tr>
-            <td>Waktu</td>
-            <td>: {{ $surat->data['waktu'] }}</td>
-        </tr>
-        <tr>
-            <td valign='top' style="width: 120px">Tempat</td>
-            <td>: {{ $surat->data['tempat'] }}</td>
-        </tr>
-    </table>
+            @if ($surat->data['tempat'] != null)
+                <tr>
+                    <td valign='top' style="width: 120px">Tempat</td>
+                    <td>: {{ $surat->data['tempat'] }}</td>
+                </tr>
+            @endif
+
+        </table>
+        <br>
+    @endif
+
     {{-- <p>Nama&emsp; {{ $surat->pengaju->name }}</p>
     <p>NPM&emsp;: {{ $surat->pengaju->username }}</p>
     <p>Tempat/Tanggal Lahir&emsp;: {{ Str::title($surat->data['birthplace']) . ', ' . $surat->data['birthdate'] }}</p>
     <p>Program Studi&emsp;: {{ $surat->data['programStudi'] }}</p>
     <p>Nomor Seri Ijazah&emsp;: {{ $surat->data['noIjazah'] }}</p> --}}
-    <br>
 
     <p style="text-align: justify">{!! html_entity_decode($surat->data['paragrafAkhir']) !!}</p>
     <br><br>
