@@ -134,6 +134,10 @@
                 <label for="paragraf-awal"
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Silahkan edit contoh
                     paragraf berikut</label>
+                <label for="paragraf-akhir"
+                    class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Teks editor ini
+                    sensitif terhadap spasi/enter, pastikan tidak ada whitespace (spasi) yang tidak berguna di bagian
+                    awal atau akhir paragraf</label>
                 <label for="paragraf-awal"
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Untuk
                     membuat baris baru, tekan Ctrl + Enter pada keyboard</label>
@@ -209,6 +213,10 @@
                 <label for="paragraf-akhir"
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Silahkan edit contoh
                     paragraf berikut</label>
+                <label for="paragraf-akhir"
+                    class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Teks editor ini
+                    sensitif terhadap spasi/enter, pastikan tidak ada whitespace (spasi) yang tidak berguna di bagian
+                    awal atau akhir paragraf</label>
                 <label for="paragraf-akhir"
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Untuk
                     membuat baris baru, tekan Ctrl + Enter pada keyboard</label>
