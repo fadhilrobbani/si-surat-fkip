@@ -171,10 +171,87 @@
                 https://esurat-fkip.unib.ac.id</a></p>
 
         {{-- <a href="{{ route('lihat-html-surat-qr', ['surat' => $surat->id]) }}">html</a> --}}
-        <iframe src="{{ $url }}" width="100%" height="600"></iframe>
+        {{-- <iframe src="{{ $url }}" width="100%" height="600"></iframe> --}}
+        <div id="pdf-viewer" style="position: relative; max-width: 100%; margin: auto;">
+            <!-- Loading Animation -->
+            <div id="loading-animation" class="mt-2 flex flex-row text-blue-800 italic"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                <p>Loading PDF...</p>
+                <x-loading />
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+        <script>
+            const pdfUrl = "{{ $url }}";
+            const loadingTask = pdfjsLib.getDocument(pdfUrl);
+            const viewer = document.getElementById('pdf-viewer');
+            const loadingAnimation = document.getElementById('loading-animation');
+
+            loadingTask.promise.then(pdf => {
+                pdf.getPage(1).then(page => {
+                    // Scale canvas to match the container's width
+                    const viewport = page.getViewport({
+                        scale: 1
+                    });
+                    const scale = viewer.clientWidth / viewport.width;
+                    const scaledViewport = page.getViewport({
+                        scale
+                    });
+
+                    // Create and setup the canvas
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = scaledViewport.width;
+                    canvas.height = scaledViewport.height;
+
+                    viewer.appendChild(canvas);
+
+                    // Render the PDF page
+                    page.render({
+                        canvasContext: context,
+                        viewport: scaledViewport
+                    });
+
+                    // Hide the loading animation after rendering
+                    loadingAnimation.style.display = 'none';
+                });
+            }).catch(error => {
+                console.error('Error loading PDF:', error);
+                loadingAnimation.innerHTML = '<p>Gagal memuat PDF.</p>';
+            });
+
+            // Optional: Re-render on window resize to maintain responsive layout
+            window.addEventListener('resize', () => {
+                viewer.innerHTML = '';
+                viewer.appendChild(loadingAnimation);
+                loadingAnimation.style.display = 'block';
+                loadingTask.promise.then(pdf => pdf.getPage(1).then(page => {
+                    const scale = viewer.clientWidth / page.getViewport({
+                        scale: 1
+                    }).width;
+                    const viewport = page.getViewport({
+                        scale
+                    });
+
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    viewer.appendChild(canvas);
+                    page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    });
+                    loadingAnimation.style.display = 'none';
+                }));
+            });
+        </script>
+
 
         <a href="{{ $url }}"
-            class="block text-center mt-8 px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700">Unduh</a>
+            class="block text-center mt-14 px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700">Unduh</a>
     </main>
 </body>
 
