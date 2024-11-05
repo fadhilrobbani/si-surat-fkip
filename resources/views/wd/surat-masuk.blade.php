@@ -146,7 +146,7 @@
                                 <td class="px-4 py-3">
                                     {{ $surat->jenisSurat->user_type == 'mahasiswa' ? $surat->data['npm'] : $surat->data['username'] }}
                                 </td>
-                                <td class="px-4 py-3">{{ $surat->data['programStudi'] }}</td>
+                                <td class="px-4 py-3">{{ $surat->data['programStudi'] ?? '-' }}</td>
                                 @php
                                     $jenisSurat = App\Models\JenisSurat::find($surat->jenis_surat_id);
                                 @endphp

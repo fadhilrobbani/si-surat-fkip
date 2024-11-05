@@ -171,7 +171,7 @@ class SuratController extends Controller
                 'jenisSurat' => $jenisSurat,
                 'daftarProgramStudi' => ProgramStudi::all(),
                 'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->whereIn('role_id', [8])
+                    ->whereIn('role_id', [8, 5, 9, 10])
                     ->orderBy('username', 'asc')
                     ->get()
             ]);

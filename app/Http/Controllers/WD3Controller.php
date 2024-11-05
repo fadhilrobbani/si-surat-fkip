@@ -252,6 +252,18 @@ class WD3Controller extends Controller
                     ->get()
             ]);
         }
+
+
+        if (($surat->jenisSurat->user_type == 'staff-dekan')) {
+
+            return view('wd3.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->whereIn('role_id', [8])
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
     }
 
     public function setujuiSurat(Request $request, Surat $surat)
@@ -351,6 +363,46 @@ class WD3Controller extends Controller
             return redirect('wd3/surat-masuk')->with('success', 'Surat berhasil disetujui');
         }
     }
+
+    public function setujuiSuratStaffDekan(Request $request, Surat $surat)
+    {
+
+
+        if ($surat->jenisSurat->slug == 'surat-keluar') {
+            $surat->current_user_id = $request->input('penerima');
+            $data = $surat->data;
+            if ($data) {
+                if (isset($data['private'])) {
+
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                } else {
+                    $data['private'] = [
+
+                        'stepper' => [auth()->user()->role->id]
+                    ];
+                }
+            } else {
+                $data = [
+                    'private' => [
+
+                        'stepper' => [auth()->user()->role->id]
+                    ]
+                ];
+            }
+            $surat->data = $data;
+
+            $surat->save();
+
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => 'setuju',
+            ]);
+            return redirect('wd3/surat-masuk')->with('success', 'Surat berhasil disetujui');
+        }
+    }
+
 
     public function riwayatPersetujuan(Request $request)
     {

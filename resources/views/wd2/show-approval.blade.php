@@ -131,6 +131,8 @@
             ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas') ||
                 ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas-kelompok'))
             <x-stepper-flexible :surat='$surat' />
+        @elseif($surat->jenisSurat->user_type == 'staff-dekan')
+            <x-stepper-flexible :surat='$surat' />
         @endif
 
     </div>
