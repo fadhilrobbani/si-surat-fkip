@@ -55,7 +55,7 @@
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50"></td>
                             <td class="px-4 py-3">
-                                {{ $surat->data['private']['deksripsiWD1'] ?? ($surat->data['private']['deskripsiWD'] ?? ($surat->data['private']['deskripsiDekan'] ?? '(Nama tidak tersedia)')) }}
+                                {{ $surat->data['private']['deksripsiWD1'] ?? ($surat->data['private']['deskripsiWD'] ?? ($surat->data['private']['deskripsiDekan'] ?? 'Wakil Dekan Bidang Akademik')) }}
                             </td>
                         </tr>
 

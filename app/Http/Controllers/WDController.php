@@ -270,17 +270,21 @@ class WDController extends Controller
             if (isset($data['private'])) {
                 $data['private']['namaWD1'] =  auth()->user()->name;
                 $data['private']['nipWD1'] =  auth()->user()->nip;
+                $data['private']['deskripsiWD1'] =  auth()->user()->role->description;
             } else {
                 $data['private'] = [
                     'namaWD1' =>  auth()->user()->name,
                     'nipWD1' =>  auth()->user()->nip,
+                    'deskripsiWD1' =>  auth()->user()->role->description
                 ];
             }
         } else {
             $data = [
                 'private' => [
                     'namaWD1' =>  auth()->user()->name,
-                    'nipWD1' =>  auth()->user()->nip
+                    'nipWD1' =>  auth()->user()->nip,
+                    'deskripsiWD1' =>  auth()->user()->role->description
+
                 ]
             ];
         }
