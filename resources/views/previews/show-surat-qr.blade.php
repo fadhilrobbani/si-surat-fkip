@@ -158,7 +158,26 @@
 
                     </tbody>
                 </table>
+
+
             </div>
+            {{-- <div class="overflow-x-auto shadow-lg rounded-lg mt-4">
+                <table class="w-full text-sm text-left text-gray-700 bg-white">
+                    <tbody>
+                        @foreach ($surat->data as $key => $value)
+                            <tr class="border-b">
+                                <td class="px-4 py-3 font-semibold bg-gray-50">{{ $key }}:</td>
+                                <td class="px-4 py-3">
+                                    {{ $value }}</td>
+                            </tr>
+                        @endforeach
+
+
+                    </tbody>
+                </table>
+
+
+            </div> --}}
         @endif
 
 
