@@ -16,11 +16,12 @@
         <img class="w-28 mx-auto mb-5" src="{{ asset('images/logounib.png') }}" alt="logounib" />
 
         <h1 class="text-2xl font-bold text-center text-blue-800">Halaman Validasi Keaslian Surat</h1>
-        <p class="text-center text-gray-700 mt-2 mb-6">Dengan ini menyatakan bahwa surat ini adalah benar
+        <p class="text-center text-gray-700 mt-2 mb-2">Dengan ini menyatakan bahwa surat ini adalah benar
             diterbitkan dari FKIP UNIB. </p>
 
+
         @if ($surat->jenisSurat->user_type == 'mahasiswa')
-            <div class="overflow-x-auto shadow-lg rounded-lg">
+            <div class="overflow-x-auto  border-2 border-slate-300 rounded-lg">
                 <table class="w-full text-sm text-left text-gray-700 bg-white">
                     <tbody>
                         <tr class="border-b">
@@ -70,12 +71,64 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="overflow-x-auto  border-2 border-slate-300 rounded-lg mt-4">
+                <table class="w-full text-sm text-left text-gray-700 bg-white">
+                    <tbody>
+                        @foreach ($surat->data as $key => $value)
+                            @if (in_array($key, [
+                                    'private',
+                                    'ttdWD',
+                                    'ttdWD1',
+                                    'noSurat',
+                                    'note',
+                                    'tanggal_selesai',
+                                    'nama',
+                                    'username',
+                                    'email',
+                                    'perihal',
+                                    'npm',
+                                ]))
+                                @continue
+                            @endif
+
+
+                            @if ($key == 'dosen')
+                                @foreach ($value as $id => $data)
+                                    @foreach ($data as $key => $value)
+                                        <tr class="border-b">
+                                            <td class="px-4 py-3 font-semibold bg-gray-50">
+                                                {{ convertToTitleCase($key) }}:</td>
+                                            <td class="px-4 py-3">
+                                                {!! html_entity_decode($value) !!}</td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                                @continue
+                            @endif
+
+                            @if ($value != null)
+                                <tr class="border-b">
+                                    <td class="px-4 py-3 font-semibold bg-gray-50">
+                                        {{ convertToTitleCase($key) }}:</td>
+                                    <td class="px-4 py-3">
+                                        {!! html_entity_decode($value) !!}</td>
+                                </tr>
+                            @endif
+                        @endforeach
+
+
+                    </tbody>
+                </table>
+
+
+            </div>
         @endif
 
         @if (
             ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas') ||
                 ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas-kelompok'))
-            <div class="overflow-x-auto shadow-lg rounded-lg">
+            <div class="overflow-x-auto  border-2 border-slate-300 rounded-lg">
                 <table class="w-full text-sm text-left text-gray-700 bg-white">
                     <tbody>
                         <tr class="border-b">
@@ -116,10 +169,60 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="overflow-x-auto  border-2 border-slate-300 rounded-lg mt-4">
+                <table class="w-full text-sm text-left text-gray-700 bg-white">
+                    <tbody>
+                        @foreach ($surat->data as $key => $value)
+                            @if (in_array($key, [
+                                    'private',
+                                    'ttdWD',
+                                    'ttdWD1',
+                                    'noSurat',
+                                    'note',
+                                    'tanggal_selesai',
+                                    'nama',
+                                    'username',
+                                    'email',
+                                    'perihal',
+                                ]))
+                                @continue
+                            @endif
+
+                            @if ($key == 'dosen')
+                                @foreach ($value as $id => $data)
+                                    @foreach ($data as $key => $value)
+                                        <tr class="border-b">
+                                            <td class="px-4 py-3 font-semibold bg-gray-50">
+                                                {{ convertToTitleCase($key) }}:</td>
+                                            <td class="px-4 py-3">
+                                                {!! html_entity_decode($value) !!}</td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                                @continue
+                            @endif
+
+                            @if ($value != null)
+                                <tr class="border-b">
+                                    <td class="px-4 py-3 font-semibold bg-gray-50">
+                                        {{ convertToTitleCase($key) }}:</td>
+                                    <td class="px-4 py-3">
+                                        {!! html_entity_decode($value) !!}</td>
+                                </tr>
+                            @endif
+                        @endforeach
+
+
+                    </tbody>
+                </table>
+
+
+            </div>
         @endif
 
         @if ($surat->jenisSurat->user_type == 'staff-dekan' && $surat->jenisSurat->slug == 'surat-keluar')
-            <div class="overflow-x-auto shadow-lg rounded-lg">
+            <div class="overflow-x-auto border-2 border-slate-300 rounded-lg">
                 <table class="w-full text-sm text-left text-gray-700 bg-white">
                     <tbody>
                         <tr class="border-b">
@@ -161,15 +264,49 @@
 
 
             </div>
-            {{-- <div class="overflow-x-auto shadow-lg rounded-lg mt-4">
+
+            <div class="overflow-x-auto  border-2 border-slate-300 rounded-lg mt-4">
                 <table class="w-full text-sm text-left text-gray-700 bg-white">
                     <tbody>
                         @foreach ($surat->data as $key => $value)
-                            <tr class="border-b">
-                                <td class="px-4 py-3 font-semibold bg-gray-50">{{ $key }}:</td>
-                                <td class="px-4 py-3">
-                                    {{ $value }}</td>
-                            </tr>
+                            @if (in_array($key, [
+                                    'private',
+                                    'ttdWD',
+                                    'ttdWD1',
+                                    'noSurat',
+                                    'note',
+                                    'tanggal_selesai',
+                                    'nama',
+                                    'username',
+                                    'email',
+                                    'perihal',
+                                ]))
+                                @continue
+                            @endif
+
+
+                            @if ($key == 'dosen')
+                                @foreach ($value as $id => $data)
+                                    @foreach ($data as $key => $value)
+                                        <tr class="border-b">
+                                            <td class="px-4 py-3 font-semibold bg-gray-50">
+                                                {{ convertToTitleCase($key) }}:</td>
+                                            <td class="px-4 py-3">
+                                                {!! html_entity_decode($value) !!}</td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                                @continue
+                            @endif
+
+                            @if ($value != null)
+                                <tr class="border-b">
+                                    <td class="px-4 py-3 font-semibold bg-gray-50">
+                                        {{ convertToTitleCase($key) }}:</td>
+                                    <td class="px-4 py-3">
+                                        {!! html_entity_decode($value) !!}</td>
+                                </tr>
+                            @endif
                         @endforeach
 
 
@@ -177,17 +314,17 @@
                 </table>
 
 
-            </div> --}}
+            </div>
         @endif
 
-
-        @php
-            $url = URL::signedRoute('cetak-surat-qr', ['surat' => $surat->id]);
-        @endphp
-        <p class="text-center text-sm text-gray-700 mt-4 mb-6">Untuk memastikan bahwa Anda mengakses data surat yang
+        <p class="text-center mt-6  text-gray-700  mb-6">Untuk memastikan bahwa Anda mengakses data surat yang
             benar, pastikan URL pada
             browser berasal dari <a class="underline" href=" https://esurat-fkip.unib.ac.id">
                 https://esurat-fkip.unib.ac.id</a></p>
+        @php
+            $url = URL::signedRoute('cetak-surat-qr', ['surat' => $surat->id]);
+        @endphp
+
 
         {{-- <a href="{{ route('lihat-html-surat-qr', ['surat' => $surat->id]) }}">html</a> --}}
         {{-- <iframe src="{{ $url }}" width="100%" height="600"></iframe> --}}
