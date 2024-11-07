@@ -41,11 +41,17 @@
             <td colspan="3">
                 <hr>
                 {{-- <p>{{ isset($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '' }}</p> --}}
-                <p style="position: absolute; width:fit-content; right:96px; margin-top:23px;">
-                    {{ isset($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '[Tanggal Terbit Surat]' }}
-                </p>
+                @if (
+                    (isset($surat->data['private']['tanggalTerbitOtomatis']) &&
+                        $surat->data['private']['tanggalTerbitOtomatis'] == true) ||
+                        !isset($surat->data['private']['tanggalTerbitOtomatis']))
+                    <p style="position: absolute; width:fit-content; right:96px; margin-top:23px;">
+                        {{ isset($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '[Tanggal Terbit Surat]' }}
+                    </p>
+                @endif
             </td>
         </tr>
+
 
     </table>
     <br>

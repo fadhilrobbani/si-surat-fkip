@@ -105,6 +105,7 @@
 
         <p class="font-semibold text-slate-500 text-md mx-auto mb-2">Header Surat:</p>
         <div class="grid gap-6 mb-6 md:grid-cols-2 bg-slate-100 p-4 rounded-lg">
+
             <div>
                 <label for="perihal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Perihal
                     Surat<span class="text-red-500">*</span></label>
@@ -130,7 +131,7 @@
                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG, JPEG, atau PDF
                     (MAX. 10 MB).</p>
             </div>
-            <div>
+            <div class="md:col-span-2">
                 <label for="tujuan1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tujuan
                     Surat<span class="text-red-500">*</span></label>
                 <input type="text" name="tujuan1"
@@ -150,6 +151,13 @@
                 <input type="text" name="tujuan3"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="(Opsional / boleh dikosongkan)" value="{{ old('tujuan3') }}">
+            </div>
+            <div class="flex items-center md:col-span-2">
+                <input checked id="checked-checkbox" name="tanggal-terbit-otomatis" type="checkbox" value=1
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                <label for="checked-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Tanggal
+                    terbit surat dibuat otomatis oleh sistem (Unchecklist/hilangkan centang jika ingin tanggal terbit
+                    surat kosong saat diterbitkan)</label>
             </div>
         </div>
 

@@ -779,7 +779,6 @@ class SuratController extends Controller
         if ($jenisSurat->slug == 'surat-keluar') {
 
 
-
             $request->validate([
                 'name' => 'required',
                 'username' => 'required',
@@ -794,6 +793,7 @@ class SuratController extends Controller
                 'tanggal-mulai-kegiatan' => '',
                 'waktu' => 'nullable',
                 'tempat' => 'nullable',
+                'tanggal-terbit-otomatis' => 'boolean',
                 'paragraf-akhir' => 'required',
             ]);
 
@@ -839,6 +839,7 @@ class SuratController extends Controller
                     'stepper' => [auth()->user()->role->id],
                     'tanggalMulaiKegiatan' => $request->input('tanggal-mulai-kegiatan') ?? null,
                     'tanggalSelesaiKegiatan' => $request->input('tanggal-selesai-kegiatan') ?? null,
+                    'tanggalTerbitOtomatis' => $request->input('tanggal-terbit-otomatis') ? true : false,
 
                 ],
                 'nama' => $request->input('name'),
