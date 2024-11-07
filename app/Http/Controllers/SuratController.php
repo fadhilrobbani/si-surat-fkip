@@ -793,6 +793,7 @@ class SuratController extends Controller
                 'tanggal-mulai-kegiatan' => '',
                 'waktu' => 'nullable',
                 'tempat' => 'nullable',
+                'tembusan' => 'nullable|array',
                 'tanggal-terbit-otomatis' => 'boolean',
                 'paragraf-akhir' => 'required',
             ]);
@@ -840,7 +841,7 @@ class SuratController extends Controller
                     'tanggalMulaiKegiatan' => $request->input('tanggal-mulai-kegiatan') ?? null,
                     'tanggalSelesaiKegiatan' => $request->input('tanggal-selesai-kegiatan') ?? null,
                     'tanggalTerbitOtomatis' => $request->input('tanggal-terbit-otomatis') ? true : false,
-
+                    'tembusan' => $request->input('tembusan') == null || $request->input('tembusan')[0] == null ? null : $request->input('tembusan'),
                 ],
                 'nama' => $request->input('name'),
                 'username' => $request->input('username'),
@@ -863,6 +864,7 @@ class SuratController extends Controller
                 // Conditional assignment for tempat
                 'tempat' => ($request->input('tempat') !== '') ? $request->input('tempat') : null,
                 'paragrafAkhir' => $request->input('paragraf-akhir'),
+                'tembusan' => $request->input('tembusan') == null || $request->input('tembusan')[0] == null ? '-' :  implode(', ', array_filter($request->input('tembusan'))),
             ];
 
 
@@ -1209,6 +1211,7 @@ class SuratController extends Controller
                 'tujuan2' => 'nullable|string', // Use 'nullable' instead of '' for optional fields
                 'tujuan3' => 'nullable|string',
                 'paragraf-awal' => 'required|string',
+                'tembusan' => 'nullable|array',
                 'tanggal-mulai-kegiatan' => 'nullable',
                 'waktu' => 'nullable', // Ensure 'waktu' is in HH:MM format
                 'tempat' => 'nullable',
@@ -1230,17 +1233,21 @@ class SuratController extends Controller
             $data['tujuan3'] = $newData['tujuan3'];
             $data['paragrafAwal'] = $newData['paragraf-awal'];
             $data['private']['tanggalMulaiKegiatan'] = isset($newData['tanggal-mulai-kegiatan']) ? $newData['tanggal-mulai-kegiatan'] : null;
+            $data['private']['tembusan'] = $request->input('tembusan') == null || $request->input('tembusan')[0] == null ? null :  $request->input('tembusan');
+            $data['tembusan'] = $request->input('tembusan') == null || $request->input('tembusan')[0] == null ? '-' :  implode(', ', array_filter($request->input('tembusan')));
 
             // Validate `tanggal-selesai-kegiatan` if it exists
-            if (!empty($request->input('tanggal-selesai-kegiatan') && $request->has('tanggal-selesai-kegiatan'))) {
+            if (!empty($request->input('tanggal-selesai-kegiatan') && $request->has('tanggal-selesai-kegiatan') && !empty($request->input('tanggal-mulai-kegiatan') && $request->has('tanggal-mulai-kegiatan')))) {
                 $request->validate([
                     'tanggal-selesai-kegiatan' => 'date|after_or_equal:tanggal-mulai-kegiatan', // Ensure it is a date and after the start date
                 ]);
                 $newData['tanggal-selesai-kegiatan'] = $request->input('tanggal-selesai-kegiatan');
                 $data['private']['tanggalSelesaiKegiatan'] = $newData['tanggal-selesai-kegiatan'];
                 $data['tanggalPelaksanaan'] = formatTimestampToDayIndonesian($newData['tanggal-mulai-kegiatan']) . ' .s.d. ' . formatTimestampToDayIndonesian($newData['tanggal-selesai-kegiatan']) . ', ' . formatTimestampToOnlyDateIndonesian($newData['tanggal-mulai-kegiatan']) . ' .s.d. ' . formatTimestampToOnlyDateIndonesian($newData['tanggal-selesai-kegiatan']);
+            } elseif (empty($request->input('tanggal-mulai-kegiatan'))) {
+                $data['tanggalPelaksanaan'] = null;
             } else {
-                $data['tanggalPelaksanaan'] = formatTimestampToDateIndonesian($newData['tanggal-mulai-kegiatan']);
+                $data['tanggalPelaksanaan'] = formatTimestampToDateIndonesian(isset($newData['tanggal-mulai-kegiatan']) ? $newData['tanggal-mulai-kegiatan'] : null);
             }
 
 
@@ -1256,17 +1263,17 @@ class SuratController extends Controller
                     'waktu-selesai' => 'date_format:H:i|after:waktu', // Pastikan format HH:MM dan setelah waktu mulai
                 ]);
                 $newData['waktu-selesai'] = $request->input('waktu-selesai');
-                $data['private']['waktuMulaiKegiatan'] = $newData['waktu'];
+                $data['private']['waktuMulaiKegiatan'] = $newData['waktu'] ?? null;
                 $data['private']['waktuSelesaiKegiatan'] = $newData['waktu-selesai'];
                 $data['waktu'] = $newData['waktu']  . ' WIB' . ' s.d. ' . $newData['waktu-selesai'] . ' WIB'; // Menambahkan WIB di akhir
             } else {
-                $data['waktu'] = $newData['waktu'] . ' WIB' . ' s.d. ' . 'selesai'; // Menambahkan WIB di akhir jika tidak ada waktu selesai
-                $data['private']['waktuMulaiKegiatan'] = $newData['waktu'];
+                $data['waktu'] = isset($newData['waktu']) ? $newData['waktu'] . ' WIB' . ' s.d. ' . 'selesai' : null; // Menambahkan WIB di akhir jika tidak ada waktu selesai
+                $data['private']['waktuMulaiKegiatan'] = $newData['waktu'] ?? null;
                 $data['private']['waktuSelesaiKegiatan'] = '';
             }
 
 
-            $data['tempat'] = $newData['tempat'];
+            $data['tempat'] = $newData['tempat'] ?? null;
             $data['paragrafAkhir'] = $newData['paragraf-akhir'];
 
 

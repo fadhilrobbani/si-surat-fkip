@@ -251,6 +251,42 @@
                     required>
             </div>
         </div>
+        <p class="font-semibold text-slate-500 text-md mx-auto mt-6 mb-2">Tembusan (Opsional):</p>
+
+        <div x-data="{ tembusan: [] }" class="bg-slate-100 p-4 mb-6 rounded-lg">
+            <!-- Section for tembusan input fields -->
+            <template x-for="(item, index) in tembusan" :key="index">
+                <div class="flex gap-4 mb-4">
+                    <div class="flex-1">
+                        <label :for="'tembusan' + index"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Tembusan ke-<span x-text="index + 1"></span>
+                        </label>
+                        <input :id="'tembusan' + index" type="text" :name="'tembusan[' + index + ']'"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Tembusan..." x-model="tembusan[index]" />
+                    </div>
+                    <button type="button" @click="tembusan.splice(index, 1)"
+                        class="text-red-500 hover:text-red-700 mt-7">
+                        Hapus
+                    </button>
+                </div>
+            </template>
+            <!-- Button to add new tembusan field -->
+            <button type="button" @click="tembusan.push('')"
+                class="  text-white bg-slate-500 hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-80">
+                <span class="flex flex-row items-center justify-center gap-2">
+                    <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                        viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5 12h14m-7 7V5" />
+                    </svg>
+                    <p>Tambah Tembusan</p>
+                </span>
+            </button>
+        </div>
+
 
         <x-modal-send :daftarPenerima='$daftarPenerima' />
         <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"

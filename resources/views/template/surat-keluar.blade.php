@@ -164,6 +164,19 @@
         @endif --}}
     </div>
 
+    <br>
+    @if (isset($surat->data['private']['tembusan']) && !empty($surat->data['private']['tembusan']))
+        <div class="distribution-list">
+            <p>Tembusan:</p>
+            <ol style="margin-left: 20px">
+                @foreach ($surat->data['private']['tembusan'] as $tembusan)
+                    <li>{{ $tembusan }}</li>
+                @endforeach
+
+            </ol>
+        </div>
+    @endif
+
 
 </body>
 
