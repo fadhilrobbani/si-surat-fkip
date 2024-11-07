@@ -172,7 +172,7 @@
 
         {{-- <a href="{{ route('lihat-html-surat-qr', ['surat' => $surat->id]) }}">html</a> --}}
         {{-- <iframe src="{{ $url }}" width="100%" height="600"></iframe> --}}
-        <div id="pdf-viewer" style="position: relative; width: 100%; margin: auto; overflow-x: auto;">
+        {{-- <div id="pdf-viewer" style="position: relative; width: 100%; margin: auto; overflow-x: auto;">
             <!-- Loading Animation -->
             <div id="loading-animation" class="mt-2 flex flex-row text-blue-800 italic"
                 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
@@ -294,9 +294,9 @@
 
             // Event listener untuk resize
             window.addEventListener('resize', handleResize);
-        </script>
-        <a href="{{ $url }}"
-            class="block text-center px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700">Unduh</a>
+        </script> --}}
+        {{-- <a href="{{ $url }}"
+            class="block text-center px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700">Unduh</a> --}}
     </main>
 </body>
 
