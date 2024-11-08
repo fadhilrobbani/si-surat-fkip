@@ -148,7 +148,13 @@ class KaprodiController extends Controller
 
     public function showSuratMasuk(Surat $surat)
     {
-        if ($surat->current_user_id == auth()->user()->id) {
+        if ($surat->current_user_id != auth()->user()->id) {
+
+            return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
+        }
+
+        if ($surat->jenisSurat->user_type == 'mahasiswa') {
+
             $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
                 ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
                 ->where('users.id', $surat->pengaju->id)
@@ -163,7 +169,26 @@ class KaprodiController extends Controller
                     ->get()
             ]);
         }
-        return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
+
+        if (($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas') || ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas-kelompok')) {
+            return view('kaprodi.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->whereIn('role_id', [8, 5, 9, 10])
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
+
+        if (($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'berita-acara-nilai')) {
+            return view('kaprodi.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->whereIn('role_id', [5])
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
     }
 
 
@@ -355,6 +380,89 @@ class KaprodiController extends Controller
         return redirect('kaprodi/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 
+    public function setujuiSuratStaff(Request $request, Surat $surat)
+    {
+
+        if ($surat->jenisSurat->slug == 'berita-acara-nilai') {
+            $surat->current_user_id = $request->input('penerima');
+            $surat->save();
+
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => 'setuju',
+            ]);
+            return redirect('kaprodi/surat-masuk')->with('success', 'Surat berhasil disetujui');
+        }
+
+        if ($surat->jenisSurat->slug == 'surat-tugas' || $surat->jenisSurat->slug == 'surat-tugas-kelompok') {
+            $surat->current_user_id = $request->input('penerima');
+            $data = $surat->data;
+
+            // Jika penerimanya adalah staff dekan langsung, maka surat di ttd oleh dekan
+            $rolePenerima = User::where('id', $surat->current_user_id)->first()->role->id;
+            if ($rolePenerima == 14) {
+
+                if ($data) {
+                    if (isset($data['private'])) {
+                        $data['private']['namaDekan'] =  auth()->user()->name;
+                        $data['private']['nipDekan'] =  auth()->user()->nip;
+                        $data['private']['deskripsiDekan'] =  auth()->user()->role->description;
+                        $data['private']['stepper'][] = auth()->user()->role->id;
+                    } else {
+                        $data['private'] = [
+                            'namaDekan' =>  auth()->user()->name,
+                            'nipDekan' =>  auth()->user()->nip,
+                            'deskripsiDekan' =>  auth()->user()->role->description,
+                            'stepper' => [auth()->user()->role->id]
+
+                        ];
+                    }
+                } else {
+                    $data = [
+                        'private' => [
+                            'namaDekan' =>  auth()->user()->name,
+                            'nipDekan' =>  auth()->user()->nip,
+                            'deskripsiDekan' =>  auth()->user()->role->description,
+                            'stepper' => [auth()->user()->role->id]
+                        ]
+                    ];
+                }
+            } else {
+                // Jika bukan staff dekan tujuan kirimnya, maka di ttd WD nantinya
+                if ($data) {
+                    if (isset($data['private'])) {
+                        $data['private']['stepper'][] = auth()->user()->role->id;
+                    } else {
+                        $data['private'] = [
+                            'stepper' => [auth()->user()->role->id]
+
+                        ];
+                    }
+                } else {
+                    $data = [
+                        'private' => [
+                            'stepper' => [auth()->user()->role->id]
+                        ]
+                    ];
+                }
+            }
+
+
+            $surat->data = $data;
+
+            $surat->save();
+
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => 'setuju',
+            ]);
+            return redirect('kaprodi/surat-masuk')->with('success', 'Surat berhasil disetujui');
+        }
+    }
 
     public function confirmTolakSurat(Surat $surat)
     {

@@ -119,7 +119,7 @@
                         <tr>
                             <th scope="col" class="px-4 py-3">Foto</th>
                             <th scope="col" class="px-4 py-3">Nama</th>
-                            <th scope="col" class="px-4 py-3">NPM</th>
+                            <th scope="col" class="px-4 py-3">NPM / Username</th>
 
                             <th scope="col" class="px-4 py-3">Surat yang Diajukan</th>
                             <th scope="col" class="px-4 py-3">Tanggal disetujui/ditolak</th>
@@ -148,7 +148,9 @@
                                     {{ $riwayatSurat->surat->data['nama'] }}
                                 </th>
 
-                                <td class="px-4 py-3">{{ $riwayatSurat->surat->data['npm'] }}</td>
+                                <td class="px-4 py-3">
+                                    {{ $riwayatSurat->surat->jenisSurat->user_type == 'mahasiswa' ? $riwayatSurat->surat->data['npm'] : $riwayatSurat->surat->data['username'] }}
+                                </td>
 
 
                                 <td class="px-4 py-3">{{ $riwayatSurat->surat->jenisSurat->name }}</td>

@@ -148,6 +148,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/riwayat-persetujuan', [KaprodiController::class, 'riwayatPersetujuan']);
         Route::get('/riwayat-persetujuan/show/{approval}', [KaprodiController::class, 'showApproval'])->can('kaprodiCanShowRiwayatPersetujuan', 'approval')->name('show-approval-kaprodi');
         Route::put('/surat-disetujui/{surat}', [KaprodiController::class, 'setujuiSurat'])->can('kaprodiCanApproveSuratMasuk', 'surat')->name('setujui-surat-kaprodi');
+        Route::put('/surat-staff-disetujui/{surat}', [KaprodiController::class, 'setujuiSuratStaff'])->name('setujui-surat-from-staff-kaprodi');
         Route::get('/surat-ditolak/{surat}', [KaprodiController::class, 'confirmTolakSurat'])->can('kaprodiCanShowDenySuratMasuk', 'surat')->name('confirm-tolak-surat-kaprodi');
         Route::put('/surat-ditolak/{surat}', [KaprodiController::class, 'tolakSurat'])->can('kaprodiCanDenySuratMasuk', 'surat')->name('tolak-surat-kaprodi');
         Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->can('kaprodiCanPrintSurat', 'surat')->name('print-surat-kaprodi');
