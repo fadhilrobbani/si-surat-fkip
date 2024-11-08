@@ -47,7 +47,8 @@
     <br>
     <p style="text-align: center"><b><u>SURAT PENGANTAR PEMBAYARAN UANG YUDISIUM</u></b></p>
     <p style="text-align: center">
-        <b>Nomor:&nbsp;{{ $surat->data['noSurat'] ?? 'NoSurat' }}/UN30.7/KU/{{ Carbon\Carbon::now()->year }} </b>
+        <b>Nomor:&nbsp;{{ $surat->data['noSurat'] ?? 'NoSurat' }}/UN30.7/KU/{{ isset($surat->data['tanggal_selesai']) ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ') : 'Tahun' }}
+        </b>
     </p>
     <br>
     <br>
