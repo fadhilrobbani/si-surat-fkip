@@ -855,7 +855,7 @@ class SuratController extends Controller
 
                 // Conditional assignment for tanggalPelaksanaan
                 'tanggalPelaksanaan' => ($request->input('tanggal-mulai-kegiatan') && $request->input('tanggal-selesai-kegiatan'))
-                    ? formatTimestampToDayIndonesian($request->input('tanggal-mulai-kegiatan')) . ' .s.d. ' . formatTimestampToDayIndonesian($request->input('tanggal-selesai-kegiatan')) . ', ' . formatTimestampToOnlyDateIndonesian($request->input('tanggal-mulai-kegiatan')) . ' .s.d. ' . formatTimestampToOnlyDateIndonesian($request->input('tanggal-selesai-kegiatan'))
+                    ? formatTimestampToDayIndonesian($request->input('tanggal-mulai-kegiatan')) . ' s.d. ' . formatTimestampToDayIndonesian($request->input('tanggal-selesai-kegiatan')) . ', ' . formatTimestampToOnlyDateIndonesian($request->input('tanggal-mulai-kegiatan')) . ' s.d. ' . formatTimestampToOnlyDateIndonesian($request->input('tanggal-selesai-kegiatan'))
                     : (($request->input('tanggal-mulai-kegiatan'))
                         ? formatTimestampToDateIndonesian($request->input('tanggal-mulai-kegiatan'))
                         : null),
@@ -940,7 +940,7 @@ class SuratController extends Controller
             // 'jabatanFungsionalDosen' => $request->input('jabatan-fungsional-dosen'),
             'acara' => $request->input('acara'),
             'tempat' => $request->input('tempat'),
-            'waktuPelaksanaan' => formatTimestampToDayIndonesian($request->input('waktu-mulai-penugasan')) . ' .s.d. ' . formatTimestampToDayIndonesian($request->input('waktu-selesai-penugasan')) . ', ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-mulai-penugasan')) . ' .s.d. ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-selesai-penugasan')),
+            'waktuPelaksanaan' => formatTimestampToDayIndonesian($request->input('waktu-mulai-penugasan')) . ' s.d. ' . formatTimestampToDayIndonesian($request->input('waktu-selesai-penugasan')) . ', ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-mulai-penugasan')) . ' s.d. ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-selesai-penugasan')),
             'dasarPenugasan' => $request->input('dasar-penugasan'),
         ];
         if ($request->hasFile('lampiran')) {
@@ -1243,7 +1243,7 @@ class SuratController extends Controller
                 ]);
                 $newData['tanggal-selesai-kegiatan'] = $request->input('tanggal-selesai-kegiatan');
                 $data['private']['tanggalSelesaiKegiatan'] = $newData['tanggal-selesai-kegiatan'];
-                $data['tanggalPelaksanaan'] = formatTimestampToDayIndonesian($newData['tanggal-mulai-kegiatan']) . ' .s.d. ' . formatTimestampToDayIndonesian($newData['tanggal-selesai-kegiatan']) . ', ' . formatTimestampToOnlyDateIndonesian($newData['tanggal-mulai-kegiatan']) . ' .s.d. ' . formatTimestampToOnlyDateIndonesian($newData['tanggal-selesai-kegiatan']);
+                $data['tanggalPelaksanaan'] = formatTimestampToDayIndonesian($newData['tanggal-mulai-kegiatan']) . ' s.d. ' . formatTimestampToDayIndonesian($newData['tanggal-selesai-kegiatan']) . ', ' . formatTimestampToOnlyDateIndonesian($newData['tanggal-mulai-kegiatan']) . ' s.d. ' . formatTimestampToOnlyDateIndonesian($newData['tanggal-selesai-kegiatan']);
             } elseif (empty($request->input('tanggal-mulai-kegiatan'))) {
                 $data['tanggalPelaksanaan'] = null;
             } else {
