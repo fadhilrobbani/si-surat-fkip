@@ -59,7 +59,7 @@
         <tr>
             <td>Nomor</td>
             <td>:
-                {{ $surat->data['noSurat'] ?? '[NoSurat]' }}/UN30.7/PP/{{ isset($surat->data['tanggal_selesai']) ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ') : 'Tahun' }}
+                {{ $surat->data['noSurat'] ?? '[NoSurat]' }}/UN30.7/PP/{{ isset($surat->data['tanggal_selesai']) ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ') : '[Tahun]' }}
             </td>
         </tr>
         <tr>
