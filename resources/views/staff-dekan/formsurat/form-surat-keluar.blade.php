@@ -25,7 +25,7 @@
                 window.setupEditors([{
                         elementId: "wysiwyg-text-example",
                         content: (paragrafAwal ? paragrafAwal :
-                            'Dengan hormat,<br>Sehubungan akan dilaksanakan kegiatan Diklat Literasi dan Numerasi bagi Guru Pamong Pendidikan Profesi Guru FKIP Universitas Bengkulu, maka bersama ini kami mohon bantuan Bapak/Ibu mengirimkan narasumber untuk kegiatan tersebut. Kegiatan ini akan dilaksanakan pada:'
+                            'Sehubungan akan dilaksanakan kegiatan Diklat Literasi dan Numerasi bagi Guru Pamong Pendidikan Profesi Guru FKIP Universitas Bengkulu, maka bersama ini kami mohon bantuan Bapak/Ibu mengirimkan narasumber untuk kegiatan tersebut. Kegiatan ini akan dilaksanakan pada:'
                         ),
                     },
                     {
@@ -170,9 +170,8 @@
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Silahkan edit contoh
                     paragraf berikut</label>
                 <label for="paragraf-akhir"
-                    class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Teks editor ini
-                    sensitif terhadap spasi/enter, pastikan tidak ada whitespace (spasi) yang tidak berguna di bagian
-                    awal atau akhir paragraf</label>
+                    class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Pastikan tidak ada
+                    baris kosong di awal atau akhir teks editor </label>
                 <label for="paragraf-awal"
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Untuk membuat baris
                     baru, tekan Ctrl + Enter pada keyboard</label>
@@ -240,9 +239,8 @@
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Silahkan edit contoh
                     paragraf berikut</label>
                 <label for="paragraf-akhir"
-                    class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Teks editor ini
-                    sensitif terhadap spasi/enter, pastikan tidak ada whitespace (spasi) yang tidak berguna di bagian
-                    awal atau akhir paragraf</label>
+                    class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Pastikan tidak ada
+                    baris kosong di awal atau akhir teks editor </label>
                 <label for="paragraf-akhir"
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Untuk membuat baris
                     baru, tekan Ctrl + Enter pada keyboard</label>
