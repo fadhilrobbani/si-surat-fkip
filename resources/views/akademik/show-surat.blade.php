@@ -156,7 +156,7 @@
                             Surat <span class="text-red-600">*</span></label>
                         <input type="number" id="no-surat" name="no-surat" value="{{ old('no-surat') }}"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Masukkan 4 digit no. surat, misal 0001" required>
+                            placeholder="Masukkan no. surat, misal 0001" required>
                     </div>
 
                     {{-- <div class="w-full max-w-[400px]">

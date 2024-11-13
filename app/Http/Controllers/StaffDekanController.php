@@ -256,7 +256,8 @@ class StaffDekanController extends Controller
             // 'no-surat' => 'required|size:4|unique:surat_tables,data->noSurat',
             // 'no-surat' =>  ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id)],
 
-            'no-surat' => ['required', Rule::unique('surat_tables', 'data->noSurat')
+
+            'no-surat' => ['required', 'max:5', Rule::unique('surat_tables', 'data->noSurat')
                 ->where(function ($query) {
                     $query->whereYear('created_at', date('Y'));
                 })],
