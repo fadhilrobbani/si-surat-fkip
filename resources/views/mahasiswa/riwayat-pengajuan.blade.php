@@ -6,7 +6,7 @@
     <x-slot:title>
         Mahasiswa | Riwayat Pengajuan
     </x-slot:title>
-    <h1 class="mx-auto text-center font-bold">Riwayat Pengajuan Surat</h1>
+    <h1 class="mx-auto text-center font-bold">Riwayat Pengajuan</h1>
 
     {{-- @foreach ($daftarPengajuan as $surat)
         <div class="m-4 bg-slate-300">

@@ -21,6 +21,7 @@ use App\Http\Controllers\DekanController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\SuratController;
+use App\Http\Controllers\IjazahController;
 use App\Http\Controllers\KaprodiController;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Controllers\AkademikController;
@@ -97,10 +98,12 @@ Route::middleware('auth')->group(function () {
         Route::middleware('verified')->group(function () {
 
             Route::get('/pengajuan-surat', [MahasiswaController::class, 'pengajuanSurat']);
+            Route::get('/pengajuan-legalisir-ijazah', [MahasiswaController::class, 'pengajuanLegalisirIjazah']);
             Route::get('/pengajuan-surat/{jenisSurat:slug}', [SuratController::class, 'create'])->name('show-form-surat');
             // Route::post('/pengajuan-surat/store/6', [SuratController::class, 'storeSuratKeteranganAlumni'])->name('store-surat-alumni');
             // Route::post('/pengajuan-surat/store/8', [SuratController::class, 'storeSuratKeteranganLulus'])->name('store-surat-lulus');
             Route::post('/pengajuan-surat/store/{jenisSurat:slug}', [SuratController::class, 'store'])->name('store-surat');
+            Route::post('/pengajuan-legalisir-ijazah/store/{jenisSurat:slug}', [IjazahController::class, 'store'])->name('store-pengajuan-legalisir-ijazah');
             // Route::get('/pengajuan-surat/{jenisSurat:slug}/template',[PDFController::class,'templateSurat'])->name('template-surat');
             Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->can('mahasiswaCanCancelSurat', 'surat')->name('destroy-surat');
             Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->name('redirect-form-surat');

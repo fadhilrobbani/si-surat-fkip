@@ -160,10 +160,22 @@
                     'dropdown' => [],
                 ],
                 [
-                    'link' => 'mahasiswa/pengajuan-surat',
-                    'title' => 'Pengajuan Surat',
+                    'title' => 'Pengajuan',
                     'icon' => asset('svg/letterpencil.svg'),
-                    'dropdown' => [],
+                    'link' => '/mahasiswa/pengajuan-surat',
+
+                    'dropdown' => [
+                        [
+                            'title' => 'Surat',
+                            'icon' => asset('svg/letterpencil.svg'),
+                            'link' => '/mahasiswa/pengajuan-surat',
+                        ],
+                        [
+                            'title' => 'Legalisir Ijazah',
+                            'icon' => asset('svg/letterpencil.svg'),
+                            'link' => '/mahasiswa/pengajuan-legalisir-ijazah',
+                        ],
+                    ],
                 ],
                 [
                     'link' => 'mahasiswa/riwayat-pengajuan-surat',

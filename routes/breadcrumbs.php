@@ -41,12 +41,12 @@ Breadcrumbs::for('staff-dekan-pengajuan-surat-form', function (BreadcrumbTrail $
 
 
 Breadcrumbs::for('riwayat-pengajuan-surat', function (BreadcrumbTrail $trail) {
-    $trail->push('Riwayat Pengajuan Surat', '/mahasiswa/riwayat-pengajuan-surat');
+    $trail->push('Riwayat Pengajuan', '/mahasiswa/riwayat-pengajuan-surat');
 });
 
 Breadcrumbs::for('show-pengajuan-surat', function (BreadcrumbTrail $trail, Surat $surat) {
     $trail->parent('riwayat-pengajuan-surat');
-    $trail->push('Detail Pengajuan Surat', route('lihat-surat-mahasiswa', $surat));
+    $trail->push('Detail Pengajuan', route('lihat-surat-mahasiswa', $surat));
 });
 
 Breadcrumbs::for('staff-riwayat-pengajuan-surat', function (BreadcrumbTrail $trail) {

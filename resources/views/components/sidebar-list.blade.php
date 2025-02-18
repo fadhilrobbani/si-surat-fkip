@@ -13,7 +13,7 @@
 @else
     <li>
         <button type="button"
-            class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-200 dark:text-white dark:hover:bg-gray-700"
+            class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-indigo-100 dark:text-white dark:hover:bg-gray-700"
             aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
             <img class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                 src="{{ $list['icon'] }}" alt="">
@@ -25,11 +25,22 @@
             </svg>
         </button>
         <ul id="dropdown-example" class="py-2 space-y-2">
+
+
+            {{-- @foreach ($list['dropdown'] as $sublist)
+                <li>
+
+                    <a href="{{ $sublist['link'] }}"
+                        class="{{ request()->is($sublist['link']) ? 'bg-blue-200' : '' }} flex  items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">{{ $sublist['title'] }}</a>
+
+                </li>
+            @endforeach --}}
             @foreach ($list['dropdown'] as $sublist)
                 <li>
                     <a href="{{ $sublist['link'] }}"
-                        class="{{ request()->url() == $sublist['link'] ? 'bg-blue-200' : '' }} flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">{{ $sublist['title'] }}</a>
-
+                        class="{{ request()->is(ltrim($sublist['link'], '/') . '*') ? 'bg-blue-200' : '' }} flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-indigo-100 dark:text-white dark:hover:bg-gray-700">
+                        {{ $sublist['title'] }}
+                    </a>
                 </li>
             @endforeach
 

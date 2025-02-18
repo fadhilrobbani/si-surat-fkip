@@ -48,7 +48,8 @@ class MahasiswaController extends Controller
             $programStudiKode = ProgramStudi::pluck('kode');
             $request->validate([
                 'username' =>  [
-                    'required',  'size:9',
+                    'required',
+                    'size:9',
                     'unique:users,username',
                     function ($attribute, $value, $fail) use ($programStudiKode) {
                         // Gunakan callback untuk memeriksa apakah nilai diawali dengan salah satu kode program studi
@@ -91,6 +92,24 @@ class MahasiswaController extends Controller
     {
         return view('mahasiswa.pengajuan-surat', [
             'daftarJenisSurat' => JenisSurat::where('user_type', 'mahasiswa')->get(),
+        ]);
+    }
+
+    public function pengajuanLegalisirIjazah()
+    {
+        $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
+            ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
+            ->where('users.id', auth()->user()->id)
+            ->select('jt.id')
+            ->first();
+
+        return view('mahasiswa.pengajuan-legalisir-ijazah', [
+            'jenisSurat' => JenisSurat::where('user_type', 'mahasiswa')->where('slug', 'legalisir-ijazah')->first(),
+            'daftarProgramStudi' => ProgramStudi::all(),
+            'daftarPenerima' => User::select('id', 'name', 'username')
+                ->where('role_id', '=', 6)
+                ->where('jurusan_id', $idJurusan->id)
+                ->get()
         ]);
     }
 
