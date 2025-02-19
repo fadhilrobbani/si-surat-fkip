@@ -233,6 +233,10 @@ class AkademikController extends Controller
 
     public function setujuiSurat(Request $request, Surat $surat)
     {
+        if ($surat->jenisSurat->slug === 'legalisir-ijazah') {
+            // return redirect()->back()->withErrors('Surat ini tidak dapat disetujui');
+            return redirect('/akademik/surat-masuk')->with('success', 'Pengajuan Legalisir Ijazah berhasil disetujui');
+        }
         // if (!auth()->user()->tandatangan) {
         //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
         // }

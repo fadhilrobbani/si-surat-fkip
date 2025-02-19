@@ -108,9 +108,11 @@
                 </tbody>
             </table>
         </div>
+        @if ($surat->jenisSurat->slug !== 'legalisir-ijazah')
+            <x-stepper :surat='$surat' />
+        @elseif($surat->jenisSurat->slug == 'legalisir-ijazah')
+        @endif
 
-
-        <x-stepper :surat='$surat' />
     </div>
 
 

@@ -141,11 +141,17 @@
                 </table>
             </div>
 
-            <x-stepper :surat='$surat' />
+            @if ($surat->jenisSurat->slug !== 'legalisir-ijazah')
+                <x-stepper :surat='$surat' />
+            @elseif($surat->jenisSurat->slug == 'legalisir-ijazah')
+            @endif
         </div>
 
 
-        @if ($surat->current_user_id == auth()->user()->id && $surat->status == 'diproses')
+        @if (
+            $surat->current_user_id == auth()->user()->id &&
+                $surat->status == 'diproses' &&
+                $surat->jenisSurat->slug !== 'legalisir-ijazah')
             <form action="{{ route('setujui-surat-akademik', $surat->id) }}" method="POST"
                 class="bg-slate-100 rounded-lg w-full">
                 @csrf
@@ -200,6 +206,55 @@
                             </div>
                         </a>
                     </div>
+                @elseif(
+                    $surat->current_user_id == auth()->user()->id &&
+                        $surat->status == 'diproses' &&
+                        $surat->jenisSurat->slug == 'legalisir-ijazah')
+                    <form action="{{ route('setujui-surat-akademik', $surat->id) }}" method="POST"
+                        class="bg-slate-100 rounded-lg w-full">
+                        @csrf
+                        @method('put')
+                        <div class=" flex flex-col gap-4 mt-10 items-center justify-center">
+
+                            {{-- <div class="w-full max-w-[400px]">
+                    <label for="stempel"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stempel yang
+                        digunakan (Jika tidak sesuai/tidak muncul, Anda dapat mengubahnya di profil akun <a
+                            class="underline text-blue-600" href="/akademik/profile">di sini</a>)</label>
+                    <input type="text" name="stempel"
+                        class="bg-gray-50 hidden border cur border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        value="ok">
+                    <img class="w-20" src="{{ asset('storage/' . $authUser->tandatangan) }}" alt="">
+                </div> --}}
+                            <div class="w-full max-w-[400px]">
+                                <label for="note"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catatan
+                                    (opsional)</label>
+                                <textarea id="note" name="note"
+                                    class="bg-gray-50 min-h-[150px] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Masukkan catatan yang ingin disampaikan ke mahasiswa">{{ old('note') }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="flex mt-8 justify-center gap-10 flex-col sm:flex-row ">
+
+
+
+
+
+                            <button
+                                class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
+                                type="submit">
+                                Setuju </button>
+
+                            <a href="{{ route('confirm-tolak-surat-akademik', $surat->id) }}">
+                                <div
+                                    class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
+                                    Tolak
+
+                                </div>
+                            </a>
+                        </div>
         @endif
     </div>
     </form>
