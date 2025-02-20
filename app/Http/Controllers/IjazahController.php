@@ -46,6 +46,25 @@ class IjazahController extends Controller
 
 
             ];
+            $data = $surat->data;
+
+            if ($data) {
+                if (isset($data['private'])) {
+
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                } else {
+                    $data['private'] = [
+                        'stepper' => [auth()->user()->role->id]
+
+                    ];
+                }
+            } else {
+                $data = [
+                    'private' => [
+                        'stepper' => [auth()->user()->role->id]
+                    ]
+                ];
+            }
             $surat->files = [
                 'ijazah' => $request->file('ijazah')->store('lampiran'),
                 'ktp' => $request->file('ktp')->store('lampiran')
@@ -60,7 +79,7 @@ class IjazahController extends Controller
             ) {
                 return redirect()->back()->with('deleted', 'Anda masih memiliki surat dengan jenis ini yang sedang diproses. Silahkan tunggu hingga selesai/ditolak atau batalkan pengajuan sebelumnya');
             }
-
+            $surat->data = $data;
             $surat->save();
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Pengajuan legalisir ijazah berhasil diajukan');
         }

@@ -1,44 +1,18 @@
 @php
     $authUser = auth()->user();
-
 @endphp
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Mahasiswa | Riwayat Pengajuan
+        Pengirim Legalisir | Riwayat Persetujuan
     </x-slot:title>
-    <h1 class="mx-auto text-center font-bold">Riwayat Pengajuan</h1>
-
-    {{-- @foreach ($daftarPengajuan as $surat)
-        <div class="m-4 bg-slate-300">
-            @php
-
-                // Tanggal kadaluarsa dari surat (contoh)
-                $expiredAt = Illuminate\Support\Carbon::parse($surat->expired_at); // Gantilah dengan tanggal kadaluarsa yang sesuai
-
-                // Waktu saat ini
-                $now = Illuminate\Support\Carbon::now();
-
-                // Hitung sisa waktu kadaluarsa dalam hari
-                $sisaHari = $now->diffInDays($expiredAt);
-            @endphp
-
-            <p>{{ $surat->pengaju->name }}</p>
-            <p>{{ $surat->pengaju->id }}</p>
-            <p>{{ $surat->data['programStudi'] }}</p>
-            <p>{{ $surat->jenis_surat_id }}</p>
-            <p>{{ $surat->status }}</p>
-            <p>Kadaluarsa dalam {{ $sisaHari }}</p>
-            <p>Menunggu: {{ $surat->current_user->name }}</p>
-        </div>
-    @endforeach --}}
-
-    <div>
+    <div class="overflow-x-auto">
+        <h1 class="mx-auto text-center font-bold">Riwayat Persetujuan</h1>
 
         <form id="filter-form" method="GET"
-            class="flex   flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+            class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
             <div class="w-full md:w-1/2">
                 <div class="flex items-center">
-                    <label for="search" class="sr-only">Search</label>
+                    <label for="search" class="sr-only">Cari (Nama)</label>
                     <div class="relative w-full">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
@@ -50,7 +24,7 @@
                         </div>
                         <input type="text" id="search" name="search"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Cari (Jenis Surat)" value="{{ request()->get('search') }}">
+                            placeholder="Cari (NPM)" value="{{ request()->get('search') }}">
                     </div>
                 </div>
             </div>
@@ -75,14 +49,13 @@
 
                     <select id="status" name="status"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="" selected>Status (Semua)</option>
-                        @foreach ($daftarStatus as $status)
-                            <option {{ request()->get('status') == $status ? 'selected' : '' }}
-                                value="{{ $status }}">{{ $status }}</option>
-                        @endforeach
-                        <option {{ request()->get('status') == 'expired' ? 'selected' : '' }} value="expired">
-                            expired
+                        <option value="">Status (Semua)</option>
+                        <option
+                            {{ request()->get('status') != 'ditolak' && request()->get('status') ? 'selected' : '' }}
+                            value="disetujui">Disetujui</option>
+                        <option {{ request()->get('status') == 'ditolak' ? 'selected' : '' }} value="ditolak">Ditolak
                         </option>
+
 
                     </select>
 
@@ -92,11 +65,9 @@
 
                     <select id="order" name="order"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option {{ request()->get('order') != 'asc' ? 'selected' : '' }} value="desc" selected>
-                            Terbaru
+                        <option {{ request()->get('order') != 'asc' ? 'selected' : '' }} value="desc" selected>Terbaru
                         </option>
-                        <option {{ request()->get('order') == 'asc' ? 'selected' : '' }} value="asc">Terlama
-                        </option>
+                        <option {{ request()->get('order') == 'asc' ? 'selected' : '' }} value="asc">Terlama</option>
 
 
                     </select>
@@ -137,21 +108,21 @@
                 </button>
             </div>
         </form>
-
-        @if ($daftarPengajuan->isEmpty())
-            <p class="text-slate-500 text-xl font-semibold text-center mx-auto">Tidak terdapat riwayat pengajuan</p>
+        @if ($daftarRiwayatSurat->isEmpty())
+            <p class="text-slate-500 text-xl font-semibold text-center mx-auto">Tidak terdapat Riwayat Persetujuan Surat
+            </p>
         @else
             <div class="w-full overflow-x-auto">
-
 
                 <table class="w-full text-sm text-left text-gray-700 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="px-4 py-3">No.</th>
-                            <th scope="col" class="px-4 py-3">Jenis Surat</th>
-                            <th scope="col" class="px-4 py-3">Status</th>
-                            <th scope="col" class="px-4 py-3">Tanggal&Waktu Diajukan</th>
-                            <th scope="col" class="px-4 py-3">Masa Aktif</th>
+                            <th scope="col" class="px-4 py-3">Foto</th>
+                            <th scope="col" class="px-4 py-3">Nama</th>
+                            <th scope="col" class="px-4 py-3">NPM / Username</th>
+
+                            <th scope="col" class="px-4 py-3">Tanggal disetujui/ditolak</th>
+                            <th scope="col" class="px-4 py-3">Konfirmasi Anda</th>
                             <th scope="col" class="px-4 py-3">
                                 Aksi
                                 <span class="sr-only">Aksi</span>
@@ -159,66 +130,41 @@
                         </tr>
                     </thead>
                     <tbody>
-
-                        @foreach ($daftarPengajuan as $surat)
+                        @foreach ($daftarRiwayatSurat as $riwayatSurat)
                             @php
                                 $avatar =
-                                    'https://ui-avatars.com/api/?name=' . $surat->pengaju->name . '&background=random';
-                                $statusStyle = '';
-                                if ($surat->status == 'selesai') {
-                                    $statusStyle = ' text-green-400 font-semibold';
-                                } elseif ($surat->status == 'diproses' && $surat->expired_at > Carbon\Carbon::now()) {
-                                    $statusStyle = ' text-yellow-400 font-semibold';
-                                } elseif ($surat->status == 'dikirim' && $surat->expired_at > Carbon\Carbon::now()) {
-                                    $statusStyle = ' text-blue-400 font-semibold';
-                                } elseif ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'diproses') {
-                                    $statusStyle = ' text-pink-500 font-semibold';
-                                } else {
-                                    $statusStyle = ' text-pink-500 font-semibold';
-                                }
+                                    'https://ui-avatars.com/api/?name=' .
+                                    $riwayatSurat->surat->data['nama'] .
+                                    '&background=random';
                             @endphp
                             <tr class=" border-b dark:border-gray-700 hover:bg-slate-100">
                                 <th scope="row"
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ $loop->iteration + $daftarPengajuan->firstItem() - 1 }}
+                                    <img class="max-w-40 max-h-40" src="{{ $avatar }}" alt="profile-picture">
                                 </th>
                                 <th scope="row"
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ $surat->jenisSurat->name }}
+                                    {{ $riwayatSurat->surat->data['nama'] }}
                                 </th>
 
                                 <td class="px-4 py-3">
-                                    {{-- <p class="{{ $statusStyle }}">{{ $surat->status }}</p> --}}
-                                    <p class="{{ $statusStyle }}">
-                                        {{ $surat->expired_at < Carbon\Carbon::now() && $surat->status === 'diproses' ? 'expired' : $surat->status }}
-                                    </p>
+                                    {{ $riwayatSurat->surat->jenisSurat->user_type == 'mahasiswa' ? $riwayatSurat->surat->data['npm'] : $riwayatSurat->surat->data['username'] }}
                                 </td>
-                                <td class="px-4 py-3">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
 
-                                <td class="px-4 py-3">
-                                    {{ formatTimestampToDiffDays($surat->expired_at) != 0 ? formatTimestampToDiffDays($surat->expired_at) . ' hari' : '-' }}
+
+                                <td class="px-4 py-3">{{ formatTimestampToIndonesian($riwayatSurat->created_at) }}</td>
+                                <td class="px-4 py-3">{{ $riwayatSurat->isApproved == 1 ? 'Disetujui' : 'Ditolak' }}
                                 </td>
                                 <td class="px-4 py-3 flex ">
 
-
-                                    <a href="{{ route('lihat-surat-mahasiswa', $surat->id) }}">
+                                    <a href="{{ route('show-approval-pengirim-legalisir', $riwayatSurat->id) }}">
                                         <div
                                             class="hover:bg-blue-800 cursor-pointer rounded-lg text-center bg-blue-600 p-2 text-white m-2">
                                             Lihat
-
                                         </div>
                                     </a>
 
-                                    @if ($surat->status == 'diproses')
-                                        <form
-                                            class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2"
-                                            action="{{ route('destroy-surat', $surat->id) }}" method="POST">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit">
-                                                Batal </button>
-                                        </form>
-                                    @endif
+
 
                                 </td>
                             </tr>
@@ -228,9 +174,9 @@
                 </table>
             </div>
         @endif
-    </div>
-    <div class="mt-4">
 
-        {{ $daftarPengajuan->links() }}
+        <div class="mt-4">
+            {{ $daftarRiwayatSurat->links() }}
+        </div>
     </div>
 </x-layout>

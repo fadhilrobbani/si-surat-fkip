@@ -145,6 +145,8 @@
 
         @if ($surat->jenisSurat->slug !== 'legalisir-ijazah')
             <x-stepper :surat='$surat' />
+        @else
+            <x-stepper-flexible :surat='$surat' />
         @endif
     </div>
 

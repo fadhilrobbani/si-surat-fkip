@@ -16,6 +16,7 @@ class MahasiswaController extends Controller
     {
         return view('mahasiswa.dashboard', [
             'pengajuanSelesai' => Surat::where('pengaju_id', '=', auth()->user()->id)->where('status', '=', 'selesai')->get(),
+            'pengajuanDikirim' => Surat::where('pengaju_id', '=', auth()->user()->id)->where('status', '=', 'dikirim')->get(),
             'pengajuanDitolak' => Surat::where('pengaju_id', '=', auth()->user()->id)->where('status', '=', 'ditolak')->get(),
             'pengajuanDiproses' =>  Surat::where('pengaju_id', '=', auth()->user()->id)->where('status', '=', 'diproses')->where(function ($query) {
                 $now = Carbon::now();
@@ -90,8 +91,9 @@ class MahasiswaController extends Controller
 
     public function pengajuanSurat()
     {
+
         return view('mahasiswa.pengajuan-surat', [
-            'daftarJenisSurat' => JenisSurat::where('user_type', 'mahasiswa')->get(),
+            'daftarJenisSurat' => JenisSurat::where('user_type', 'mahasiswa')->where('slug', '!=', 'legalisir-ijazah')->get(),
         ]);
     }
 

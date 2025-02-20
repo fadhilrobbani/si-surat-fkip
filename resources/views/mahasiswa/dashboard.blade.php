@@ -19,10 +19,11 @@
         <a href="/mahasiswa/riwayat-pengajuan-surat">
             <div
                 class="flex items-center gap-2 flex-col hover:bg-slate-300 justify-center rounded p-4 bg-gray-50 dark:bg-gray-800 min-h-28">
-                <p class="font-semibold text-slate-600 text-lg text-center">Riwayat Pengajuan Surat Anda</p>
+                <p class="font-semibold text-slate-600 text-lg text-center">Riwayat Pengajuan Anda</p>
                 <div class="flex flex-wrap justify-center text-white text-sm font-semibold gap-2">
                     <div class="bg-green-400 p-2 rounded-lg">Selesai: {{ count($pengajuanSelesai->toArray()) }}</div>
                     <div class="bg-yellow-400 p-2 rounded-lg">Diproses: {{ count($pengajuanDiproses->toArray()) }}</div>
+                    <div class="bg-blue-400 p-2 rounded-lg">Dikirim: {{ count($pengajuanDikirim->toArray()) }}</div>
                     <div class="bg-rose-500 p-2 rounded-lg">Ditolak: {{ count($pengajuanDitolak->toArray()) }}</div>
                     <div class="bg-rose-700 p-2 rounded-lg">Kadaluarsa: {{ count($pengajuanKadaluarsa->toArray()) }}
                     </div>
@@ -32,7 +33,7 @@
 
         <a href="/mahasiswa/profile">
             <div
-                class="flex hover:bg-slate-300 items-center justify-center gap-4 rounded bg-gray-50 dark:bg-gray-800 h-28">
+                class="flex hover:bg-slate-300 items-center justify-center gap-4 rounded bg-gray-50 dark:bg-gray-800 h-full">
                 <p class="font-semibold text-slate-600 text-lg cursor-pointer text-center">Pengaturan Akun</p>
                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" viewBox="0 0 20 18" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
@@ -148,7 +149,7 @@
                     class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800"
                     data-accordion-target="#accordion-color-body-3" aria-expanded="false"
                     aria-controls="accordion-color-body-3">
-                    <span>Apa maksud status diproses, ditolak, selesai, dan expired pada surat?</span>
+                    <span>Apa maksud status diproses, dikirim, ditolak, selesai, dan expired (kadaluarsa) pada surat?</span>
                     <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -162,6 +163,10 @@
                         <li>
                             Status diproses berarti surat sedang dalam proses menunggu untuk disetujui oleh semua
                             pihak
+                        </li>
+                        <li>
+                            Status dikirim biasanya muncul saat mengajukan legalisir yang berarti berkas dokumen sedang dalam proses pengiriman oleh ekspedisi ke tempat Anda
+
                         </li>
                         <li>
                             Status ditolak berarti surat ditolak oleh salah satu pihak yang artinya surat tidak dapat

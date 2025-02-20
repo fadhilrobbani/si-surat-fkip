@@ -6,7 +6,7 @@
 
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Akademik | Detail Surat
+        Pengirim Legalisir | Detail
     </x-slot:title>
     {{ Breadcrumbs::render('detail-surat-masuk', $surat) }}
     <h1 class="mx-auto text-center font-bold">{{ $surat->jenisSurat->name }}</h1>
@@ -144,7 +144,6 @@
             @if ($surat->jenisSurat->slug !== 'legalisir-ijazah')
                 <x-stepper :surat='$surat' />
             @elseif($surat->jenisSurat->slug == 'legalisir-ijazah')
-                <x-stepper-flexible :surat='$surat' />
             @endif
         </div>
 
@@ -153,7 +152,7 @@
             $surat->current_user_id == auth()->user()->id &&
                 $surat->status == 'diproses' &&
                 $surat->jenisSurat->slug !== 'legalisir-ijazah')
-            <form action="{{ route('setujui-surat-akademik', $surat->id) }}" method="POST"
+            <form action="{{ route('setujui-surat-pengirim-legalisir', $surat->id) }}" method="POST"
                 class="bg-slate-100 rounded-lg w-full">
                 @csrf
                 @method('put')
@@ -187,7 +186,7 @@
                 </div>
 
                 <div class="flex mt-8 justify-between flex-col sm:flex-row ">
-                    <a href="{{ route('preview-surat-akademik', $surat->id) }}"><button type="button"
+                    <a href="{{ route('preview-surat-pengirim-legalisir', $surat->id) }}"><button type="button"
                             class="text-white w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
                     <div class="flex flex-col sm:flex-row">
 
@@ -199,7 +198,7 @@
                             type="submit">
                             Setuju </button>
 
-                        <a href="{{ route('confirm-tolak-surat-akademik', $surat->id) }}">
+                        <a href="{{ route('confirm-tolak-surat-pengirim-legalisir', $surat->id) }}">
                             <div
                                 class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
                                 Tolak
@@ -211,67 +210,59 @@
                     $surat->current_user_id == auth()->user()->id &&
                         $surat->status == 'diproses' &&
                         $surat->jenisSurat->slug == 'legalisir-ijazah')
-                    {{-- ACTION BARU UNTUK SETUJU/TOLAK SURAT DARI STAFF --}}
-                    @if (
-                        $surat->current_user_id == auth()->user()->id &&
-                            $surat->status == 'diproses' &&
-                            $surat->jenisSurat->slug == 'legalisir-ijazah')
-                        <form action="{{ route('setujui-surat-akademik', $surat->id) }}" method="POST"
-                            class="bg-slate-100 rounded-lg w-full">
-                            @csrf
-                            @method('put')
-                            <div class=" flex flex-col gap-4 mt-10 items-center justify-center">
-                                <div class="w-full max-w-[400px]">
-                                    <label for="no-resi" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                        Nomor Resi JNE <span class="text-red-600">*</span>
-                                    </label>
-                                    <p class="mb-2 text-xs text-gray-500 dark:text-gray-400">(Isi dengan angka 0 jika mahasiswa memilih mengambil di tempat)</p>
-
-                                    <input type="text" id="no-resi" name="no-resi" value="{{ old('no-resi') }}"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Masukkan nomor resi pengiriman" required>
-                                </div>
-
-                                {{-- <div class="w-full max-w-[400px]">
-                        <label for="stempel"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stempel yang
-                            digunakan (Jika tidak sesuai/tidak muncul, Anda dapat mengubahnya di profil akun <a
-                                class="underline text-blue-600" href="/akademik/profile">di sini</a>)</label>
-                        <input type="text" name="stempel"
-                            class="bg-gray-50 hidden border cur border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            value="ok">
-                        <img class="w-20" src="{{ asset('storage/' . $authUser->tandatangan) }}" alt="">
-                    </div> --}}
-                                <div class="w-full max-w-[400px]">
-                                    <label for="note"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catatan
-                                        (opsional)</label>
-                                    <textarea id="note" name="note"
-                                        class="bg-gray-50 min-h-[150px] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Masukkan catatan yang ingin disampaikan ke mahasiswa">{{ old('note') }}</textarea>
-                                </div>
+                    <form action="{{ route('setujui-surat-pengirim-legalisir', $surat->id) }}" method="POST"
+                        class="bg-slate-100 rounded-lg w-full">
+                        @csrf
+                        @method('put')
+                        <div class=" flex flex-col gap-4 mt-10 items-center justify-center">
+                            <div class=" w-full max-w-[400px]">
+                                <label for="no-resi"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
+                                    Resi <span class="text-red-600">*</span></label>
+                                <input type="text" id="no-resi" name="no-resi" value="{{ old('no-resi') }}"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Masukkan nomor resi pengiriman" required>
                             </div>
 
-                            <div class="flex mt-8 justify-center gap-10 flex-col sm:flex-row ">
-
-
-
-
-
-                                <button
-                                    class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
-                                    type="submit">
-                                    Setuju </button>
-
-                                <a href="{{ route('confirm-tolak-surat-akademik', $surat->id) }}">
-                                    <div
-                                        class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
-                                        Tolak
-
-                                    </div>
-                                </a>
+                            {{-- <div class="w-full max-w-[400px]">
+                    <label for="stempel"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stempel yang
+                        digunakan (Jika tidak sesuai/tidak muncul, Anda dapat mengubahnya di profil akun <a
+                            class="underline text-blue-600" href="/akademik/profile">di sini</a>)</label>
+                    <input type="text" name="stempel"
+                        class="bg-gray-50 hidden border cur border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        value="ok">
+                    <img class="w-20" src="{{ asset('storage/' . $authUser->tandatangan) }}" alt="">
+                </div> --}}
+                            <div class="w-full max-w-[400px]">
+                                <label for="note"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catatan
+                                    (opsional)</label>
+                                <textarea id="note" name="note"
+                                    class="bg-gray-50 min-h-[150px] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Masukkan catatan yang ingin disampaikan ke mahasiswa">{{ old('note') }}</textarea>
                             </div>
-                    @endif
+                        </div>
+
+                        <div class="flex mt-8 justify-center gap-10 flex-col sm:flex-row ">
+
+
+
+
+
+                            <button
+                                class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
+                                type="submit">
+                                Setuju </button>
+
+                            <a href="{{ route('confirm-tolak-surat-pengirim-legalisir', $surat->id) }}">
+                                <div
+                                    class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
+                                    Tolak
+
+                                </div>
+                            </a>
+                        </div>
         @endif
     </div>
     </form>

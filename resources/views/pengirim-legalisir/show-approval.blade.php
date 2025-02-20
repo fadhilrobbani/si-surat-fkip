@@ -6,13 +6,14 @@
 
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Akademik | Detail Riwayat Persetujuan
+        Pengirim Legalisir | Detail Riwayat Persetujuan
     </x-slot:title>
     {{ Breadcrumbs::render('detail-persetujuan', $approval) }}
     <h1 class="mx-auto text-center font-bold">{{ $approval->surat->jenisSurat->name }}</h1>
     <br>
     <div class="flex flex-col gap-4 md:flex-row justify-evenly items-start">
-        <div class="w-full overflow-x-auto shadow-lg sm:rounded-lg">
+
+        <div class=" w-full overflow-x-auto shadow-lg sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-700 dark:text-gray-400">
                 <tbody>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -61,6 +62,19 @@
                         @if ($key == 'private')
                             @continue
                         @endif
+                        @if ($key == 'dosen')
+                            @foreach ($value as $id => $data)
+                                @foreach ($data as $key => $value)
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">
+                                            {{ convertToTitleCase($key) }}:&nbsp;
+                                        </td>
+                                        <td class="px-6 py-4">{{ $value }}</td>
+                                    </tr>
+                                @endforeach
+                            @endforeach
+                            @continue
+                        @endif
                         <tr class="border-b border-gray-200 dark:border-gray-700">
                             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">
                                 {{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:&nbsp;</td>
@@ -78,7 +92,7 @@
                                     {{ Str::title(str_replace('_', ' ', $key)) }}:</td>
                                 <td class="px-6 py-4">
                                     {{-- <a class="text-blue-700 underline"
-                                        href="{{ route('show-file-akademik', ['surat' => $approval->surat->id, 'filename' => basename($value)]) }}">Lihat</a> --}}
+                                        href="{{ route('show-file-pengirim-legalisir', ['surat' => $approval->surat->id, 'filename' => basename($value)]) }}">Lihat</a> --}}
                                     {{-- <a class="text-blue-700 underline"
                                         href="{{ '/storage/lampiran/' . basename($value) }}">Lihat</a> --}}
                                     <?php
@@ -108,21 +122,36 @@
                 </tbody>
             </table>
         </div>
-        @if ($surat->jenisSurat->slug !== 'legalisir-ijazah')
+
+
+        @if ($surat->jenisSurat->user_type == 'mahasiswa' && $surat->jenisSurat->slug !== 'legalisir-ijazah')
             <x-stepper :surat='$surat' />
-        @elseif($surat->jenisSurat->slug == 'legalisir-ijazah')
+        @elseif ($surat->jenisSurat->user_type == 'mahasiswa' && $surat->jenisSurat->slug === 'legalisir-ijazah')
+            {{-- <x-stepper :surat='$surat' /> --}}
+        @elseif ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'berita-acara-nilai')
+            <x-stepper-staff-berita-acara-nilai :surat='$surat' />
+        @elseif(
+            ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas') ||
+                ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas-kelompok'))
+            <x-stepper-flexible :surat='$surat' />
+        @elseif($surat->jenisSurat->user_type == 'staff-dekan')
             <x-stepper-flexible :surat='$surat' />
         @endif
-
     </div>
 
-
-    @if ($approval->surat->status == 'selesai' && $approval->surat->jenisSurat->slug != 'legalisir-ijazah')
-        <a href="{{ route('print-surat-akademik', $approval->surat->id) }}"><button type="button"
-                class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button></a>
-    @elseif($surat->jenisSurat->slug != 'legalisir-ijazah')
-        <button type="button" disabled
-            class="text-white cursor-not-allowed mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button>
-        <p class="italic text-slate-500">Surat belum dapat dicetak selama surat belum selesai / disetujui akademik</p>
+    @if (
+        $approval->surat->jenisSurat->slug != 'berita-acara-nilai' &&
+            $approval->surat->jenisSurat->slug != 'legalisir-ijazah')
+        @if ($approval->surat->status == 'selesai')
+            <a href="{{ route('print-surat-pengirim-legalisir', $approval->surat->id) }}"><button type="button"
+                    class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button></a>
+        @else
+            <a href="{{ route('preview-surat-pengirim-legalisir', $approval->surat->id) }}"><button type="button"
+                    class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
+            <p class="italic text-slate-500">Surat dianggap sah jika status surat adalah selesai dan sudah terdapat
+                tanda tangan berupa QR Code.
+            </p>
+        @endif
+    @elseif($approval->surat->jenisSurat->slug == 'legalisir-ijazah')
     @endif
 </x-layout>
