@@ -26,7 +26,7 @@ class IjazahController extends Controller
                 'program-studi' => 'required',
                 'email' => 'required|email',
 
-                'ijazah' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+                'ijazah' => 'required|file|mimes:pdf|max:2048',
                 'ktp' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
             ]);
 

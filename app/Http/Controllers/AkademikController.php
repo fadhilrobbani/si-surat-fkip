@@ -246,6 +246,8 @@ class AkademikController extends Controller
     }
 
 
+
+
     public function setujuiSurat(Request $request, Surat $surat)
     {
         if ($surat->jenisSurat->slug === 'legalisir-ijazah') {
@@ -319,9 +321,9 @@ class AkademikController extends Controller
                 'isApproved' => true,
                 'note' => $request->input('note'),
             ]);
-            if($surat->data['noResi'] == 0){
+            if ($surat->data['noResi'] == 0) {
                 Mail::to($surat->pengaju->email)->send(new LegalisirDiambil($surat));
-            }else{
+            } else {
                 Mail::to($surat->pengaju->email)->send(new LegalisirDikirim($surat));
             }
             return redirect('/akademik/surat-masuk')->with('success', 'Surat berhasil disetujui');

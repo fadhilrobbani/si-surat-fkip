@@ -11,6 +11,16 @@
     font-family: "Montserrat", sans-serif;
 } */
 
+div[modal-backdrop] {
+    background-color: rgb(17 24 39 / 30%);
+}
+
+/* @media (prefers-color-scheme: dark) {
+    div[modal-backdrop] {
+        background-color: rgb(17 24 39 / 80%);
+    }
+} */
+
 /* CSS file */
 .scrollable {
     @apply max-h-[400px] overflow-y-auto;
