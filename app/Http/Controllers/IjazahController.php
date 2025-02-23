@@ -16,6 +16,45 @@ class IjazahController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+    public function storeHarga(Request $request)
+    {
+        $request->validate([
+            'ongkir' => 'required|numeric',
+            'jumlah-lembar' => 'required|integer|min:1|max:10',
+            'total_harga' => 'required|numeric',
+            // tambahkan validasi lain sesuai kebutuhan
+        ]);
+
+        $ongkir = $request->input('ongkir');
+        $jumlahLembar = $request->input('jumlah-lembar');
+        $biayaJasa = 5000;
+        $biayaLembar = 2000 * $jumlahLembar;
+        $totalHargaServer = $ongkir + $biayaLembar + $biayaJasa;
+
+        if ($totalHargaServer != $request->input('total_harga')) {
+            return back()->withErrors(['total_harga' => 'Total harga tidak valid.']);
+        }
+
+        // Lanjutkan proses penyimpanan data...
+    }
+
+    public function hitungHarga(Request $request)
+    {
+        $request->validate([
+            'ongkir' => 'required|numeric',
+            'jumlah_lembar' => 'required|integer|min:1|max:10',
+        ]);
+
+        $ongkir = $request->input('ongkir');
+        $jumlahLembar = $request->input('jumlah_lembar');
+        $biayaJasa = 5000;
+        $biayaLembar = 2000 * $jumlahLembar;
+        $totalHarga = $ongkir + $biayaLembar + $biayaJasa;
+
+        return response()->json(['total_harga' => $totalHarga]);
+    }
+
     public function store(Request $request, JenisSurat $jenisSurat)
     {
         if ($jenisSurat->slug == 'legalisir-ijazah') {
