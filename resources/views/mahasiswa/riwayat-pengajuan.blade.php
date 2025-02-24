@@ -209,7 +209,16 @@
                                         </div>
                                     </a>
 
-                                    @if ($surat->status == 'diproses')
+                                    @if ($surat->jenisSurat->slug !== 'legalisir-ijazah' && $surat->status == 'diproses')
+                                        <form
+                                            class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2"
+                                            action="{{ route('destroy-surat', $surat->id) }}" method="POST">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit">
+                                                Batal </button>
+                                        </form>
+                                    @elseif($surat->jenisSurat->slug == 'legalisir-ijazah' && $surat->status == 'menunggu_pembayaran')
                                         <form
                                             class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2"
                                             action="{{ route('destroy-surat', $surat->id) }}" method="POST">

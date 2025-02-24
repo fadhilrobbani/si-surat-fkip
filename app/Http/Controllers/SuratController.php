@@ -1065,7 +1065,7 @@ class SuratController extends Controller
 
     public function destroy(Surat $surat)
     {
-        if ($surat->status == 'diproses') {
+        if ($surat->status == 'diproses' || $surat->status == 'menunggu_pembayaran') {
             Surat::destroy($surat->id);
             return redirect()->back()->with('success', 'Berhasil membatalkan pengajuan surat');
         }

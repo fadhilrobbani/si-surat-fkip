@@ -211,14 +211,14 @@
         <p class="font-semibold text-slate-500 text-md mx-auto  mt-6 mb-2">Data Pengiriman:</p>
         <div class="bg-slate-50 p-4 rounded-lg shadow-lg">
             <div class="grid gap-6 md:grid-cols-1">
-                <div class="flex items-center md:col-span-1">
+                {{-- <div class="flex items-center md:col-span-1">
                     <input id="checked-checkbox" name="ambil" type="checkbox" value="1"
                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         onchange="toggleInputs(this)">
                     <label for="checked-checkbox"
                         class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Berkas ambil di tempat
                         (Akademik FKIP UNIB)?</label>
-                </div>
+                </div> --}}
 
                 <div>
                     <label for="alamat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat
@@ -232,9 +232,10 @@
                     <label for="kode-pos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode
                         Pos
                         <span class="text-red-500">*</span></label></label>
-                    <input type="text" id="kode-pos" name="kode-pos"
+                    <input type="number" id="kode-pos" name="kode-pos"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Masukkan Kode Pos" value="{{ old('kode-pos') }}" required>
+                        placeholder="Masukkan Kode Pos" value="{{ old('kode-pos') }}" required maxlength="5"
+                        minlength="5" pattern="[0-9]{5}" title="Masukkan 5 digit kode pos">
                 </div>
 
                 <div>
@@ -391,21 +392,21 @@
 
                 {{-- <p class="mt-4 font-semibold">Deskripsi Harga:</p> --}}
                 <div id="deskripsi-harga"></div>
-                <input type="hidden" name="total-harga" id="total-harga-input">
+                <input type="hidden" name="total-harga" id="total-harga-input" required>
 
 
 
             </div>
         </div>
 
-        <x-modal-send :daftarPenerima='$daftarPenerima' />
+        {{-- <x-modal-send :daftarPenerima='$daftarPenerima' />
         <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
-            class="block text-white mt-6 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            class="block text-white mt-6 bg-bluve-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             type="button">
             Ajukan Surat
-        </button>
-        {{-- <button type="submit"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button> --}}
+        </button> --}}
+        <button type="submit"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none mt-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
     </form>
 
 

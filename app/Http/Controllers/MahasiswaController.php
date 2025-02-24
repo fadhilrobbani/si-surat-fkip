@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Surat;
 use App\Models\JenisSurat;
 use App\Models\ProgramStudi;
@@ -214,6 +215,18 @@ class MahasiswaController extends Controller
 
     public function lihatSurat(Surat $surat)
     {
+        if ($surat->jenisSurat->slug == 'legalisir-ijazah' && $surat->status == 'menunggu_pembayaran') {
+            return view('mahasiswa.show-order', [
+                'surat' => $surat,
+
+            ]);
+        }
+
+        if ($surat->jenisSurat->slug == 'legalisir-ijazah') {
+            return view('mahasiswa.show-legalisir', [
+                'surat' => $surat
+            ]);
+        }
         return view('mahasiswa.show-surat', [
             'surat' => $surat
         ]);

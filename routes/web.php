@@ -379,27 +379,27 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile/reset-password/{user}', [StaffDekanController::class, 'resetPassword'])->name('reset-password-staff-dekan');
     });
 
-    Route::prefix('pengirim-legalisir')->middleware(['userAccess:15'])->group(function () {
-        // Route::middleware('verified')->group(function () {
-        Route::get('/pengajuan-terbaru', [PengirimLegalisirController::class, 'suratMasuk']);
-        Route::get('/riwayat-persetujuan', [PengirimLegalisirController::class, 'riwayatPersetujuan']);
-        Route::get('/riwayat-persetujuan/show/{approval}', [PengirimLegalisirController::class, 'showApproval'])->name('show-approval-pengirim-legalisir');
-        Route::get('/surat-masuk/show/{surat}', [PengirimLegalisirController::class, 'showSuratMasuk'])->name('show-surat-pengirim-legalisir');
-        Route::get('/surat-masuk/edit/{surat}', [SuratController::class, 'edit'])->name('edit-surat-pengirim-legalisir');
-        Route::put('/surat-masuk/edit/{surat}', [SuratController::class, 'update'])->name('update-surat-pengirim-legalisir');
-        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->name('preview-surat-pengirim-legalisir');
-        Route::put('/surat-disetujui/{surat}', [PengirimLegalisirController::class, 'setujuiSurat'])->name('setujui-surat-pengirim-legalisir');
-        Route::get('/surat-ditolak/{surat}', [PengirimLegalisirController::class, 'confirmTolakSurat'])->name('confirm-tolak-surat-pengirim-legalisir');
-        Route::put('/surat-ditolak/{surat}', [PengirimLegalisirController::class, 'tolakSurat'])->name('tolak-surat-pengirim-legalisir');
-        Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-pengirim-legalisir');
-        Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-pengirim-legalisir');
-        // });
-        Route::get('/', [PengirimLegalisirController::class, 'dashboard']);
-        Route::get('/profile', [PengirimLegalisirController::class, 'profilePage']);
-        Route::put('/profile/update/{user}', [PengirimLegalisirController::class, 'updateProfile'])->name('update-profile-pengirim-legalisir');
-        Route::get('/profile/reset-password', [PengirimLegalisirController::class, 'resetPasswordPage']);
-        Route::put('/profile/reset-password/{user}', [PengirimLegalisirController::class, 'resetPassword'])->name('reset-password-pengirim-legalisir');
-    });
+    // Route::prefix('pengirim-legalisir')->middleware(['userAccess:15'])->group(function () {
+    //     // Route::middleware('verified')->group(function () {
+    //     Route::get('/pengajuan-terbaru', [PengirimLegalisirController::class, 'suratMasuk']);
+    //     Route::get('/riwayat-persetujuan', [PengirimLegalisirController::class, 'riwayatPersetujuan']);
+    //     Route::get('/riwayat-persetujuan/show/{approval}', [PengirimLegalisirController::class, 'showApproval'])->name('show-approval-pengirim-legalisir');
+    //     Route::get('/surat-masuk/show/{surat}', [PengirimLegalisirController::class, 'showSuratMasuk'])->name('show-surat-pengirim-legalisir');
+    //     Route::get('/surat-masuk/edit/{surat}', [SuratController::class, 'edit'])->name('edit-surat-pengirim-legalisir');
+    //     Route::put('/surat-masuk/edit/{surat}', [SuratController::class, 'update'])->name('update-surat-pengirim-legalisir');
+    //     Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->name('preview-surat-pengirim-legalisir');
+    //     Route::put('/surat-disetujui/{surat}', [PengirimLegalisirController::class, 'setujuiSurat'])->name('setujui-surat-pengirim-legalisir');
+    //     Route::get('/surat-ditolak/{surat}', [PengirimLegalisirController::class, 'confirmTolakSurat'])->name('confirm-tolak-surat-pengirim-legalisir');
+    //     Route::put('/surat-ditolak/{surat}', [PengirimLegalisirController::class, 'tolakSurat'])->name('tolak-surat-pengirim-legalisir');
+    //     Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-pengirim-legalisir');
+    //     Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-pengirim-legalisir');
+    //     // });
+    //     Route::get('/', [PengirimLegalisirController::class, 'dashboard']);
+    //     Route::get('/profile', [PengirimLegalisirController::class, 'profilePage']);
+    //     Route::put('/profile/update/{user}', [PengirimLegalisirController::class, 'updateProfile'])->name('update-profile-pengirim-legalisir');
+    //     Route::get('/profile/reset-password', [PengirimLegalisirController::class, 'resetPasswordPage']);
+    //     Route::put('/profile/reset-password/{user}', [PengirimLegalisirController::class, 'resetPassword'])->name('reset-password-pengirim-legalisir');
+    // });
 });
 
 
