@@ -45,4 +45,9 @@ class Surat extends Model
     {
         return $this->hasMany(Approval::class, 'surat_id', 'id');
     }
+
+    public function order()
+    {
+        return $this->hasMany(Order::class, 'surat_id', 'id');
+    }
 }
