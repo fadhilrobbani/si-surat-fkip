@@ -8,6 +8,24 @@
     <x-slot:title>
         Mahasiswa | Menunggu Pembayaran
     </x-slot:title>
+    <x-slot:script>
+        <script>
+            document.getElementById('batal-button').addEventListener('click', function() {
+                document.getElementById('bukti-bayar').removeAttribute('required');
+            });
+
+
+            document.getElementById('confirm-batal-button').addEventListener('click', function() {
+                const form = document.getElementById('konfirmasi-pembayaran');
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'action';
+                hiddenInput.value = 'batal';
+                form.appendChild(hiddenInput);
+                form.submit();
+            });
+        </script>
+    </x-slot:script>
     {{ Breadcrumbs::render('show-pengajuan-surat', $surat) }}
     <h1 class="mx-auto text-center font-bold">{{ $surat->jenisSurat->name }}</h1>
     <div class="bg-white rounded-lg shadow-md  overflow-x-auto">
@@ -149,7 +167,8 @@
                         {{ number_format($surat->data['totalHarga'], 0, ',', '.') }}</span>
                 </div>
                 <div class="h-2 bg-slate-800"></div>
-                <form action="{{ route('konfirmasi-pembayaran-legalisir-ijazah', $surat->id) }}" method="POST"
+                <form id="konfirmasi-pembayaran"
+                    action="{{ route('konfirmasi-pembayaran-legalisir-ijazah', $surat->id) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -165,17 +184,19 @@
                             atau PDF (MAX 2 MB).</p>
                     </div>
 
-                    <x-modal-send :daftarPenerima='$daftarPenerima' />
-
+                    <x-modal-konfirmasi-pembayaran-send :daftarPenerima='$daftarPenerima' />
+                    <x-modal-batal-pengajuan />
                     <div class="flex flex-col gap-4 mt-4 sm:flex-row justify-center  items-center">
-                        <button type="submit" name="action" value="konfirmasi"
+                        <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
+                            type="button"
                             class=" text-white bg-blue-700 w-full sm:w-fit  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Konfirmasi Pembayaran
                         </button>
 
-                        <button type="submit" name="action" value="batal"
+                        <button data-modal-target="batal-modal" data-modal-toggle="batal-modal" type="button"
+                            id="batal-button"
                             class="text-white bg-pink-600 w-full sm:w-fit hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Batal
+                            Batalkan Pengajuan
                         </button>
                     </div>
 

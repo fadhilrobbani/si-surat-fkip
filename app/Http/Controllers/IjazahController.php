@@ -147,7 +147,7 @@ class IjazahController extends Controller
         return $totalHarga;
     }
 
-    public function konfirmasiPembayaran(Request $request, $suratId)
+    public function konfirmasiPembayaran(Request $request, Surat $surat)
     {
         $action = $request->input('action');
 
@@ -157,21 +157,21 @@ class IjazahController extends Controller
                 'bukti-bayar' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
             ]);
 
-            $surat = Surat::find($suratId);
-            $buktiBayarPath = $request->file('bukti-bayar')->store('bukti-bayar');
+            $surat = Surat::find($surat->id);
+            $buktiBayarPath = $request->file('bukti-bayar')->store('lampiran');
 
-            $surat->files = array_merge((array)$surat->files, ['bukti_bayar' => $buktiBayarPath]);
+            $surat->files = array_merge((array)$surat->files, ['buktiBayar' => $buktiBayarPath]);
+            $surat->status = 'diproses';
+            $surat->current_user_id = $request->input('penerima');
             $surat->save();
 
             // ... logika lain ...
             return redirect()->back()->with('success', 'Pembayaran dikonfirmasi.');
         } elseif ($action === 'batal') {
             // Logika pembatalan surat
-            $surat = Surat::find($suratId);
-            $surat->delete();
-
+            Surat::destroy($surat->id);
             // ... logika lain ...
-            return redirect()->back()->with('success', 'Surat dibatalkan.');
+            return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Pengajuan legalisir berhasil dibatalkan.');
         }
 
         return redirect()->back()->with('error', 'Tindakan tidak valid.');
