@@ -147,6 +147,36 @@ class IjazahController extends Controller
         return $totalHarga;
     }
 
+    public function konfirmasiPembayaran(Request $request, $suratId)
+    {
+        $action = $request->input('action');
+
+        if ($action === 'konfirmasi') {
+            // Logika konfirmasi pembayaran (upload bukti, dll.)
+            $request->validate([
+                'bukti-bayar' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+            ]);
+
+            $surat = Surat::find($suratId);
+            $buktiBayarPath = $request->file('bukti-bayar')->store('bukti-bayar');
+
+            $surat->files = array_merge((array)$surat->files, ['bukti_bayar' => $buktiBayarPath]);
+            $surat->save();
+
+            // ... logika lain ...
+            return redirect()->back()->with('success', 'Pembayaran dikonfirmasi.');
+        } elseif ($action === 'batal') {
+            // Logika pembatalan surat
+            $surat = Surat::find($suratId);
+            $surat->delete();
+
+            // ... logika lain ...
+            return redirect()->back()->with('success', 'Surat dibatalkan.');
+        }
+
+        return redirect()->back()->with('error', 'Tindakan tidak valid.');
+    }
+
     // public function store(Request $request, JenisSurat $jenisSurat)
     // {
     //     if ($jenisSurat->slug == 'legalisir-ijazah') {

@@ -216,8 +216,19 @@ class MahasiswaController extends Controller
     public function lihatSurat(Surat $surat)
     {
         if ($surat->jenisSurat->slug == 'legalisir-ijazah' && $surat->status == 'menunggu_pembayaran') {
+            $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
+                ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
+                ->where('users.id', auth()->user()->id)
+                ->select('jt.id')
+                ->first();
             return view('mahasiswa.show-order', [
                 'surat' => $surat,
+                'jenisSurat' => JenisSurat::where('user_type', 'mahasiswa')->where('slug', 'legalisir-ijazah')->first(),
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 6)
+                    ->where('jurusan_id', $idJurusan->id)
+                    ->get()
 
             ]);
         }
