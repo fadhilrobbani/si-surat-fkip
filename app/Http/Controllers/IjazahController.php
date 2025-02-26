@@ -80,6 +80,7 @@ class IjazahController extends Controller
                 'biayaLembar' => 2000 * $request->input('jumlah-lembar'),
                 'totalHarga' => $totalHarga,
                 'urlOngkir' => $request->input('url-ongkir'),
+                'catatanUntukAkademik' => $request->input('catatan-mahasiswa')
             ];
 
             $data = $surat->data;

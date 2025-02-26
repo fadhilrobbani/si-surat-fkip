@@ -46,6 +46,22 @@
                         <td class="px-6 py-4">{{ $surat->data['noResi'] }}</td>
                     </tr>
                 @endif
+                @if (isset($surat->data['catatanUntukAkademik']))
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                        <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Pesan dari Mahasiswa:</td>
+                        <td class="px-6 py-4">{{ $surat->data['catatanUntukAkademik'] }}</td>
+                    </tr>
+                @endif
+                @if (isset($surat->data['note']))
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                        <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Pesan dari Akademik:</td>
+                        <td class="px-6 py-4">{{ $surat->data['note'] }}</td>
+                    </tr>
+                @endif
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Jumlah Lembar:</td>
+                    <td class="px-6 py-4">{{ $surat->data['jumlahLembar'] }} lembar</td>
+                </tr>
                 <tr class="border-b border-gray-200 dark:border-gray-700">
                     <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Nama:</td>
                     <td class="px-6 py-4">{{ $surat->data['nama'] }}</td>
@@ -62,10 +78,7 @@
                     <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Email:</td>
                     <td class="px-6 py-4">{{ $surat->data['email'] }}</td>
                 </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Jumlah Lembar:</td>
-                    <td class="px-6 py-4">{{ $surat->data['jumlahLembar'] }} lembar</td>
-                </tr>
+
                 <tr class="border-b border-gray-200 dark:border-gray-700">
                     <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Alamat:</td>
                     <td class="px-6 py-4">{{ $surat->data['alamat'] }}</td>
@@ -120,7 +133,7 @@
                                     // Handle ketika $path kosong atau file tidak ditemukan
                                     $mimeType = '/file-tidak-ditemukan';
                                 }
-                                
+
                                 $extension = explode('.', basename($value))[1];
                                 $url = URL::signedRoute('show-file', [
                                     'user' => $authUser->id,

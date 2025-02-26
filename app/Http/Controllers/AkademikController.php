@@ -227,7 +227,7 @@ class AkademikController extends Controller
 
         if ($surat->jenisSurat->slug == 'legalisir-ijazah') {
 
-            return view('akademik.show-surat', [
+            return view('akademik.show-legalisir', [
                 'surat' => $surat,
                 'daftarPenerima' => User::select('id', 'name', 'username')
                     ->where('role_id', '=', 15)
