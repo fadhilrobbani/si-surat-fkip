@@ -106,6 +106,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/pengajuan-surat/store/{jenisSurat:slug}', [SuratController::class, 'store'])->name('store-surat');
             Route::post('/pengajuan-legalisir-ijazah/store/{jenisSurat:slug}', [IjazahController::class, 'store'])->name('store-pengajuan-legalisir-ijazah');
             Route::put('/pengajuan-legalisir-ijazah/konfirmasi-pembayaran/{surat}', [IjazahController::class, 'konfirmasiPembayaran'])->name('konfirmasi-pembayaran-legalisir-ijazah');
+            Route::put('/pengajuan-legalisir-ijazah/konfirmasi-selesai/{surat}', [IjazahController::class, 'konfirmasiSelesai'])->name('konfirmasi-selesai-legalisir-ijazah');
             // Route::get('/pengajuan-surat/{jenisSurat:slug}/template',[PDFController::class,'templateSurat'])->name('template-surat');
             Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->can('mahasiswaCanCancelSurat', 'surat')->name('destroy-surat');
             Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->name('redirect-form-surat');

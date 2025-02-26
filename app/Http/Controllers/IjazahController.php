@@ -163,6 +163,7 @@ class IjazahController extends Controller
             $surat->files = array_merge((array)$surat->files, ['buktiBayar' => $buktiBayarPath]);
             $surat->status = 'diproses';
             $surat->current_user_id = $request->input('penerima');
+            $surat->expired_at = now()->addDays(30);
             $surat->save();
 
             // ... logika lain ...
@@ -176,6 +177,19 @@ class IjazahController extends Controller
 
         return redirect()->back()->with('error', 'Tindakan tidak valid.');
     }
+
+    public function konfirmasiSelesai(Request $request, Surat $surat)
+    {
+        $surat->status = 'selesai';
+        $surat->current_user_id = auth()->user()->id;
+        $surat->expired_at = null;
+        $surat->save();
+
+        // ... logika lain ...
+
+        return redirect()->back()->with('success', 'Pengajuan selesai!');
+    }
+
 
     // public function store(Request $request, JenisSurat $jenisSurat)
     // {

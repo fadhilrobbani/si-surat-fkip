@@ -6,8 +6,19 @@
 
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Mahasiswa | Menunggu Pembayaran
+        Mahasiswa | Detail Pengajuan Legalisir
     </x-slot:title>
+    <x-slot:script>
+        <script>
+            function openConfirmModal() {
+                document.getElementById('confirmModal').classList.remove('hidden');
+            }
+
+            function closeConfirmModal() {
+                document.getElementById('confirmModal').classList.add('hidden');
+            }
+        </script>
+    </x-slot:script>
 
     {{ Breadcrumbs::render('show-pengajuan-surat', $surat) }}
     <h1 class="mx-auto text-center font-bold">{{ $surat->jenisSurat->name }}</h1>
@@ -32,6 +43,9 @@
                             } elseif ($status == 'dikirim') {
                                 $bgColor = 'bg-blue-100';
                                 $textColor = 'text-blue-800';
+                            } elseif ($status == 'selesai') {
+                                $bgColor = 'bg-green-200';
+                                $textColor = 'text-black';
                             }
                         @endphp
 
@@ -121,7 +135,7 @@
                                     // Handle ketika $path kosong atau file tidak ditemukan
                                     $mimeType = '/file-tidak-ditemukan';
                                 }
-                                
+
                                 $extension = explode('.', basename($value))[1];
                                 $url = URL::signedRoute('show-file', [
                                     'user' => $authUser->id,
@@ -145,6 +159,49 @@
                 </tr>
             </tbody>
         </table>
+        @if (auth()->user()->role_id == 2 && $surat->status == 'dikirim')
+            <button type="button" onclick="openConfirmModal()"
+                class="my-6 mx-auto bg-blue-600 flex flex-row  items-center gap-4 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-800 transition duration-300 flex justify-center">
+                <svg class="w-8 h-8 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                <p>Konfirmasi Pengiriman Selesai</p>
+
+            </button>
+
+            <div id="confirmModal"
+                class="fixed inset-0 p-4 flex items-center justify-center hidden bg-black bg-opacity-50 z-50">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-sm relative">
+                    <button onclick="closeConfirmModal()"
+                        class="absolute top-3 right-3 text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                            viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18 17.94 6M18 18 6.06 6" />
+                        </svg>
+
+                    </button>
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Konfirmasi</h2>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
+                        Apakah Anda yakin bahwa paket anda telah tiba dan ingin mengubah status dikirim menjadi selesai?
+                    </p>
+                    <form action="{{ route('konfirmasi-selesai-legalisir-ijazah', $surat->id) }}" method="POST"
+                        class="mt-4 flex justify-end">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit"
+                            class="bg-blue-500 text-white mx-auto px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
+                            Ya, Konfirmasi
+                        </button>
+                    </form>
+                </div>
+            </div>
+        @endif
+
+
 
     </div>
 </x-layout>

@@ -23,6 +23,10 @@ class MahasiswaController extends Controller
                 $now = Carbon::now();
                 $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
             })->get(),
+            'pengajuanMenungguDibayar' =>  Surat::where('pengaju_id', '=', auth()->user()->id)->where('status', '=', 'menunggu_pembayaran')->where(function ($query) {
+                $now = Carbon::now();
+                $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
+            })->get(),
             'pengajuanKadaluarsa' =>  Surat::where('pengaju_id', '=', auth()->user()->id)->where('status', '=', 'diproses')->where(function ($query) {
                 $now = Carbon::now();
                 $query->whereNull('expired_at')->orWhere('expired_at', '<', $now);
