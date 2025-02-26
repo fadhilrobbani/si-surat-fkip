@@ -507,6 +507,15 @@ class AkademikController extends Controller
     public function showApproval(Approval $approval)
     {
         // if ($surat->current_user_id == auth()->user()->id) {
+        if ($approval->surat->jenisSurat->slug == 'legalisir-ijazah') {
+            return view('akademik.show-approval-legalisir', [
+                'approval' => $approval,
+                'surat' => Surat::join('approvals', 'approvals.surat_id', '=', 'surat_tables.id')
+                    ->where('approvals.user_id', auth()->user()->id)
+                    ->where('approvals.id', $approval->id)
+                    ->first()
+            ]);
+        }
 
         return view('akademik.show-approval', [
             'approval' => $approval,

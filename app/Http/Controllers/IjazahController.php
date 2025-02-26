@@ -4,6 +4,8 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use Carbon\Carbon;
+
 use App\Models\Surat;
 use App\Models\JenisSurat;
 use App\Models\Order;
@@ -182,6 +184,9 @@ class IjazahController extends Controller
     public function konfirmasiSelesai(Request $request, Surat $surat)
     {
         $surat->status = 'selesai';
+        $data = $surat->data;
+        $data['tanggalSelesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+        $surat->data = $data;
         $surat->current_user_id = auth()->user()->id;
         $surat->expired_at = null;
         $surat->save();
