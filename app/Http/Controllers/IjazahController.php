@@ -23,7 +23,7 @@ class IjazahController extends Controller
     public function store(Request $request, JenisSurat $jenisSurat)
     {
 
-        if ($jenisSurat->slug == 'legalisir-ijazah') {
+        if ($jenisSurat->slug == 'legalisir-ijazah' && $request->input('pengiriman') == 'dikirim') {
 
             $request->validate([
                 'name' => 'required',
@@ -66,6 +66,7 @@ class IjazahController extends Controller
             $surat->expired_at = now()->addDays(3);
             $totalHarga = $this->hitungHarga($request);
             $surat->data = [
+                'metodePengiriman' => "Dikirim (JNE REG)",
                 'nama' => $request->input('name'),
                 'npm' => $request->input('username'),
                 'programStudi' => $programStudi->name,
@@ -82,6 +83,96 @@ class IjazahController extends Controller
                 'biayaLembar' => 2000 * $request->input('jumlah-lembar'),
                 'totalHarga' => $totalHarga,
                 'urlOngkir' => $request->input('url-ongkir'),
+                'catatanUntukAkademik' => $request->input('catatan-mahasiswa')
+            ];
+
+            $data = $surat->data;
+
+            if ($data) {
+                if (isset($data['private'])) {
+
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                } else {
+                    $data['private'] = [
+                        'stepper' => [auth()->user()->role->id]
+
+                    ];
+                }
+            } else {
+                $data = [
+                    'private' => [
+                        'stepper' => [auth()->user()->role->id]
+                    ]
+                ];
+            }
+            $surat->files = [
+                'ijazah' => $request->file('ijazah')->store('lampiran'),
+                'ktp' => $request->file('ktp')->store('lampiran')
+            ];
+
+            if (
+                Surat::where('jenis_surat_id', $jenisSurat->id)
+                ->where('pengaju_id', auth()->user()->id)
+                ->where(function ($query) {
+                    $query->where('status', 'diproses')
+                        ->orWhere('status', 'menunggu_pembayaran')
+                        ->orWhere('status', 'dikirim');
+                })
+                ->where('created_at', '>=', now()->subDays(30))
+                ->count() > 0
+            ) {
+                return redirect()->back()->with('deleted', 'Anda masih memiliki surat dengan jenis ini yang sedang diproses. Silahkan tunggu hingga selesai/ditolak atau batalkan pengajuan sebelumnya');
+            }
+            $surat->data = $data;
+            $surat->save();
+            return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Pengajuan legalisir ijazah berhasil diajukan. Menunggu konfirmasi pembayaran agar dapat diproses lebih lanjut.');
+        }
+
+        if ($jenisSurat->slug == 'legalisir-ijazah' && $request->input('pengiriman') == 'ambil') {
+            $request->validate([
+                'name' => 'required',
+                'username' => 'required',
+                'program-studi' => 'required',
+                'email' => 'required|email',
+                'ijazah' => 'required|file|mimes:pdf|max:2048',
+                'ktp' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+                'jumlah-lembar' => 'required|integer|min:1|max:10',
+
+                'total-harga' => 'required|numeric',
+
+            ]);
+
+            // Hapus format Rupiah dari ongkir
+            // $ongkir = str_replace(['Rp', '.'], '', $request->input('ongkir'));
+
+            // Validasi ongkir sebagai numerik setelah pemformatan
+            // $request->merge(['ongkir' => $ongkir]);
+
+            // $request->validate([
+            //     'ongkir' => 'required|numeric',
+            // ]);
+
+
+            $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
+
+            $surat = new Surat;
+            $surat->pengaju_id = auth()->user()->id;
+            $surat->current_user_id = auth()->user()->id;
+            // $surat->current_user_id = $request->input('penerima');
+            $surat->status = 'menunggu_pembayaran';
+            $surat->jenis_surat_id = $jenisSurat->id;
+            $surat->expired_at = now()->addDays(3);
+            $totalHarga = $this->hitungHarga($request);
+            $surat->data = [
+                'metodePengiriman' => "Ambil di tempat (Akademik FKIP UNIB)",
+                'nama' => $request->input('name'),
+                'npm' => $request->input('username'),
+                'programStudi' => $programStudi->name,
+                'email' => $request->input('email'),
+                'jumlahLembar' => $request->input('jumlah-lembar'),
+                'biayaJasa' => 5000,
+                'biayaLembar' => 2000 * $request->input('jumlah-lembar'),
+                'totalHarga' => $totalHarga,
                 'catatanUntukAkademik' => $request->input('catatan-mahasiswa')
             ];
 

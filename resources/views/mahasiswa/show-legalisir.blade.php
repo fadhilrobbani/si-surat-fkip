@@ -187,6 +187,33 @@
                 </tr>
             </tbody>
         </table>
+        <p class="font-semibold ml-2 text-slate-500 text-md mx-auto mt-8 mb-2">Rincian Biaya yang dibayar Mahasiswa:</p>
+
+        <div class="mb-8 mx-2 p-4 bg-gray-100 rounded-lg">
+
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between">
+                    <span class="font-semibold text-gray-700">Ongkos Kirim:</span>
+                    <span>Rp {{ number_format($surat->data['ongkir'], 0, ',', '.') }}</span>
+                </div>
+                <div class="flex flex-col sm:flex-row  justify-between">
+                    <span class="font-semibold text-gray-700">Biaya Jasa:</span>
+                    <span>Rp {{ number_format($surat->data['biayaJasa'], 0, ',', '.') }}</span>
+                </div>
+                <div class="flex flex-col sm:flex-row  justify-between">
+                    <span class="font-semibold text-gray-700">Biaya Legalisir:</span>
+                    <span>Rp {{ number_format($surat->data['biayaLembar'], 0, ',', '.') }}</span>
+                </div>
+                <div class="h-1 bg-slate-800"></div>
+                <div class="flex flex-col sm:flex-row  justify-between">
+                    <span class="font-semibold text-lg text-gray-700">Total:</span>
+                    <span class="text-lg font-bold">Rp
+                        {{ number_format($surat->data['totalHarga'], 0, ',', '.') }}</span>
+                </div>
+
+
+            </div>
+        </div>
         @if (auth()->user()->role_id == 2 && $surat->status == 'dikirim')
             <button type="button" onclick="openConfirmModal()"
                 class="my-6 mx-auto bg-blue-600 flex flex-row  items-center gap-4 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-800 transition duration-300 flex justify-center">

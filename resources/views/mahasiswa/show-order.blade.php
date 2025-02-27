@@ -118,6 +118,30 @@
                     <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kelurahan:</td>
                     <td class="px-6 py-4">{{ $surat->data['kelurahan'] }}</td>
                 </tr>
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Alamat:</td>
+                    <td class="px-6 py-4">{{ $surat->data['alamat'] }}</td>
+                </tr>
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kode Pos:</td>
+                    <td class="px-6 py-4">{{ $surat->data['kodePos'] }}</td>
+                </tr>
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Provinsi:</td>
+                    <td class="px-6 py-4">{{ $surat->data['provinsi'] }}</td>
+                </tr>
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kota:</td>
+                    <td class="px-6 py-4">{{ $surat->data['kota'] }}</td>
+                </tr>
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kecamatan:</td>
+                    <td class="px-6 py-4">{{ $surat->data['kecamatan'] }}</td>
+                </tr>
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kelurahan:</td>
+                    <td class="px-6 py-4">{{ $surat->data['kelurahan'] }}</td>
+                </tr>
                 {{-- @if (isset($surat->files))
                 <tr class="border-b border-gray-200 dark:border-gray-700">
                     <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">File Ijazah:</td>

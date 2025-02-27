@@ -7,6 +7,45 @@
     </x-slot:title>
     <x-slot:script>
         <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const shippingMethodSelect = document.getElementById("shipping-method");
+                const shippingFields = document.getElementById("shipping-fields");
+                const ongkirInput = document.getElementById("ongkir");
+                let previousOngkir = ongkirInput.value; // Store previous ongkir value
+
+                shippingMethodSelect.addEventListener("change", function() {
+                    if (this.value === "Ambil di Tempat") {
+                        previousOngkir = ongkirInput.value; // Save ongkir before resetting
+                        ongkirInput.value = 0; // Reset ongkir
+                        shippingFields.style.display = "none";
+                        ongkirInput.disabled = true;
+                    } else {
+                        ongkirInput.value = previousOngkir; // Restore ongkir
+                        shippingFields.style.display = "block";
+                        ongkirInput.disabled = false;
+                    }
+                });
+            });
+
+            function toggleShippingInputs() {
+                const shippingInputs = document.getElementById('shippingInputs');
+                const method = document.getElementById('pengiriman').value;
+
+                if (method === 'ambil') {
+                    shippingInputs.style.display = 'none';
+                    document.querySelectorAll('#shippingInputs input').forEach(input => {
+                        input.removeAttribute('required');
+                        input.setAttribute('disabled', 'true');
+                    });
+                } else {
+                    shippingInputs.style.display = 'block';
+                    document.querySelectorAll('#shippingInputs input').forEach(input => {
+                        input.setAttribute('required', 'true');
+                        input.removeAttribute('disabled');
+                    });
+                }
+            }
+
             function formatRupiah(input) {
                 let value = input.value.replace(/[^0-9]/g, '');
                 let formatted = new Intl.NumberFormat('id-ID').format(value);
@@ -217,7 +256,15 @@
 
         </div>
         <p class="font-semibold text-slate-500 text-md mx-auto  mt-6 mb-2">Data Pengiriman:</p>
-        <div class="bg-slate-50 p-4 rounded-lg shadow-lg">
+        <label for="pengiriman" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Metode
+            Pengiriman<span class="text-red-500">*</span></label>
+        <select id="pengiriman" name="pengiriman"
+            class="bg-gray-50 border mb-4 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onchange="toggleShippingInputs()">
+            <option value="dikirim">Dikirim (JNE)</option>
+            <option value="ambil">Ambil di Tempat (Akademik FKIP UNIB)</option>
+        </select>
+        <div id="shippingInputs" class="bg-slate-50 p-4 rounded-lg shadow-lg">
             <div class="grid gap-6 md:grid-cols-1">
                 {{-- <div class="flex items-center md:col-span-1">
                     <input id="checked-checkbox" name="ambil" type="checkbox" value="1"
