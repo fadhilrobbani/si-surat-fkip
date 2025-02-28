@@ -86,10 +86,25 @@ class AkademikController extends Controller
 
     public function suratMasuk(Request $request)
     {
+        // $daftarSuratMasuk = Surat::with('pengaju', 'pengaju.programStudi')
+        //     ->where('current_user_id', '=', auth()->user()->id)->where('status', 'diproses')->where(function ($query) {
+        //         $now = Carbon::now();
+        //         $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
+        //     })
+        //     ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+        //     ->paginate(10)
+        //     ->appends(request()->query());
+
         $daftarSuratMasuk = Surat::with('pengaju', 'pengaju.programStudi')
-            ->where('current_user_id', '=', auth()->user()->id)->where('status', 'diproses')->where(function ($query) {
+            ->where('current_user_id', auth()->user()->id)
+            ->where('status', 'diproses')
+            ->where(function ($query) {
                 $now = Carbon::now();
-                $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
+                $query->whereHas('jenisSurat', function ($q) {
+                    $q->where('slug', 'legalisir-ijazah'); // Kondisi khusus untuk legalisir ijazah
+                })->orWhere(function ($q) use ($now) {
+                    $q->whereNull('expired_at')->orWhere('expired_at', '>', $now); // Kondisi default
+                });
             })
             ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
             ->paginate(10)

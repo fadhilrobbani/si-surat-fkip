@@ -51,7 +51,7 @@
                 <tr class="border-b border-gray-200 dark:border-gray-700">
                     <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Masa Aktif Tersisa:&nbsp;
                     </td>
-                    <td class="px-6 py-4">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
+                    <td class="px-6 py-4">{{ $dateService->formatTimestampToDiffDays($surat->expired_at) }} </td>
                 </tr>
                 @if (isset($surat->data['tanggalSelesai']))
                     <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -75,6 +75,12 @@
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Pesan dari Akademik:</td>
                         <td class="px-6 py-4">{{ $surat->data['note'] }}</td>
+                    </tr>
+                @endif
+                @if (isset($surat->data['alasanPenolakan']))
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                        <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Alasan Penolakan:</td>
+                        <td class="px-6 py-4">{{ $surat->data['alasanPenolakan'] }}</td>
                     </tr>
                 @endif
                 <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -123,7 +129,7 @@
                                     // Handle ketika $path kosong atau file tidak ditemukan
                                     $mimeType = '/file-tidak-ditemukan';
                                 }
-
+                                
                                 $extension = explode('.', basename($value))[1];
                                 $url = URL::signedRoute('show-file', [
                                     'user' => $authUser->id,

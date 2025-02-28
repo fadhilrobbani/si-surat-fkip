@@ -361,57 +361,58 @@
                 </div>
 
                 <!-- Modal -->
-                <div id="infoModalCekOngkir" class="fixed inset-0 flex items-center justify-center hidden mx-2 ">
-                    <div class="bg-white dark:bg-gray-800 p-6 px-10 rounded-lg shadow-lg w-96 relative">
+                <div id="infoModalCekOngkir"
+                    class="fixed inset-0 flex items-center justify-center hidden mt-8 mx-2 p-4">
+                    <div
+                        class="bg-white dark:bg-gray-800 p-6 px-10 rounded-lg shadow-lg w-96 max-h-[90vh] overflow-y-auto relative">
                         <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Informasi Cek Ongkir JNE</h2>
-                        <ol class="list-decimal">
-                            <li>
-                                <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Anda dapat mengecek ongkos
-                                    kirim
-                                    melalui: <a
-                                        href="https://www.jne.co.id/shipping-fee?origin=BKS10000&destination=undefined&weight=1"
-                                        target="_blank"
-                                        class="text-blue-500 underline">https://jne.co.id/shipping-fee</a>.</p>
-                            </li>
-
-                            <li>
-                                <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Masukkan Kota Awal adalah
-                                    <span class="font-bold">
-                                        BENGKULU
-                                    </span> dan Kota Tujuan adalah kota di mana paket dikirim kepada Anda.
+                        <ol class="list-decimal list-outside pl-5 space-y-2 max-h-[65vh] overflow-y-auto">
+                            <li class="pl-2">
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Anda dapat mengecek ongkos kirim
+                                    melalui:
+                                    <a href="https://www.jne.co.id/shipping-fee?origin=BKS10000&destination=undefined&weight=1"
+                                        target="_blank" class="text-blue-500 underline">
+                                        https://jne.co.id/shipping-fee
+                                    </a>.
                                 </p>
                             </li>
-                            <li>
-                                <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Masukkan berat paket sebesar
-                                    <span class="font-bold">
-                                        1 KG
-                                    </span>
+                            <li class="pl-2">
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Masukkan Kota Awal adalah
+                                    <span class="font-bold">BENGKULU</span> dan Kota Tujuan adalah kota di mana paket
+                                    dikirim kepada Anda.
                                 </p>
                             </li>
-                            <li>
-                                <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Lalu klik
-                                    <span class="font-bold">
-                                        Check atau Lihat Harga
-                                    </span>.
+                            <li class="pl-2">
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Masukkan berat paket sebesar
+                                    <span class="font-bold">1 KG</span>
                                 </p>
                             </li>
-                            <li>
-                                <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Lalu lihat harga pada
+                            <li class="pl-2">
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Lalu klik
+                                    <span class="font-bold">Check atau Lihat Harga</span>.
+                                </p>
+                            </li>
+                            <li class="pl-2">
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Lalu lihat harga pada
                                     kode/nama layanan
-                                    <span class="font-bold">
-                                        REG
-                                    </span>. Itulah harga yang Anda input pada kolom input ini.
+                                    <span class="font-bold">REG</span>. Itulah harga yang Anda input pada kolom input
+                                    ini.
                                 </p>
                             </li>
-                            <li>
-                                <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Copy (salin) URL tersebut
-                                    untuk diisi pada input URL Cek Ongkir di bawah ini
-
-                                </p>
+                            <li class="pl-2">
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Copy (salin) URL tersebut
+                                    untuk diisi pada input URL Cek Ongkir di bawah ini</p>
+                            </li>
+                            <li class="pl-2">
+                                <p class="text-sm text-gray-700 dark:text-gray-300">Harap isi dengan JUJUR &
+                                    SEBENAR-BENARNYA! Mengisi info yang tidak tepat dapat berpotensi ditolak akademik
+                                    setelah Anda membayar</p>
                             </li>
                         </ol>
                         <button onclick="closeModalCekOngkir(event)"
-                            class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Tutup</button>
+                            class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">
+                            Tutup
+                        </button>
                     </div>
                 </div>
 

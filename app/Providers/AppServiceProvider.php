@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Carbon\Carbon;
 use Livewire\Livewire;
+use App\Services\DateService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -30,5 +31,6 @@ class AppServiceProvider extends ServiceProvider
         Livewire::setScriptRoute(function ($handle) {
             return Route::get('/vendor/livewire/livewire.js', $handle);
         });
+        view()->share('dateService', app(DateService::class));
     }
 }
