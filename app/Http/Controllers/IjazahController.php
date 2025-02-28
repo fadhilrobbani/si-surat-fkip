@@ -130,13 +130,15 @@ class IjazahController extends Controller
                 ->where('pengaju_id', auth()->user()->id)
                 ->where(function ($query) {
                     $query->where('status', 'diproses')
-                        ->orWhere('status', 'dikirim');
+                        ->orWhere('status', 'dikirim')
+                        ->orWhere(function ($query) {
+                            $query->where('status', 'menunggu_pembayaran')
+                                ->where('expired_at', '>', Carbon::now());
+                        });
                 })
-                ->orWhere(function ($query) {
-                    $query->where('status', 'menunggu_pembayaran')
-                        ->where('expired_at', '>', now()); // Pastikan expired_at belum lewat
-                })
+                ->where('created_at', '>=', now()->subDays(32))
                 ->count() > 0
+
             ) {
                 return redirect()->back()->with('deleted', 'Anda masih memiliki pengajuan legalisir yang sedang diproses, dikirim, atau menunggu pembayaran. Silahkan tunggu hingga selesai/ditolak, atau batalkan pengajuan sebelumnya.');
             }
@@ -218,38 +220,31 @@ class IjazahController extends Controller
                 'ktp' => $request->file('ktp')->store('lampiran')
             ];
 
-            // $test = Surat::where('jenis_surat_id', $jenisSurat->id)
-            //     ->where('pengaju_id', auth()->user()->id)
-            //     ->where(function ($query) {
-            //         $query->where('status', 'diproses')
-            //             ->orWhere('status', 'dikirim');
-            //     })
-            //     ->orWhere(function ($query) {
-            //         $query->where('status', 'menunggu_pembayaran');
-            //     })->where('created_at', '>=', now()->subDays(32))->count() > 0;
-
-            // dd($test);
 
             if (
-                Surat::where('jenis_surat_id', $jenisSurat->id)
-                ->where('pengaju_id', auth()->user()->id)
-                ->where(function ($query) {
-                    $query->where('status', 'diproses')
-                        ->orWhere('status', 'menunggu_pembayaran')
-                        ->orWhere('status', 'dikirim');
-                })
-                ->where('created_at', '>=', now()->subDays(30))
-                ->count() > 0
                 // Surat::where('jenis_surat_id', $jenisSurat->id)
                 // ->where('pengaju_id', auth()->user()->id)
                 // ->where(function ($query) {
                 //     $query->where('status', 'diproses')
+                //         ->orWhere('status', 'menunggu_pembayaran')
                 //         ->orWhere('status', 'dikirim');
                 // })
-                // ->orWhere(function ($query) {
-                //     $query->where('status', 'menunggu_pembayaran')
-                //         ->where('expired_at', '>', Carbon::now());
-                // })->where('created_at', '>=', now()->subDays(32))->count() > 0
+                // ->where('created_at', '>=', now()->subDays(30))
+                // ->count() > 0
+
+                Surat::where('jenis_surat_id', $jenisSurat->id)
+                ->where('pengaju_id', auth()->user()->id)
+                ->where(function ($query) {
+                    $query->where('status', 'diproses')
+                        ->orWhere('status', 'dikirim')
+                        ->orWhere(function ($query) {
+                            $query->where('status', 'menunggu_pembayaran')
+                                ->where('expired_at', '>', Carbon::now());
+                        });
+                })
+                ->where('created_at', '>=', now()->subDays(32))
+                ->count() > 0
+
             ) {
                 return redirect()->back()->with('deleted', 'Anda masih memiliki pengajuan legalisir yang sedang diproses, dikirim, atau menunggu pembayaran. Silahkan tunggu hingga selesai/ditolak, atau batalkan pengajuan sebelumnya.');
             }
