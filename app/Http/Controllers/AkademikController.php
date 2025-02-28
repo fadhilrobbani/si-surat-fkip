@@ -225,9 +225,19 @@ class AkademikController extends Controller
     public function showSuratMasuk(Surat $surat)
     {
 
-        if ($surat->jenisSurat->slug == 'legalisir-ijazah') {
+        if ($surat->jenisSurat->slug == 'legalisir-ijazah' && $surat->data['pengiriman'] == 'dikirim') {
 
             return view('akademik.show-legalisir', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 15)
+                    ->get()
+            ]);
+        }
+
+        if ($surat->jenisSurat->slug == 'legalisir-ijazah' && $surat->data['pengiriman'] == 'ambil') {
+
+            return view('akademik.show-legalisir-diambil', [
                 'surat' => $surat,
                 'daftarPenerima' => User::select('id', 'name', 'username')
                     ->where('role_id', '=', 15)
@@ -250,7 +260,7 @@ class AkademikController extends Controller
 
     public function setujuiSurat(Request $request, Surat $surat)
     {
-        if ($surat->jenisSurat->slug === 'legalisir-ijazah') {
+        if ($surat->jenisSurat->slug === 'legalisir-ijazah' && $surat->data['pengiriman'] == 'dikirim') {
 
             // if (!auth()->user()->tandatangan) {
             //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
@@ -321,11 +331,81 @@ class AkademikController extends Controller
                 'isApproved' => true,
                 'note' => $request->input('note'),
             ]);
-            if ($surat->data['noResi'] == 0) {
-                Mail::to($surat->pengaju->email)->send(new LegalisirDiambil($surat));
+
+            Mail::to($surat->pengaju->email)->send(new LegalisirDikirim($surat));
+
+            return redirect('/akademik/surat-masuk')->with('success', 'Surat berhasil disetujui');
+        }
+
+        if ($surat->jenisSurat->slug === 'legalisir-ijazah' && $surat->data['pengiriman'] == 'ambil') {
+
+            // if (!auth()->user()->tandatangan) {
+            //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
+            // }
+
+            // SELECT jt.id FROM users u
+            // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
+            // JOIN jurusan_tables jt ON jt.id = pst.jurusan_id ;
+            $surat->current_user_id = $surat->pengaju_id;
+            // $surat->penerima_id = $surat->pengaju_id;
+            $surat->expired_at = null;
+            $data = $surat->data;
+            // $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+            // $data['ttdWD1'] = $request->input('ttd') ;
+            // $data['stempel'] = $request->input('stempel') ;
+            // $data['ttdWD1'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg' ;
+            // $data['stempel'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg';
+            $data['note'] = $request->input('note');
+            if ($data) {
+                if (isset($data['private'])) {
+
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                    // yang dibawah ini fokus menambah status dikirim
+                    // $data['private']['stepper'][] = $surat->pengaju_id;
+                } else {
+                    $data['private'] = [
+                        'stepper' => [auth()->user()->role->id]
+
+                    ];
+                }
             } else {
-                Mail::to($surat->pengaju->email)->send(new LegalisirDikirim($surat));
+                $data = [
+                    'private' => [
+                        'stepper' => [auth()->user()->role->id]
+                    ]
+                ];
             }
+            $surat->data = $data;
+            // $file = $surat->files;
+            // if ($file) {
+            //     if (isset($file['private'])) {
+            //         $file['private']['stempel'] =  'storage/' . auth()->user()->tandatangan;
+            //     } else {
+            //         $file['private'] = [
+            //             'stempel' => 'storage/' . auth()->user()->tandatangan
+            //         ];
+            //     }
+            // } else {
+            //     $file = [
+            //         'private' => [
+            //             'stempel' => 'storage/' . auth()->user()->tandatangan,
+            //         ]
+            //     ];
+            // }
+            // $surat->files = $file;
+            $surat->status = 'selesai';
+            $surat->save();
+
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => $request->input('note'),
+            ]);
+
+            Mail::to($surat->pengaju->email)->send(new LegalisirDiambil($surat));
+
+
             return redirect('/akademik/surat-masuk')->with('success', 'Surat berhasil disetujui');
         }
         // if (!auth()->user()->tandatangan) {
@@ -507,7 +587,7 @@ class AkademikController extends Controller
     public function showApproval(Approval $approval)
     {
         // if ($surat->current_user_id == auth()->user()->id) {
-        if ($approval->surat->jenisSurat->slug == 'legalisir-ijazah') {
+        if ($approval->surat->jenisSurat->slug == 'legalisir-ijazah' && $approval->surat->data['pengiriman'] == 'dikirim') {
             return view('akademik.show-approval-legalisir', [
                 'approval' => $approval,
                 'surat' => Surat::join('approvals', 'approvals.surat_id', '=', 'surat_tables.id')
@@ -516,6 +596,17 @@ class AkademikController extends Controller
                     ->first()
             ]);
         }
+
+        if ($approval->surat->jenisSurat->slug == 'legalisir-ijazah' && $approval->surat->data['pengiriman'] == 'ambil') {
+            return view('akademik.show-approval-legalisir-diambil', [
+                'approval' => $approval,
+                'surat' => Surat::join('approvals', 'approvals.surat_id', '=', 'surat_tables.id')
+                    ->where('approvals.user_id', auth()->user()->id)
+                    ->where('approvals.id', $approval->id)
+                    ->first()
+            ]);
+        }
+
 
         return view('akademik.show-approval', [
             'approval' => $approval,

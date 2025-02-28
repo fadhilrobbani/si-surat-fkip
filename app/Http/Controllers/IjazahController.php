@@ -67,6 +67,7 @@ class IjazahController extends Controller
             $totalHarga = $this->hitungHarga($request);
             $surat->data = [
                 'metodePengiriman' => "Dikirim (JNE REG)",
+                'pengiriman' => $request->input('pengiriman'),
                 'nama' => $request->input('name'),
                 'npm' => $request->input('username'),
                 'programStudi' => $programStudi->name,
@@ -165,6 +166,7 @@ class IjazahController extends Controller
             $totalHarga = $this->hitungHarga($request);
             $surat->data = [
                 'metodePengiriman' => "Ambil di tempat (Akademik FKIP UNIB)",
+                'pengiriman' => $request->input('pengiriman'),
                 'nama' => $request->input('name'),
                 'npm' => $request->input('username'),
                 'programStudi' => $programStudi->name,
@@ -232,7 +234,15 @@ class IjazahController extends Controller
 
     public function hitungHarga(Request $request)
     {
-        $ongkir = $request->input('ongkir');
+        $ongkir = 0;
+        if ($request->input('pengiriman') == 'dikirim') {
+            $request->validate([
+                'ongkir' => 'required|numeric',
+            ]);
+            $ongkir = $request->input('ongkir');
+        } elseif ($request->input('pengiriman') == 'ambil') {
+            $ongkir = 0;
+        }
         $jumlahLembar = $request->input('jumlah-lembar');
         $biayaJasa = 5000;
         $biayaLembar = 2000 * $jumlahLembar;

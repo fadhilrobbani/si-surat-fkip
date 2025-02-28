@@ -219,7 +219,7 @@ class MahasiswaController extends Controller
 
     public function lihatSurat(Surat $surat)
     {
-        if ($surat->jenisSurat->slug == 'legalisir-ijazah' && $surat->status == 'menunggu_pembayaran') {
+        if ($surat->jenisSurat->slug == 'legalisir-ijazah' && $surat->status == 'menunggu_pembayaran' && $surat->data['pengiriman'] == 'dikirim') {
             $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
                 ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
                 ->where('users.id', auth()->user()->id)
@@ -237,8 +237,33 @@ class MahasiswaController extends Controller
             ]);
         }
 
-        if ($surat->jenisSurat->slug == 'legalisir-ijazah') {
+        if ($surat->jenisSurat->slug == 'legalisir-ijazah' && $surat->status == 'menunggu_pembayaran' && $surat->data['pengiriman'] == 'ambil') {
+            $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
+                ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
+                ->where('users.id', auth()->user()->id)
+                ->select('jt.id')
+                ->first();
+            return view('mahasiswa.show-order-diambil', [
+                'surat' => $surat,
+                'jenisSurat' => JenisSurat::where('user_type', 'mahasiswa')->where('slug', 'legalisir-ijazah')->first(),
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 6)
+                    ->where('jurusan_id', $idJurusan->id)
+                    ->get()
+
+            ]);
+        }
+
+
+        if ($surat->jenisSurat->slug == 'legalisir-ijazah' && $surat->data['pengiriman'] == 'dikirim') {
             return view('mahasiswa.show-legalisir', [
+                'surat' => $surat
+            ]);
+        }
+
+        if ($surat->jenisSurat->slug == 'legalisir-ijazah' && $surat->data['pengiriman'] == 'ambil') {
+            return view('mahasiswa.show-legalisir-diambil', [
                 'surat' => $surat
             ]);
         }

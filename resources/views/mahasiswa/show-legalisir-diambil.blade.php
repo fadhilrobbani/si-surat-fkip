@@ -6,7 +6,7 @@
 
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Akademik | Detail Riwayat Persetujuan
+        Mahasiswa | Detail Pengajuan Legalisir
     </x-slot:title>
     <x-slot:script>
         <script>
@@ -17,30 +17,11 @@
             function closeConfirmModal() {
                 document.getElementById('confirmModal').classList.add('hidden');
             }
-
-
-            document.getElementById('confirm-button').addEventListener('click', function() {
-                document.getElementById('confirmation-modal').classList.remove('hidden');
-            });
-
-            document.getElementById('close-modal').addEventListener('click', function() {
-                document.getElementById('confirmation-modal').classList.add('hidden');
-            });
-
-            document.getElementById('cancel-button').addEventListener('click', function() {
-                document.getElementById('confirmation-modal').classList.add('hidden');
-            });
-
-            document.getElementById('submit-button').addEventListener('click', function() {
-                document.getElementById('approval-form').submit();
-            });
         </script>
     </x-slot:script>
 
-    {{ Breadcrumbs::render('detail-persetujuan', $approval) }}
+    {{ Breadcrumbs::render('show-pengajuan-surat', $surat) }}
     <h1 class="mx-auto text-center font-bold">{{ $surat->jenisSurat->name }}</h1>
-    <p class="font-semibold text-slate-500 text-md mx-auto mb-2">Data Pengajuan Legalisir:</p>
-
     <div class="bg-white rounded-lg shadow-md  overflow-x-auto">
 
         <table class="w-full text-sm text-left rtl:text-right text-gray-700 dark:text-gray-400 mb-8">
@@ -70,27 +51,30 @@
 
                         <span
                             class="{{ $bgColor }} {{ $textColor }} text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300">
-                            {{ $status }}
+                            {{ $status == 'selesai' ? 'Selesai, silahkan ambil di akademik' : $status }}
                         </span>
+
                     </td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Hasil Konfirmasi Anda:&nbsp;
-                    </td>
-                    <td class="px-6 py-4">{{ $approval->isApproved == 1 ? 'Disetujui' : 'Ditolak' }}</td>
                 </tr>
                 <tr class="border-b border-gray-200 dark:border-gray-700">
                     <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Diajukan:&nbsp;</td>
                     <td class="px-6 py-4">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
                 </tr>
-
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Metode Pengiriman:&nbsp;</td>
+                    <td class="px-6 py-4">{{ $surat->data['metodePengiriman'] }}</td>
+                </tr>
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Masa Aktif Tersisa:&nbsp;
+                    </td>
+                    <td class="px-6 py-4">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
+                </tr>
                 @if (isset($surat->data['tanggalSelesai']))
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Tanggal Selesai:</td>
                         <td class="px-6 py-4">{{ $surat->data['tanggalSelesai'] }}</td>
                     </tr>
                 @endif
-
                 @if (isset($surat->data['noResi']))
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Nomor Resi:</td>
@@ -110,14 +94,9 @@
                     </tr>
                 @endif
                 <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Metode Pengiriman:&nbsp;</td>
-                    <td class="px-6 py-4">{{ $surat->data['metodePengiriman'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
                     <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Jumlah Lembar:</td>
                     <td class="px-6 py-4">{{ $surat->data['jumlahLembar'] }} lembar</td>
                 </tr>
-
                 <tr class="border-b border-gray-200 dark:border-gray-700">
                     <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Nama:</td>
                     <td class="px-6 py-4">{{ $surat->data['nama'] }}</td>
@@ -135,36 +114,7 @@
                     <td class="px-6 py-4">{{ $surat->data['email'] }}</td>
                 </tr>
 
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Alamat:</td>
-                    <td class="px-6 py-4">{{ $surat->data['alamat'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kode Pos:</td>
-                    <td class="px-6 py-4">{{ $surat->data['kodePos'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Provinsi:</td>
-                    <td class="px-6 py-4">{{ $surat->data['provinsi'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kota:</td>
-                    <td class="px-6 py-4">{{ $surat->data['kota'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kecamatan:</td>
-                    <td class="px-6 py-4">{{ $surat->data['kecamatan'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kelurahan:</td>
-                    <td class="px-6 py-4">{{ $surat->data['kelurahan'] }}</td>
-                </tr>
-                {{-- @if (isset($surat->files))
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">File Ijazah:</td>
-                    <td class="px-6 py-4">{{ $surat->files['iijazah'] }}</td>
-                </tr>
-                @endif --}}
+
                 @if (isset($surat->files))
 
                     @foreach ($surat->files as $key => $value)
@@ -204,15 +154,33 @@
                         </tr>
                     @endforeach
                 @endif
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">URL Cek Ongkos Kirim:</td>
-                    <td class="px-6 py-4">
-                        <a href="{{ $surat->data['urlOngkir'] }}" target="_blank"
-                            class="text-blue-500 underline">{{ $surat->data['urlOngkir'] }}</a>
-                    </td>
-                </tr>
+
             </tbody>
         </table>
+        <p class="font-semibold ml-2 text-slate-500 text-md mx-auto mt-8 mb-2">Rincian Biaya yang dibayar Mahasiswa:</p>
+
+        <div class="mb-8 mx-2 p-4 bg-gray-100 rounded-lg">
+
+            <div class="space-y-4">
+
+                <div class="flex flex-col sm:flex-row  justify-between">
+                    <span class="font-semibold text-gray-700">Biaya Jasa:</span>
+                    <span>Rp {{ number_format($surat->data['biayaJasa'], 0, ',', '.') }}</span>
+                </div>
+                <div class="flex flex-col sm:flex-row  justify-between">
+                    <span class="font-semibold text-gray-700">Biaya Legalisir:</span>
+                    <span>Rp {{ number_format($surat->data['biayaLembar'], 0, ',', '.') }}</span>
+                </div>
+                <div class="h-1 bg-slate-800"></div>
+                <div class="flex flex-col sm:flex-row  justify-between">
+                    <span class="font-semibold text-lg text-gray-700">Total:</span>
+                    <span class="text-lg font-bold">Rp
+                        {{ number_format($surat->data['totalHarga'], 0, ',', '.') }}</span>
+                </div>
+
+
+            </div>
+        </div>
         @if (auth()->user()->role_id == 2 && $surat->status == 'dikirim')
             <button type="button" onclick="openConfirmModal()"
                 class="my-6 mx-auto bg-blue-600 flex flex-row  items-center gap-4 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-800 transition duration-300 flex justify-center">
@@ -230,12 +198,7 @@
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-sm relative">
                     <button onclick="closeConfirmModal()"
                         class="absolute top-3 right-3 text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                            viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
-                        </svg>
+                        <x-close-button />
 
                     </button>
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Konfirmasi</h2>
@@ -258,33 +221,4 @@
 
 
     </div>
-    <p class="font-semibold text-slate-500 text-md mx-auto mt-8 mb-2">Rincian Biaya yang dibayar Mahasiswa:</p>
-
-    <div class="mb-8 p-4 bg-gray-100 rounded-lg">
-
-        <div class="space-y-4">
-            <div class="flex flex-col sm:flex-row justify-between">
-                <span class="font-semibold text-gray-700">Ongkos Kirim:</span>
-                <span>Rp {{ number_format($surat->data['ongkir'], 0, ',', '.') }}</span>
-            </div>
-            <div class="flex flex-col sm:flex-row  justify-between">
-                <span class="font-semibold text-gray-700">Biaya Jasa:</span>
-                <span>Rp {{ number_format($surat->data['biayaJasa'], 0, ',', '.') }}</span>
-            </div>
-            <div class="flex flex-col sm:flex-row  justify-between">
-                <span class="font-semibold text-gray-700">Biaya Legalisir:</span>
-                <span>Rp {{ number_format($surat->data['biayaLembar'], 0, ',', '.') }}</span>
-            </div>
-            <div class="h-1 bg-slate-800"></div>
-            <div class="flex flex-col sm:flex-row  justify-between">
-                <span class="font-semibold text-lg text-gray-700">Total:</span>
-                <span class="text-lg font-bold">Rp
-                    {{ number_format($surat->data['totalHarga'], 0, ',', '.') }}</span>
-            </div>
-
-
-        </div>
-    </div>
-
-
 </x-layout>

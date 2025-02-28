@@ -60,6 +60,10 @@
                     <td class="px-6 py-4">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
                 </tr>
                 <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Metode Pengiriman:&nbsp;</td>
+                    <td class="px-6 py-4">{{ $surat->data['metodePengiriman'] }}</td>
+                </tr>
+                <tr class="border-b border-gray-200 dark:border-gray-700">
                     <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Masa Aktif Tersisa:&nbsp;
                     </td>
                     <td class="px-6 py-4">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>

@@ -6,7 +6,7 @@
 
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Akademik | Detail Riwayat Persetujuan
+        Akademik | Detail Pengajuan Legalisir
     </x-slot:title>
     <x-slot:script>
         <script>
@@ -37,7 +37,7 @@
         </script>
     </x-slot:script>
 
-    {{ Breadcrumbs::render('detail-persetujuan', $approval) }}
+    {{ Breadcrumbs::render('detail-surat-masuk', $surat) }}
     <h1 class="mx-auto text-center font-bold">{{ $surat->jenisSurat->name }}</h1>
     <p class="font-semibold text-slate-500 text-md mx-auto mb-2">Data Pengajuan Legalisir:</p>
 
@@ -75,22 +75,21 @@
                     </td>
                 </tr>
                 <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Hasil Konfirmasi Anda:&nbsp;
-                    </td>
-                    <td class="px-6 py-4">{{ $approval->isApproved == 1 ? 'Disetujui' : 'Ditolak' }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
                     <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Diajukan:&nbsp;</td>
                     <td class="px-6 py-4">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
                 </tr>
 
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Masa Aktif Tersisa:&nbsp;
+                    </td>
+                    <td class="px-6 py-4">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
+                </tr>
                 @if (isset($surat->data['tanggalSelesai']))
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Tanggal Selesai:</td>
                         <td class="px-6 py-4">{{ $surat->data['tanggalSelesai'] }}</td>
                     </tr>
                 @endif
-
                 @if (isset($surat->data['noResi']))
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Nomor Resi:</td>
@@ -135,36 +134,7 @@
                     <td class="px-6 py-4">{{ $surat->data['email'] }}</td>
                 </tr>
 
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Alamat:</td>
-                    <td class="px-6 py-4">{{ $surat->data['alamat'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kode Pos:</td>
-                    <td class="px-6 py-4">{{ $surat->data['kodePos'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Provinsi:</td>
-                    <td class="px-6 py-4">{{ $surat->data['provinsi'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kota:</td>
-                    <td class="px-6 py-4">{{ $surat->data['kota'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kecamatan:</td>
-                    <td class="px-6 py-4">{{ $surat->data['kecamatan'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kelurahan:</td>
-                    <td class="px-6 py-4">{{ $surat->data['kelurahan'] }}</td>
-                </tr>
-                {{-- @if (isset($surat->files))
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">File Ijazah:</td>
-                    <td class="px-6 py-4">{{ $surat->files['iijazah'] }}</td>
-                </tr>
-                @endif --}}
+
                 @if (isset($surat->files))
 
                     @foreach ($surat->files as $key => $value)
@@ -204,13 +174,7 @@
                         </tr>
                     @endforeach
                 @endif
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">URL Cek Ongkos Kirim:</td>
-                    <td class="px-6 py-4">
-                        <a href="{{ $surat->data['urlOngkir'] }}" target="_blank"
-                            class="text-blue-500 underline">{{ $surat->data['urlOngkir'] }}</a>
-                    </td>
-                </tr>
+
             </tbody>
         </table>
         @if (auth()->user()->role_id == 2 && $surat->status == 'dikirim')
@@ -233,8 +197,8 @@
                         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                             viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18 17.94 6M18 18 6.06 6" />
                         </svg>
 
                     </button>
@@ -263,10 +227,7 @@
     <div class="mb-8 p-4 bg-gray-100 rounded-lg">
 
         <div class="space-y-4">
-            <div class="flex flex-col sm:flex-row justify-between">
-                <span class="font-semibold text-gray-700">Ongkos Kirim:</span>
-                <span>Rp {{ number_format($surat->data['ongkir'], 0, ',', '.') }}</span>
-            </div>
+
             <div class="flex flex-col sm:flex-row  justify-between">
                 <span class="font-semibold text-gray-700">Biaya Jasa:</span>
                 <span>Rp {{ number_format($surat->data['biayaJasa'], 0, ',', '.') }}</span>
@@ -281,10 +242,61 @@
                 <span class="text-lg font-bold">Rp
                     {{ number_format($surat->data['totalHarga'], 0, ',', '.') }}</span>
             </div>
+            <div class="h-1 bg-slate-800"></div>
 
 
         </div>
     </div>
+    <form id="approval-form" action="{{ route('setujui-surat-akademik', $surat->id) }}" method="POST"
+        class="bg-slate-100 pt-2 rounded-lg w-full">
+        @csrf
+        @method('put')
+        <div class="flex flex-col gap-4 mt-10 items-center justify-center">
 
+
+            <div class="w-full max-w-[400px]">
+                <label for="note" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catatan
+                    (opsional)</label>
+                <textarea id="note" name="note"
+                    class="bg-gray-50 min-h-[150px] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Masukkan catatan yang ingin disampaikan ke mahasiswa">{{ old('note') }}</textarea>
+            </div>
+        </div>
+
+        <div class="flex mt-8 justify-center gap-10 flex-col sm:flex-row ">
+            <button id="confirm-button"
+                class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
+                type="button">
+                Setuju
+            </button>
+
+            <a href="{{ route('confirm-tolak-surat-akademik', $surat->id) }}">
+                <div class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
+                    Tolak
+                </div>
+            </a>
+        </div>
+    </form>
+
+    <!-- Modal Konfirmasi -->
+    <div id="confirmation-modal" class="fixed inset-0 flex items-center justify-center  hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-bold">Konfirmasi</h2>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                    <x-close-button />
+                </button>
+            </div>
+            <p class="mt-4">Apakah Anda yakin ingin menyetujui dan mengubah status ke selesai (Ambil di tempat) untuk
+                pengajuan
+                legalisir ini?</p>
+            <div class="mt-6 flex justify-end gap-4">
+                <button id="submit-button"
+                    class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg">Setuju</button>
+                <button id="cancel-button"
+                    class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg">Batal</button>
+            </div>
+        </div>
+    </div>
 
 </x-layout>

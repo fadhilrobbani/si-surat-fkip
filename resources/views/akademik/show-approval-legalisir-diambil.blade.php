@@ -135,36 +135,7 @@
                     <td class="px-6 py-4">{{ $surat->data['email'] }}</td>
                 </tr>
 
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Alamat:</td>
-                    <td class="px-6 py-4">{{ $surat->data['alamat'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kode Pos:</td>
-                    <td class="px-6 py-4">{{ $surat->data['kodePos'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Provinsi:</td>
-                    <td class="px-6 py-4">{{ $surat->data['provinsi'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kota:</td>
-                    <td class="px-6 py-4">{{ $surat->data['kota'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kecamatan:</td>
-                    <td class="px-6 py-4">{{ $surat->data['kecamatan'] }}</td>
-                </tr>
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Kelurahan:</td>
-                    <td class="px-6 py-4">{{ $surat->data['kelurahan'] }}</td>
-                </tr>
-                {{-- @if (isset($surat->files))
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">File Ijazah:</td>
-                    <td class="px-6 py-4">{{ $surat->files['iijazah'] }}</td>
-                </tr>
-                @endif --}}
+
                 @if (isset($surat->files))
 
                     @foreach ($surat->files as $key => $value)
@@ -204,13 +175,7 @@
                         </tr>
                     @endforeach
                 @endif
-                <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">URL Cek Ongkos Kirim:</td>
-                    <td class="px-6 py-4">
-                        <a href="{{ $surat->data['urlOngkir'] }}" target="_blank"
-                            class="text-blue-500 underline">{{ $surat->data['urlOngkir'] }}</a>
-                    </td>
-                </tr>
+
             </tbody>
         </table>
         @if (auth()->user()->role_id == 2 && $surat->status == 'dikirim')
@@ -233,8 +198,8 @@
                         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                             viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18 17.94 6M18 18 6.06 6" />
                         </svg>
 
                     </button>
@@ -263,10 +228,7 @@
     <div class="mb-8 p-4 bg-gray-100 rounded-lg">
 
         <div class="space-y-4">
-            <div class="flex flex-col sm:flex-row justify-between">
-                <span class="font-semibold text-gray-700">Ongkos Kirim:</span>
-                <span>Rp {{ number_format($surat->data['ongkir'], 0, ',', '.') }}</span>
-            </div>
+
             <div class="flex flex-col sm:flex-row  justify-between">
                 <span class="font-semibold text-gray-700">Biaya Jasa:</span>
                 <span>Rp {{ number_format($surat->data['biayaJasa'], 0, ',', '.') }}</span>
