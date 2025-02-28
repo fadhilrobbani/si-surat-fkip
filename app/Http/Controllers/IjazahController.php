@@ -22,6 +22,18 @@ class IjazahController extends Controller
 
     public function store(Request $request, JenisSurat $jenisSurat)
     {
+        // $suratTerbaru = Surat::whereHas('jenisSurat', function ($query) {
+        //     $query->where('slug', 'legalisir-ijazah'); // Filter berdasarkan slug di tabel jenis_surat
+        // })
+        //     ->select('id', 'expired_at') // Ambil hanya kolom yang diperlukan
+        //     ->orderBy('created_at', 'desc') // Urutkan berdasarkan tanggal pembuatan terbaru
+        //     ->first(); // Ambil data pertama
+
+        // if ($suratTerbaru->expired_at < now() && $suratTerbaru->expired_at != null) {
+        //     return redirect()->back()->with('deleted', 'Maaf, pengajuan legalisir telah kadaluarsa. Silahkan ajukan yang baru.');
+        // }
+
+
 
         if ($jenisSurat->slug == 'legalisir-ijazah' && $request->input('pengiriman') == 'dikirim') {
 
@@ -111,18 +123,22 @@ class IjazahController extends Controller
                 'ktp' => $request->file('ktp')->store('lampiran')
             ];
 
+
+
             if (
                 Surat::where('jenis_surat_id', $jenisSurat->id)
                 ->where('pengaju_id', auth()->user()->id)
                 ->where(function ($query) {
                     $query->where('status', 'diproses')
-                        ->orWhere('status', 'menunggu_pembayaran')
                         ->orWhere('status', 'dikirim');
                 })
-                ->where('created_at', '>=', now()->subDays(30))
+                ->orWhere(function ($query) {
+                    $query->where('status', 'menunggu_pembayaran')
+                        ->where('expired_at', '>', now()); // Pastikan expired_at belum lewat
+                })
                 ->count() > 0
             ) {
-                return redirect()->back()->with('deleted', 'Anda masih memiliki surat dengan jenis ini yang sedang diproses. Silahkan tunggu hingga selesai/ditolak atau batalkan pengajuan sebelumnya');
+                return redirect()->back()->with('deleted', 'Anda masih memiliki pengajuan legalisir yang sedang diproses, dikirim, atau menunggu pembayaran. Silahkan tunggu hingga selesai/ditolak, atau batalkan pengajuan sebelumnya.');
             }
             $surat->data = $data;
             $surat->save();
@@ -202,6 +218,18 @@ class IjazahController extends Controller
                 'ktp' => $request->file('ktp')->store('lampiran')
             ];
 
+            // $test = Surat::where('jenis_surat_id', $jenisSurat->id)
+            //     ->where('pengaju_id', auth()->user()->id)
+            //     ->where(function ($query) {
+            //         $query->where('status', 'diproses')
+            //             ->orWhere('status', 'dikirim');
+            //     })
+            //     ->orWhere(function ($query) {
+            //         $query->where('status', 'menunggu_pembayaran');
+            //     })->where('created_at', '>=', now()->subDays(32))->count() > 0;
+
+            // dd($test);
+
             if (
                 Surat::where('jenis_surat_id', $jenisSurat->id)
                 ->where('pengaju_id', auth()->user()->id)
@@ -212,8 +240,18 @@ class IjazahController extends Controller
                 })
                 ->where('created_at', '>=', now()->subDays(30))
                 ->count() > 0
+                // Surat::where('jenis_surat_id', $jenisSurat->id)
+                // ->where('pengaju_id', auth()->user()->id)
+                // ->where(function ($query) {
+                //     $query->where('status', 'diproses')
+                //         ->orWhere('status', 'dikirim');
+                // })
+                // ->orWhere(function ($query) {
+                //     $query->where('status', 'menunggu_pembayaran')
+                //         ->where('expired_at', '>', Carbon::now());
+                // })->where('created_at', '>=', now()->subDays(32))->count() > 0
             ) {
-                return redirect()->back()->with('deleted', 'Anda masih memiliki surat dengan jenis ini yang sedang diproses. Silahkan tunggu hingga selesai/ditolak atau batalkan pengajuan sebelumnya');
+                return redirect()->back()->with('deleted', 'Anda masih memiliki pengajuan legalisir yang sedang diproses, dikirim, atau menunggu pembayaran. Silahkan tunggu hingga selesai/ditolak, atau batalkan pengajuan sebelumnya.');
             }
             $surat->data = $data;
             $surat->save();

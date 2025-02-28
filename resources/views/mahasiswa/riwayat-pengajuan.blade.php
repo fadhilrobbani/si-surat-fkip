@@ -173,6 +173,16 @@
                                     $statusStyle = ' text-blue-400 font-semibold';
                                 } elseif ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'diproses') {
                                     $statusStyle = ' text-pink-500 font-semibold';
+                                } elseif (
+                                    $surat->expired_at > Carbon\Carbon::now() &&
+                                    $surat->status === 'menunggu_pembayaran'
+                                ) {
+                                    $statusStyle = ' text-yellow-600 font-semibold';
+                                } elseif (
+                                    $surat->expired_at < Carbon\Carbon::now() &&
+                                    $surat->status === 'menunggu_pembayaran'
+                                ) {
+                                    $statusStyle = ' text-pink-600 font-semibold';
                                 } else {
                                     $statusStyle = ' text-pink-500 font-semibold';
                                 }
@@ -190,7 +200,11 @@
                                 <td class="px-4 py-3">
                                     {{-- <p class="{{ $statusStyle }}">{{ $surat->status }}</p> --}}
                                     <p class="{{ $statusStyle }}">
-                                        {{ $surat->expired_at < Carbon\Carbon::now() && $surat->status === 'diproses' ? 'expired' : $surat->status }}
+                                        {{ $surat->expired_at < Carbon\Carbon::now() && $surat->status === 'diproses'
+                                            ? 'expired'
+                                            : ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'menunggu_pembayaran'
+                                                ? 'Tidak Dibayar'
+                                                : $surat->status) }}
                                     </p>
                                 </td>
                                 <td class="px-4 py-3">{{ formatTimestampToIndonesian($surat->created_at) }}</td>

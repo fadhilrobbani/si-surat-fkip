@@ -34,10 +34,20 @@
             <tbody>
                 <tr class="border-b border-gray-200 dark:border-gray-700">
                     <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Status:</td>
-                    <td class="px-6 py-4"><span
-                            class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">Menunggu
-                            Pembayaran</span>
+                    <td class="px-6 py-4">
+                        @php
+                            // Periksa apakah expired_at sudah lewat
+                            $isExpired = $surat->expired_at && \Carbon\Carbon::now()->greaterThan($surat->expired_at);
+                            // Tentukan status berdasarkan kondisi
+                            $status = $isExpired ? 'Tidak Dibayar' : 'Menunggu Pembayaran';
+                            $statusClass = $isExpired
+                                ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+                                : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+                        @endphp
 
+                        <span class="{{ $statusClass }} text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">
+                            {{ $status }}
+                        </span>
                     </td>
                 </tr>
                 <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -49,7 +59,7 @@
                     <td class="px-6 py-4">{{ $surat->data['metodePengiriman'] }}</td>
                 </tr>
                 <tr class="border-b border-gray-200 dark:border-gray-700">
-                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Masa Aktif Tersisa:&nbsp;
+                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tenggat Waktu Bayar Tersisa:&nbsp;
                     </td>
                     <td class="px-6 py-4">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
                 </tr>
@@ -147,7 +157,7 @@
                                     // Handle ketika $path kosong atau file tidak ditemukan
                                     $mimeType = '/file-tidak-ditemukan';
                                 }
-
+                                
                                 $extension = explode('.', basename($value))[1];
                                 $url = URL::signedRoute('show-file', [
                                     'user' => $authUser->id,
