@@ -588,7 +588,7 @@
 
 
 
-    <div class="px-4 py-2 sm:ml-60">
+    <div class="px-0 sm:px-4 pt-2 sm:ml-60">
         <div class="p-4 relative bg-white  border-dashed shadow-sm border-slate-300 overflow-x-hidden rounded-xl dark:border-gray-700 mt-14 "
             style="height: calc(100vh - 5rem);">
             {{ $slot }}
