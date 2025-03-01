@@ -21,6 +21,10 @@ div[modal-backdrop] {
     }
 } */
 
+.stepper-layout{
+    @apply flex flex-col sm:flex-row justify-center items-baseline
+}
+
 /* CSS file */
 .scrollable {
     @apply max-h-[400px] overflow-y-auto;
