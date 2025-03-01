@@ -132,7 +132,10 @@ class IjazahController extends Controller
                 Surat::where('jenis_surat_id', $jenisSurat->id)
                 ->where('pengaju_id', auth()->user()->id)
                 ->where(function ($query) {
-                    $query->where('status', 'diproses')
+                    $query->where(function ($query) {
+                        $query->where('status', 'diproses')
+                            ->where('expired_at', '>', Carbon::now());
+                    })
                         ->orWhere('status', 'dikirim')
                         ->orWhere(function ($query) {
                             $query->where('status', 'menunggu_pembayaran')
@@ -237,10 +240,23 @@ class IjazahController extends Controller
                 // ->where('created_at', '>=', now()->subDays(30))
                 // ->count() > 0
 
+                // Surat::where('jenis_surat_id', $jenisSurat->id)
+                // ->where('pengaju_id', auth()->user()->id)
+                // ->where(function ($query) {
+                //     $query->where('status', 'diproses')
+                //         ->orWhere('status', 'dikirim')
+                //         ->orWhere(function ($query) {
+                //             $query->where('status', 'menunggu_pembayaran')
+                //                 ->where('expired_at', '>', Carbon::now());
+                //         });
+
                 Surat::where('jenis_surat_id', $jenisSurat->id)
                 ->where('pengaju_id', auth()->user()->id)
                 ->where(function ($query) {
-                    $query->where('status', 'diproses')
+                    $query->where(function ($query) {
+                        $query->where('status', 'diproses')
+                            ->where('expired_at', '>', Carbon::now());
+                    })
                         ->orWhere('status', 'dikirim')
                         ->orWhere(function ($query) {
                             $query->where('status', 'menunggu_pembayaran')
