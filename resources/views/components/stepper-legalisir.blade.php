@@ -48,7 +48,7 @@
     $currentStatus = $surat->status;
     $currentStepIndex = array_search($currentStatus, array_column($steps, 'status'));
     $isRejected = $currentStatus === 'ditolak';
-    $isExpired = $surat->expired_at < now() && $currentStatus === 'diproses';
+    $isExpired = $surat->expired_at <   \Carbon\Carbon::now() && $currentStatus === 'menunggu_pembayaran';
 @endphp
 
 <div>
@@ -60,7 +60,7 @@
                     $isCompleted =
                         $index < $currentStepIndex || ($currentStatus === 'selesai' && $index === $currentStepIndex);
                     $isCurrent = $index === $currentStepIndex && $currentStatus !== 'selesai';
-                    $isError = ($isRejected || $isExpired) && $isCurrent;
+                    $isError = ($isRejected || $isExpired) && !$isCompleted ;
                 @endphp
 
                 {{-- Icon --}}

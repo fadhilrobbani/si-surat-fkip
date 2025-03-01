@@ -139,7 +139,7 @@ class IjazahController extends Controller
                                 ->where('expired_at', '>', Carbon::now());
                         });
                 })
-                ->where('created_at', '>=', now()->subDays(32))
+                ->where('created_at', '>=', now()->subDays(122))
                 ->count() > 0
 
             ) {
@@ -247,7 +247,7 @@ class IjazahController extends Controller
                                 ->where('expired_at', '>', Carbon::now());
                         });
                 })
-                ->where('created_at', '>=', now()->subDays(32))
+                ->where('created_at', '>=', now()->subDays(122))
                 ->count() > 0
 
             ) {
@@ -307,7 +307,7 @@ class IjazahController extends Controller
             $surat->files = array_merge((array)$surat->files, ['buktiBayar' => $buktiBayarPath]);
             $surat->status = 'diproses';
             $surat->current_user_id = $request->input('penerima');
-            $surat->expired_at = now()->addDays(30);
+            $surat->expired_at = now()->addDays(120);
             $surat->save();
 
             // ... logika lain ...
