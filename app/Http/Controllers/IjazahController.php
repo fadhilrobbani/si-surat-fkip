@@ -326,7 +326,7 @@ class IjazahController extends Controller
     {
         $surat->status = 'selesai';
         $data = $surat->data;
-        $data['tanggalSelesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+        $data['tanggalSelesai'] = formatTimestampToDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
         $surat->data = $data;
         $surat->current_user_id = auth()->user()->id;
         $surat->expired_at = null;

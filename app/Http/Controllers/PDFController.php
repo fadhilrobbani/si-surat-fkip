@@ -14,6 +14,12 @@ class PDFController extends Controller
 
     public function previewSurat(Surat $surat)
     {
+        if ($surat->jenisSurat->slug == 'legalisir-ijazah') {
+            $pdf = Pdf::loadview('template.invoice-legalisir', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+                'tempDir' => public_path(),
+                'chroot' => public_path()
+            ]);
+        }
         if ($surat->jenisSurat->slug == 'surat-keterangan-alumni') {
             $pdf = Pdf::loadview('template.surat-keterangan-alumni', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
                 'tempDir' => public_path(),

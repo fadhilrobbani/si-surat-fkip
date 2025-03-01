@@ -193,7 +193,7 @@
                                     // Handle ketika $path kosong atau file tidak ditemukan
                                     $mimeType = '/file-tidak-ditemukan';
                                 }
-                                
+
                                 $extension = explode('.', basename($value))[1];
                                 $url = URL::signedRoute('show-file', [
                                     'user' => $authUser->id,
@@ -264,7 +264,7 @@
     </div>
     <p class="font-semibold text-slate-500 text-md mx-auto mt-8 mb-2">Rincian Biaya yang dibayar Mahasiswa:</p>
 
-    <div class="mb-8 p-4 bg-gray-100 rounded-lg">
+    <div class=" p-4 bg-gray-100 rounded-lg">
 
         <div class="space-y-4">
             <div class="flex flex-col sm:flex-row justify-between">
@@ -298,6 +298,15 @@
 
         </div>
     </div>
+    @if($surat->status == 'diproses' || $surat->status == 'dikirim' || $surat->status == 'selesai')
+    <a href="{{ route('print-surat-akademik', $surat->id) }}" class="p-2 my-4 flex justify-center items-center flex-row gap-2 text-white bg-blue-700 rounded-lg" target="_blank">
+        <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
+          </svg>
+        <p>Cetak Invoice</p>
+
+    </a>
+    @endif
     <form id="approval-form" action="{{ route('setujui-surat-akademik', $surat->id) }}" method="POST"
         class="bg-slate-100 pt-2 rounded-lg w-full">
         @csrf
@@ -307,8 +316,7 @@
                 <label for="no-resi" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     Nomor Resi JNE <span class="text-red-600">*</span>
                 </label>
-                <p class="mb-2 text-xs text-gray-500 dark:text-gray-400">(Isi dengan angka 0 jika mahasiswa memilih
-                    mengambil di tempat)</p>
+
                 <input type="text" id="no-resi" name="no-resi" value="{{ old('no-resi') }}"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Masukkan nomor resi pengiriman" required>
@@ -319,7 +327,7 @@
                     (opsional)</label>
                 <textarea id="note" name="note"
                     class="bg-gray-50 min-h-[150px] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Masukkan catatan yang ingin disampaikan ke mahasiswa">{{ old('note') }}</textarea>
+                    placeholder="Masukkan catatan yang ingin diletakkan pada invoice / ke mahasiswa">{{ old('note') }}</textarea>
             </div>
         </div>
 

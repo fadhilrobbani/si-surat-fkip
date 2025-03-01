@@ -22,7 +22,9 @@ Kami ingin menginformasikan bahwa Anda telah melakukan pengajuan **Legalisir Ija
 
 📌 **Setelah melakukan pembayaran**, segera unggah bukti pembayaran melalui portal E-Surat FKIP UNIB pada bagian **Riwayat Pengajuan**:
 
-[🔗 Cek Status Pengajuan]("{{ route('lihat-surat-mahasiswa', $surat) }}")
+<x-mail::button :url="route('lihat-surat-mahasiswa', $surat)" color="primary">
+Cek Status Pengajuan
+</x-mail::button>
 
 > ❗ *Abaikan pesan ini jika Anda telah melakukan pembayaran.*
 
@@ -31,7 +33,4 @@ Terima kasih atas perhatian dan kerja samanya.
 **Hormat kami,**
 **Fakultas Keguruan dan Ilmu Pendidikan Universitas Bengkulu**
 
-<x-mail::button :url="'https://esurat-fkip.unib.ac.id'" color="primary">
-Kunjungi E-Surat FKIP UNIB
-</x-mail::button>
 </x-mail::message>

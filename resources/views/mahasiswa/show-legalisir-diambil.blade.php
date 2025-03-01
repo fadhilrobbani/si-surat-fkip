@@ -145,7 +145,7 @@
                                     // Handle ketika $path kosong atau file tidak ditemukan
                                     $mimeType = '/file-tidak-ditemukan';
                                 }
-                                
+
                                 $extension = explode('.', basename($value))[1];
                                 $url = URL::signedRoute('show-file', [
                                     'user' => $authUser->id,
@@ -187,9 +187,18 @@
 
             </div>
         </div>
+        @if($surat->status == 'diproses' || $surat->status == 'dikirim' || $surat->status == 'selesai')
+        <a href="{{ route('print-surat-mahasiswa', $surat->id) }}" class="p-2 m-2 flex justify-center items-center flex-row gap-2 text-white bg-blue-700 rounded-lg" target="_blank">
+            <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
+              </svg>
+            <p>Cetak Invoice</p>
+
+        </a>
+        @endif
         @if (auth()->user()->role_id == 2 && $surat->status == 'dikirim')
             <button type="button" onclick="openConfirmModal()"
-                class="my-6 mx-auto bg-blue-600 flex flex-row  items-center gap-4 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-800 transition duration-300 flex justify-center">
+                class="my-6 mx-auto bg-teal-500 flex flex-row  items-center gap-4 text-white px-6 py-2 rounded-lg shadow-md hover:bg-teal-800 transition duration-300 flex justify-center">
                 <svg class="w-8 h-8 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

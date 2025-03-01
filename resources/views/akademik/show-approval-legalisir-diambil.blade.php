@@ -166,7 +166,7 @@
                                     // Handle ketika $path kosong atau file tidak ditemukan
                                     $mimeType = '/file-tidak-ditemukan';
                                 }
-                                
+
                                 $extension = explode('.', basename($value))[1];
                                 $url = URL::signedRoute('show-file', [
                                     'user' => $authUser->id,
@@ -231,7 +231,7 @@
     </div>
     <p class="font-semibold text-slate-500 text-md mx-auto mt-8 mb-2">Rincian Biaya yang dibayar Mahasiswa:</p>
 
-    <div class="mb-8 p-4 bg-gray-100 rounded-lg">
+    <div class=" p-4 bg-gray-100 rounded-lg">
 
         <div class="space-y-4">
 
@@ -253,6 +253,14 @@
 
         </div>
     </div>
+    @if($surat->status == 'diproses' || $surat->status == 'dikirim' || $surat->status == 'selesai')
+    <a href="{{ route('print-surat-akademik', $approval->surat->id) }}" class="p-2 my-4 flex justify-center items-center flex-row gap-2 text-white bg-blue-700 rounded-lg" target="_blank">
+        <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
+          </svg>
+        <p>Cetak Invoice</p>
 
+    </a>
+    @endif
 
 </x-layout>
