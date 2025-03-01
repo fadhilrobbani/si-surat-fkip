@@ -3,6 +3,9 @@
 // So for naming convention we used surat instead of ijazah
 namespace App\Http\Controllers;
 
+use App\Mail\OrderPembayaran;
+use Illuminate\Support\Facades\Mail;
+
 use Exception;
 use Carbon\Carbon;
 
@@ -144,6 +147,8 @@ class IjazahController extends Controller
             }
             $surat->data = $data;
             $surat->save();
+            Mail::to($surat->pengaju->email)->send(new OrderPembayaran($surat));
+
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Pengajuan legalisir ijazah berhasil diajukan. Menunggu konfirmasi pembayaran agar dapat diproses lebih lanjut.');
         }
 
@@ -250,6 +255,8 @@ class IjazahController extends Controller
             }
             $surat->data = $data;
             $surat->save();
+            Mail::to($surat->pengaju->email)->send(new OrderPembayaran($surat));
+
             return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Pengajuan legalisir ijazah berhasil diajukan. Menunggu konfirmasi pembayaran agar dapat diproses lebih lanjut.');
         }
     }

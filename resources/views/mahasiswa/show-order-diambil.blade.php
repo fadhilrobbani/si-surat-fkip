@@ -50,6 +50,10 @@
                         </span>
                     </td>
                 </tr>
+                {{-- <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">ID Pengajuan:&nbsp;</td>
+                    <td class="px-6 py-4">{{ $surat->id }}</td>
+                </tr> --}}
                 <tr class="border-b border-gray-200 dark:border-gray-700">
                     <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Diajukan:&nbsp;</td>
                     <td class="px-6 py-4">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
