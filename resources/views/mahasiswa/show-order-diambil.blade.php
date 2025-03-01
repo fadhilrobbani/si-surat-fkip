@@ -35,6 +35,10 @@
             <table class="w-full shadow-lg text-sm text-left rtl:text-right text-gray-700 dark:text-gray-400 mb-8">
                 <tbody>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
+                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Order ID:&nbsp;</td>
+                        <td class="px-6 py-4">{{ $surat->id }}</td>
+                    </tr>
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
                         <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Status:</td>
                         <td class="px-6 py-4">
                             @php

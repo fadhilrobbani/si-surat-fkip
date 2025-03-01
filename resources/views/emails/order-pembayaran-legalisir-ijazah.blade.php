@@ -7,6 +7,7 @@ Kami ingin menginformasikan bahwa Anda telah melakukan pengajuan **Legalisir Ija
 
 ---
 ### 🧾 Detail Pembayaran
+- **Order ID:** {{ $surat->id }}
 - **Nama:** {{ $surat->pengaju->name }}
 - **NPM:** {{ $surat->data['npm'] }}
 - **Jumlah yang dibayarkan:** **Rp {{ number_format($surat->data['totalHarga'], 0, ',', '.') }}**
