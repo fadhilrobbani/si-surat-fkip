@@ -207,13 +207,29 @@
                     <span class="font-semibold text-gray-700">Biaya Legalisir:</span>
                     <span>Rp {{ number_format($surat->data['biayaLembar'], 0, ',', '.') }}</span>
                 </div>
-                <div class="h-2 bg-slate-800"></div>
+                <div class="h-1 bg-slate-800"></div>
                 <div class="flex flex-col sm:flex-row  justify-between">
                     <span class="font-semibold text-lg text-gray-700">Total biaya yang dibayarkan:</span>
                     <span class="text-lg font-bold">Rp
                         {{ number_format($surat->data['totalHarga'], 0, ',', '.') }}</span>
                 </div>
-                <div class="h-2 bg-slate-800"></div>
+                <div class="h-1 bg-slate-800"></div>
+                <div class="flex flex-col sm:flex-row  justify-between">
+                    <span class="font-semibold text-lg text-gray-700">Silahkan bayar ke rekening:</span>
+                    <span class="text-lg font-bold">
+                        MANDIRI</span>
+                </div>
+                <div class="flex flex-col sm:flex-row  justify-between">
+                    <span class="font-semibold text-lg text-gray-700">Atas nama:</span>
+                    <span class="text-lg font-bold">
+                        FKIP UNIB</span>
+                </div>
+                <div class="flex flex-col sm:flex-row  justify-between">
+                    <span class="font-semibold text-lg text-gray-700">Nomor rekening:</span>
+                    <span class="text-lg font-bold">
+                        092092038479373 </span>
+                </div>
+                <div class="h-1 bg-slate-800"></div>
                 @if ($surat->expired_at > \Carbon\Carbon::now())
                     <form id="konfirmasi-pembayaran"
                         action="{{ route('konfirmasi-pembayaran-legalisir-ijazah', $surat->id) }}" method="POST"
@@ -226,8 +242,8 @@
                                     class="text-red-500">*</span>: </label>
                             <input
                                 class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                aria-describedby="file_input_help" id="bukti-bayar" type="file" name="bukti-bayar"
-                                accept=".jpg, .jpeg, .png, .pdf" max-size="2048" required>
+                                aria-describedby="file_input_help" id="bukti-bayar" type="file"
+                                name="bukti-bayar" accept=".jpg, .jpeg, .png, .pdf" max-size="2048" required>
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG,
                                 JPEG,
                                 atau PDF (MAX 2 MB).</p>
