@@ -156,7 +156,11 @@
         </script>
 
     </x-slot:script>
-    <p class="font-bold text-lg mx-auto text-center mb-2">Pengajuan Legalisir Ijazah</p>
+    <p class="font-bold text-lg mx-auto text-center mb-2">Pengajuan Legalisir Ijazah </p>
+    <p class="font-bold text-sm mx-auto text-pink-600 italic text-center mb-2">Sedang dalam development <span
+            class="italic text-pink-600">(For
+            testing
+            only)</span></p>
     <form action="{{ route('store-pengajuan-legalisir-ijazah', $jenisSurat->slug) }}" method="POST"
         enctype="multipart/form-data">
         @csrf
