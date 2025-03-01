@@ -68,7 +68,8 @@
                         <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tenggat Waktu Bayar
                             Tersisa:&nbsp;
                         </td>
-                        <td class="px-6 py-4">{{ formatTimestampToDiffDays($surat->expired_at) }} hari</td>
+                        <td class="px-6 py-4">{{ $dateService->formatTimestampToDiffDays($surat->expired_at) }} hari
+                        </td>
                     </tr>
                     @if (isset($surat->data['tanggalSelesai']))
                         <tr class="border-b border-gray-200 dark:border-gray-700">
