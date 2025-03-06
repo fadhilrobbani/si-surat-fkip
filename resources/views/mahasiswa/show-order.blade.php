@@ -34,7 +34,7 @@
             <table class="w-full shadow-lg text-sm text-left rtl:text-right text-gray-700 dark:text-gray-400 mb-8">
                 <tbody>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
-                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Order ID:&nbsp;</td>
+                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">ID:&nbsp;</td>
                         <td class="px-6 py-4">{{ $surat->id }}</td>
                     </tr>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -45,7 +45,7 @@
                                 $isExpired =
                                     $surat->expired_at && \Carbon\Carbon::now()->greaterThan($surat->expired_at);
                                 // Tentukan status berdasarkan kondisi
-                                $status = $isExpired ? 'Tidak Dibayar' : 'Menunggu Pembayaran';
+                                $status = $isExpired ? 'Tidak Dikonfirmasi' : 'Menunggu Konfirmasi Anda';
                                 $statusClass = $isExpired
                                     ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
                                     : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
@@ -65,8 +65,7 @@
                         <td class="px-6 py-4">{{ $surat->data['metodePengiriman'] }}</td>
                     </tr>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
-                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tenggat Waktu Bayar
-                            Tersisa:&nbsp;
+                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tenggat Waktu Konfirmasi:&nbsp;
                         </td>
                         <td class="px-6 py-4">{{ $dateService->formatTimestampToDiffDays($surat->expired_at) }}
                         </td>
@@ -180,13 +179,7 @@
                             </tr>
                         @endforeach
                     @endif
-                    <tr class="border-b border-gray-200 dark:border-gray-700">
-                        <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">URL Ongkos Kirim:</td>
-                        <td class="px-6 py-4">
-                            <a href="{{ $surat->data['urlOngkir'] }}" target="_blank"
-                                class="text-blue-500 underline">{{ $surat->data['urlOngkir'] }}</a>
-                        </td>
-                    </tr>
+
                 </tbody>
             </table>
 
@@ -196,41 +189,7 @@
         <div class="mt-8 p-4 bg-gray-100 rounded-lg">
 
             <div class="space-y-4">
-                <div class="flex flex-col sm:flex-row justify-between">
-                    <span class="font-semibold text-gray-700">Ongkos Kirim:</span>
-                    <span>Rp {{ number_format($surat->data['ongkir'], 0, ',', '.') }}</span>
-                </div>
-                <div class="flex flex-col sm:flex-row  justify-between">
-                    <span class="font-semibold text-gray-700">Biaya Jasa:</span>
-                    <span>Rp {{ number_format($surat->data['biayaJasa'], 0, ',', '.') }}</span>
-                </div>
-                <div class="flex flex-col sm:flex-row  justify-between">
-                    <span class="font-semibold text-gray-700">Biaya Legalisir:</span>
-                    <span>Rp {{ number_format($surat->data['biayaLembar'], 0, ',', '.') }}</span>
-                </div>
-                <div class="h-1 bg-slate-800"></div>
-                <div class="flex flex-col sm:flex-row  justify-between">
-                    <span class="font-semibold text-lg text-gray-700">Total biaya yang dibayarkan:</span>
-                    <span class="text-lg font-bold">Rp
-                        {{ number_format($surat->data['totalHarga'], 0, ',', '.') }}</span>
-                </div>
-                <div class="h-1 bg-slate-800"></div>
-                <div class="flex flex-col sm:flex-row  justify-between">
-                    <span class="font-semibold text-lg text-gray-700">Silahkan bayar ke rekening:</span>
-                    <span class="text-lg font-bold">
-                        MANDIRI</span>
-                </div>
-                <div class="flex flex-col sm:flex-row  justify-between">
-                    <span class="font-semibold text-lg text-gray-700">Atas nama:</span>
-                    <span class="text-lg font-bold">
-                        FKIP UNIB</span>
-                </div>
-                <div class="flex flex-col sm:flex-row  justify-between">
-                    <span class="font-semibold text-lg text-gray-700">Nomor rekening:</span>
-                    <span class="text-lg font-bold">
-                        092092038479373 </span>
-                </div>
-                <div class="h-1 bg-slate-800"></div>
+
                 @if ($surat->expired_at > \Carbon\Carbon::now())
                     <form id="konfirmasi-pembayaran"
                         action="{{ route('konfirmasi-pembayaran-legalisir-ijazah', $surat->id) }}" method="POST"
@@ -238,17 +197,6 @@
                         @csrf
                         @method('PUT')
 
-                        <div>
-                            <label class="font-semibold text-gray-700" for="bukti-bayar">Upload Bukti Bayar<span
-                                    class="text-red-500">*</span>: </label>
-                            <input
-                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                aria-describedby="file_input_help" id="bukti-bayar" type="file"
-                                name="bukti-bayar" accept=".jpg, .jpeg, .png, .pdf" max-size="2048" required>
-                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG,
-                                JPEG,
-                                atau PDF (MAX 2 MB).</p>
-                        </div>
 
                         <x-modal-konfirmasi-pembayaran-send :daftarPenerima='$daftarPenerima' />
                         <x-modal-batal-pengajuan />
@@ -256,7 +204,7 @@
                             <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
                                 type="button"
                                 class=" text-white bg-blue-700 w-full sm:w-fit  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Konfirmasi Pembayaran
+                                Konfirmasi Pengajuan
                             </button>
 
                             <button data-modal-target="batal-modal" data-modal-toggle="batal-modal" type="button"

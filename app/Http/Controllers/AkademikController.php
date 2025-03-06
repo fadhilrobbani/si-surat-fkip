@@ -286,6 +286,8 @@ class AkademikController extends Controller
                 // 'no-surat' =>  ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id)],
 
                 'no-resi' => 'required',
+                // 'faktur-jne' => 'file|mimes:jpeg,png,jpg,pdf|max:2048',
+
             ]);
             // SELECT jt.id FROM users u
             // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
@@ -322,24 +324,17 @@ class AkademikController extends Controller
                 ];
             }
             $surat->data = $data;
-            // $file = $surat->files;
-            // if ($file) {
-            //     if (isset($file['private'])) {
-            //         $file['private']['stempel'] =  'storage/' . auth()->user()->tandatangan;
-            //     } else {
-            //         $file['private'] = [
-            //             'stempel' => 'storage/' . auth()->user()->tandatangan
-            //         ];
-            //     }
-            // } else {
-            //     $file = [
-            //         'private' => [
-            //             'stempel' => 'storage/' . auth()->user()->tandatangan,
-            //         ]
+
+
+            $surat->status = 'dikirim';
+            // if ($request->hasFile('fakturJNE')) {
+
+            //     $surat->files = [
+            //         'fakturJNE' => $request->file('faktur-jne')->store('lampiran'),
+
             //     ];
             // }
-            // $surat->files = $file;
-            $surat->status = 'dikirim';
+
             $surat->save();
 
             Approval::create([

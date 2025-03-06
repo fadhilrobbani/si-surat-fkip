@@ -196,17 +196,18 @@
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{ $surat->jenisSurat->name }}
                                 </th>
-
                                 <td class="px-4 py-3">
-                                    {{-- <p class="{{ $statusStyle }}">{{ $surat->status }}</p> --}}
                                     <p class="{{ $statusStyle }}">
                                         {{ $surat->expired_at < Carbon\Carbon::now() && $surat->status === 'diproses'
                                             ? 'expired'
                                             : ($surat->expired_at < Carbon\Carbon::now() && $surat->status === 'menunggu_pembayaran'
-                                                ? 'Tidak Dibayar'
-                                                : $surat->status) }}
+                                                ? 'tidak dikonfirmasi'
+                                                : ($surat->status === 'menunggu_pembayaran'
+                                                    ? 'menunggu konfirmasi'
+                                                    : $surat->status)) }}
                                     </p>
                                 </td>
+
                                 <td class="px-4 py-3">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
 
                                 <td class="px-4 py-3">

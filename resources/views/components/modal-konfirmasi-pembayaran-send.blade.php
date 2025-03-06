@@ -19,7 +19,7 @@
                 {{-- <form class="space-y-6" action="#"> --}}
                 <div>
                     <label for="penerima" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Apakah
-                        Anda yakin untuk mengonfirmasi pembayaran ini? Silakan tekan tombol kirim jika Anda
+                        Anda yakin untuk mengonfirmasi ini? Silakan tekan tombol kirim jika Anda
                         menyetujui.</label>
                     <select id="penerima" name="penerima"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">

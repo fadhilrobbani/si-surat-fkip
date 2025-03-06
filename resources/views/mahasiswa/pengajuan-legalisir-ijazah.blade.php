@@ -237,13 +237,37 @@
 
                 </div>
                 <div>
+
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        for="tracer-study">Upload
+                        bukti sudah mengisi Tracer Study<span class="text-red-500">*</span> </label>
+                    <input
+                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                        aria-describedby="file_input_help" id="tracer-study" type="file" name="tracer-study"
+                        accept=".jpg, .jpeg, .png, .pdf" max-size="2048" required>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG, JPEG, atau
+                        PDF
+                        (MAX.
+                        2 MB).</p>
+
+                </div>
+                <div>
+                    <label for="kontak" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        No. WA/HP<span class="text-red-500">*</span>
+                    </label>
+                    <input type="tel" id="kontak" name="kontak" maxlength="12"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                        placeholder="Contoh: 081313131313" value="{{ old('kontak') }}"
+                        title="Masukkan nomor yang valid, contoh: 081313131313" required>
+                </div>
+
+                <div>
                     <label for="jumlah-lembar"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Lembar
                         Legalisir (Maksimal 10 Lembar)<span class="text-red-500">*</span></label>
                     <input type="number" id="jumlah-lembar" min="1" max="10" name="jumlah-lembar"
                         class="bg-gray-50 border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Biaya: Rp 2.000/lembar (Max. 10 lembar)" value="{{ old('jumlah-lembar') }}"
-                        required>
+                        placeholder="(Maksimal 10 lembar)" value="{{ old('jumlah-lembar') }}" required>
                 </div>
                 <div>
                     <label for="catatan-mahasiswa"
@@ -332,37 +356,7 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Masukkan Kelurahan" value="{{ old('kelurahan') }}" required>
                 </div>
-                <div>
-                    <label for="ongkir" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Ongkos Kirim JNE REG<span class="text-red-500">*</span>
-                        <button type="button" onclick="openModalCekOngkir(event)"
-                            class="sm:ml-2 text-blue-700 underline  px-2 hover:text-gray-700 dark:hover:text-gray-300">
-                            Klik di sini untuk detail
-                        </button>
-                    </label>
-                    <div class="relative">
-                        <span
-                            class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 dark:text-gray-400">Rp</span>
-                        <input type="text" id="ongkir" name="ongkir"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="0" value="{{ old('ongkir') }}" required oninput="formatRupiah(this)">
-                    </div>
-                </div>
-                <div>
-                    <label for="url-ongkir" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        URL Ongkos Kirim JNE <span class="text-red-500">*</span>
-                        <button type="button" onclick="openModalHelpOngkirURL(event)"
-                            class="sm:ml-2 text-blue-700 underline  px-2 hover:text-gray-700 dark:hover:text-gray-300">
-                            Klik di sini untuk detail
-                        </button>
-                    </label>
 
-
-                    <input type="text" id="url-ongkir" name="url-ongkir"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder=" URL Ongkos Kirim" value="{{ old('url-ongkir') }}" required>
-
-                </div>
 
                 <!-- Modal -->
                 <div id="infoModalCekOngkir"
@@ -437,22 +431,6 @@
                             class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Tutup</button>
                     </div>
                 </div>
-
-
-
-            </div>
-        </div>
-        <p class="font-semibold text-slate-500 text-md mx-auto  mt-6 mb-2">Data Pembayaran:</p>
-        <div class="bg-slate-50 p-4 rounded-lg shadow-lg">
-            <div class="grid gap-6 md:grid-cols-1">
-                {{--
-                <button type="button" onclick="hitungHarga()"
-                    class="mt-4 bg-yellow-500 hover:bg-yellow-700 w-fit text-white px-4 py-2 rounded-lg">Hitung
-                    Harga</button> --}}
-
-                {{-- <p class="mt-4 font-semibold">Deskripsi Harga:</p> --}}
-                <div id="deskripsi-harga"></div>
-                <input type="hidden" name="total-harga" id="total-harga-input" required>
 
 
 

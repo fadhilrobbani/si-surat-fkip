@@ -167,30 +167,7 @@
             </table>
             <x-stepper-legalisir :surat="$surat" />
         </div>
-        <p class="font-semibold ml-2 text-slate-500 text-md mx-auto mt-8 mb-2">Rincian Biaya yang dibayar Mahasiswa:</p>
 
-        <div class="mb-8 mx-2 p-4 bg-gray-100 rounded-lg">
-
-            <div class="space-y-4">
-
-                <div class="flex flex-col sm:flex-row  justify-between">
-                    <span class="font-semibold text-gray-700">Biaya Jasa:</span>
-                    <span>Rp {{ number_format($surat->data['biayaJasa'], 0, ',', '.') }}</span>
-                </div>
-                <div class="flex flex-col sm:flex-row  justify-between">
-                    <span class="font-semibold text-gray-700">Biaya Legalisir:</span>
-                    <span>Rp {{ number_format($surat->data['biayaLembar'], 0, ',', '.') }}</span>
-                </div>
-                <div class="h-1 bg-slate-800"></div>
-                <div class="flex flex-col sm:flex-row  justify-between">
-                    <span class="font-semibold text-lg text-gray-700">Total:</span>
-                    <span class="text-lg font-bold">Rp
-                        {{ number_format($surat->data['totalHarga'], 0, ',', '.') }}</span>
-                </div>
-
-
-            </div>
-        </div>
         @if ($surat->status == 'diproses' || $surat->status == 'dikirim' || $surat->status == 'selesai')
             <a href="{{ route('print-surat-mahasiswa', $surat->id) }}"
                 class="p-2 m-2 flex justify-center items-center flex-row gap-2 text-white bg-blue-700 rounded-lg"

@@ -105,29 +105,24 @@
             <tr>
                 <th>Deskripsi</th>
                 <th>Jumlah</th>
-                <th>Harga</th>
+                <th>Keterangan</th>
             </tr>
             <tr>
                 <td>Legalisir Ijazah ({{ $surat->data['jumlahLembar'] }} lembar)</td>
                 <td>{{ $surat->data['jumlahLembar'] }}</td>
-                <td>Rp {{ number_format($surat->data['biayaLembar'], 0, ',', '.') }}</td>
-            </tr>
-            <tr>
-                <td>Biaya Jasa</td>
                 <td>-</td>
-                <td>Rp {{ number_format($surat->data['biayaJasa'], 0, ',', '.') }}</td>
             </tr>
+
             @if ($surat->data['metodePengiriman'] == 'Dikirim (JNE REG)')
                 <tr>
                     <td>Ongkos Kirim</td>
-                    <td>-</td>
-                    <td>Rp {{ number_format($surat->data['ongkir'], 0, ',', '.') }}</td>
+                    <td>{{ isset($surat->data['ongkir']) ? $surat->data['ongkir'] : 'Bisa cek di invoice / data resmi dari JNE' }}
+                    </td>
+                    {{-- <td>Rp {{ number_format($surat->data['ongkir'], 0, ',', '.') }}</td> --}}
+                    <td>Pembayaran metode COD </td>
                 </tr>
             @endif
-            <tr>
-                <th colspan="2">Total Harga</th>
-                <th>Rp {{ number_format($surat->data['totalHarga'], 0, ',', '.') }}</th>
-            </tr>
+
         </table>
 
         <div class="footer">
