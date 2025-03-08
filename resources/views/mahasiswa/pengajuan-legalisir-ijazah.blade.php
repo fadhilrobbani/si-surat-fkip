@@ -157,10 +157,7 @@
 
     </x-slot:script>
     <p class="font-bold text-lg mx-auto text-center mb-2">Pengajuan Legalisir Ijazah </p>
-    <p class="font-bold text-sm mx-auto text-pink-600 italic text-center mb-2">Sedang dalam development <span
-            class="italic text-pink-600">(For
-            testing
-            only)</span></p>
+
     <form action="{{ route('store-pengajuan-legalisir-ijazah', $jenisSurat->slug) }}" method="POST"
         enctype="multipart/form-data">
         @csrf
@@ -211,7 +208,8 @@
                 <div>
 
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="ijazah">Upload
-                        Foto Ijazah Berwarna (Tampak depan & belakang)<span class="text-red-500">*</span> </label>
+                        Foto Ijazah (Berwarna)<span class="text-red-500">*</span>
+                    </label>
                     <input
                         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                         aria-describedby="file_input_help" id="ijazah" type="file" name="ijazah" accept=".pdf"
@@ -240,7 +238,11 @@
 
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         for="tracer-study">Upload
-                        bukti sudah mengisi Tracer Study<span class="text-red-500">*</span> </label>
+                        bukti sudah mengisi Tracer Study<span class="text-red-500">*</span> <span
+                            class="underline text-blue-500">
+                            <a href="https://tracerstudy.kemdiktisaintek.go.id/kuesioner" target="_blank">Isi di
+                                sini</a>
+                        </span> </label>
                     <input
                         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                         aria-describedby="file_input_help" id="tracer-study" type="file" name="tracer-study"
@@ -289,7 +291,7 @@
         <select id="pengiriman" name="pengiriman"
             class="bg-gray-50 border mb-4 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             onchange="toggleShippingInputs()">
-            <option value="dikirim">Dikirim (JNE)</option>
+            <option value="dikirim">Dikirim via COD (JNE)</option>
             <option value="ambil">Ambil di Tempat (Akademik FKIP UNIB)</option>
         </select>
         <div id="shippingInputs" class="bg-slate-50 p-4 rounded-lg shadow-lg">
@@ -444,8 +446,8 @@
             Ajukan Surat
         </button> --}}
         <button type="submit"
-            class="text-white mx-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none mt-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Ajukan
-            Pembayaran</button>
+            class="text-white mx-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none mt-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buat
+            Pengajuan</button>
     </form>
 
 

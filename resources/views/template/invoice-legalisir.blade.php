@@ -71,9 +71,14 @@
             </tr>
             <tr>
                 <td><strong>Email:</strong> {{ $surat->data['email'] }}</td>
-                <td><strong>Metode Pengiriman:</strong> {{ $surat->data['metodePengiriman'] }}</td>
+                @if (isset($surat->data['kontak']))
+                    <td><strong>No. HP:</strong> {{ $surat->data['kontak'] }}</td>
+                @endif
             </tr>
-            @if ($surat->data['metodePengiriman'] == 'Dikirim (JNE REG)')
+            <tr>
+                <td colspan="2"><strong>Metode Pengiriman:</strong> {{ $surat->data['metodePengiriman'] }}</td>
+            </tr>
+            @if ($surat->data['pengiriman'] == 'dikirim')
                 <tr>
                     <td colspan="2">
                         <strong>Alamat Pengiriman:</strong><br>
@@ -113,7 +118,7 @@
                 <td>-</td>
             </tr>
 
-            @if ($surat->data['metodePengiriman'] == 'Dikirim (JNE REG)')
+            @if ($surat->data['pengiriman'] == 'dikirim')
                 <tr>
                     <td>Ongkos Kirim</td>
                     <td>{{ isset($surat->data['ongkir']) ? $surat->data['ongkir'] : 'Bisa cek di invoice / data resmi dari JNE' }}

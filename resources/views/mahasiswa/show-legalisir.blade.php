@@ -120,6 +120,12 @@
                         <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Email:</td>
                         <td class="px-6 py-4">{{ $surat->data['email'] }}</td>
                     </tr>
+                    @if (isset($surat->data['kontak']))
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">No. HP:</td>
+                            <td class="px-6 py-4">{{ $surat->data['kontak'] }}</td>
+                        </tr>
+                    @endif
 
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Alamat:</td>

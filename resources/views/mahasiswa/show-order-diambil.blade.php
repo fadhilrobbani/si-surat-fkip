@@ -28,6 +28,12 @@
     </x-slot:script>
     {{ Breadcrumbs::render('show-pengajuan-surat', $surat) }}
     <h1 class="mx-auto text-center font-bold">{{ $surat->jenisSurat->name }}</h1>
+    @if ($surat->expired_at > \Carbon\Carbon::now())
+        <p class="font-bold text-sm mx-auto text-yellow-600  text-center mb-2">(Silahkan
+            cek data Anda, lalu konfirmasi pengajuan jika sudah sesuai)
+        </p>
+    @endif
+
     <div class="bg-white rounded-lg shadow-md  overflow-x-auto">
 
         <div class="stepper-layout">
@@ -124,6 +130,12 @@
                         <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Email:</td>
                         <td class="px-6 py-4">{{ $surat->data['email'] }}</td>
                     </tr>
+                    @if (isset($surat->data['kontak']))
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">No. HP:</td>
+                            <td class="px-6 py-4">{{ $surat->data['kontak'] }}</td>
+                        </tr>
+                    @endif
 
 
                     @if (isset($surat->files))

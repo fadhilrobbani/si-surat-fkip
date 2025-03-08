@@ -60,7 +60,7 @@ class IjazahController extends Controller
             $surat->jenis_surat_id = $jenisSurat->id;
             $surat->expired_at = now()->addDays(3);
             $surat->data = [
-                'metodePengiriman' => "Dikirim (JNE REG)",
+                'metodePengiriman' => "Dikirim via COD (JNE)",
                 'pengiriman' => $request->input('pengiriman'),
                 'nama' => $request->input('name'),
                 'npm' => $request->input('username'),
@@ -127,8 +127,7 @@ class IjazahController extends Controller
             $surat->data = $data;
             $surat->save();
             // Mail::to($surat->pengaju->email)->send(new OrderPembayaran($surat));
-
-            return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Pengajuan legalisir ijazah berhasil diajukan. Menunggu konfirmasi pembayaran agar dapat diproses lebih lanjut.');
+            return redirect()->route('lihat-surat-mahasiswa', $surat->id)->with('success', 'Silahkan cek kembali data Anda, lalu konfirmasi pengajuan jika sudah sesuai');
         }
 
         if ($jenisSurat->slug == 'legalisir-ijazah' && $request->input('pengiriman') == 'ambil') {
@@ -216,8 +215,7 @@ class IjazahController extends Controller
             $surat->data = $data;
             $surat->save();
             // Mail::to($surat->pengaju->email)->send(new OrderPembayaran($surat));
-
-            return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Pengajuan legalisir ijazah berhasil diajukan. Menunggu konfirmasi pembayaran agar dapat diproses lebih lanjut.');
+            return redirect()->route('lihat-surat-mahasiswa', $surat->id)->with('success', 'Silahkan cek kembali data Anda, lalu konfirmasi pengajuan jika sudah sesuai');
         }
     }
 
