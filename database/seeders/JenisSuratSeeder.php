@@ -16,15 +16,14 @@ class JenisSuratSeeder extends Seeder
         $daftarJenisSurat = [
             [
                 'name' => 'Surat Keterangan Aktif Kuliah',
-                'slug' => 'surat-aktif-kuliah'
+                'slug' => 'surat-aktif-kuliah',
+                'user_type' => 'mahasiswa'
             ],
-            [
-                'name' => 'Surat Pengantaran Pembayaran Uang Yudisium',
-                'slug' => 'surat-pengantar-pembayaran-uang-yudisium'
-            ],
+
             [
                 'name' => 'Surat Rekomendasi MBKM',
-                'slug' => 'surat-rekomendasi-mbkm'
+                'slug' => 'surat-rekomendasi-mbkm',
+                'user_type' => 'mahasiswa'
             ],
             // [
             //     'name' => 'Surat Permohonan Izin Cuti Akademik',
@@ -44,20 +43,23 @@ class JenisSuratSeeder extends Seeder
             // ],
             [
                 'name' => 'Surat Keterangan Alumni',
-                'slug' => 'surat-keterangan-alumni'
-
+                'slug' => 'surat-keterangan-alumni',
+                'user_type' => 'mahasiswa'
             ],
             [
                 'name' => 'Surat Keterangan Pernah Kuliah',
-                'slug' => 'surat-keterangan-pernah-kuliah'
+                'slug' => 'surat-keterangan-pernah-kuliah',
+                'user_type' => 'mahasiswa'
             ],
             [
                 'name' => 'Surat Keterangan Lulus',
-                'slug' => 'surat-keterangan-lulus'
+                'slug' => 'surat-keterangan-lulus',
+                'user_type' => 'mahasiswa'
             ],
             [
                 'name' => 'Surat Keterangan Kesalahan di Ijazah',
-                'slug' => 'surat-keterangan-kesalahan-ijazah'
+                'slug' => 'surat-keterangan-kesalahan-ijazah',
+                'user_type' => 'mahasiswa'
             ],
             // [
             //     'name' => 'Surat Permohonan Sinkronisasi SK Homebase Dosen dengan Forlap PDDikti',
@@ -65,26 +67,57 @@ class JenisSuratSeeder extends Seeder
             // ],
             [
                 'name' => 'Surat Permohonan Izin Prapenelitian Mahasiswa',
-                'slug' => 'surat-permohonan-izin-prapenelitian-mahasiswa'
+                'slug' => 'surat-permohonan-izin-prapenelitian-mahasiswa',
+                'user_type' => 'mahasiswa'
             ],
             [
                 'name' => 'Surat Permohonan Izin Penelitian Mahasiswa',
-                'slug' => 'surat-permohonan-izin-penelitian-mahasiswa'
+                'slug' => 'surat-permohonan-izin-penelitian-mahasiswa',
+                'user_type' => 'mahasiswa'
+            ],
+            [
+                'name' => 'Surat Pengantar Pembayaran Uang Yudisium',
+                'slug' => 'surat-pengantar-pembayaran-uang-yudisium',
+                'user_type' => 'mahasiswa'
             ],
             [
                 'name' => 'Surat Keterangan Eligible PIN',
-                'slug' => 'surat-keterangan-eligible-pin'
+                'slug' => 'surat-keterangan-eligible-pin',
+                'user_type' => 'mahasiswa'
             ],
-            // [
-            //     'name' => 'Surat Usulan Bebas UKT',
-            //     'slug' => 'surat-usulan-bebas-ukt'
-            // ],
+            [
+                'name' => 'Berita Acara Nilai',
+                'slug' => 'berita-acara-nilai',
+                'user_type' => 'staff'
+            ],
+            [
+                'name' => 'Surat Tugas (Individu)',
+                'slug' => 'surat-tugas',
+                'user_type' => 'staff'
+            ],
+            [
+                'name' => 'Surat Tugas (Kelompok)',
+                'slug' => 'surat-tugas-kelompok',
+                'user_type' => 'staff'
+            ],
+            [
+                'name' => 'Surat Keluar',
+                'slug' => 'surat-keluar',
+                'user_type' => 'staff-dekan'
+            ],
+            [
+                'name' => 'Legalisir Ijazah',
+                'slug' => 'legalisir-ijazah',
+                'user_type' => 'mahasiswa'
+            ],
+
         ];
 
         foreach ($daftarJenisSurat as $jenisSurat) {
             JenisSurat::create([
                 'name' => $jenisSurat['name'],
-                'slug' => $jenisSurat['slug']
+                'slug' => $jenisSurat['slug'],
+                'user_type' => $jenisSurat['user_type']
             ]);
         }
     }

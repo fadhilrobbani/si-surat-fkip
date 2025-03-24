@@ -5,19 +5,6 @@ namespace App\Models {
     /**
      * App\Models\Admin
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -33,19 +20,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Admin>|Admin query()
@@ -253,7 +227,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class Admin extends \Illuminate\Database\Eloquent\Model
+    class Admin extends \App\Models\User
     {
         //
     }
@@ -261,19 +235,6 @@ namespace App\Models {
     /**
      * App\Models\User
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -289,19 +250,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<User>|User wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User query()
@@ -509,7 +457,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class User extends \Illuminate\Database\Eloquent\Model
+    class User extends \Illuminate\Foundation\Auth\User
     {
         //
     }
@@ -517,19 +465,6 @@ namespace App\Models {
     /**
      * App\Models\Akademik
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -545,19 +480,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Akademik>|Akademik query()
@@ -765,7 +687,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class Akademik extends \Illuminate\Database\Eloquent\Model
+    class Akademik extends \App\Models\User
     {
         //
     }
@@ -773,22 +695,8 @@ namespace App\Models {
     /**
      * App\Models\Approval
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $note
-     * @property bool $isApproved
-     * @property mixed $surat_id
-     * @property mixed $user_id
-     * @property mixed $id
      * @property-read \App\Models\User $user
      * @property-read \App\Models\Surat $surat
-     * @method static \Illuminate\Database\Eloquent\Builder<Approval>|Approval whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Approval>|Approval whereUserId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Approval>|Approval whereSuratId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Approval>|Approval whereIsapproved($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Approval>|Approval whereNote($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Approval>|Approval whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Approval>|Approval whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Approval>|Approval newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Approval>|Approval newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Approval>|Approval query()
@@ -1004,19 +912,6 @@ namespace App\Models {
     /**
      * App\Models\Dekan
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -1032,19 +927,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Dekan>|Dekan query()
@@ -1252,7 +1134,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class Dekan extends \Illuminate\Database\Eloquent\Model
+    class Dekan extends \App\Models\User
     {
         //
     }
@@ -1260,20 +1142,8 @@ namespace App\Models {
     /**
      * App\Models\JenisSurat
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $user_type
-     * @property mixed $slug
-     * @property mixed $name
-     * @property int $id
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Surat> $surat
      * @property-read int|null $surat_count
-     * @method static \Illuminate\Database\Eloquent\Builder<JenisSurat>|JenisSurat whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<JenisSurat>|JenisSurat whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<JenisSurat>|JenisSurat whereSlug($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<JenisSurat>|JenisSurat whereUserType($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<JenisSurat>|JenisSurat whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<JenisSurat>|JenisSurat whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<JenisSurat>|JenisSurat newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<JenisSurat>|JenisSurat newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<JenisSurat>|JenisSurat query()
@@ -1489,18 +1359,10 @@ namespace App\Models {
     /**
      * App\Models\Jurusan
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $name
-     * @property int $id
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ProgramStudi> $programStudi
      * @property-read int|null $programStudi_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
      * @property-read int|null $users_count
-     * @method static \Illuminate\Database\Eloquent\Builder<Jurusan>|Jurusan whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Jurusan>|Jurusan whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Jurusan>|Jurusan whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Jurusan>|Jurusan whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Jurusan>|Jurusan newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Jurusan>|Jurusan newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Jurusan>|Jurusan query()
@@ -1716,19 +1578,6 @@ namespace App\Models {
     /**
      * App\Models\Kaprodi
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -1744,19 +1593,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Kaprodi>|Kaprodi query()
@@ -1964,7 +1800,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class Kaprodi extends \Illuminate\Database\Eloquent\Model
+    class Kaprodi extends \App\Models\User
     {
         //
     }
@@ -1972,19 +1808,6 @@ namespace App\Models {
     /**
      * App\Models\Mahasiswa
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -2000,19 +1823,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Mahasiswa>|Mahasiswa query()
@@ -2220,7 +2030,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class Mahasiswa extends \Illuminate\Database\Eloquent\Model
+    class Mahasiswa extends \App\Models\User
     {
         //
     }
@@ -2444,19 +2254,6 @@ namespace App\Models {
     /**
      * App\Models\PengirimLegalisir
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -2472,19 +2269,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<PengirimLegalisir>|PengirimLegalisir query()
@@ -2692,7 +2476,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class PengirimLegalisir extends \Illuminate\Database\Eloquent\Model
+    class PengirimLegalisir extends \App\Models\User
     {
         //
     }
@@ -2700,21 +2484,9 @@ namespace App\Models {
     /**
      * App\Models\ProgramStudi
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $kode
-     * @property int $jurusan_id
-     * @property mixed $name
-     * @property int $id
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
      * @property-read int|null $users_count
      * @property-read \App\Models\Jurusan $jurusan
-     * @method static \Illuminate\Database\Eloquent\Builder<ProgramStudi>|ProgramStudi whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<ProgramStudi>|ProgramStudi whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<ProgramStudi>|ProgramStudi whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<ProgramStudi>|ProgramStudi whereKode($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<ProgramStudi>|ProgramStudi whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<ProgramStudi>|ProgramStudi whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<ProgramStudi>|ProgramStudi newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<ProgramStudi>|ProgramStudi newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<ProgramStudi>|ProgramStudi query()
@@ -2930,18 +2702,8 @@ namespace App\Models {
     /**
      * App\Models\Role
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $description
-     * @property mixed $name
-     * @property int $id
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
      * @property-read int|null $users_count
-     * @method static \Illuminate\Database\Eloquent\Builder<Role>|Role whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Role>|Role whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Role>|Role whereDescription($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Role>|Role whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Role>|Role whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Role>|Role newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Role>|Role newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Role>|Role query()
@@ -3157,19 +2919,6 @@ namespace App\Models {
     /**
      * App\Models\Staff
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -3185,19 +2934,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff query()
@@ -3405,7 +3141,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class Staff extends \Illuminate\Database\Eloquent\Model
+    class Staff extends \App\Models\User
     {
         //
     }
@@ -3413,19 +3149,6 @@ namespace App\Models {
     /**
      * App\Models\StaffDekan
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -3441,19 +3164,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<StaffDekan>|StaffDekan query()
@@ -3661,7 +3371,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class StaffDekan extends \Illuminate\Database\Eloquent\Model
+    class StaffDekan extends \App\Models\User
     {
         //
     }
@@ -3669,19 +3379,6 @@ namespace App\Models {
     /**
      * App\Models\StaffNilai
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -3697,19 +3394,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<StaffNilai>|StaffNilai query()
@@ -3917,7 +3601,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class StaffNilai extends \Illuminate\Database\Eloquent\Model
+    class StaffNilai extends \App\Models\User
     {
         //
     }
@@ -3925,19 +3609,6 @@ namespace App\Models {
     /**
      * App\Models\StaffWD1
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -3953,19 +3624,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<StaffWD1>|StaffWD1 query()
@@ -4173,7 +3831,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class StaffWD1 extends \Illuminate\Database\Eloquent\Model
+    class StaffWD1 extends \App\Models\User
     {
         //
     }
@@ -4181,19 +3839,6 @@ namespace App\Models {
     /**
      * App\Models\StaffWD2
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -4209,19 +3854,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<StaffWD2>|StaffWD2 query()
@@ -4429,7 +4061,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class StaffWD2 extends \Illuminate\Database\Eloquent\Model
+    class StaffWD2 extends \App\Models\User
     {
         //
     }
@@ -4437,19 +4069,6 @@ namespace App\Models {
     /**
      * App\Models\StaffWD3
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -4465,19 +4084,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<StaffWD3>|StaffWD3 query()
@@ -4685,7 +4291,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class StaffWD3 extends \Illuminate\Database\Eloquent\Model
+    class StaffWD3 extends \App\Models\User
     {
         //
     }
@@ -4693,16 +4299,6 @@ namespace App\Models {
     /**
      * App\Models\Surat
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property string|null $expired_at
-     * @property array|null $files
-     * @property array|null $data
-     * @property int $jenis_surat_id
-     * @property mixed $status
-     * @property mixed $current_user_id
-     * @property mixed $pengaju_id
-     * @property mixed $id
      * @property-read \App\Models\User $pengaju
      * @property-read \App\Models\User $current_user
      * @property-read \App\Models\User $penerima
@@ -4711,16 +4307,6 @@ namespace App\Models {
      * @property-read int|null $approvals_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Order> $order
      * @property-read int|null $order_count
-     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat wherePengajuId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereCurrentUserId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereStatus($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereJenisSuratId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereData($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereFiles($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereExpiredAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat query()
@@ -4936,19 +4522,6 @@ namespace App\Models {
     /**
      * App\Models\WD
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -4964,19 +4537,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<WD>|WD query()
@@ -5184,7 +4744,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class WD extends \Illuminate\Database\Eloquent\Model
+    class WD extends \App\Models\User
     {
         //
     }
@@ -5192,19 +4752,6 @@ namespace App\Models {
     /**
      * App\Models\WD2
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -5220,19 +4767,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<WD2>|WD2 query()
@@ -5440,7 +4974,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class WD2 extends \Illuminate\Database\Eloquent\Model
+    class WD2 extends \App\Models\User
     {
         //
     }
@@ -5448,19 +4982,6 @@ namespace App\Models {
     /**
      * App\Models\WD3
      *
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $remember_token
-     * @property int|null $jurusan_id
-     * @property int|null $program_studi_id
-     * @property int $role_id
-     * @property mixed $nip
-     * @property string $password
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property mixed $email
-     * @property mixed $name
-     * @property mixed $username
-     * @property string $id
      * @property-read \App\Models\Role $role
      * @property-read \App\Models\ProgramStudi $programStudi
      * @property-read \App\Models\Jurusan $jurusan
@@ -5476,19 +4997,6 @@ namespace App\Models {
      * @property-read int|null $tokens_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 whereUsername($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 whereName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 whereEmail($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 whereEmailVerifiedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 wherePassword($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 whereNip($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 whereRoleId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 whereProgramStudiId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 whereJurusanId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 whereRememberToken($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<WD3>|WD3 query()
@@ -5696,7 +5204,7 @@ namespace App\Models {
      * @method static mixed macroCall($method, $parameters)
      * @mixin \Illuminate\Database\Query\Builder
      */
-    class WD3 extends \Illuminate\Database\Eloquent\Model
+    class WD3 extends \App\Models\User
     {
         //
     }

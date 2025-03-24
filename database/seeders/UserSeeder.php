@@ -590,6 +590,105 @@ class UserSeeder extends Seeder
                 'program_studi_id' => null,
                 'email_verified_at' => now()
             ],
+            [
+                'username' => 'staff_nilai',
+                'name' => 'Staff Nilai',
+                'email' => 'staffnilai@email.com',
+                'password' => bcrypt('password'),
+                'role_id' => 13,
+                'nip' => null,
+                'jurusan_id' => 3,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
+            ],
+            [
+                'username' => 'dekan',
+                'name' => 'Dekan Fkip',
+                'email' => 'dekanfkip@unib.ac.id',
+                'password' => bcrypt('password'),
+                'role_id' => 8,
+                'nip' => '198108202006041008',
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
+            ],
+            [
+                'username' => 'wd2fkip',
+                'name' => 'Wakil Dekan Bidang Keuangan dan Umum',
+                'email' => 'wd2fkip@unib.ac.id',
+                'password' => bcrypt('password'),
+                'role_id' => 9,
+                'nip' => '196608202006041004',
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
+            ],
+            [
+                'username' => 'wd3fkip',
+                'name' => 'Wakil Dekan Bidang Kemahasiswaan',
+                'email' => 'wd3fkip@unib.ac.id',
+                'password' => bcrypt('password'),
+                'role_id' => 10,
+                'nip' => '196608202006041005',
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
+            ],
+            [
+                'username' => 'staff_wd1',
+                'name' => 'Staff WD1',
+                'email' => 'staffwd1@email.com',
+                'password' => bcrypt('password'),
+                'role_id' => 11,
+                'nip' => null,
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
+            ],
+            [
+                'username' => 'staff_wd2',
+                'name' => 'Staff WD2',
+                'email' => 'staffwd2@email.com',
+                'password' => bcrypt('password'),
+                'role_id' => 12,
+                'nip' => null,
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
+            ],
+            [
+                'username' => 'staff_wd3',
+                'name' => 'Staff WD3',
+                'email' => 'staffwd3@email.com',
+                'password' => bcrypt('password'),
+                'role_id' => 13,
+                'nip' => null,
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
+            ],
+            [
+                'username' => 'staff_dekan',
+                'name' => 'Staff Dekan',
+                'email' => 'staffdekan@email.com',
+                'password' => bcrypt('password'),
+                'role_id' => 14,
+                'nip' => null,
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
+            ],
+            [
+                'username' => 'pengirim_legalisir',
+                'name' => 'Pengirim Legalisir',
+                'email' => 'pengirimlegalisir@email.com',
+                'password' => bcrypt('password'),
+                'role_id' => 15,
+                'nip' => null,
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
+            ],
         ];
 
         foreach ($users as $user) {
