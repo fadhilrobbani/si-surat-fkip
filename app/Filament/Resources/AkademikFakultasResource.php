@@ -5,37 +5,38 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
-use App\Models\Akademik;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\AkademikFakultas;
 use Filament\Resources\Resource;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\TernaryFilter;
-use App\Filament\Resources\AkademikResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\AkademikResource\RelationManagers;
+use App\Filament\Resources\AkademikFakultasResource\Pages;
+use App\Filament\Resources\AkademikFakultasResource\RelationManagers;
 
-class AkademikResource extends Resource
+class AkademikFakultasResource extends Resource
 {
-    protected static ?string $model = Akademik::class;
+
+
+
+
+    protected static ?string $model = AkademikFakultas::class;
 
     protected static ?string $recordTitleAttribute = 'name';
-    protected static ?string $modelLabel = 'Akademik Jurusan';
+    protected static ?string $modelLabel = 'Akademik Fakultas';
     protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?string $navigationGroup = 'Manajemen Akun';
-    protected static ?string $slug = 'akun-akademik-jurusan';
-    protected static ?int $navigationSort = 9;
+    protected static ?string $slug = 'akun-akademik-fakultas';
+    protected static ?int $navigationSort = 16;
 
     public static function form(Form $form): Form
     {
@@ -43,7 +44,7 @@ class AkademikResource extends Resource
             ->schema([
                 Section::make([
                     Hidden::make('role_id')
-                        ->default(6),
+                        ->default(16),
 
                     TextInput::make('username')
                         ->placeholder('Username')
@@ -62,9 +63,9 @@ class AkademikResource extends Resource
 
                     // Select::make('program_studi_id')
                     //     ->relationship('programStudi', 'name'),
-                    Select::make('jurusan_id')
-                        ->required()
-                        ->relationship('jurusan', 'name'),
+                    // Select::make('jurusan_id')
+                    //     ->required()
+                    //     ->relationship('jurusan', 'name'),
 
                     TextInput::make('password')->password()
                         ->placeholder('********')
@@ -107,10 +108,10 @@ class AkademikResource extends Resource
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
-                TextColumn::make('jurusan.name')
-                    ->searchable()
-                    ->toggleable()
-                    ->sortable(),
+                // TextColumn::make('jurusan.name')
+                //     ->searchable()
+                //     ->toggleable()
+                //     ->sortable(),
                 // ImageColumn::make('tandatangan')
                 //     ->label('Stempel')
                 //     ->toggleable(),
@@ -123,8 +124,8 @@ class AkademikResource extends Resource
             ->filters([
                 SelectFilter::make('programStudi')
                     ->relationship('programStudi', 'name'),
-                SelectFilter::make('jurusan')
-                    ->relationship('jurusan', 'name'),
+                // SelectFilter::make('jurusan')
+                //     ->relationship('jurusan', 'name'),
                 TernaryFilter::make('email_verified_at')
                     ->nullable(),
                 Filter::make('created_at')
@@ -159,25 +160,18 @@ class AkademikResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAkademiks::route('/'),
-            'create' => Pages\CreateAkademik::route('/create'),
-            // 'edit' => Pages\EditAkademik::route('/{record}/edit'),
+            'index' => Pages\ListAkademikFakultas::route('/'),
+            'create' => Pages\CreateAkademikFakultas::route('/create'),
+            // 'edit' => Pages\EditAkademikFakultas::route('/{record}/edit'),
         ];
     }
 
     public static function getEloquentQuery(): Builder
     {
-        $query = User::where('role_id', 6);
+        $query = User::where('role_id', 16);
 
         return $query;
     }

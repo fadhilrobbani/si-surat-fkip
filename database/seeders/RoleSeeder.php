@@ -30,6 +30,7 @@ class RoleSeeder extends Seeder
             ['name' => 'staff-wd3', 'description' => 'Staff WD3'],
             ['name' => 'staff-dekan', 'description' => 'Staff Dekan'],
             ['name' => 'pengirim-legalisir', 'description' => 'Pengirim Legalisir'],
+            ['name' => 'akademik-fakultas', 'description' => 'Akademik Fakultas'],
         ];
         foreach ($roles as $role) {
             Role::create($role);

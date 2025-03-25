@@ -689,6 +689,17 @@ class UserSeeder extends Seeder
                 'program_studi_id' => null,
                 'email_verified_at' => now()
             ],
+            [
+                'username' => 'akademik_fakultas',
+                'name' => 'Akademik Fakultas',
+                'email' => 'akademikfakultas@email.com',
+                'password' => bcrypt('password'),
+                'role_id' => 16,
+                'nip' => null,
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
+            ]
         ];
 
         foreach ($users as $user) {
