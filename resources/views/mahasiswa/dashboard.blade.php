@@ -22,7 +22,8 @@
         <!-- Pengaduan Section -->
         <div class="sm:w-1/4 flex flex-col items-center rounded bg-gray-50 dark:bg-gray-800 p-4">
             <p class="font-semibold text-center text-slate-600 text-lg mb-2">Layanan Pengaduan FKIP UNIB</p>
-            <p class="text-slate-500 text-center text-sm mb-3">Scan QR code untuk mengakses layanan pengaduan</p>
+            <p class="text-slate-500 text-center text-sm mb-3">Scan QR code untuk mengakses layanan <a
+                    href="https://qr.me-qr.com/iMId1oUh" class="text-indigo-500" target="_blank">disini</a></p>
             <div class="w-32 sm:w-40 aspect-square">
                 <img class="w-full h-full object-contain" src="{{ asset('images/qrfkip.jpeg') }}"
                     alt="QR Code Pengaduan FKIP UNIB">
