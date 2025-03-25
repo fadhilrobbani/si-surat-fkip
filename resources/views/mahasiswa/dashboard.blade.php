@@ -5,16 +5,32 @@
     <x-slot:title>
         Mahasiswa | Dashboard
     </x-slot:title>
-    <div
-        class="flex sm:flex-row flex-col-reverse items-center justify-evenly min-h-fit  p-4 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-        <div>
-            <p class="font-bold text-2xl text-indigo-400">Selamat Datang {{ $authUser->name }}!</p>
-            <br>
-            <p class="text-slate-500 font-semibold">Website ini merupakan terobosan baru dari Fakultas Keguruan dan Ilmu
-                Pendidikan dalam mempermudah administrasi surat menyurat di lingkungan FKIP Universitas Bengkulu</p>
+    {{-- START copy bagian ini ke bawah dan paste ke dashboard lain jika ingin menambah qr code nya --}}
+    <div class="flex sm:flex-row flex-col gap-4 min-h-fit mb-4">
+        <!-- Welcome Banner Section -->
+        <div class="flex-grow sm:w-3/4 flex items-center justify-between rounded bg-gray-50 dark:bg-gray-800 p-4">
+            <div class="flex-grow pr-4">
+                <p class="font-bold text-2xl text-indigo-400">Selamat Datang {{ $authUser->name }}!</p>
+                <br>
+                <p class="text-slate-500 font-semibold">Website ini merupakan terobosan baru dari Fakultas Keguruan dan
+                    Ilmu Pendidikan dalam mempermudah administrasi surat menyurat di lingkungan FKIP Universitas
+                    Bengkulu</p>
+            </div>
+            <img class="h-48 hidden sm:block" src="{{ asset('images/man-laptop.png') }}" alt="">
         </div>
-        <img class="h-48 m-2 p-2" src="{{ asset('images/man-laptop.png') }}" alt="">
+
+        <!-- Pengaduan Section -->
+        <div class="sm:w-1/4 flex flex-col items-center rounded bg-gray-50 dark:bg-gray-800 p-4">
+            <p class="font-semibold text-center text-slate-600 text-lg mb-2">Layanan Pengaduan FKIP UNIB</p>
+            <p class="text-slate-500 text-center text-sm mb-3">Scan QR code untuk mengakses layanan pengaduan</p>
+            <div class="w-32 sm:w-40 aspect-square">
+                <img class="w-full h-full object-contain" src="{{ asset('images/qrfkip.jpeg') }}"
+                    alt="QR Code Pengaduan FKIP UNIB">
+            </div>
+        </div>
     </div>
+    {{-- END copy bagian ini ke atas dan paste ke dashboard lain jika ingin menambah qr code nya --}}
+
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
         <a href="/mahasiswa/riwayat-pengajuan-surat">
             <div
@@ -35,7 +51,7 @@
 
         <a href="/mahasiswa/profile">
             <div
-                class="flex hover:bg-slate-300 items-center justify-center gap-4 rounded bg-gray-50 dark:bg-gray-800 h-full">
+                class="flex hover:bg-slate-300 p-4 items-center justify-center gap-4 rounded bg-gray-50 dark:bg-gray-800 h-full">
                 <p class="font-semibold text-slate-600 text-lg cursor-pointer text-center">Pengaturan Akun</p>
                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" viewBox="0 0 20 18" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
@@ -51,30 +67,6 @@
             </div>
         </a>
     </div>
-
-    {{-- <div class="grid grid-cols-3 gap-4 mb-4">
-        <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-            <p class="font-semibold">Pengajuan Surat</p>
-        </div>
-        <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 1v16M1 9h16" />
-                </svg>
-            </p>
-        </div>
-        <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 1v16M1 9h16" />
-                </svg>
-            </p>
-        </div>
-    </div> --}}
 
 
     <div class="flex items-center justify-center flex-col gap-4 p-4 mb-4 rounded bg-gray-50 dark:bg-gray-800">
@@ -265,42 +257,4 @@
 
 
     </div>
-    {{-- <div class="grid grid-cols-2 gap-4">
-        <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 1v16M1 9h16" />
-                </svg>
-            </p>
-        </div>
-        <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 1v16M1 9h16" />
-                </svg>
-            </p>
-        </div>
-        <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 1v16M1 9h16" />
-                </svg>
-            </p>
-        </div>
-        <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-            <p class="text-2xl text-gray-400 dark:text-gray-500">
-                <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 1v16M1 9h16" />
-                </svg>
-            </p>
-        </div>
-    </div> --}}
 </x-layout>
