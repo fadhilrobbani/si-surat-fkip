@@ -32,6 +32,7 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\JenisSuratController;
 use App\Http\Controllers\StaffDekanController;
 use App\Http\Controllers\StaffNilaiController;
+use App\Http\Controllers\AkademikFakultasController;
 use App\Http\Controllers\PengirimLegalisirController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -264,6 +265,25 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile/update/{user}', [AkademikController::class, 'updateProfile'])->name('update-profile-akademik');
         Route::get('/profile/reset-password', [AkademikController::class, 'resetPasswordPage']);
         Route::put('/profile/reset-password/{user}', [AkademikController::class, 'resetPassword'])->name('reset-password-akademik');
+    });
+    Route::prefix('akademik-fakultas')->middleware(['userAccess:16'])->group(function () {
+        // Route::middleware('verified')->group(function () {
+        Route::get('/surat-masuk', [AkademikFakultasController::class, 'suratMasuk']);
+        Route::get('/riwayat-persetujuan', [AkademikFakultasController::class, 'riwayatPersetujuan']);
+        Route::get('/riwayat-persetujuan/show/{approval}', [AkademikFakultasController::class, 'showApproval'])->name('show-approval-akademik-fakultas');
+        Route::get('/surat-masuk/show/{surat}', [AkademikFakultasController::class, 'showSuratMasuk'])->name('show-surat-akademik-fakultas');
+        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->name('preview-surat-akademik-fakultas');
+        Route::put('/surat-disetujui/{surat}', [AkademikFakultasController::class, 'setujuiSurat'])->name('setujui-surat-akademik-fakultas');
+        Route::get('/surat-ditolak/{surat}', [AkademikFakultasController::class, 'confirmTolakSurat'])->name('confirm-tolak-surat-akademik-fakultas');
+        Route::put('/surat-ditolak/{surat}', [AkademikFakultasController::class, 'tolakSurat'])->name('tolak-surat-akademik-fakultas');
+        Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-akademik-fakultas');
+        Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-akademik-fakultas');
+        // });
+        Route::get('/', [AkademikFakultasController::class, 'dashboard']);
+        Route::get('/profile', [AkademikFakultasController::class, 'profilePage']);
+        Route::put('/profile/update/{user}', [AkademikFakultasController::class, 'updateProfile'])->name('update-profile-akademik-fakultas');
+        Route::get('/profile/reset-password', [AkademikFakultasController::class, 'resetPasswordPage']);
+        Route::put('/profile/reset-password/{user}', [AkademikFakultasController::class, 'resetPassword'])->name('reset-password-akademik-fakultas');
     });
 
     Route::prefix('staff-nilai')->middleware(['userAccess:7'])->group(function () {
