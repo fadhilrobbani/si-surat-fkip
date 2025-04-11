@@ -307,10 +307,10 @@
 
                 <div>
                     <label for="alamat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat
-                        Lengkap <span class="text-red-500">*</span></label></label>
+                        Lengkap  <span class="text-red-500">*</span></label></label>
                     <input type="text" id="alamat" name="alamat"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Masukkan Alamat Lengkap" value="{{ old('alamat') }}" required>
+                        placeholder="Jl. Contoh no.123 RT.01 RW.01" value="{{ old('alamat') }}" required>
                 </div>
 
                 <div>
@@ -319,7 +319,7 @@
                         <span class="text-red-500">*</span></label></label>
                     <input type="number" id="kode-pos" name="kode-pos"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Masukkan Kode Pos" value="{{ old('kode-pos') }}" required maxlength="5"
+                        placeholder="Masukkan Kode Pos (5 digit)" value="{{ old('kode-pos') }}" required maxlength="5"
                         minlength="5" pattern="[0-9]{5}" title="Masukkan 5 digit kode pos">
                 </div>
 
