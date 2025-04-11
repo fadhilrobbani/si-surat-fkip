@@ -291,7 +291,7 @@
         <select id="pengiriman" name="pengiriman"
             class="bg-gray-50 border mb-4 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             onchange="toggleShippingInputs()">
-            <option value="dikirim">Dikirim via COD (JNE)</option>
+            <option value="dikirim">Dikirim via COD (J&T)</option>
             <option value="ambil">Ambil di Tempat (Akademik FKIP UNIB)</option>
         </select>
         <div id="shippingInputs" class="bg-slate-50 p-4 rounded-lg shadow-lg">
@@ -365,7 +365,7 @@
                     class="fixed inset-0 flex items-center justify-center hidden mt-8 mx-2 p-4">
                     <div
                         class="bg-white dark:bg-gray-800 p-6 px-10 rounded-lg shadow-lg w-96 max-h-[90vh] overflow-y-auto relative">
-                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Informasi Cek Ongkir JNE</h2>
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Informasi Cek Ongkir J&T</h2>
                         <ol class="list-decimal list-outside pl-5 space-y-2 max-h-[65vh] overflow-y-auto">
                             <li class="pl-2">
                                 <p class="text-sm text-gray-700 dark:text-gray-300">Anda dapat mengecek ongkos kirim
@@ -422,8 +422,8 @@
                 <!-- Modal -->
                 <div id="infoModalHelpOngkirURL" class="fixed inset-0 flex items-center justify-center hidden mx-2 ">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96 relative">
-                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Informasi Cek Ongkir JNE</h2>
-                        <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Masukkan URL Cek Ongkir JNE yang
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Informasi Cek Ongkir J&T</h2>
+                        <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Masukkan URL Cek Ongkir J&T yang
                             menunjukkan informasi ongkir berdasarkan Kota Tujuan Anda, Contoh format URL: <br> <a
                                 href="https://jne.co.id/shipping-fee?origin=BKS10000&destination=CGK10000&weight=1"
                                 target="_blank"

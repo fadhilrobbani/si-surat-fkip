@@ -10,7 +10,7 @@ disetujui dan kini sedang dalam pengiriman. Kini Anda dapat mengecek statusnya d
 UNIB di bagian riwayat pengajuan
 surat. Adapun informasi pengiriman legalisir ijazah UNIB Anda adalah sebagai berikut:
 
-{!! 'Ekspedisi: JNE' !!}
+{!! 'Ekspedisi: J&T' !!}
 {!! '<br>Nomor Resi: ' !!} {{ $surat->data['noResi'] }}
 
 Terima kasih atas perhatiannya.

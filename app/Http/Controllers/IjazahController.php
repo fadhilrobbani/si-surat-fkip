@@ -60,7 +60,7 @@ class IjazahController extends Controller
             $surat->jenis_surat_id = $jenisSurat->id;
             $surat->expired_at = now()->addDays(3);
             $surat->data = [
-                'metodePengiriman' => "Dikirim via COD (JNE)",
+                'metodePengiriman' => "Dikirim via COD (J&T)",
                 'pengiriman' => $request->input('pengiriman'),
                 'nama' => $request->input('name'),
                 'npm' => $request->input('username'),

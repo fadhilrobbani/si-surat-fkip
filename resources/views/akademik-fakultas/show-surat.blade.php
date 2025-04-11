@@ -224,7 +224,7 @@
                                 <div class="w-full max-w-[400px]">
                                     <label for="no-resi"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                        Nomor Resi JNE <span class="text-red-600">*</span>
+                                        Nomor Resi J&T <span class="text-red-600">*</span>
                                     </label>
                                     <p class="mb-2 text-xs text-gray-500 dark:text-gray-400">(Isi dengan angka 0 jika
                                         mahasiswa memilih mengambil di tempat)</p>

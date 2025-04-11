@@ -200,7 +200,7 @@
                                         // Handle ketika $path kosong atau file tidak ditemukan
                                         $mimeType = '/file-tidak-ditemukan';
                                     }
-                                    
+
                                     $extension = explode('.', basename($value))[1];
                                     $url = URL::signedRoute('show-file', [
                                         'user' => $authUser->id,
@@ -287,7 +287,7 @@
         <div class="flex flex-col gap-4 mt-10 items-center justify-center">
             <div class="w-full max-w-[400px]">
                 <label for="no-resi" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Nomor Resi JNE <span class="text-red-600">*</span>
+                    Nomor Resi J&T <span class="text-red-600">*</span>
                 </label>
 
                 <input type="text" id="no-resi" name="no-resi" value="{{ old('no-resi') }}"

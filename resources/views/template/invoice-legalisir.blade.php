@@ -121,7 +121,7 @@
             @if ($surat->data['pengiriman'] == 'dikirim')
                 <tr>
                     <td>Ongkos Kirim</td>
-                    <td>{{ isset($surat->data['ongkir']) ? $surat->data['ongkir'] : 'Bisa cek di invoice / data resmi dari JNE' }}
+                    <td>{{ isset($surat->data['ongkir']) ? $surat->data['ongkir'] : 'Bisa cek di invoice / data resmi dari J&T' }}
                     </td>
                     {{-- <td>Rp {{ number_format($surat->data['ongkir'], 0, ',', '.') }}</td> --}}
                     <td>Pembayaran metode COD </td>
