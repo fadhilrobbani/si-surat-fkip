@@ -175,7 +175,7 @@
                                         // Handle ketika $path kosong atau file tidak ditemukan
                                         $mimeType = '/file-tidak-ditemukan';
                                     }
-                                    
+
                                     $extension = explode('.', basename($value))[1];
                                     $url = URL::signedRoute('show-file', [
                                         'user' => $authUser->id,
@@ -203,7 +203,7 @@
 
                 @if ($surat->expired_at > \Carbon\Carbon::now())
                     <form id="konfirmasi-pembayaran"
-                        action="{{ route('konfirmasi-pembayaran-legalisir-ijazah', $surat->id) }}" method="POST"
+                        action="{{ route('konfirmasi-pembayaran-legalisir', $surat->id) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')

@@ -102,14 +102,17 @@ class MahasiswaController extends Controller
         ]);
     }
 
-    public function pengajuanLegalisirIjazah()
+    public function pengajuanLegalisir()
     {
-        return view('mahasiswa.pengajuan-legalisir-ijazah', [
-            'jenisSurat' => JenisSurat::where('user_type', 'mahasiswa')->where('slug', 'legalisir-ijazah')->first(),
-            'daftarProgramStudi' => ProgramStudi::all(),
-            'daftarPenerima' => User::select('id', 'name', 'username')
-                ->where('role_id', '=', 16)
-                ->get()
+        return view('mahasiswa.pengajuan-legalisir', [
+            'daftarJenisSurat' => JenisSurat::where('user_type', 'mahasiswa')
+                ->where(function ($query) {
+                    $query->where('slug', '=', 'legalisir-ijazah')
+                        ->orWhere('slug', '=', 'legalisir-transkrip')
+                        ->orWhere('slug', '=', 'legalisir-ijazah-transkrip');
+                })
+                ->get(),
+
         ]);
     }
 
@@ -212,7 +215,7 @@ class MahasiswaController extends Controller
 
     public function lihatSurat(Surat $surat)
     {
-        if ($surat->jenisSurat->slug == 'legalisir-ijazah' && $surat->status == 'menunggu_pembayaran' && $surat->data['pengiriman'] == 'dikirim') {
+        if (($surat->jenisSurat->slug == 'legalisir-ijazah' || $surat->jenisSurat->slug == 'legalisir-transkrip')&& $surat->status == 'menunggu_pembayaran' && $surat->data['pengiriman'] == 'dikirim') {
             return view('mahasiswa.show-order', [
                 'surat' => $surat,
                 'jenisSurat' => JenisSurat::where('user_type', 'mahasiswa')->where('slug', 'legalisir-ijazah')->first(),
@@ -224,7 +227,7 @@ class MahasiswaController extends Controller
             ]);
         }
 
-        if ($surat->jenisSurat->slug == 'legalisir-ijazah' && $surat->status == 'menunggu_pembayaran' && $surat->data['pengiriman'] == 'ambil') {
+        if (($surat->jenisSurat->slug == 'legalisir-ijazah' || $surat->jenisSurat->slug == 'legalisir-transkrip') && $surat->status == 'menunggu_pembayaran' && $surat->data['pengiriman'] == 'ambil') {
             return view('mahasiswa.show-order-diambil', [
                 'surat' => $surat,
                 'jenisSurat' => JenisSurat::where('user_type', 'mahasiswa')->where('slug', 'legalisir-ijazah')->first(),
@@ -237,13 +240,13 @@ class MahasiswaController extends Controller
         }
 
 
-        if ($surat->jenisSurat->slug == 'legalisir-ijazah' && $surat->data['pengiriman'] == 'dikirim') {
+        if (($surat->jenisSurat->slug == 'legalisir-ijazah' || $surat->jenisSurat->slug == 'legalisir-transkrip') && $surat->data['pengiriman'] == 'dikirim') {
             return view('mahasiswa.show-legalisir', [
                 'surat' => $surat
             ]);
         }
 
-        if ($surat->jenisSurat->slug == 'legalisir-ijazah' && $surat->data['pengiriman'] == 'ambil') {
+        if (($surat->jenisSurat->slug == 'legalisir-ijazah' || $surat->jenisSurat->slug == 'legalisir-transkrip') && $surat->data['pengiriman'] == 'ambil') {
             return view('mahasiswa.show-legalisir-diambil', [
                 'surat' => $surat
             ]);

@@ -56,7 +56,7 @@
 <body>
     <div class="invoice-container">
         <div class="header">
-            <h2>Invoice Legalisir Ijazah</h2>
+            <h2>Invoice Legalisir</h2>
             <p>Fakultas Keguruan dan Ilmu Pendidikan - Universitas Bengkulu</p>
         </div>
 
@@ -113,8 +113,8 @@
                 <th>Keterangan</th>
             </tr>
             <tr>
-                <td>Legalisir Ijazah ({{ $surat->data['jumlahLembar'] }} lembar)</td>
-                <td>{{ $surat->data['jumlahLembar'] }}</td>
+                <td>{{ $surat->jenisSurat->name }} </td>
+                <td>{{ $surat->data['jumlahLembar'] }} lembar</td>
                 <td>-</td>
             </tr>
 

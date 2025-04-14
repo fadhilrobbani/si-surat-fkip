@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\IjazahController;
+use App\Http\Controllers\LegalisirController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/hitung-harga', [IjazahController::class, 'hitungHarga']);
+Route::post('/hitung-harga', [LegalisirController::class, 'hitungHarga']);

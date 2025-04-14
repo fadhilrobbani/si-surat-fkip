@@ -171,9 +171,9 @@
                             'link' => '/mahasiswa/pengajuan-surat',
                         ],
                         [
-                            'title' => 'Legalisir Ijazah',
+                            'title' => 'Legalisir',
                             'icon' => asset('svg/letterpencil.svg'),
-                            'link' => '/mahasiswa/pengajuan-legalisir-ijazah',
+                            'link' => '/mahasiswa/pengajuan-legalisir',
                         ],
                     ],
                 ],

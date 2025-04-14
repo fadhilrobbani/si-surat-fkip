@@ -250,7 +250,7 @@
                     <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
                         Apakah Anda yakin bahwa paket anda telah tiba dan ingin mengubah status dikirim menjadi selesai?
                     </p>
-                    <form action="{{ route('konfirmasi-selesai-legalisir-ijazah', $surat->id) }}" method="POST"
+                    <form action="{{ route('konfirmasi-selesai-legalisir', $surat->id) }}" method="POST"
                         class="mt-4 flex justify-end">
                         @csrf
                         @method('PUT')

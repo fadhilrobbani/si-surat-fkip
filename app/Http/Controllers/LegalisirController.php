@@ -1,9 +1,11 @@
 <?php
-// This class has name IjazahController, however ijazah object itself is based from Surat class
+// This class has name LegalisirController, however ijazah object itself is based from Surat class
 // So for naming convention we used surat instead of ijazah
 namespace App\Http\Controllers;
 
 use App\Mail\OrderPembayaran;
+use App\Models\User;
+
 use Illuminate\Support\Facades\Mail;
 
 use Exception;
@@ -15,7 +17,7 @@ use App\Models\Order;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 
-class IjazahController extends Controller
+class LegalisirController extends Controller
 {
 
 
@@ -23,12 +25,32 @@ class IjazahController extends Controller
      * Store a newly created resource in storage.
      */
 
+    public function create(JenisSurat $jenisSurat)
+    {
+        if ($jenisSurat->slug == 'legalisir-ijazah') {
+            return view('mahasiswa.formlegalisir.form-legalisir-ijazah', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+            ]);
+        }
+
+        if ($jenisSurat->slug == 'legalisir-transkrip') {
+            return view('mahasiswa.formlegalisir.form-legalisir-transkrip', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+            ]);
+        }
+
+        return abort(404);
+    }
+
+
     public function store(Request $request, JenisSurat $jenisSurat)
     {
 
 
 
-        if ($jenisSurat->slug == 'legalisir-ijazah' && $request->input('pengiriman') == 'dikirim') {
+        if (($jenisSurat->slug == 'legalisir-ijazah' && $request->input('pengiriman') == 'dikirim') || ($jenisSurat->slug == 'legalisir-transkrip' && $request->input('pengiriman') == 'dikirim')) {
 
             $request->validate([
                 'name' => 'required',
@@ -130,7 +152,7 @@ class IjazahController extends Controller
             return redirect()->route('lihat-surat-mahasiswa', $surat->id)->with('success', 'Silahkan cek kembali data Anda, lalu konfirmasi pengajuan jika sudah sesuai');
         }
 
-        if ($jenisSurat->slug == 'legalisir-ijazah' && $request->input('pengiriman') == 'ambil') {
+        if (($jenisSurat->slug == 'legalisir-ijazah' && $request->input('pengiriman') == 'ambil') || ($jenisSurat->slug == 'legalisir-transkrip' && $request->input('pengiriman') == 'ambil')) {
             $request->validate([
                 'name' => 'required',
                 'username' => 'required',
