@@ -41,6 +41,13 @@ class LegalisirController extends Controller
             ]);
         }
 
+        if ($jenisSurat->slug == 'legalisir-ijazah-transkrip') {
+            return view('mahasiswa.formlegalisir.form-legalisir-ijazah-transkrip', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+            ]);
+        }
+
         return abort(404);
     }
 
@@ -203,6 +210,208 @@ class LegalisirController extends Controller
                 $data = [
                     'private' => [
                         'stepper' => [auth()->user()->role->id]
+                    ]
+                ];
+            }
+            $surat->files = [
+                'ijazah' => $request->file('ijazah')->store('lampiran'),
+                'ktp' => $request->file('ktp')->store('lampiran'),
+                'tracer-study' => $request->file('tracer-study')->store('lampiran')
+            ];
+
+
+            if (
+
+                Surat::where('jenis_surat_id', $jenisSurat->id)
+                ->where('pengaju_id', auth()->user()->id)
+                ->where(function ($query) {
+                    $query->where(function ($query) {
+                        $query->where('status', 'diproses')
+                            ->where('expired_at', '>', Carbon::now());
+                    })
+                        ->orWhere('status', 'dikirim')
+                        ->orWhere(function ($query) {
+                            $query->where('status', 'menunggu_pembayaran')
+                                ->where('expired_at', '>', Carbon::now());
+                        });
+                })
+                ->where('created_at', '>=', now()->subDays(63))
+                ->count() > 0
+
+            ) {
+                return redirect()->back()->with('deleted', 'Anda masih memiliki pengajuan legalisir yang sedang diproses atau dikirim. Silahkan tunggu hingga selesai/ditolak, atau batalkan pengajuan sebelumnya.');
+            }
+            $surat->data = $data;
+            $surat->save();
+            // Mail::to($surat->pengaju->email)->send(new OrderPembayaran($surat));
+            return redirect()->route('lihat-surat-mahasiswa', $surat->id)->with('success', 'Silahkan cek kembali data Anda, lalu konfirmasi pengajuan jika sudah sesuai');
+        }
+
+        if (($jenisSurat->slug == 'legalisir-ijazah-transkrip' && $request->input('pengiriman') == 'ambil')) {
+            $request->validate([
+                'name' => 'required',
+                'username' => 'required',
+                'program-studi' => 'required',
+                'email' => 'required|email',
+                'kontak' => 'required|numeric|digits_between:10,15',
+                'ijazah' => 'required|file|mimes:pdf|max:2048',
+                'ktp' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+                'tracer-study' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+                'jumlah-lembar-ijazah' => 'required|integer|min:1|max:10',
+                'jumlah-lembar-transkrip' => 'required|integer|min:1|max:10'
+            ]);
+
+
+            $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
+
+            $surat = new Surat;
+            $surat->pengaju_id = auth()->user()->id;
+            $surat->current_user_id = auth()->user()->id;
+            // $surat->current_user_id = $request->input('penerima');
+            $surat->status = 'menunggu_pembayaran';
+            $surat->jenis_surat_id = $jenisSurat->id;
+            $surat->expired_at = now()->addDays(3);
+            $surat->data = [
+                'metodePengiriman' => "Ambil di tempat (Akademik FKIP UNIB)",
+                'pengiriman' => $request->input('pengiriman'),
+                'nama' => $request->input('name'),
+                'npm' => $request->input('username'),
+                'programStudi' => $programStudi->name,
+                'kontak' => $request->input('kontak'),
+                'email' => $request->input('email'),
+                'jumlahLembar' => $request->input('jumlah-lembar-ijazah') . ' ijazah dan ' . $request->input('jumlah-lembar-transkrip') . ' transkrip',
+                'catatanUntukAkademik' => $request->input('catatan-mahasiswa')
+            ];
+
+            $data = $surat->data;
+
+            if ($data) {
+                if (isset($data['private'])) {
+
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                    $data['private']['jumlahLembarIjazah'] = $request->input('jumlah-lembar-ijazah');
+                    $data['private']['jumlahLembarTranskrip'] = $request->input('jumlah-lembar-transkrip');
+                } else {
+                    $data['private'] = [
+                        'stepper' => [auth()->user()->role->id],
+                        'jumlahLembarIjazah' => $request->input('jumlah-lembar-ijazah'),
+                        'jumlahLembarTranskrip' => $request->input('jumlah-lembar-transkrip')
+
+                    ];
+                }
+            } else {
+                $data = [
+                    'private' => [
+                        'stepper' => [auth()->user()->role->id],
+                        'jumlahLembarIjazah' => $request->input('jumlah-lembar-ijazah'),
+                        'jumlahLembarTranskrip' => $request->input('jumlah-lembar-transkrip')
+                    ]
+                ];
+            }
+            $surat->files = [
+                'ijazah' => $request->file('ijazah')->store('lampiran'),
+                'ktp' => $request->file('ktp')->store('lampiran'),
+                'tracer-study' => $request->file('tracer-study')->store('lampiran')
+            ];
+
+
+            if (
+
+                Surat::where('jenis_surat_id', $jenisSurat->id)
+                ->where('pengaju_id', auth()->user()->id)
+                ->where(function ($query) {
+                    $query->where(function ($query) {
+                        $query->where('status', 'diproses')
+                            ->where('expired_at', '>', Carbon::now());
+                    })
+                        ->orWhere('status', 'dikirim')
+                        ->orWhere(function ($query) {
+                            $query->where('status', 'menunggu_pembayaran')
+                                ->where('expired_at', '>', Carbon::now());
+                        });
+                })
+                ->where('created_at', '>=', now()->subDays(63))
+                ->count() > 0
+
+            ) {
+                return redirect()->back()->with('deleted', 'Anda masih memiliki pengajuan legalisir yang sedang diproses atau dikirim. Silahkan tunggu hingga selesai/ditolak, atau batalkan pengajuan sebelumnya.');
+            }
+            $surat->data = $data;
+            $surat->save();
+            // Mail::to($surat->pengaju->email)->send(new OrderPembayaran($surat));
+            return redirect()->route('lihat-surat-mahasiswa', $surat->id)->with('success', 'Silahkan cek kembali data Anda, lalu konfirmasi pengajuan jika sudah sesuai');
+        }
+
+        if (($jenisSurat->slug == 'legalisir-ijazah-transkrip' && $request->input('pengiriman') == 'dikirim')) {
+            $request->validate([
+                'name' => 'required',
+                'username' => 'required',
+                'program-studi' => 'required',
+                'email' => 'required|email',
+                'ijazah' => 'required|file|mimes:pdf|max:2048',
+                'ktp' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+                'tracer-study' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+                'jumlah-lembar-ijazah' => 'required|integer|min:1|max:10',
+                'jumlah-lembar-transkrip' => 'required|integer|min:1|max:10',
+                'kontak' => 'required|numeric|digits_between:10,15',
+                'alamat' => 'required',
+                'kode-pos' => 'required|integer|digits:5',
+                'provinsi' => 'required',
+                'kota' => 'required',
+                'kecamatan' => 'required',
+                'kelurahan' => 'required',
+            ]);
+
+
+            $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
+
+            $surat = new Surat;
+            $surat->pengaju_id = auth()->user()->id;
+            $surat->current_user_id = auth()->user()->id;
+            // $surat->current_user_id = $request->input('penerima');
+            $surat->status = 'menunggu_pembayaran';
+            $surat->jenis_surat_id = $jenisSurat->id;
+            $surat->expired_at = now()->addDays(3);
+            $surat->data = [
+                'metodePengiriman' => "Dikirim via COD (J&T)",
+                'pengiriman' => $request->input('pengiriman'),
+                'nama' => $request->input('name'),
+                'npm' => $request->input('username'),
+                'programStudi' => $programStudi->name,
+                'email' => $request->input('email'),
+                'kontak' => $request->input('kontak'),
+                'jumlahLembar' => $request->input('jumlah-lembar-ijazah') . ' ijazah dan ' . $request->input('jumlah-lembar-transkrip') . ' transkrip',
+                'alamat' => $request->input('alamat'),
+                'kodePos' => $request->input('kode-pos'),
+                'provinsi' => $request->input('provinsi'),
+                'kota' => $request->input('kota'),
+                'kecamatan' => $request->input('kecamatan'),
+                'kelurahan' => $request->input('kelurahan'),
+                'catatanUntukAkademik' => $request->input('catatan-mahasiswa')
+            ];
+
+            $data = $surat->data;
+
+            if ($data) {
+                if (isset($data['private'])) {
+
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                    $data['private']['jumlahLembarIjazah'] = $request->input('jumlah-lembar-ijazah');
+                    $data['private']['jumlahLembarTranskrip'] = $request->input('jumlah-lembar-transkrip');
+                } else {
+                    $data['private'] = [
+                        'stepper' => [auth()->user()->role->id],
+                        'jumlahLembarIjazah' => $request->input('jumlah-lembar-ijazah'),
+                        'jumlahLembarTranskrip' => $request->input('jumlah-lembar-transkrip')
+
+                    ];
+                }
+            } else {
+                $data = [
+                    'private' => [
+                        'stepper' => [auth()->user()->role->id],
+                        'jumlahLembarIjazah' => $request->input('jumlah-lembar-ijazah'),
+                        'jumlahLembarTranskrip' => $request->input('jumlah-lembar-transkrip')
                     ]
                 ];
             }

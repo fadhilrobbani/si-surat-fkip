@@ -122,7 +122,7 @@
                     </tr>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         <td class="font-semibold px-6 py-4 bg-gray-50 dark:bg-gray-800">Jumlah Lembar:</td>
-                        <td class="px-6 py-4">{{ $surat->data['jumlahLembar'] }} lembar</td>
+                        <td class="px-6 py-4">{{ $surat->data['jumlahLembar'] }} </td>
                     </tr>
 
                     <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -202,7 +202,7 @@
                                         // Handle ketika $path kosong atau file tidak ditemukan
                                         $mimeType = '/file-tidak-ditemukan';
                                     }
-
+                                    
                                     $extension = explode('.', basename($value))[1];
                                     $url = URL::signedRoute('show-file', [
                                         'user' => $authUser->id,

@@ -240,7 +240,7 @@ class AkademikFakultasController extends Controller
     public function showSuratMasuk(Surat $surat)
     {
 
-        if (($surat->jenisSurat->slug == 'legalisir-ijazah' || $surat->jenisSurat->slug == 'legalisir-transkrip') && $surat->data['pengiriman'] == 'dikirim') {
+        if (($surat->jenisSurat->slug == 'legalisir-ijazah' || $surat->jenisSurat->slug == 'legalisir-transkrip' || $surat->jenisSurat->slug = 'legalisir-ijazah-transkrip') && $surat->data['pengiriman'] == 'dikirim') {
 
             return view('akademik-fakultas.show-legalisir', [
                 'surat' => $surat,
@@ -250,7 +250,7 @@ class AkademikFakultasController extends Controller
             ]);
         }
 
-        if (($surat->jenisSurat->slug == 'legalisir-ijazah' || $surat->jenisSurat->slug == 'legalisir-transkrip') && $surat->data['pengiriman'] == 'ambil') {
+        if (($surat->jenisSurat->slug == 'legalisir-ijazah' || $surat->jenisSurat->slug == 'legalisir-transkrip' || $surat->jenisSurat->slug = 'legalisir-ijazah-transkrip') && $surat->data['pengiriman'] == 'ambil') {
 
             return view('akademik-fakultas.show-legalisir-diambil', [
                 'surat' => $surat,
@@ -275,7 +275,7 @@ class AkademikFakultasController extends Controller
 
     public function setujuiSurat(Request $request, Surat $surat)
     {
-        if (($surat->jenisSurat->slug === 'legalisir-ijazah' || $surat->jenisSurat->slug === 'legalisir-transkrip') && $surat->data['pengiriman'] == 'dikirim') {
+        if (($surat->jenisSurat->slug === 'legalisir-ijazah' || $surat->jenisSurat->slug === 'legalisir-transkrip' || $surat->jenisSurat->slug = 'legalisir-ijazah-transkrip') && $surat->data['pengiriman'] == 'dikirim') {
 
             // if (!auth()->user()->tandatangan) {
             //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
@@ -303,25 +303,7 @@ class AkademikFakultasController extends Controller
             $data['noResi'] = $request->input('no-resi');
             $data['tanggalPengiriman'] =  formatTimestampToDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
             $data['note'] = $request->input('note');
-            if ($data) {
-                if (isset($data['private'])) {
 
-                    $data['private']['stepper'][] = auth()->user()->role->id;
-                    // yang dibawah ini fokus menambah status dikirim
-                    // $data['private']['stepper'][] = $surat->pengaju_id;
-                } else {
-                    $data['private'] = [
-                        'stepper' => [auth()->user()->role->id]
-
-                    ];
-                }
-            } else {
-                $data = [
-                    'private' => [
-                        'stepper' => [auth()->user()->role->id]
-                    ]
-                ];
-            }
             $surat->data = $data;
 
 
@@ -348,7 +330,7 @@ class AkademikFakultasController extends Controller
             return redirect('/akademik-fakultas/surat-masuk')->with('success', 'Surat berhasil disetujui');
         }
 
-        if (($surat->jenisSurat->slug === 'legalisir-ijazah' || $surat->jenisSurat->slug === 'legalisir-transkrip') && $surat->data['pengiriman'] == 'ambil') {
+        if (($surat->jenisSurat->slug === 'legalisir-ijazah' || $surat->jenisSurat->slug === 'legalisir-transkrip' || $surat->jenisSurat->slug = 'legalisir-ijazah-transkrip') && $surat->data['pengiriman'] == 'ambil') {
 
             // if (!auth()->user()->tandatangan) {
             //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
@@ -368,25 +350,7 @@ class AkademikFakultasController extends Controller
             // $data['stempel'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg';
             $data['note'] = $request->input('note');
             $data['tanggalSelesai'] = formatTimestampToDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
-            if ($data) {
-                if (isset($data['private'])) {
 
-                    $data['private']['stepper'][] = auth()->user()->role->id;
-                    // yang dibawah ini fokus menambah status dikirim
-                    // $data['private']['stepper'][] = $surat->pengaju_id;
-                } else {
-                    $data['private'] = [
-                        'stepper' => [auth()->user()->role->id]
-
-                    ];
-                }
-            } else {
-                $data = [
-                    'private' => [
-                        'stepper' => [auth()->user()->role->id]
-                    ]
-                ];
-            }
             $surat->data = $data;
             // $file = $surat->files;
             // if ($file) {
@@ -599,7 +563,7 @@ class AkademikFakultasController extends Controller
     public function showApproval(Approval $approval)
     {
         // if ($surat->current_user_id == auth()->user()->id) {
-        if (($approval->surat->jenisSurat->slug == 'legalisir-ijazah' || $approval->surat->jenisSurat->slug == 'legalisir-transkrip') && $approval->surat->data['pengiriman'] == 'dikirim') {
+        if (($approval->surat->jenisSurat->slug == 'legalisir-ijazah' || $approval->surat->jenisSurat->slug == 'legalisir-transkrip' || $approval->surat->jenisSurat->slug = 'legalisir-ijazah-transkrip') && $approval->surat->data['pengiriman'] == 'dikirim') {
             return view('akademik-fakultas.show-approval-legalisir', [
                 'approval' => $approval,
                 'surat' => Surat::join('approvals', 'approvals.surat_id', '=', 'surat_tables.id')
@@ -609,7 +573,7 @@ class AkademikFakultasController extends Controller
             ]);
         }
 
-        if (($approval->surat->jenisSurat->slug == 'legalisir-ijazah' || $approval->surat->jenisSurat->slug == 'legalisir-transkrip') && $approval->surat->data['pengiriman'] == 'ambil') {
+        if (($approval->surat->jenisSurat->slug == 'legalisir-ijazah' || $approval->surat->jenisSurat->slug == 'legalisir-transkrip' || $approval->surat->jenisSurat->slug = 'legalisir-ijazah-transkrip') && $approval->surat->data['pengiriman'] == 'ambil') {
             return view('akademik-fakultas.show-approval-legalisir-diambil', [
                 'approval' => $approval,
                 'surat' => Surat::join('approvals', 'approvals.surat_id', '=', 'surat_tables.id')

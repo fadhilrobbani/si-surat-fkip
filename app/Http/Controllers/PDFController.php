@@ -21,6 +21,12 @@ class PDFController extends Controller
             ]);
         }
 
+        if ($surat->jenisSurat->slug == 'legalisir-ijazah-transkrip') {
+            $pdf = Pdf::loadview('template.invoice-legalisir-ijazah-transkrip', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+                'tempDir' => public_path(),
+                'chroot' => public_path()
+            ]);
+        }
         if ($surat->jenisSurat->slug == 'surat-keterangan-alumni') {
             $pdf = Pdf::loadview('template.surat-keterangan-alumni', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
                 'tempDir' => public_path(),
