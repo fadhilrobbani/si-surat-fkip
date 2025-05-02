@@ -224,7 +224,7 @@
                                         </div>
                                     </a>
 
-                                    @if ($surat->jenisSurat->slug !== 'legalisir-ijazah' && $surat->status == 'diproses')
+                                    @if ($surat->jenisSurat->slug !== 'legalisir-ijazah' && $surat->jenisSurat->slug !== 'legalisir-transkrip' && $surat->jenisSurat->slug !== 'legalisir-ijazah-transkrip' && $surat->status == 'diproses')
                                         <form
                                             class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2"
                                             action="{{ route('destroy-surat', $surat->id) }}" method="POST">

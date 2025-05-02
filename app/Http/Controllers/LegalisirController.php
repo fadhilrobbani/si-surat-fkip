@@ -133,26 +133,44 @@ class LegalisirController extends Controller
 
 
 
-            if (
-                Surat::where('jenis_surat_id', $jenisSurat->id)
-                ->where('pengaju_id', auth()->user()->id)
+            $legalisirSlugs = [
+                'legalisir-ijazah',
+                'legalisir-transkrip',
+                'legalisir-ijazah-transkrip',
+            ];
+
+            $hasPendingLegalisir = Surat::where('pengaju_id', auth()->id())
+                // 1) only these jenisSurat IDs OR these slugs:
+                ->where(function($q) use ($jenisSurat, $legalisirSlugs) {
+                    $q->where('jenis_surat_id', $jenisSurat->id)
+                      ->orWhereHas('jenisSurat', function($q2) use ($legalisirSlugs) {
+                          $q2->whereIn('slug', $legalisirSlugs);
+                      });
+                })
+                // 2) status is diproses|dikirim|menunggu_pembayaran + not yet expired
                 ->where(function ($query) {
-                    $query->where(function ($query) {
-                        $query->where('status', 'diproses')
-                            ->where('expired_at', '>', Carbon::now());
-                    })
+                    $query->where(function ($q) {
+                            $q->where('status', 'diproses')
+                              ->where('expired_at', '>', now());
+                        })
                         ->orWhere('status', 'dikirim')
-                        ->orWhere(function ($query) {
-                            $query->where('status', 'menunggu_pembayaran')
-                                ->where('expired_at', '>', Carbon::now());
+                        ->orWhere(function ($q) {
+                            $q->where('status', 'menunggu_pembayaran')
+                              ->where('expired_at', '>', now());
                         });
                 })
+                // 3) only look at submissions within the last 63 days
                 ->where('created_at', '>=', now()->subDays(63))
-                ->count() > 0
+                ->exists();
 
-            ) {
-                return redirect()->back()->with('deleted', 'Anda masih memiliki pengajuan legalisir yang sedang diproses, dikirim, atau menunggu pembayaran. Silahkan tunggu hingga selesai/ditolak, atau batalkan pengajuan sebelumnya.');
+            if ($hasPendingLegalisir) {
+                return redirect()->back()->with('deleted',
+                    'Anda masih memiliki pengajuan legalisir (ijazah, transkrip, atau ijazah+transkrip) ' .
+                    'yang sedang diproses, dikirim, atau menunggu pembayaran. ' .
+                    'Silakan tunggu hingga selesai/ditolak, atau batalkan pengajuan sebelumnya.'
+                );
             }
+
             $surat->data = $data;
             $surat->save();
             // Mail::to($surat->pengaju->email)->send(new OrderPembayaran($surat));
@@ -220,26 +238,42 @@ class LegalisirController extends Controller
             ];
 
 
-            if (
+            $legalisirSlugs = [
+                'legalisir-ijazah',
+                'legalisir-transkrip',
+                'legalisir-ijazah-transkrip',
+            ];
 
-                Surat::where('jenis_surat_id', $jenisSurat->id)
-                ->where('pengaju_id', auth()->user()->id)
+            $hasPendingLegalisir = Surat::where('pengaju_id', auth()->id())
+                // 1) only these jenisSurat IDs OR these slugs:
+                ->where(function($q) use ($jenisSurat, $legalisirSlugs) {
+                    $q->where('jenis_surat_id', $jenisSurat->id)
+                      ->orWhereHas('jenisSurat', function($q2) use ($legalisirSlugs) {
+                          $q2->whereIn('slug', $legalisirSlugs);
+                      });
+                })
+                // 2) status is diproses|dikirim|menunggu_pembayaran + not yet expired
                 ->where(function ($query) {
-                    $query->where(function ($query) {
-                        $query->where('status', 'diproses')
-                            ->where('expired_at', '>', Carbon::now());
-                    })
+                    $query->where(function ($q) {
+                            $q->where('status', 'diproses')
+                              ->where('expired_at', '>', now());
+                        })
                         ->orWhere('status', 'dikirim')
-                        ->orWhere(function ($query) {
-                            $query->where('status', 'menunggu_pembayaran')
-                                ->where('expired_at', '>', Carbon::now());
+                        ->orWhere(function ($q) {
+                            $q->where('status', 'menunggu_pembayaran')
+                              ->where('expired_at', '>', now());
                         });
                 })
+                // 3) only look at submissions within the last 63 days
                 ->where('created_at', '>=', now()->subDays(63))
-                ->count() > 0
+                ->exists();
 
-            ) {
-                return redirect()->back()->with('deleted', 'Anda masih memiliki pengajuan legalisir yang sedang diproses atau dikirim. Silahkan tunggu hingga selesai/ditolak, atau batalkan pengajuan sebelumnya.');
+            if ($hasPendingLegalisir) {
+                return redirect()->back()->with('deleted',
+                    'Anda masih memiliki pengajuan legalisir (ijazah, transkrip, atau ijazah+transkrip) ' .
+                    'yang sedang diproses, dikirim, atau menunggu pembayaran. ' .
+                    'Silakan tunggu hingga selesai/ditolak, atau batalkan pengajuan sebelumnya.'
+                );
             }
             $surat->data = $data;
             $surat->save();
@@ -315,26 +349,42 @@ class LegalisirController extends Controller
             ];
 
 
-            if (
+            $legalisirSlugs = [
+                'legalisir-ijazah',
+                'legalisir-transkrip',
+                'legalisir-ijazah-transkrip',
+            ];
 
-                Surat::where('jenis_surat_id', $jenisSurat->id)
-                ->where('pengaju_id', auth()->user()->id)
+            $hasPendingLegalisir = Surat::where('pengaju_id', auth()->id())
+                // 1) only these jenisSurat IDs OR these slugs:
+                ->where(function($q) use ($jenisSurat, $legalisirSlugs) {
+                    $q->where('jenis_surat_id', $jenisSurat->id)
+                      ->orWhereHas('jenisSurat', function($q2) use ($legalisirSlugs) {
+                          $q2->whereIn('slug', $legalisirSlugs);
+                      });
+                })
+                // 2) status is diproses|dikirim|menunggu_pembayaran + not yet expired
                 ->where(function ($query) {
-                    $query->where(function ($query) {
-                        $query->where('status', 'diproses')
-                            ->where('expired_at', '>', Carbon::now());
-                    })
+                    $query->where(function ($q) {
+                            $q->where('status', 'diproses')
+                              ->where('expired_at', '>', now());
+                        })
                         ->orWhere('status', 'dikirim')
-                        ->orWhere(function ($query) {
-                            $query->where('status', 'menunggu_pembayaran')
-                                ->where('expired_at', '>', Carbon::now());
+                        ->orWhere(function ($q) {
+                            $q->where('status', 'menunggu_pembayaran')
+                              ->where('expired_at', '>', now());
                         });
                 })
+                // 3) only look at submissions within the last 63 days
                 ->where('created_at', '>=', now()->subDays(63))
-                ->count() > 0
+                ->exists();
 
-            ) {
-                return redirect()->back()->with('deleted', 'Anda masih memiliki pengajuan legalisir yang sedang diproses atau dikirim. Silahkan tunggu hingga selesai/ditolak, atau batalkan pengajuan sebelumnya.');
+            if ($hasPendingLegalisir) {
+                return redirect()->back()->with('deleted',
+                    'Anda masih memiliki pengajuan legalisir (ijazah, transkrip, atau ijazah+transkrip) ' .
+                    'yang sedang diproses, dikirim, atau menunggu pembayaran. ' .
+                    'Silakan tunggu hingga selesai/ditolak, atau batalkan pengajuan sebelumnya.'
+                );
             }
             $surat->data = $data;
             $surat->save();
@@ -421,27 +471,42 @@ class LegalisirController extends Controller
                 'tracer-study' => $request->file('tracer-study')->store('lampiran')
             ];
 
+            $legalisirSlugs = [
+                'legalisir-ijazah',
+                'legalisir-transkrip',
+                'legalisir-ijazah-transkrip',
+            ];
 
-            if (
-
-                Surat::where('jenis_surat_id', $jenisSurat->id)
-                ->where('pengaju_id', auth()->user()->id)
+            $hasPendingLegalisir = Surat::where('pengaju_id', auth()->id())
+                // 1) only these jenisSurat IDs OR these slugs:
+                ->where(function($q) use ($jenisSurat, $legalisirSlugs) {
+                    $q->where('jenis_surat_id', $jenisSurat->id)
+                      ->orWhereHas('jenisSurat', function($q2) use ($legalisirSlugs) {
+                          $q2->whereIn('slug', $legalisirSlugs);
+                      });
+                })
+                // 2) status is diproses|dikirim|menunggu_pembayaran + not yet expired
                 ->where(function ($query) {
-                    $query->where(function ($query) {
-                        $query->where('status', 'diproses')
-                            ->where('expired_at', '>', Carbon::now());
-                    })
+                    $query->where(function ($q) {
+                            $q->where('status', 'diproses')
+                              ->where('expired_at', '>', now());
+                        })
                         ->orWhere('status', 'dikirim')
-                        ->orWhere(function ($query) {
-                            $query->where('status', 'menunggu_pembayaran')
-                                ->where('expired_at', '>', Carbon::now());
+                        ->orWhere(function ($q) {
+                            $q->where('status', 'menunggu_pembayaran')
+                              ->where('expired_at', '>', now());
                         });
                 })
+                // 3) only look at submissions within the last 63 days
                 ->where('created_at', '>=', now()->subDays(63))
-                ->count() > 0
+                ->exists();
 
-            ) {
-                return redirect()->back()->with('deleted', 'Anda masih memiliki pengajuan legalisir yang sedang diproses atau dikirim. Silahkan tunggu hingga selesai/ditolak, atau batalkan pengajuan sebelumnya.');
+            if ($hasPendingLegalisir) {
+                return redirect()->back()->with('deleted',
+                    'Anda masih memiliki pengajuan legalisir (ijazah, transkrip, atau ijazah+transkrip) ' .
+                    'yang sedang diproses, dikirim, atau menunggu pembayaran. ' .
+                    'Silakan tunggu hingga selesai/ditolak, atau batalkan pengajuan sebelumnya.'
+                );
             }
             $surat->data = $data;
             $surat->save();
