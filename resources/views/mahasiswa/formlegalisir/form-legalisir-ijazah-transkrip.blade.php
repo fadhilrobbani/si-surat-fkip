@@ -3,7 +3,7 @@
 @endphp
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Mahasiswa | Pengajuan Legalisir Ijazah & Transkrip
+        Mahasiswa | Pengajuan Legalisir Ijazah dan Transkrip
     </x-slot:title>
     <x-slot:script>
         <script>
@@ -156,7 +156,7 @@
         </script>
 
     </x-slot:script>
-    <p class="font-bold text-lg mx-auto text-center mb-2">Pengajuan Legalisir Ijazah & Transkrip </p>
+    <p class="font-bold text-lg mx-auto text-center mb-2">Pengajuan Legalisir Ijazah dan Transkrip </p>
 
     <form action="{{ route('store-pengajuan-legalisir', $jenisSurat->slug) }}" method="POST"
         enctype="multipart/form-data">
