@@ -174,7 +174,7 @@ class KaprodiController extends Controller
             return view('kaprodi.show-surat', [
                 'surat' => $surat,
                 'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->whereIn('role_id', [8, 5, 9, 10])
+                    ->whereIn('role_id', [14])
                     ->orderBy('username', 'asc')
                     ->get()
             ]);

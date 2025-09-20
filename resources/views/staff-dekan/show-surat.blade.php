@@ -253,12 +253,13 @@
     @endif
 
 
-    {{-- ACTION BARU UNTUK SETUJU/TOLAK SURAT DARI STAFF --}}
+    {{-- ACTION BARU UNTUK SETUJU/TOLAK SURAT DARI STAFF dan DIAKHIR SIKLUS --}}
 
     @if (
         $surat->current_user_id == auth()->user()->id &&
             $surat->status == 'diproses' &&
-            $surat->jenisSurat->user_type == 'staff')
+            $surat->jenisSurat->user_type == 'staff' &&
+            $surat->data['private']['stepper'][count($surat->data['private']['stepper']) - 1] !== 4)
         <form action="{{ route('setujui-surat-staff-staff-dekan', $surat->id) }}" method="POST"
             class="bg-slate-100 mt-4 p-2 rounded-lg w-full">
             @csrf
@@ -310,7 +311,64 @@
                         type="submit">
                         Setuju </button>
 
-                    <a href="{{ route('confirm-tolak-surat-staff', $surat->id) }}">
+
+                    {{-- <x-modal-send :daftarPenerima='$daftarPenerima' />
+                    <button type="button"
+                        class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
+                        data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
+                        Setuju </button> --}}
+
+                    <a href="{{ route('confirm-tolak-surat-staff-dekan', $surat->id) }}">
+                        <div
+                            class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
+                            Tolak
+
+                        </div>
+                    </a>
+                </div>
+    @endif
+
+
+    {{-- ACTION BARU UNTUK SETUJU/TOLAK SURAT DARI STAFF dan DITENGAH SIKLUS/user sebelumnya kaprodi --}}
+
+    @if (
+        $surat->current_user_id == auth()->user()->id &&
+            $surat->status == 'diproses' &&
+            $surat->jenisSurat->user_type == 'staff' &&
+            $surat->data['private']['stepper'][count($surat->data['private']['stepper']) - 1] === 4)
+        <form action="{{ route('setujui-surat-staff-staff-dekan', $surat->id) }}" method="POST"
+            class="bg-slate-100 mt-4 p-2 rounded-lg w-full">
+            @csrf
+            @method('put')
+
+
+            <div class="flex justify-between flex-col sm:flex-row ">
+                <div class="flex flex-col gap-4 sm:flex-row">
+                    <a href="{{ route('preview-surat-staff-dekan', $surat->id) }}"><button type="button"
+                            class="text-white w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
+                    <a href="{{ route('edit-surat-staff-dekan', $surat->id) }}"><button type="button"
+                            class="text-white w-full p-2 m-2 bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button></a>
+
+                </div>
+
+                <div class="flex flex-col sm:flex-row">
+
+
+
+
+                    {{-- <button
+                        class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
+                        type="submit">
+                        Setuju </button> --}}
+
+
+                    <x-modal-send :daftarPenerima='$daftarPenerima' />
+                    <button type="button"
+                        class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
+                        data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
+                        Setuju </button>
+
+                    <a href="{{ route('confirm-tolak-surat-staff-dekan', $surat->id) }}">
                         <div
                             class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
                             Tolak

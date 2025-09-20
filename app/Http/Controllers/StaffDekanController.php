@@ -231,7 +231,7 @@ class StaffDekanController extends Controller
             return view('staff-dekan.show-surat', [
                 'surat' => $surat,
                 'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->where('role_id', '=', 11)
+                    ->where('role_id', '=', 8)
                     ->get()
             ]);
         }
@@ -249,81 +249,239 @@ class StaffDekanController extends Controller
 
     public function setujuiSurat(Request $request, Surat $surat)
     {
-        // if (!auth()->user()->tandatangan) {
-        //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
-        // }
-        $request->validate([
-            // 'no-surat' => 'required|size:4|unique:surat_tables,data->noSurat',
-            // 'no-surat' =>  ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id)],
+        if ($surat->jenisSurat->user_type == 'staff-dekan') {
+            // if (!auth()->user()->tandatangan) {
+            //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
+            // }
+            $request->validate([
+                // 'no-surat' => 'required|size:4|unique:surat_tables,data->noSurat',
+                // 'no-surat' =>  ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id)],
 
 
-            'no-surat' => ['required', 'max:5', Rule::unique('surat_tables', 'data->noSurat')
-                ->where(function ($query) {
-                    $query->whereYear('created_at', date('Y'));
-                })],
-        ]);
-        // SELECT jt.id FROM users u
-        // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
-        // JOIN jurusan_tables jt ON jt.id = pst.jurusan_id ;
-        $surat->current_user_id = $surat->pengaju_id;
-        // $surat->penerima_id = $surat->pengaju_id;
-        $surat->expired_at = null;
-        $data = $surat->data;
-        $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
-        // $data['ttdWD1'] = $request->input('ttd') ;
-        // $data['stempel'] = $request->input('stempel') ;
-        // $data['ttdWD1'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg' ;
-        // $data['stempel'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg';
-        $data['noSurat'] = $request->input('no-surat');
-        $data['note'] = $request->input('note');
+                'no-surat' => ['required', 'max:5', Rule::unique('surat_tables', 'data->noSurat')
+                    ->where(function ($query) {
+                        $query->whereYear('created_at', date('Y'));
+                    })],
+            ]);
+            // SELECT jt.id FROM users u
+            // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
+            // JOIN jurusan_tables jt ON jt.id = pst.jurusan_id ;
+            $surat->current_user_id = $surat->pengaju_id;
+            // $surat->penerima_id = $surat->pengaju_id;
+            $surat->expired_at = null;
+            $data = $surat->data;
+            $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+            // $data['ttdWD1'] = $request->input('ttd') ;
+            // $data['stempel'] = $request->input('stempel') ;
+            // $data['ttdWD1'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg' ;
+            // $data['stempel'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg';
+            $data['noSurat'] = $request->input('no-surat');
+            $data['note'] = $request->input('note');
 
-        if ($data) {
-            if (isset($data['private'])) {
+            if ($data) {
+                if (isset($data['private'])) {
 
-                $data['private']['stepper'][] = auth()->user()->role->id;
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                } else {
+                    $data['private'] = [
+                        'stepper' => [auth()->user()->role->id]
+
+                    ];
+                }
             } else {
-                $data['private'] = [
-                    'stepper' => [auth()->user()->role->id]
-
+                $data = [
+                    'private' => [
+                        'stepper' => [auth()->user()->role->id]
+                    ]
                 ];
             }
-        } else {
-            $data = [
-                'private' => [
-                    'stepper' => [auth()->user()->role->id]
-                ]
-            ];
+
+            $surat->data = $data;
+            // $file = $surat->files;
+            // if ($file) {
+            //     if (isset($file['private'])) {
+            //         $file['private']['stempel'] =  'storage/' . auth()->user()->tandatangan;
+            //     } else {
+            //         $file['private'] = [
+            //             'stempel' => 'storage/' . auth()->user()->tandatangan
+            //         ];
+            //     }
+            // } else {
+            //     $file = [
+            //         'private' => [
+            //             'stempel' => 'storage/' . auth()->user()->tandatangan,
+            //         ]
+            //     ];
+            // }
+            // $surat->files = $file;
+            $surat->status = 'selesai';
+            $surat->save();
+
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => $request->input('note'),
+            ]);
+            Mail::to($surat->pengaju->email)->send(new SuratStaff($surat));
+            return redirect('/staff-dekan/surat-masuk')->with('success', 'Surat berhasil disetujui');
+        } else if ($surat->data['private']['stepper'][count($surat->data['private']['stepper']) - 1] === 4) { //kalau surat bukan tipe staff dekan dan bukan diakhir siklus
+            // if (!auth()->user()->tandatangan) {
+            //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
+            // }
+
+            // $request->validate([
+            //     // 'no-surat' => 'required|size:4|unique:surat_tables,data->noSurat',
+            //     // 'no-surat' =>  ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id)],
+
+
+            //     'no-surat' => ['required', 'max:5', Rule::unique('surat_tables', 'data->noSurat')
+            //         ->where(function ($query) {
+            //             $query->whereYear('created_at', date('Y'));
+            //         })],
+            // ]);
+            // SELECT jt.id FROM users u
+            // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
+            // JOIN jurusan_tables jt ON jt.id = pst.jurusan_id ;
+            // $surat->current_user_id = $surat->pengaju_id;
+            $surat->current_user_id = $request->input('penerima');
+            // $surat->penerima_id = $surat->pengaju_id;
+            // $surat->expired_at = null;
+            $data = $surat->data;
+            // $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+            // $data['ttdWD1'] = $request->input('ttd') ;
+            // $data['stempel'] = $request->input('stempel') ;
+            // $data['ttdWD1'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg' ;
+            // $data['stempel'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg';
+            $data['noSurat'] = $request->input('no-surat');
+            $data['note'] = $request->input('note');
+
+            if ($data) {
+                if (isset($data['private'])) {
+
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                } else {
+                    $data['private'] = [
+                        'stepper' => [auth()->user()->role->id]
+
+                    ];
+                }
+            } else {
+                $data = [
+                    'private' => [
+                        'stepper' => [auth()->user()->role->id]
+                    ]
+                ];
+            }
+
+            $surat->data = $data;
+            // $file = $surat->files;
+            // if ($file) {
+            //     if (isset($file['private'])) {
+            //         $file['private']['stempel'] =  'storage/' . auth()->user()->tandatangan;
+            //     } else {
+            //         $file['private'] = [
+            //             'stempel' => 'storage/' . auth()->user()->tandatangan
+            //         ];
+            //     }
+            // } else {
+            //     $file = [
+            //         'private' => [
+            //             'stempel' => 'storage/' . auth()->user()->tandatangan,
+            //         ]
+            //     ];
+            // }
+            // $surat->files = $file;
+            // $surat->status = 'selesai';
+            $surat->save();
+
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => $request->input('note'),
+            ]);
+            // Mail::to($surat->pengaju->email)->send(new SuratStaff($surat));
+            return redirect('/staff-dekan/surat-masuk')->with('success', 'Surat berhasil disetujui');
+        } else if ($surat->data['private']['stepper'][count($surat->data['private']['stepper']) - 1] !== 4) { //kalau surat bukan tipe staff dekan dan diakhir siklus
+            // if (!auth()->user()->tandatangan) {
+            //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
+            // }
+
+            $request->validate([
+                // 'no-surat' => 'required|size:4|unique:surat_tables,data->noSurat',
+                // 'no-surat' =>  ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id)],
+
+
+                'no-surat' => ['required', 'max:5', Rule::unique('surat_tables', 'data->noSurat')
+                    ->where(function ($query) {
+                        $query->whereYear('created_at', date('Y'));
+                    })],
+            ]);
+            // SELECT jt.id FROM users u
+            // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
+            // JOIN jurusan_tables jt ON jt.id = pst.jurusan_id ;
+            $surat->current_user_id = $surat->pengaju_id;
+            // $surat->current_user_id = $request->input('penerima');
+            // $surat->penerima_id = $surat->pengaju_id;
+            $surat->expired_at = null;
+            $data = $surat->data;
+            $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+            // $data['ttdWD1'] = $request->input('ttd') ;
+            // $data['stempel'] = $request->input('stempel') ;
+            // $data['ttdWD1'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg' ;
+            // $data['stempel'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg';
+            $data['noSurat'] = $request->input('no-surat');
+            $data['note'] = $request->input('note');
+
+            if ($data) {
+                if (isset($data['private'])) {
+
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                } else {
+                    $data['private'] = [
+                        'stepper' => [auth()->user()->role->id]
+
+                    ];
+                }
+            } else {
+                $data = [
+                    'private' => [
+                        'stepper' => [auth()->user()->role->id]
+                    ]
+                ];
+            }
+
+            $surat->data = $data;
+            // $file = $surat->files;
+            // if ($file) {
+            //     if (isset($file['private'])) {
+            //         $file['private']['stempel'] =  'storage/' . auth()->user()->tandatangan;
+            //     } else {
+            //         $file['private'] = [
+            //             'stempel' => 'storage/' . auth()->user()->tandatangan
+            //         ];
+            //     }
+            // } else {
+            //     $file = [
+            //         'private' => [
+            //             'stempel' => 'storage/' . auth()->user()->tandatangan,
+            //         ]
+            //     ];
+            // }
+            // $surat->files = $file;
+            $surat->status = 'selesai';
+            $surat->save();
+
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => $request->input('note'),
+            ]);
+            Mail::to($surat->pengaju->email)->send(new SuratStaff($surat));
+            return redirect('/staff-dekan/surat-masuk')->with('success', 'Surat berhasil disetujui');
         }
-
-        $surat->data = $data;
-        // $file = $surat->files;
-        // if ($file) {
-        //     if (isset($file['private'])) {
-        //         $file['private']['stempel'] =  'storage/' . auth()->user()->tandatangan;
-        //     } else {
-        //         $file['private'] = [
-        //             'stempel' => 'storage/' . auth()->user()->tandatangan
-        //         ];
-        //     }
-        // } else {
-        //     $file = [
-        //         'private' => [
-        //             'stempel' => 'storage/' . auth()->user()->tandatangan,
-        //         ]
-        //     ];
-        // }
-        // $surat->files = $file;
-        $surat->status = 'selesai';
-        $surat->save();
-
-        Approval::create([
-            'user_id' => auth()->user()->id,
-            'surat_id' => $surat->id,
-            'isApproved' => true,
-            'note' => $request->input('note'),
-        ]);
-        Mail::to($surat->pengaju->email)->send(new SuratStaff($surat));
-        return redirect('/staff-dekan/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 
     public function tolakSurat(Request $request, Surat $surat)
