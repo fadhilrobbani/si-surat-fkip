@@ -172,6 +172,11 @@
             <x-stepper-flexible :surat='$surat' />
         @elseif($surat->jenisSurat->user_type == 'staff-dekan' && $surat->jenisSurat->slug == 'surat-keluar')
             <x-stepper-flexible :surat='$surat' />
+        @elseif(
+            ($surat->jenisSurat->user_type == 'staff-dekan' && $surat->jenisSurat->slug == 'surat-tugas-from-staff-dekan') ||
+                ($surat->jenisSurat->user_type == 'staff-dekan' &&
+                    $surat->jenisSurat->slug == 'surat-tugas-kelompok-from-staff-dekan'))
+            <x-stepper-flexible :surat='$surat' />
         @endif
 
     </div>
@@ -382,7 +387,8 @@
     @if (
         $surat->current_user_id == auth()->user()->id &&
             $surat->status == 'diproses' &&
-            $surat->jenisSurat->user_type == 'staff-dekan')
+            $surat->jenisSurat->user_type == 'staff-dekan' &&
+            !request()->is('staff-dekan/riwayat-pengajuan-surat*'))
         <form action="{{ route('setujui-surat-staff-staff-dekan', $surat->id) }}" method="POST"
             class="bg-slate-100 mt-4 p-2 rounded-lg w-full">
             @csrf
@@ -451,7 +457,7 @@
                 <button type="button"
                     class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button>
             </a>
-        @elseif($surat->pengaju_id != $surat->current_user_id)
+        @else
             <a href="{{ route('preview-surat-staff-dekan', $surat->id) }}">
                 <button type="button"
                     class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button>
