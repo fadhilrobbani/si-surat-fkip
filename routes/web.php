@@ -378,6 +378,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->name('staff-dekan-redirect-form-surat');
         Route::get('/pengajuan-surat/{jenisSurat:slug}', [SuratController::class, 'create'])->name('staff-dekan-show-form-surat');
         Route::post('/pengajuan-surat/store/{jenisSurat:slug}', [SuratController::class, 'storeByStaffDekan'])->name('staff-dekan-store-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-tugas', [SuratController::class, 'storeSuratTugasByStaffDekan'])->name('staff-dekan-store-surat-tugas');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-tugas-kelompok', [SuratController::class, 'storeSuratTugasKelompokByStaffDekan'])->name('staff-dekan-store-surat-tugas-kelompok');
         // Route::middleware('verified')->group(function () {
         Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->can('staffDekanCanCancelSurat', 'surat')->name('staff-destroy-surat');
         Route::get('/riwayat-pengajuan-surat', [StaffDekanController::class, 'riwayatPengajuanSurat'])->name('staff-dekan-riwayat-pengajuan-surat');

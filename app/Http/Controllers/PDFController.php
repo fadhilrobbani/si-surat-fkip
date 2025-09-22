@@ -117,6 +117,20 @@ class PDFController extends Controller
                 'chroot' => public_path()
             ]);
         }
+
+        if ($surat->jenisSurat->slug == 'surat-tugas-from-staff-dekan') {
+            $pdf = Pdf::loadview('template.surat-tugas', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+                'tempDir' => public_path(),
+                'chroot' => public_path()
+            ]);
+        }
+
+        if ($surat->jenisSurat->slug == 'surat-tugas-kelompok-from-staff-dekan') {
+            $pdf = Pdf::loadview('template.surat-tugas-kelompok', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+                'tempDir' => public_path(),
+                'chroot' => public_path()
+            ]);
+        }
         return $pdf->stream();
     }
 

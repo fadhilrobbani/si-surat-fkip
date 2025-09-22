@@ -274,8 +274,16 @@ class DekanController extends Controller
             ]);
         }
 
-        if (($surat->jenisSurat->user_type == 'staff-dekan')) {
+        if (($surat->jenisSurat->user_type == 'staff-dekan' && $surat->jenisSurat->slug == 'surat-tugas-from-staff-dekan') || ($surat->jenisSurat->user_type == 'staff-dekan' && $surat->jenisSurat->slug == 'surat-tugas-kelompok-from-staff-dekan')) {
 
+            return view('dekan.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->whereIn('role_id', [14, 5, 9, 10])
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        } else {
             return view('dekan.show-surat', [
                 'surat' => $surat,
                 'daftarPenerima' => User::select('id', 'name', 'username')
@@ -421,6 +429,73 @@ class DekanController extends Controller
                     ]
                 ];
             }
+            $surat->data = $data;
+
+            $surat->save();
+
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => 'setuju',
+            ]);
+            return redirect('dekan/surat-masuk')->with('success', 'Surat berhasil disetujui');
+        }
+
+        if ($surat->jenisSurat->slug == 'surat-tugas-from-staff-dekan' || $surat->jenisSurat->slug == 'surat-tugas-kelompok-from-staff-dekan') {
+            $surat->current_user_id = $request->input('penerima');
+            $data = $surat->data;
+
+            // Jika penerimanya adalah staff dekan langsung, maka surat di ttd oleh dekan
+            $rolePenerima = User::where('id', $surat->current_user_id)->first()->role->id;
+            if ($rolePenerima == 14) {
+
+                if ($data) {
+                    if (isset($data['private'])) {
+                        $data['private']['namaDekan'] =  auth()->user()->name;
+                        $data['private']['nipDekan'] =  auth()->user()->nip;
+                        $data['private']['deskripsiDekan'] =  auth()->user()->role->description;
+                        $data['private']['stepper'][] = auth()->user()->role->id;
+                    } else {
+                        $data['private'] = [
+                            'namaDekan' =>  auth()->user()->name,
+                            'nipDekan' =>  auth()->user()->nip,
+                            'deskripsiDekan' =>  auth()->user()->role->description,
+                            'stepper' => [auth()->user()->role->id]
+
+                        ];
+                    }
+                } else {
+                    $data = [
+                        'private' => [
+                            'namaDekan' =>  auth()->user()->name,
+                            'nipDekan' =>  auth()->user()->nip,
+                            'deskripsiDekan' =>  auth()->user()->role->description,
+                            'stepper' => [auth()->user()->role->id]
+                        ]
+                    ];
+                }
+            } else {
+                // Jika bukan staff dekan tujuan kirimnya, maka di ttd WD nantinya
+                if ($data) {
+                    if (isset($data['private'])) {
+                        $data['private']['stepper'][] = auth()->user()->role->id;
+                    } else {
+                        $data['private'] = [
+                            'stepper' => [auth()->user()->role->id]
+
+                        ];
+                    }
+                } else {
+                    $data = [
+                        'private' => [
+                            'stepper' => [auth()->user()->role->id]
+                        ]
+                    ];
+                }
+            }
+
+
             $surat->data = $data;
 
             $surat->save();
