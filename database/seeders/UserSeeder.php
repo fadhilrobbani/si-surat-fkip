@@ -699,6 +699,17 @@ class UserSeeder extends Seeder
                 'jurusan_id' => null,
                 'program_studi_id' => null,
                 'email_verified_at' => now()
+            ],
+            [
+                'username' => 'kabag',
+                'name' => 'Arya Permana',
+                'email' => 'kabagfkip@email.com',
+                'password' => bcrypt('password'),
+                'role_id' => 17,
+                'nip' => null,
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
             ]
         ];
 

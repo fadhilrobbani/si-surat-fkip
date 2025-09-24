@@ -168,6 +168,18 @@ class SuratController extends Controller
             ]);
         }
 
+        if ($jenisSurat->slug == 'surat-pengajuan-atk') {
+            return view('staff.formsurat.form-surat-pengajuan-atk', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->whereIn('role_id', [4])
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
+
         //staff dekan
         if ($jenisSurat->slug == 'surat-keluar') {
             return view('staff-dekan.formsurat.form-surat-keluar', [
@@ -1222,6 +1234,42 @@ class SuratController extends Controller
 
         $surat->save();
         return redirect('/staff-dekan/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
+    }
+
+    public function storeSuratPengajuanAtkByStaff(Request $request, JenisSurat $jenisSurat)
+    {
+        if ($jenisSurat->slug != 'surat-pengajuan-atk') {
+            return redirect()->back()->with('error', 'Jenis surat tidak sesuai');
+        }
+
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'program-studi' => 'required',
+            'email' => 'required|email',
+            'pengajuan-atk' => 'required|file|mimes:jpeg,png,jpg,pdf|max:10240',
+        ]);
+
+        $surat = new Surat;
+        $surat->pengaju_id = auth()->user()->id;
+        $surat->current_user_id = $request->input('penerima');
+        $surat->status = 'diproses';
+        $surat->jenis_surat_id = $jenisSurat->id;
+        $surat->expired_at = now()->addDays(30);
+
+        $surat->data = [
+            'nama' => $request->input('name'),
+            'username' => $request->input('username'),
+            'programStudi' => auth()->user()->programStudi->name,
+            'email' => $request->input('email'),
+        ];
+
+        $surat->files = [
+            'pengajuanAtk' => $request->file('pengajuan-atk')->store('lampiran'),
+        ];
+
+        $surat->save();
+        return redirect('/staff/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
     }
 
 

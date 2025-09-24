@@ -189,6 +189,16 @@ class KaprodiController extends Controller
                     ->get()
             ]);
         }
+
+        if (($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-pengajuan-atk')) {
+            return view('kaprodi.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->whereIn('role_id', [17])
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
     }
 
 

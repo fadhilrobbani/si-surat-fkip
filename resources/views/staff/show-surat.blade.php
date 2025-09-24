@@ -173,6 +173,8 @@
             ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas') ||
                 ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas-kelompok'))
             <x-stepper-flexible :surat='$surat' />
+        @elseif($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-pengajuan-atk')
+            <x-stepper-staff-pengajuan-atk :surat='$surat' />
         @endif
 
     </div>
@@ -227,7 +229,10 @@
 
 
     {{-- ACTION BAR UNTUK DETAIL RIWAYAT PENGAJUAN SURAT DARI STAFF (TIDAK TERMASUK BERITA ACARA NILAI) --}}
-    @if ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug != 'berita-acara-nilai')
+    @if (
+        $surat->jenisSurat->user_type == 'staff' &&
+            $surat->jenisSurat->slug != 'berita-acara-nilai' &&
+            $surat->jenisSurat->slug != 'surat-pengajuan-atk')
 
         @if ($surat->status == 'selesai')
             <a href="{{ route('preview-surat-staff', $surat->id) }}"> <button type="button"

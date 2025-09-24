@@ -162,6 +162,8 @@
             <x-stepper-flexible :surat='$surat' />
         @elseif($surat->jenisSurat->user_type == 'staff-dekan' && $surat->jenisSurat->slug == 'surat-keluar')
             <x-stepper-flexible :surat='$surat' />
+        @elseif($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-pengajuan-atk')
+            <x-stepper-staff-pengajuan-atk :surat='$surat' />
         @endif
     </div>
 
@@ -268,8 +270,8 @@
             <div class="flex mt-8 justify-between flex-col sm:flex-row ">
 
                 <a href="{{ route('preview-surat-kaprodi', $surat->id) }}"><button type="button"
-                        {{ $surat->jenisSurat->slug == 'berita-acara-nilai' ? 'disabled' : '' }}
-                        class="text-white   {{ $surat->jenisSurat->slug == 'berita-acara-nilai' ? 'cursor-not-allowed' : '' }} w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
+                        {{ $surat->jenisSurat->slug == 'berita-acara-nilai' || $surat->jenisSurat->slug == 'surat-pengajuan-atk' ? 'disabled' : '' }}
+                        class="text-white   {{ $surat->jenisSurat->slug == 'berita-acara-nilai' ? ' cursor-not-allowed ' : '' }} w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
 
                 <div class="flex flex-col sm:flex-row">
 
@@ -318,7 +320,7 @@
             <div class="flex mt-8 justify-between flex-col sm:flex-row ">
 
                 <a href="{{ route('preview-surat-kaprodi', $surat->id) }}"><button type="button"
-                        {{ $surat->jenisSurat->slug == 'berita-acara-nilai' ? 'disabled' : '' }}
+                        {{ $surat->jenisSurat->slug == 'berita-acara-nilai' || $surat->jenisSurat->slug == 'surat-pengajuan-atk' ? 'disabled' : '' }}
                         class="text-white   {{ $surat->jenisSurat->slug == 'berita-acara-nilai' ? 'cursor-not-allowed' : '' }} w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
 
                 <div class="flex flex-col sm:flex-row">

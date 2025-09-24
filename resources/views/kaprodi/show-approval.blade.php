@@ -128,6 +128,8 @@
             <x-stepper :surat='$surat' />
         @elseif ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'berita-acara-nilai')
             <x-stepper-staff-berita-acara-nilai :surat='$surat' />
+        @elseif ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-pengajuan-atk')
+            <x-stepper-staff-pengajuan-atk :surat='$surat' />
         @elseif(
             ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas') ||
                 ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas-kelompok'))
@@ -137,7 +139,10 @@
         @endif
     </div>
 
-    @if ($approval->surat->jenisSurat->slug != 'berita-acara-nilai')
+    @if (
+        $approval->surat->jenisSurat->slug != 'berita-acara-nilai' &&
+            $approval->surat->jenisSurat->slug != 'surat-pengajuan-atk')
+
         @if ($approval->surat->status == 'selesai')
             <a href="{{ route('print-surat-kaprodi', $approval->surat->id) }}"><button type="button"
                     class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button></a>
@@ -148,5 +153,6 @@
                 tanda tangan berupa QR Code.
             </p>
         @endif
+
     @endif
 </x-layout>

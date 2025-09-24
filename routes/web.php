@@ -132,6 +132,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/pengajuan-surat/store/{jenisSurat:slug}/berita-acara-nilai', [SuratController::class, 'storeBeritaAcaraNilaiByStaff'])->name('staff-store-berita-acara-nilai');
         Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-tugas', [SuratController::class, 'storeSuratTugasByStaff'])->name('staff-store-surat-tugas');
         Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-tugas-kelompok', [SuratController::class, 'storeSuratTugasKelompokByStaff'])->name('staff-store-surat-tugas-kelompok');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-pengajuan-atk', [SuratController::class, 'storeSuratPengajuanAtkByStaff'])->name('staff-store-surat-pengajuan-atk');
         Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->can('staffCanCancelSurat', 'surat')->name('staff-destroy-surat');
         Route::get('/riwayat-pengajuan-surat', [StaffController::class, 'riwayatPengajuanSurat'])->name('staff-riwayat-pengajuan-surat');
         Route::get('/riwayat-pengajuan-surat/show/{surat}', [StaffController::class, 'showDetailPengajuanSuratByStaff'])->can('staffCanViewShowDetailPengajuanSuratByStaff', 'surat')->name('show-detail-pengajuan-surat-staff');

@@ -106,9 +106,19 @@ class JenisSuratSeeder extends Seeder
                 'user_type' => 'staff-dekan'
             ],
             [
-                'name' => 'Legalisir Ijazah',
-                'slug' => 'legalisir-ijazah',
-                'user_type' => 'mahasiswa'
+                'name' => 'Surat Tugas (Individu)',
+                'slug' => 'surat-tugas-from-staff-dekan',
+                'user_type' => 'staff-dekan'
+            ],
+            [
+                'name' => 'Surat Tugas (Kelompok)',
+                'slug' => 'surat-tugas-kelompok-from-staff-dekan',
+                'user_type' => 'staff-dekan'
+            ],
+            [
+                'name' => 'Surat Pengajuan ATK',
+                'slug' => 'surat-pengajuan-atk',
+                'user_type' => 'staff'
             ],
 
         ];
