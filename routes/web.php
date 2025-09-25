@@ -29,6 +29,7 @@ use App\Http\Controllers\StaffWD2Controller;
 use App\Http\Controllers\StaffWD3Controller;
 use App\Http\Controllers\LegalisirController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\KabagController;
 use App\Http\Controllers\JenisSuratController;
 use App\Http\Controllers\StaffDekanController;
 use App\Http\Controllers\StaffNilaiController;
@@ -405,6 +406,26 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile/update/{user}', [StaffDekanController::class, 'updateProfile'])->name('update-profile-staff-dekan');
         Route::get('/profile/reset-password', [StaffDekanController::class, 'resetPasswordPage']);
         Route::put('/profile/reset-password/{user}', [StaffDekanController::class, 'resetPassword'])->name('reset-password-staff-dekan');
+    });
+
+    Route::prefix('kabag')->middleware(['userAccess:17'])->group(function () {
+        // Route::middleware('verified')->group(function () {
+        Route::get('/surat-masuk', [KabagController::class, 'suratMasuk']);
+        Route::get('/riwayat-persetujuan', [KabagController::class, 'riwayatPersetujuan']);
+        Route::get('/riwayat-persetujuan/show/{approval}', [KabagController::class, 'showApproval'])->name('show-approval-kabag');
+        Route::get('/surat-masuk/show/{surat}', [KabagController::class, 'showSuratMasuk'])->name('show-surat-kabag');
+        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->name('preview-surat-kabag');
+        Route::put('/surat-disetujui/{surat}', [KabagController::class, 'setujuiSurat'])->name('setujui-surat-kabag');
+        Route::get('/surat-ditolak/{surat}', [KabagController::class, 'confirmTolakSurat'])->name('confirm-tolak-surat-kabag');
+        Route::put('/surat-ditolak/{surat}', [KabagController::class, 'tolakSurat'])->name('tolak-surat-kabag');
+        Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-kabag');
+        Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-kabag');
+        // });
+        Route::get('/', [KabagController::class, 'dashboard']);
+        Route::get('/profile', [KabagController::class, 'profilePage']);
+        Route::put('/profile/update/{user}', [KabagController::class, 'updateProfile'])->name('update-profile-kabag');
+        Route::get('/profile/reset-password', [KabagController::class, 'resetPasswordPage']);
+        Route::put('/profile/reset-password/{user}', [KabagController::class, 'resetPassword'])->name('reset-password-kabag');
     });
 
     // Route::prefix('pengirim-legalisir')->middleware(['userAccess:15'])->group(function () {

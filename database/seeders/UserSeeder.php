@@ -702,7 +702,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'username' => 'kabag',
-                'name' => 'Arya Permana',
+                'name' => 'Kabag (Arya Permana)',
                 'email' => 'kabagfkip@email.com',
                 'password' => bcrypt('password'),
                 'role_id' => 17,

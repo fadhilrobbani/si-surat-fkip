@@ -578,6 +578,32 @@
                     'dropdown' => [],
                 ],
             ],
+            'kabag' => [
+                [
+                    'link' => 'kabag',
+                    'title' => 'Dashboard',
+                    'icon' => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'kabag/surat-masuk',
+                    'title' => 'Surat Masuk',
+                    'icon' => asset('svg/letter.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'kabag/riwayat-persetujuan',
+                    'title' => 'Riwayat Persetujuan',
+                    'icon' => asset('svg/lettercheck.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Keluar',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
         ];
     @endphp
     @if ($authUser->role_id == 1)
@@ -612,6 +638,8 @@
         <x-sidebar :listsData="$listsData['pengirimLegalisir']" />
     @elseif ($authUser->role_id == 16)
         <x-sidebar :listsData="$listsData['akademikFakultas']" />
+    @elseif ($authUser->role_id == 17)
+        <x-sidebar :listsData="$listsData['kabag']" />
     @endif
 
 

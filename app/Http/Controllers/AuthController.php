@@ -208,6 +208,8 @@ class AuthController extends Controller
                 return redirect('/pengirim-legalisir')->with('success', 'Anda berhasil login');
             } elseif (auth()->user()->role_id == 16) {
                 return redirect('/akademik-fakultas')->with('success', 'Anda berhasil login');
+            } elseif (auth()->user()->role_id == 17) {
+                return redirect('/kabag')->with('success', 'Anda berhasil login');
             }
         }
 
