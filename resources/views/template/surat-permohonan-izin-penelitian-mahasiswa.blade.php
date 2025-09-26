@@ -50,7 +50,8 @@
         <p>3. {{ $surat->data['tujuan3'] }}</p>
     @endif
     <br>
-    <p style="text-align: justify">Sehubungan dengan kegiatan penelitian dan penulisan skripsi mahasiswa berikut, Kami
+    <p style="text-align: justify">Sehubungan dengan kegiatan penelitian dan penulisan skripsi/tesis/disertasi mahasiswa
+        berikut, Kami
         mohon bantuan Bapak/Ibu untuk dapat memberikan izin melakukan penelitian/pengambilan data kepada:</p>
     <br>
     <table class="data-table">
