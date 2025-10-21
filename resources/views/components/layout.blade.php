@@ -572,6 +572,18 @@
                     'dropdown' => [],
                 ],
                 [
+                    'link' => 'akademik-fakultas/pengajuan-surat',
+                    'title' => 'Pengajuan Surat',
+                    'icon' => asset('svg/letterpencil.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'akademik-fakultas/riwayat-pengajuan-surat',
+                    'title' => 'Riwayat Pengajuan',
+                    'icon' => asset('svg/letterline.svg'),
+                    'dropdown' => [],
+                ],
+                [
                     'link' => 'akademik-fakultas/surat-masuk',
                     'title' => 'Surat Masuk',
                     'icon' => asset('svg/letter.svg'),

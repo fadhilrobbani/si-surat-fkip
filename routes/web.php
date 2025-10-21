@@ -295,6 +295,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-akademik-fakultas');
         Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-akademik-fakultas');
         // });
+
+        // Routes for pengajuan surat by akademik-fakultas
+        Route::get('/pengajuan-surat', [AkademikFakultasController::class, 'pengajuanSurat'])->name('akademik-fakultas-pengajuan-surat');
+        Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->name('akademik-fakultas-redirect-form-surat');
+        Route::get('/pengajuan-surat/{jenisSurat:slug}', [SuratController::class, 'create'])->name('akademik-fakultas-show-form-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}', [SuratController::class, 'storeByAkademikFakultas'])->name('akademik-fakultas-store-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-pengajuan-atk-akademik-fakultas', [SuratController::class, 'storeSuratPengajuanAtkByAkademikFakultas'])->name('akademik-fakultas-store-surat-pengajuan-atk');
+        Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->name('akademik-fakultas-destroy-surat');
+        Route::get('/riwayat-pengajuan-surat', [AkademikFakultasController::class, 'riwayatPengajuanSurat'])->name('akademik-fakultas-riwayat-pengajuan-surat');
+        Route::get('/riwayat-pengajuan-surat/show/{surat}', [AkademikFakultasController::class, 'showDetailPengajuanSuratByAkademikFakultas'])->name('show-detail-pengajuan-surat-akademik-fakultas');
+
         Route::get('/', [AkademikFakultasController::class, 'dashboard']);
         Route::get('/profile', [AkademikFakultasController::class, 'profilePage']);
         Route::put('/profile/update/{user}', [AkademikFakultasController::class, 'updateProfile'])->name('update-profile-akademik-fakultas');

@@ -141,7 +141,15 @@
                 </table>
             </div>
 
-            @if ($surat->jenisSurat->slug !== 'legalisir-ijazah')
+            @if ($surat->jenisSurat->user_type == 'akademik' && $surat->jenisSurat->slug == 'surat-pengajuan-atk-akademik')
+                <x-stepper-akademik-pengajuan-atk :surat='$surat' />
+            @elseif (
+                $surat->jenisSurat->user_type == 'akademik_fakultas' &&
+                    $surat->jenisSurat->slug == 'surat-pengajuan-atk-akademik-fakultas')
+                <x-stepper-akademik-fakultas-pengajuan-atk :surat='$surat' />
+            @elseif ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-pengajuan-atk')
+                <x-stepper-staff-pengajuan-atk :surat='$surat' />
+            @elseif ($surat->jenisSurat->slug !== 'legalisir-ijazah')
                 <x-stepper :surat='$surat' />
             @elseif($surat->jenisSurat->slug == 'legalisir-ijazah')
                 <x-stepper-flexible :surat='$surat' />
@@ -187,8 +195,17 @@
                 </div>
 
                 <div class="flex mt-8 justify-between flex-col sm:flex-row ">
-                    <a href="{{ route('preview-surat-akademik-fakultas', $surat->id) }}"><button type="button"
-                            class="text-white w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
+                    @if (
+                        $surat->jenisSurat->user_type == 'akademik_fakultas' &&
+                            $surat->jenisSurat->slug == 'surat-pengajuan-atk-akademik-fakultas')
+                        {{-- Surat pengajuan ATK tidak memiliki preview/cetak --}}
+                        <p class="italic text-slate-500">Surat pengajuan ATK ini tidak memiliki preview/cetak.
+                            Jika terdapat kesalahan dalam surat, silahkan batalkan pengajuan surat.
+                        </p>
+                    @else
+                        <a href="{{ route('preview-surat-akademik-fakultas', $surat->id) }}"><button type="button"
+                                class="text-white w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
+                    @endif
                     <div class="flex flex-col sm:flex-row">
 
 

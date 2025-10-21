@@ -638,4 +638,157 @@ class AkademikFakultasController extends Controller
         $user->update(['password' => bcrypt($request->input('password'))]);
         return redirect('/akademik-fakultas/profile')->with('success', 'Kata sandi sukses diganti!');
     }
+
+    public function pengajuanSurat()
+    {
+        $daftarJenisSurat = JenisSurat::where('user_type', 'akademik_fakultas')->get();
+        return view('akademik-fakultas.pengajuan-surat', [
+            'daftarJenisSurat' => $daftarJenisSurat
+        ]);
+    }
+
+    public function riwayatPengajuanSurat(Request $request)
+    {
+        $daftarPengajuan = Surat::with('pengaju', 'jenisSurat')
+            ->select('surat_tables.*')
+            ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+            ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+            ->where('users.id', auth()->user()->id)
+            ->where('jenis_surat_tables.user_type', 'akademik_fakultas')
+            ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+            ->paginate(10)
+            ->appends(request()->query());
+
+        if ($request->get('search') && $request->get('jenis-surat') && $request->get('status')) {
+            $daftarPengajuan = Surat::with('pengaju', 'jenisSurat')
+                ->select('surat_tables.*')
+                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->where('users.id', auth()->user()->id)
+                ->where('jenis_surat_tables.user_type', 'akademik_fakultas')
+                ->where('jenis_surat_tables.name', 'LIKE', '%' . $request->get('search') . '%')
+                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
+                ->where(function ($query) use ($request) {
+                    if ($request->get('status') == 'expired') {
+                        $query->where('surat_tables.expired_at', '<', Carbon\Carbon::now())
+                            ->where('surat_tables.status', '=', 'diproses');
+                    } else {
+                        $query->where('surat_tables.status', $request->get('status'));
+                    }
+                })
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10)
+                ->appends(request()->query());
+        } elseif ($request->get('search') && $request->get('jenis-surat')) {
+            $daftarPengajuan = Surat::with('pengaju', 'jenisSurat')
+                ->select('surat_tables.*')
+                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->where('users.id', auth()->user()->id)
+                ->where('jenis_surat_tables.user_type', 'akademik_fakultas')
+                ->where('jenis_surat_tables.name', 'LIKE', '%' . $request->get('search') . '%')
+                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10)
+                ->appends(request()->query());
+        } elseif ($request->get('search') && $request->get('status')) {
+            $daftarPengajuan = Surat::with('pengaju', 'jenisSurat')
+                ->select('surat_tables.*')
+                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->where('users.id', auth()->user()->id)
+                ->where('jenis_surat_tables.user_type', 'akademik_fakultas')
+                ->where('jenis_surat_tables.name', 'LIKE', '%' . $request->get('search') . '%')
+                ->where(function ($query) use ($request) {
+                    if ($request->get('status') == 'expired') {
+                        $query->where('surat_tables.expired_at', '<', Carbon\Carbon::now())
+                            ->where('surat_tables.status', '=', 'diproses');
+                    } else {
+                        $query->where('surat_tables.status', $request->get('status'));
+                    }
+                })
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10)
+                ->appends(request()->query());
+        } elseif ($request->get('jenis-surat') && $request->get('status')) {
+            $daftarPengajuan = Surat::with('pengaju', 'jenisSurat')
+                ->select('surat_tables.*')
+                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->where('users.id', auth()->user()->id)
+                ->where('jenis_surat_tables.user_type', 'akademik_fakultas')
+                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
+                ->where(function ($query) use ($request) {
+                    if ($request->get('status') == 'expired') {
+                        $query->where('surat_tables.expired_at', '<', Carbon\Carbon::now())
+                            ->where('surat_tables.status', '=', 'diproses');
+                    } else {
+                        $query->where('surat_tables.status', $request->get('status'));
+                    }
+                })
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10)
+                ->appends(request()->query());
+        } elseif ($request->get('search')) {
+            $daftarPengajuan = Surat::with('pengaju', 'jenisSurat')
+                ->select('surat_tables.*')
+                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->where('users.id', auth()->user()->id)
+                ->where('jenis_surat_tables.user_type', 'akademik_fakultas')
+                ->where('jenis_surat_tables.name', 'LIKE', '%' . $request->get('search') . '%')
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10)
+                ->appends(request()->query());
+        } elseif ($request->get('jenis-surat')) {
+            $daftarPengajuan = Surat::with('pengaju', 'jenisSurat')
+                ->select('surat_tables.*')
+                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->where('users.id', auth()->user()->id)
+                ->where('jenis_surat_tables.user_type', 'akademik_fakultas')
+                ->where('surat_tables.jenis_surat_id', $request->get('jenis-surat'))
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10)
+                ->appends(request()->query());
+        } elseif ($request->get('status')) {
+            $daftarPengajuan = Surat::with('pengaju', 'jenisSurat')
+                ->select('surat_tables.*')
+                ->join('jenis_surat_tables', 'jenis_surat_tables.id', '=', 'surat_tables.jenis_surat_id')
+                ->join('users', 'users.id', '=', 'surat_tables.pengaju_id')
+                ->where('users.id', auth()->user()->id)
+                ->where('jenis_surat_tables.user_type', 'akademik_fakultas')
+                ->where(function ($query) use ($request) {
+                    if ($request->get('status') == 'expired') {
+                        $query->where('surat_tables.expired_at', '<', Carbon\Carbon::now())
+                            ->where('surat_tables.status', '=', 'diproses');
+                    } else {
+                        $query->where('surat_tables.status', $request->get('status'));
+                    }
+                })
+                ->orderBy('surat_tables.created_at', $request->get('order') != 'asc' ? 'desc' : 'asc')
+                ->paginate(10)
+                ->appends(request()->query());
+        }
+
+        $daftarJenisSurat = JenisSurat::where('user_type', 'akademik_fakultas')->get();
+        $daftarStatus = ['diproses', 'selesai', 'ditolak'];
+
+        return view('akademik-fakultas.riwayat-pengajuan', [
+            'daftarPengajuan' => $daftarPengajuan,
+            'daftarJenisSurat' => $daftarJenisSurat,
+            'daftarStatus' => $daftarStatus
+        ]);
+    }
+
+    public function showDetailPengajuanSuratByAkademikFakultas(Surat $surat)
+    {
+        if ($surat->pengaju_id != auth()->user()->id) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses ke surat ini');
+        }
+
+        return view('akademik-fakultas.show-surat', [
+            'surat' => $surat
+        ]);
+    }
 }
