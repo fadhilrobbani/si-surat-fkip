@@ -378,6 +378,18 @@
                     'dropdown' => [],
                 ],
                 [
+                    'link' => 'akademik/pengajuan-surat',
+                    'title' => 'Pengajuan Surat',
+                    'icon' => asset('svg/letterpencil.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'akademik/riwayat-pengajuan-surat',
+                    'title' => 'Riwayat Pengajuan',
+                    'icon' => asset('svg/letterline.svg'),
+                    'dropdown' => [],
+                ],
+                [
                     'link' => 'logout',
                     'title' => 'Keluar',
                     'icon' => asset('svg/signout.svg'),

@@ -120,15 +120,22 @@ class JenisSuratSeeder extends Seeder
                 'slug' => 'surat-pengajuan-atk',
                 'user_type' => 'staff'
             ],
+            [
+                'name' => 'Surat Pengajuan ATK',
+                'slug' => 'surat-pengajuan-atk-akademik',
+                'user_type' => 'akademik'
+            ],
 
         ];
 
         foreach ($daftarJenisSurat as $jenisSurat) {
-            JenisSurat::create([
-                'name' => $jenisSurat['name'],
-                'slug' => $jenisSurat['slug'],
-                'user_type' => $jenisSurat['user_type']
-            ]);
+            JenisSurat::firstOrCreate(
+                ['slug' => $jenisSurat['slug']],
+                [
+                    'name' => $jenisSurat['name'],
+                    'user_type' => $jenisSurat['user_type']
+                ]
+            );
         }
     }
 }

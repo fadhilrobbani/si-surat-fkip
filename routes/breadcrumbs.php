@@ -68,6 +68,24 @@ Breadcrumbs::for('staff-dekan-show-pengajuan-surat', function (BreadcrumbTrail $
     $trail->push('Detail Pengajuan Surat', route('show-detail-pengajuan-surat-staff-dekan', $surat));
 });
 
+Breadcrumbs::for('akademik-pengajuan-surat', function (BreadcrumbTrail $trail) {
+    $trail->push('Pilih Surat', '/akademik/pengajuan-surat');
+});
+
+Breadcrumbs::for('akademik-pengajuan-surat-form', function (BreadcrumbTrail $trail, JenisSurat $jenisSurat) {
+    $trail->parent('akademik-pengajuan-surat');
+    $trail->push('Form Pengajuan Surat', route('akademik-show-form-surat', $jenisSurat));
+});
+
+Breadcrumbs::for('akademik-riwayat-pengajuan-surat', function (BreadcrumbTrail $trail) {
+    $trail->push('Riwayat Pengajuan Surat', '/akademik/riwayat-pengajuan-surat');
+});
+
+Breadcrumbs::for('akademik-show-pengajuan-surat', function (BreadcrumbTrail $trail, Surat $surat) {
+    $trail->parent('akademik-riwayat-pengajuan-surat');
+    $trail->push('Detail Pengajuan Surat', route('show-detail-pengajuan-surat-akademik', $surat));
+});
+
 Breadcrumbs::for('surat-masuk', function (BreadcrumbTrail $trail) {
     $trail->push('Surat Masuk', '/' . auth()->user()->role->name . '/surat-masuk');
 });

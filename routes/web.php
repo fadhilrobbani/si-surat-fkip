@@ -265,6 +265,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->can('akademikCanPrintSurat', 'surat')->name('print-surat-akademik');
         Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->can('akademikCanShowLampiranSurat', 'surat')->name('show-file-akademik');
         // });
+
+        // Routes for pengajuan surat by akademik
+        Route::get('/pengajuan-surat', [AkademikController::class, 'pengajuanSurat'])->name('akademik-pengajuan-surat');
+        Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->name('akademik-redirect-form-surat');
+        Route::get('/pengajuan-surat/{jenisSurat:slug}', [SuratController::class, 'create'])->name('akademik-show-form-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}', [SuratController::class, 'storeByAkademik'])->name('akademik-store-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-pengajuan-atk-akademik', [SuratController::class, 'storeSuratPengajuanAtkByAkademik'])->name('akademik-store-surat-pengajuan-atk');
+        Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->name('akademik-destroy-surat');
+        Route::get('/riwayat-pengajuan-surat', [AkademikController::class, 'riwayatPengajuanSurat'])->name('akademik-riwayat-pengajuan-surat');
+        Route::get('/riwayat-pengajuan-surat/show/{surat}', [AkademikController::class, 'showDetailPengajuanSuratByAkademik'])->name('show-detail-pengajuan-surat-akademik');
+
         Route::get('/', [AkademikController::class, 'dashboard']);
         Route::get('/profile', [AkademikController::class, 'profilePage']);
         Route::put('/profile/update/{user}', [AkademikController::class, 'updateProfile'])->name('update-profile-akademik');
