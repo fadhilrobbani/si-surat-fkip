@@ -130,6 +130,12 @@
             <x-stepper-staff-berita-acara-nilai :surat='$surat' />
         @elseif ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-pengajuan-atk')
             <x-stepper-staff-pengajuan-atk :surat='$surat' />
+        @elseif($surat->jenisSurat->user_type == 'akademik' && $surat->jenisSurat->slug == 'surat-pengajuan-atk-akademik')
+            <x-stepper-akademik-pengajuan-atk :surat='$surat' />
+        @elseif(
+            $surat->jenisSurat->user_type == 'akademik_fakultas' &&
+                $surat->jenisSurat->slug == 'surat-pengajuan-atk-akademik-fakultas')
+            <x-stepper-akademik-fakultas-pengajuan-atk :surat='$surat' />
         @elseif(
             ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas') ||
                 ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas-kelompok'))
