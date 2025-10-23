@@ -242,6 +242,23 @@ class KabagController extends Controller
                     ->get()
             ]);
         }
+
+        if ($surat->jenisSurat->user_type == 'tata-usaha' && $surat->jenisSurat->slug == 'surat-pengajuan-atk-tata-usaha') {
+            return view('kabag.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 7)
+                    ->get()
+            ]);
+        }
+        if ($surat->jenisSurat->user_type == 'unit-kerjasama' && $surat->jenisSurat->slug == 'surat-pengajuan-atk-unit-kerjasama') {
+            return view('kabag.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 7)
+                    ->get()
+            ]);
+        }
     }
 
     public function setujuiSurat(Request $request, Surat $surat)

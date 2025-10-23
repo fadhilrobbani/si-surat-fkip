@@ -136,6 +136,12 @@
             $surat->jenisSurat->user_type == 'akademik_fakultas' &&
                 $surat->jenisSurat->slug == 'surat-pengajuan-atk-akademik-fakultas')
             <x-stepper-akademik-fakultas-pengajuan-atk :surat='$surat' />
+        @elseif($surat->jenisSurat->user_type == 'kemahasiswaan' && $surat->jenisSurat->slug == 'surat-pengajuan-atk-kemahasiswaan')
+            <x-stepper-kemahasiswaan-pengajuan-atk :surat='$surat' />
+        @elseif($surat->jenisSurat->user_type == 'tata-usaha' && $surat->jenisSurat->slug == 'surat-pengajuan-atk-tata-usaha')
+            <x-stepper-tata-usaha-pengajuan-atk :surat='$surat' />
+        @elseif($surat->jenisSurat->user_type == 'unit-kerjasama' && $surat->jenisSurat->slug == 'surat-pengajuan-atk-unit-kerjasama')
+            <x-stepper-unit-kerjasama-pengajuan-atk :surat='$surat' />
         @elseif(
             ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas') ||
                 ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas-kelompok'))
@@ -150,7 +156,9 @@
             $approval->surat->jenisSurat->slug != 'surat-pengajuan-atk' &&
             $approval->surat->jenisSurat->slug != 'surat-pengajuan-atk-akademik' &&
             $approval->surat->jenisSurat->slug != 'surat-pengajuan-atk-akademik-fakultas' &&
-            $approval->surat->jenisSurat->slug != 'surat-pengajuan-atk-kemahasiswaan')
+            $approval->surat->jenisSurat->slug != 'surat-pengajuan-atk-kemahasiswaan' &&
+            $approval->surat->jenisSurat->slug != 'surat-pengajuan-atk-tata-usaha' &&
+            $approval->surat->jenisSurat->slug != 'surat-pengajuan-atk-unit-kerjasama')
 
         @if ($approval->surat->status == 'selesai')
             <a href="{{ route('print-surat-kabag', $approval->surat->id) }}"><button type="button"

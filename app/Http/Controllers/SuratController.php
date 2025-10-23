@@ -247,6 +247,28 @@ class SuratController extends Controller
                     ->get()
             ]);
         }
+
+        if ($jenisSurat->slug == 'surat-pengajuan-atk-tata-usaha') {
+            return view('tata-usaha.formsurat.form-surat-pengajuan-atk', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 17) // Langsung ke Kabag
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
+
+        if ($jenisSurat->slug == 'surat-pengajuan-atk-unit-kerjasama') {
+            return view('unit-kerjasama.formsurat.form-surat-pengajuan-atk', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 17) // Langsung ke Kabag
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
         return abort(404);
     }
 
@@ -1435,6 +1457,82 @@ class SuratController extends Controller
             return $this->storeSuratPengajuanAtkByKemahasiswaan($request, $jenisSurat);
         }
 
+        return redirect()->back()->with('error', 'Jenis surat tidak tersedia');
+    }
+
+    public function storeSuratPengajuanAtkByTataUsaha(Request $request, JenisSurat $jenisSurat)
+    {
+        if ($jenisSurat->slug != 'surat-pengajuan-atk-tata-usaha') {
+            return redirect()->back()->with('error', 'Jenis surat tidak sesuai');
+        }
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'email' => 'required|email',
+            'pengajuan-atk' => 'required|file|mimes:jpeg,png,jpg,pdf|max:10240',
+        ]);
+        $surat = new Surat;
+        $surat->pengaju_id = auth()->user()->id;
+        // Langsung ke Kabag (role_id 17)
+        $surat->current_user_id = $request->input('penerima');
+        $surat->status = 'diproses';
+        $surat->jenis_surat_id = $jenisSurat->id;
+        $surat->expired_at = now()->addDays(30);
+        $surat->data = [
+            'nama' => $request->input('name'),
+            'username' => $request->input('username'),
+            'email' => $request->input('email'),
+        ];
+        $surat->files = [
+            'pengajuanAtk' => $request->file('pengajuan-atk')->store('lampiran'),
+        ];
+        $surat->save();
+        return redirect('/tata-usaha/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
+    }
+
+    public function storeByTataUsaha(Request $request, JenisSurat $jenisSurat)
+    {
+        if ($jenisSurat->slug == 'surat-pengajuan-atk-tata-usaha') {
+            return $this->storeSuratPengajuanAtkByTataUsaha($request, $jenisSurat);
+        }
+        return redirect()->back()->with('error', 'Jenis surat tidak tersedia');
+    }
+
+    public function storeSuratPengajuanAtkByUnitKerjasama(Request $request, JenisSurat $jenisSurat)
+    {
+        if ($jenisSurat->slug != 'surat-pengajuan-atk-unit-kerjasama') {
+            return redirect()->back()->with('error', 'Jenis surat tidak sesuai');
+        }
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'email' => 'required|email',
+            'pengajuan-atk' => 'required|file|mimes:jpeg,png,jpg,pdf|max:10240',
+        ]);
+        $surat = new Surat;
+        $surat->pengaju_id = auth()->user()->id;
+        // Langsung ke Kabag (role_id 17)
+        $surat->current_user_id = $request->input('penerima');
+        $surat->status = 'diproses';
+        $surat->jenis_surat_id = $jenisSurat->id;
+        $surat->expired_at = now()->addDays(30);
+        $surat->data = [
+            'nama' => $request->input('name'),
+            'username' => $request->input('username'),
+            'email' => $request->input('email'),
+        ];
+        $surat->files = [
+            'pengajuanAtk' => $request->file('pengajuan-atk')->store('lampiran'),
+        ];
+        $surat->save();
+        return redirect('/unit-kerjasama/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
+    }
+
+    public function storeByUnitKerjasama(Request $request, JenisSurat $jenisSurat)
+    {
+        if ($jenisSurat->slug == 'surat-pengajuan-atk-unit-kerjasama') {
+            return $this->storeSuratPengajuanAtkByUnitKerjasama($request, $jenisSurat);
+        }
         return redirect()->back()->with('error', 'Jenis surat tidak tersedia');
     }
 

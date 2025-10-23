@@ -721,6 +721,28 @@ class UserSeeder extends Seeder
                 'jurusan_id' => null,
                 'program_studi_id' => null,
                 'email_verified_at' => now()
+            ],
+            [
+                'username' => 'tata_usaha',
+                'name' => 'Tata Usaha',
+                'email' => 'tatausaha@email.com',
+                'password' => bcrypt('password'),
+                'role_id' => 19,
+                'nip' => null,
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
+            ],
+            [
+                'username' => 'unit_kerjasama',
+                'name' => 'Unit Kerjasama',
+                'email' => 'unitkerjasama@email.com',
+                'password' => bcrypt('password'),
+                'role_id' => 20,
+                'nip' => null,
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
             ]
         ];
 

@@ -36,6 +36,8 @@ use App\Http\Controllers\StaffNilaiController;
 use App\Http\Controllers\JenisLegalisirController;
 use App\Http\Controllers\AkademikFakultasController;
 use App\Http\Controllers\KemahasiswaanController;
+use App\Http\Controllers\TataUsahaController;
+use App\Http\Controllers\UnitKerjasamaController;
 use App\Http\Controllers\PengirimLegalisirController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -340,6 +342,58 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile/update/{user}', [KemahasiswaanController::class, 'updateProfile'])->name('update-profile-kemahasiswaan');
         Route::get('/profile/reset-password', [KemahasiswaanController::class, 'resetPasswordPage']);
         Route::put('/profile/reset-password/{user}', [KemahasiswaanController::class, 'resetPassword'])->name('reset-password-kemahasiswaan');
+    });
+
+    Route::prefix('tata-usaha')->middleware(['userAccess:19'])->group(function () {
+        // Route::middleware('verified')->group(function () {
+        Route::get('/surat-masuk', [TataUsahaController::class, 'suratMasuk']);
+        Route::get('/riwayat-persetujuan', [TataUsahaController::class, 'riwayatPersetujuan']);
+        Route::get('/riwayat-persetujuan/show/{approval}', [TataUsahaController::class, 'showApproval'])->name('show-approval-tata-usaha');
+        Route::get('/surat-masuk/show/{surat}', [TataUsahaController::class, 'showSuratMasuk'])->name('show-surat-masuk-tata-usaha');
+        Route::post('/surat-masuk/setujui/{surat}', [TataUsahaController::class, 'setujuiSurat'])->name('setujui-surat-tata-usaha');
+        Route::get('/surat-masuk/tolak/{surat}', [TataUsahaController::class, 'confirmTolakSurat'])->name('confirm-tolak-surat-tata-usaha');
+        Route::post('/surat-masuk/tolak/{surat}', [TataUsahaController::class, 'tolakSurat'])->name('tolak-surat-tata-usaha');
+        // });
+        // Routes for pengajuan surat by tata-usaha
+        Route::get('/pengajuan-surat', [TataUsahaController::class, 'pengajuanSurat'])->name('tata-usaha-pengajuan-surat');
+        Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->name('tata-usaha-redirect-form-surat');
+        Route::get('/pengajuan-surat/{jenisSurat:slug}', [SuratController::class, 'create'])->name('tata-usaha-show-form-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}', [SuratController::class, 'storeByTataUsaha'])->name('tata-usaha-store-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-pengajuan-atk-tata-usaha', [SuratController::class, 'storeSuratPengajuanAtkByTataUsaha'])->name('tata-usaha-store-surat-pengajuan-atk');
+        Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->name('tata-usaha-destroy-surat');
+        Route::get('/riwayat-pengajuan-surat', [TataUsahaController::class, 'riwayatPengajuanSurat'])->name('tata-usaha-riwayat-pengajuan-surat');
+        Route::get('/riwayat-pengajuan-surat/show/{surat}', [TataUsahaController::class, 'showDetailPengajuanSuratByTataUsaha'])->name('show-detail-pengajuan-surat-tata-usaha');
+        Route::get('/', [TataUsahaController::class, 'dashboard']);
+        Route::get('/profile', [TataUsahaController::class, 'profilePage']);
+        Route::put('/profile/update/{user}', [TataUsahaController::class, 'updateProfile'])->name('update-profile-tata-usaha');
+        Route::get('/profile/reset-password', [TataUsahaController::class, 'resetPasswordPage']);
+        Route::put('/profile/reset-password/{user}', [TataUsahaController::class, 'resetPassword'])->name('reset-password-tata-usaha');
+    });
+
+    Route::prefix('unit-kerjasama')->middleware(['userAccess:20'])->group(function () {
+        // Route::middleware('verified')->group(function () {
+        Route::get('/surat-masuk', [UnitKerjasamaController::class, 'suratMasuk']);
+        Route::get('/riwayat-persetujuan', [UnitKerjasamaController::class, 'riwayatPersetujuan']);
+        Route::get('/riwayat-persetujuan/show/{approval}', [UnitKerjasamaController::class, 'showApproval'])->name('show-approval-unit-kerjasama');
+        Route::get('/surat-masuk/show/{surat}', [UnitKerjasamaController::class, 'showSuratMasuk'])->name('show-surat-masuk-unit-kerjasama');
+        Route::post('/surat-masuk/setujui/{surat}', [UnitKerjasamaController::class, 'setujuiSurat'])->name('setujui-surat-unit-kerjasama');
+        Route::get('/surat-masuk/tolak/{surat}', [UnitKerjasamaController::class, 'confirmTolakSurat'])->name('confirm-tolak-surat-unit-kerjasama');
+        Route::post('/surat-masuk/tolak/{surat}', [UnitKerjasamaController::class, 'tolakSurat'])->name('tolak-surat-unit-kerjasama');
+        // });
+        // Routes for pengajuan surat by unit-kerjasama
+        Route::get('/pengajuan-surat', [UnitKerjasamaController::class, 'pengajuanSurat'])->name('unit-kerjasama-pengajuan-surat');
+        Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->name('unit-kerjasama-redirect-form-surat');
+        Route::get('/pengajuan-surat/{jenisSurat:slug}', [SuratController::class, 'create'])->name('unit-kerjasama-show-form-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}', [SuratController::class, 'storeByUnitKerjasama'])->name('unit-kerjasama-store-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-pengajuan-atk-unit-kerjasama', [SuratController::class, 'storeSuratPengajuanAtkByUnitKerjasama'])->name('unit-kerjasama-store-surat-pengajuan-atk');
+        Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->name('unit-kerjasama-destroy-surat');
+        Route::get('/riwayat-pengajuan-surat', [UnitKerjasamaController::class, 'riwayatPengajuanSurat'])->name('unit-kerjasama-riwayat-pengajuan-surat');
+        Route::get('/riwayat-pengajuan-surat/show/{surat}', [UnitKerjasamaController::class, 'showDetailPengajuanSuratByUnitKerjasama'])->name('show-detail-pengajuan-surat-unit-kerjasama');
+        Route::get('/', [UnitKerjasamaController::class, 'dashboard']);
+        Route::get('/profile', [UnitKerjasamaController::class, 'profilePage']);
+        Route::put('/profile/update/{user}', [UnitKerjasamaController::class, 'updateProfile'])->name('update-profile-unit-kerjasama');
+        Route::get('/profile/reset-password', [UnitKerjasamaController::class, 'resetPasswordPage']);
+        Route::put('/profile/reset-password/{user}', [UnitKerjasamaController::class, 'resetPassword'])->name('reset-password-unit-kerjasama');
     });
 
     Route::prefix('staff-nilai')->middleware(['userAccess:7'])->group(function () {

@@ -628,6 +628,58 @@
                     'dropdown' => [],
                 ],
             ],
+            'tata-usaha' => [
+                [
+                    'link' => 'tata-usaha',
+                    'title' => 'Dashboard',
+                    'icon' => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'tata-usaha/pengajuan-surat',
+                    'title' => 'Pengajuan Surat',
+                    'icon' => asset('svg/letterpencil.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'tata-usaha/riwayat-pengajuan-surat',
+                    'title' => 'Riwayat Pengajuan',
+                    'icon' => asset('svg/letterline.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Keluar',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
+            'unit-kerjasama' => [
+                [
+                    'link' => 'unit-kerjasama',
+                    'title' => 'Dashboard',
+                    'icon' => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'unit-kerjasama/pengajuan-surat',
+                    'title' => 'Pengajuan Surat',
+                    'icon' => asset('svg/letterpencil.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'unit-kerjasama/riwayat-pengajuan-surat',
+                    'title' => 'Riwayat Pengajuan',
+                    'icon' => asset('svg/letterline.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Keluar',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
             'kabag' => [
                 [
                     'link' => 'kabag',
@@ -692,6 +744,10 @@
         <x-sidebar :listsData="$listsData['kabag']" />
     @elseif ($authUser->role_id == 18)
         <x-sidebar :listsData="$listsData['kemahasiswaan']" />
+    @elseif ($authUser->role_id == 19)
+        <x-sidebar :listsData="$listsData['tata-usaha']" />
+    @elseif ($authUser->role_id == 20)
+        <x-sidebar :listsData="$listsData['unit-kerjasama']" />
     @endif
 
 

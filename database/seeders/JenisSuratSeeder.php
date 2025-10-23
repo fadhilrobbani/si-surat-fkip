@@ -135,6 +135,16 @@ class JenisSuratSeeder extends Seeder
                 'slug' => 'surat-pengajuan-atk-kemahasiswaan',
                 'user_type' => 'kemahasiswaan'
             ],
+            [
+                'name' => 'Surat Pengajuan ATK',
+                'slug' => 'surat-pengajuan-atk-tata-usaha',
+                'user_type' => 'tata-usaha'
+            ],
+            [
+                'name' => 'Surat Pengajuan ATK',
+                'slug' => 'surat-pengajuan-atk-unit-kerjasama',
+                'user_type' => 'unit-kerjasama'
+            ],
 
         ];
 

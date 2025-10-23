@@ -123,6 +123,44 @@ Breadcrumbs::for('kemahasiswaan-show-pengajuan-surat', function (BreadcrumbTrail
     $trail->push('Detail Pengajuan Surat', route('show-detail-pengajuan-surat-kemahasiswaan', $surat));
 });
 
+// Breadcrumbs for tata-usaha
+Breadcrumbs::for('tata-usaha-pengajuan-surat', function (BreadcrumbTrail $trail) {
+    $trail->push('Pilih Surat', '/tata-usaha/pengajuan-surat');
+});
+
+Breadcrumbs::for('tata-usaha-pengajuan-surat-form', function (BreadcrumbTrail $trail, JenisSurat $jenisSurat) {
+    $trail->parent('tata-usaha-pengajuan-surat');
+    $trail->push('Form Pengajuan Surat', route('tata-usaha-show-form-surat', $jenisSurat));
+});
+
+Breadcrumbs::for('tata-usaha-riwayat-pengajuan-surat', function (BreadcrumbTrail $trail) {
+    $trail->push('Riwayat Pengajuan Surat', '/tata-usaha/riwayat-pengajuan-surat');
+});
+
+Breadcrumbs::for('tata-usaha-show-pengajuan-surat', function (BreadcrumbTrail $trail, Surat $surat) {
+    $trail->parent('tata-usaha-riwayat-pengajuan-surat');
+    $trail->push('Detail Pengajuan Surat', route('show-detail-pengajuan-surat-tata-usaha', $surat));
+});
+
+// Breadcrumbs for unit-kerjasama
+Breadcrumbs::for('unit-kerjasama-pengajuan-surat', function (BreadcrumbTrail $trail) {
+    $trail->push('Pilih Surat', '/unit-kerjasama/pengajuan-surat');
+});
+
+Breadcrumbs::for('unit-kerjasama-pengajuan-surat-form', function (BreadcrumbTrail $trail, JenisSurat $jenisSurat) {
+    $trail->parent('unit-kerjasama-pengajuan-surat');
+    $trail->push('Form Pengajuan Surat', route('unit-kerjasama-show-form-surat', $jenisSurat));
+});
+
+Breadcrumbs::for('unit-kerjasama-riwayat-pengajuan-surat', function (BreadcrumbTrail $trail) {
+    $trail->push('Riwayat Pengajuan Surat', '/unit-kerjasama/riwayat-pengajuan-surat');
+});
+
+Breadcrumbs::for('unit-kerjasama-show-pengajuan-surat', function (BreadcrumbTrail $trail, Surat $surat) {
+    $trail->parent('unit-kerjasama-riwayat-pengajuan-surat');
+    $trail->push('Detail Pengajuan Surat', route('show-detail-pengajuan-surat-unit-kerjasama', $surat));
+});
+
 Breadcrumbs::for('surat-masuk', function (BreadcrumbTrail $trail) {
     $trail->push('Surat Masuk', '/' . auth()->user()->role->name . '/surat-masuk');
 });
