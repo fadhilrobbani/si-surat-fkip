@@ -602,6 +602,32 @@
                     'dropdown' => [],
                 ],
             ],
+            'kemahasiswaan' => [
+                [
+                    'link' => 'kemahasiswaan',
+                    'title' => 'Dashboard',
+                    'icon' => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'kemahasiswaan/pengajuan-surat',
+                    'title' => 'Pengajuan Surat',
+                    'icon' => asset('svg/letterpencil.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'kemahasiswaan/riwayat-pengajuan-surat',
+                    'title' => 'Riwayat Pengajuan',
+                    'icon' => asset('svg/letterline.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Keluar',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
             'kabag' => [
                 [
                     'link' => 'kabag',
@@ -664,6 +690,8 @@
         <x-sidebar :listsData="$listsData['akademikFakultas']" />
     @elseif ($authUser->role_id == 17)
         <x-sidebar :listsData="$listsData['kabag']" />
+    @elseif ($authUser->role_id == 18)
+        <x-sidebar :listsData="$listsData['kemahasiswaan']" />
     @endif
 
 

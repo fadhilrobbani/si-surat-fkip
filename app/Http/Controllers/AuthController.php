@@ -210,6 +210,8 @@ class AuthController extends Controller
                 return redirect('/akademik-fakultas')->with('success', 'Anda berhasil login');
             } elseif (auth()->user()->role_id == 17) {
                 return redirect('/kabag')->with('success', 'Anda berhasil login');
+            } elseif (auth()->user()->role_id == 18) {
+                return redirect('/kemahasiswaan')->with('success', 'Anda berhasil login');
             }
         }
 
@@ -249,6 +251,8 @@ class AuthController extends Controller
                 return redirect('/staff-dekan');
             } elseif (auth()->user()->role_id == 15) {
                 return redirect('/pengirim-legalisir');
+            } elseif (auth()->user()->role_id == 18) {
+                return redirect('/kemahasiswaan');
             }
         }
         return redirect('/');

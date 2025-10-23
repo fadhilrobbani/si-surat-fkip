@@ -710,13 +710,24 @@ class UserSeeder extends Seeder
                 'jurusan_id' => null,
                 'program_studi_id' => null,
                 'email_verified_at' => now()
+            ],
+            [
+                'username' => 'kemahasiswaan',
+                'name' => 'Kemahasiswaan',
+                'email' => 'kemahasiswaan@email.com',
+                'password' => bcrypt('password'),
+                'role_id' => 18,
+                'nip' => null,
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
             ]
         ];
 
         foreach ($users as $user) {
-            User::create(
+            User::firstOrCreate(
+                ['username' => $user['username']],
                 [
-                    'username' => $user['username'],
                     'name' => $user['name'],
                     'email' => $user['email'],
                     'password' => $user['password'],

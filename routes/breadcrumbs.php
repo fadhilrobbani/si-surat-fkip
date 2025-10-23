@@ -105,6 +105,24 @@ Breadcrumbs::for('akademik-fakultas-show-pengajuan-surat', function (BreadcrumbT
     $trail->push('Detail Pengajuan Surat', route('show-detail-pengajuan-surat-akademik-fakultas', $surat));
 });
 
+Breadcrumbs::for('kemahasiswaan-pengajuan-surat', function (BreadcrumbTrail $trail) {
+    $trail->push('Pilih Surat', '/kemahasiswaan/pengajuan-surat');
+});
+
+Breadcrumbs::for('kemahasiswaan-pengajuan-surat-form', function (BreadcrumbTrail $trail, JenisSurat $jenisSurat) {
+    $trail->parent('kemahasiswaan-pengajuan-surat');
+    $trail->push('Form Pengajuan Surat', route('kemahasiswaan-show-form-surat', $jenisSurat));
+});
+
+Breadcrumbs::for('kemahasiswaan-riwayat-pengajuan-surat', function (BreadcrumbTrail $trail) {
+    $trail->push('Riwayat Pengajuan Surat', '/kemahasiswaan/riwayat-pengajuan-surat');
+});
+
+Breadcrumbs::for('kemahasiswaan-show-pengajuan-surat', function (BreadcrumbTrail $trail, Surat $surat) {
+    $trail->parent('kemahasiswaan-riwayat-pengajuan-surat');
+    $trail->push('Detail Pengajuan Surat', route('show-detail-pengajuan-surat-kemahasiswaan', $surat));
+});
+
 Breadcrumbs::for('surat-masuk', function (BreadcrumbTrail $trail) {
     $trail->push('Surat Masuk', '/' . auth()->user()->role->name . '/surat-masuk');
 });

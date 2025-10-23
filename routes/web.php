@@ -35,6 +35,7 @@ use App\Http\Controllers\StaffDekanController;
 use App\Http\Controllers\StaffNilaiController;
 use App\Http\Controllers\JenisLegalisirController;
 use App\Http\Controllers\AkademikFakultasController;
+use App\Http\Controllers\KemahasiswaanController;
 use App\Http\Controllers\PengirimLegalisirController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -311,6 +312,34 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile/update/{user}', [AkademikFakultasController::class, 'updateProfile'])->name('update-profile-akademik-fakultas');
         Route::get('/profile/reset-password', [AkademikFakultasController::class, 'resetPasswordPage']);
         Route::put('/profile/reset-password/{user}', [AkademikFakultasController::class, 'resetPassword'])->name('reset-password-akademik-fakultas');
+    });
+
+    Route::prefix('kemahasiswaan')->middleware(['userAccess:18'])->group(function () {
+        // Route::middleware('verified')->group(function () {
+        Route::get('/surat-masuk', [KemahasiswaanController::class, 'suratMasuk']);
+        Route::get('/riwayat-persetujuan', [KemahasiswaanController::class, 'riwayatPersetujuan']);
+        Route::get('/riwayat-persetujuan/show/{approval}', [KemahasiswaanController::class, 'showApproval'])->name('show-approval-kemahasiswaan');
+        Route::get('/surat-masuk/show/{surat}', [KemahasiswaanController::class, 'showSuratMasuk'])->name('show-surat-masuk-kemahasiswaan');
+        Route::post('/surat-masuk/setujui/{surat}', [KemahasiswaanController::class, 'setujuiSurat'])->name('setujui-surat-kemahasiswaan');
+        Route::get('/surat-masuk/tolak/{surat}', [KemahasiswaanController::class, 'confirmTolakSurat'])->name('confirm-tolak-surat-kemahasiswaan');
+        Route::post('/surat-masuk/tolak/{surat}', [KemahasiswaanController::class, 'tolakSurat'])->name('tolak-surat-kemahasiswaan');
+        // });
+
+        // Routes for pengajuan surat by kemahasiswaan
+        Route::get('/pengajuan-surat', [KemahasiswaanController::class, 'pengajuanSurat'])->name('kemahasiswaan-pengajuan-surat');
+        Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->name('kemahasiswaan-redirect-form-surat');
+        Route::get('/pengajuan-surat/{jenisSurat:slug}', [SuratController::class, 'create'])->name('kemahasiswaan-show-form-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}', [SuratController::class, 'storeByKemahasiswaan'])->name('kemahasiswaan-store-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-pengajuan-atk-kemahasiswaan', [SuratController::class, 'storeSuratPengajuanAtkByKemahasiswaan'])->name('kemahasiswaan-store-surat-pengajuan-atk');
+        Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->name('kemahasiswaan-destroy-surat');
+        Route::get('/riwayat-pengajuan-surat', [KemahasiswaanController::class, 'riwayatPengajuanSurat'])->name('kemahasiswaan-riwayat-pengajuan-surat');
+        Route::get('/riwayat-pengajuan-surat/show/{surat}', [KemahasiswaanController::class, 'showDetailPengajuanSuratByKemahasiswaan'])->name('show-detail-pengajuan-surat-kemahasiswaan');
+
+        Route::get('/', [KemahasiswaanController::class, 'dashboard']);
+        Route::get('/profile', [KemahasiswaanController::class, 'profilePage']);
+        Route::put('/profile/update/{user}', [KemahasiswaanController::class, 'updateProfile'])->name('update-profile-kemahasiswaan');
+        Route::get('/profile/reset-password', [KemahasiswaanController::class, 'resetPasswordPage']);
+        Route::put('/profile/reset-password/{user}', [KemahasiswaanController::class, 'resetPassword'])->name('reset-password-kemahasiswaan');
     });
 
     Route::prefix('staff-nilai')->middleware(['userAccess:7'])->group(function () {

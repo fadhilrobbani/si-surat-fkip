@@ -147,7 +147,10 @@
 
     @if (
         $approval->surat->jenisSurat->slug != 'berita-acara-nilai' &&
-            $approval->surat->jenisSurat->slug != 'surat-pengajuan-atk')
+            $approval->surat->jenisSurat->slug != 'surat-pengajuan-atk' &&
+            $approval->surat->jenisSurat->slug != 'surat-pengajuan-atk-akademik' &&
+            $approval->surat->jenisSurat->slug != 'surat-pengajuan-atk-akademik-fakultas' &&
+            $approval->surat->jenisSurat->slug != 'surat-pengajuan-atk-kemahasiswaan')
 
         @if ($approval->surat->status == 'selesai')
             <a href="{{ route('print-surat-kabag', $approval->surat->id) }}"><button type="button"
