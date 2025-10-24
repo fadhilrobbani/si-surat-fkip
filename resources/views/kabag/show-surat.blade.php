@@ -170,6 +170,12 @@
             $surat->jenisSurat->user_type == 'akademik_fakultas' &&
                 $surat->jenisSurat->slug == 'surat-pengajuan-atk-akademik-fakultas')
             <x-stepper-akademik-fakultas-pengajuan-atk :surat='$surat' />
+        @elseif($surat->jenisSurat->user_type == 'kemahasiswaan' && $surat->jenisSurat->slug == 'surat-pengajuan-atk-kemahasiswaan')
+            <x-stepper-kemahasiswaan-pengajuan-atk :surat='$surat' />
+        @elseif($surat->jenisSurat->user_type == 'tata-usaha' && $surat->jenisSurat->slug == 'surat-pengajuan-atk-tata-usaha')
+            <x-stepper-tata-usaha-pengajuan-atk :surat='$surat' />
+        @elseif($surat->jenisSurat->user_type == 'unit-kerjasama' && $surat->jenisSurat->slug == 'surat-pengajuan-atk-unit-kerjasama')
+            <x-stepper-unit-kerjasama-pengajuan-atk :surat='$surat' />
         @endif
     </div>
 

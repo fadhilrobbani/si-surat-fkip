@@ -249,6 +249,25 @@ elseif($surat->jenisSurat->user_type == 'unit-kerjasama' && $surat->jenisSurat->
     <x-stepper-unit-kerjasama-pengajuan-atk :surat='$surat' />
 ```
 
+### 9b. Kabag Show-Surat View Updates - **CRITICAL FIX**
+**File**: `resources/views/kabag/show-surat.blade.php`
+
+**Issue**: Missing stepper components for ATK submissions from kemahasiswaan, tata-usaha, and unit-kerjasama roles in Kabag view
+
+**Root Cause**: Stepper components hanya ada untuk beberapa kondisi tapi tidak untuk ATK submissions dari ketiga role ini
+
+**Solution**: Tambahkan stepper conditions di lines 173-179:
+```php
+@elseif($surat->jenisSurat->user_type == 'kemahasiswaan' && $surat->jenisSurat->slug == 'surat-pengajuan-atk-kemahasiswaan')
+    <x-stepper-kemahasiswaan-pengajuan-atk :surat='$surat' />
+@elseif($surat->jenisSurat->user_type == 'tata-usaha' && $surat->jenisSurat->slug == 'surat-pengajuan-atk-tata-usaha')
+    <x-stepper-tata-usaha-pengajuan-atk :surat='$surat' />
+@elseif($surat->jenisSurat->user_type == 'unit-kerjasama' && $surat->jenisSurat->slug == 'surat-pengajuan-atk-unit-kerjasama')
+    <x-stepper-unit-kerjasama-pengajuan-atk :surat='$surat' />
+```
+
+**Impact**: Sekarang saat Kabag melihat detail surat masuk untuk ATK submissions dari kemahasiswaan, tata-usaha, dan unit-kerjasama, stepper tracking akan muncul dengan benar.
+
 ### 10. Stepper Component
 **File**: `resources/views/components/stepper-unit-kerjasama-pengajuan-atk.blade.php`
 - Component untuk tracking status pengajuan ATK
@@ -539,6 +558,7 @@ public static function form(Form $form): Form
 - [x] Added proper password confirmation fields
 - [x] Improved form layout with 2-column design
 - [x] **Fixed Filament JenisSuratResource user_type dropdown options**
+- [x] **Fixed missing stepper components for ATK submissions in Kabag show-surat view**
 
 ### 🐛 Additional Fix: Filament JenisSuratResource Update
 
