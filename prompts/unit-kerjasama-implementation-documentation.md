@@ -538,5 +538,48 @@ public static function form(Form $form): Form
 - [x] Fixed form styling to match other resources
 - [x] Added proper password confirmation fields
 - [x] Improved form layout with 2-column design
+- [x] **Fixed Filament JenisSuratResource user_type dropdown options**
+
+### 🐛 Additional Fix: Filament JenisSuratResource Update
+
+**Issue**: Dropdown `Tipe Pengguna` di Filament admin untuk menambah jenis surat baru tidak menampilkan opsi user_type baru (akademik, akademik_fakultas, kemahasiswaan, tata-usaha, unit-kerjasama)
+
+**Root Cause**: Di `app/Filament/Resources/JenisSuratResource.php`, field `user_type` menggunakan hardcoded options yang tidak sinkron dengan database.
+
+**Location**: `app/Filament/Resources/JenisSuratResource.php:63-72`
+
+**Before Fix**:
+```php
+Select::make('user_type')
+    ->label('Tipe Pengguna')
+    ->required()
+    ->options(['mahasiswa' => 'mahasiswa', 'staff' => 'staff', 'staff-dekan' => 'staff-dekan']),
+```
+
+**After Fix**:
+```php
+Select::make('user_type')
+    ->label('Tipe Pengguna')
+    ->required()
+    ->options([
+        'mahasiswa' => 'Mahasiswa',
+        'staff' => 'Staff',
+        'staff-dekan' => 'Staff Dekan',
+        'akademik' => 'Akademik',
+        'akademik_fakultas' => 'Akademik Fakultas',
+        'kemahasiswaan' => 'Kemahasiswaan',
+        'tata-usaha' => 'Tata Usaha',
+        'unit-kerjasama' => 'Unit Kerjasama',
+    ]),
+```
+
+**Impact**: Sekarang dropdown `Tipe Pengguna` di Filament admin akan menampilkan semua 8 opsi user type yang tersedia, memungkinkan admin untuk membuat jenis surat baru untuk semua role yang ada.
+
+## 🔧 Important Note for Future Jenis Surat Creation
+
+Ketika menambah jenis surat baru di Filament admin:
+1. **Pilih user_type yang sesuai** dari dropdown yang sudah lengkap
+2. **Pastikan slug unik** dan deskriptif jelas
+3. **Gunakan konsistensi penamaan** (contoh: `surat-pengajuan-xyz-user_type`)
 
 Implementasi Unit Kerjasama ini sekarang fully functional dan siap digunakan dengan semua fitur yang sama persis dengan role Kemahasiswaan dan Tata Usaha, mengikuti best practices dan maintainability standards yang ada.

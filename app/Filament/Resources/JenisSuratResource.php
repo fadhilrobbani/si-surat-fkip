@@ -60,7 +60,16 @@ class JenisSuratResource extends Resource
                         Select::make('user_type')
                             ->label('Tipe Pengguna')
                             ->required()
-                            ->options(['mahasiswa' => 'mahasiswa', 'staff' => 'staff', 'staff-dekan' => 'staff-dekan']),
+                            ->options([
+                                'mahasiswa' => 'Mahasiswa',
+                                'staff' => 'Staff',
+                                'staff-dekan' => 'Staff Dekan',
+                                'akademik' => 'Akademik',
+                                'akademik_fakultas' => 'Akademik Fakultas',
+                                'kemahasiswaan' => 'Kemahasiswaan',
+                                'tata-usaha' => 'Tata Usaha',
+                                'unit-kerjasama' => 'Unit Kerjasama',
+                            ]),
 
                     ]
                 )->columnSpan(2)
