@@ -102,27 +102,27 @@ Route::middleware('auth')->group(function () {
     });
     Route::prefix('mahasiswa')->middleware(['userAccess:2'])->group(function () {
         Route::get('/', [MahasiswaController::class, 'dashboard']);
-        Route::middleware('verified')->group(function () {
+        // Route::middleware('verified')->group(function () {
 
-            Route::get('/pengajuan-surat', [MahasiswaController::class, 'pengajuanSurat']);
-            Route::get('/pengajuan-surat/{jenisSurat:slug}', [SuratController::class, 'create'])->name('show-form-surat');
-            Route::get('/pengajuan-legalisir', [MahasiswaController::class, 'pengajuanLegalisir']);
-            Route::get('/pengajuan-legalisir/{jenisSurat:slug}', [LegalisirController::class, 'create'])->name('show-form-legalisir');
-            Route::post('/pengajuan-legalisir', [JenisLegalisirController::class, 'redirectToFormLegalisir'])->name('redirect-form-legalisir');
-            // Route::post('/pengajuan-surat/store/6', [SuratController::class, 'storeSuratKeteranganAlumni'])->name('store-surat-alumni');
-            // Route::post('/pengajuan-surat/store/8', [SuratController::class, 'storeSuratKeteranganLulus'])->name('store-surat-lulus');
-            Route::post('/pengajuan-surat/store/{jenisSurat:slug}', [SuratController::class, 'store'])->name('store-surat');
-            Route::post('/pengajuan-legalisir/store/{jenisSurat:slug}', [LegalisirController::class, 'store'])->name('store-pengajuan-legalisir');
-            Route::put('/pengajuan-legalisir/konfirmasi-pembayaran/{surat}', [LegalisirController::class, 'konfirmasiPembayaran'])->name('konfirmasi-pembayaran-legalisir');
-            Route::put('/pengajuan-legalisir/konfirmasi-selesai/{surat}', [LegalisirController::class, 'konfirmasiSelesai'])->name('konfirmasi-selesai-legalisir');
-            // Route::get('/pengajuan-surat/{jenisSurat:slug}/template',[PDFController::class,'templateSurat'])->name('template-surat');
-            Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->can('mahasiswaCanCancelSurat', 'surat')->name('destroy-surat');
-            Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->name('redirect-form-surat');
-            Route::get('/riwayat-pengajuan-surat', [MahasiswaController::class, 'riwayatPengajuanSurat']);
-            Route::get('/riwayat-pengajuan-surat/show/{surat}', [MahasiswaController::class, 'lihatSurat'])->can('mahasiswaCanViewShowRiwayatPengajuanSurat', 'surat')->name('lihat-surat-mahasiswa');
-            Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->can('mahasiswaCanPrintSurat', 'surat')->name('print-surat-mahasiswa');
-            Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->can('mahasiswaCanShowLampiranSurat', 'surat')->name('show-file-mahasiswa');
-        });
+        Route::get('/pengajuan-surat', [MahasiswaController::class, 'pengajuanSurat']);
+        Route::get('/pengajuan-surat/{jenisSurat:slug}', [SuratController::class, 'create'])->name('show-form-surat');
+        Route::get('/pengajuan-legalisir', [MahasiswaController::class, 'pengajuanLegalisir']);
+        Route::get('/pengajuan-legalisir/{jenisSurat:slug}', [LegalisirController::class, 'create'])->name('show-form-legalisir');
+        Route::post('/pengajuan-legalisir', [JenisLegalisirController::class, 'redirectToFormLegalisir'])->name('redirect-form-legalisir');
+        // Route::post('/pengajuan-surat/store/6', [SuratController::class, 'storeSuratKeteranganAlumni'])->name('store-surat-alumni');
+        // Route::post('/pengajuan-surat/store/8', [SuratController::class, 'storeSuratKeteranganLulus'])->name('store-surat-lulus');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}', [SuratController::class, 'store'])->name('store-surat');
+        Route::post('/pengajuan-legalisir/store/{jenisSurat:slug}', [LegalisirController::class, 'store'])->name('store-pengajuan-legalisir');
+        Route::put('/pengajuan-legalisir/konfirmasi-pembayaran/{surat}', [LegalisirController::class, 'konfirmasiPembayaran'])->name('konfirmasi-pembayaran-legalisir');
+        Route::put('/pengajuan-legalisir/konfirmasi-selesai/{surat}', [LegalisirController::class, 'konfirmasiSelesai'])->name('konfirmasi-selesai-legalisir');
+        // Route::get('/pengajuan-surat/{jenisSurat:slug}/template',[PDFController::class,'templateSurat'])->name('template-surat');
+        Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->can('mahasiswaCanCancelSurat', 'surat')->name('destroy-surat');
+        Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->name('redirect-form-surat');
+        Route::get('/riwayat-pengajuan-surat', [MahasiswaController::class, 'riwayatPengajuanSurat']);
+        Route::get('/riwayat-pengajuan-surat/show/{surat}', [MahasiswaController::class, 'lihatSurat'])->can('mahasiswaCanViewShowRiwayatPengajuanSurat', 'surat')->name('lihat-surat-mahasiswa');
+        Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->can('mahasiswaCanPrintSurat', 'surat')->name('print-surat-mahasiswa');
+        Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->can('mahasiswaCanShowLampiranSurat', 'surat')->name('show-file-mahasiswa');
+        // });
         Route::get('/profile', [MahasiswaController::class, 'profilePage']);
         Route::put('/profile/update/{user}', [MahasiswaController::class, 'updateProfile'])->name('update-profile');
         Route::get('/profile/reset-password', [MahasiswaController::class, 'resetPasswordPage']);
