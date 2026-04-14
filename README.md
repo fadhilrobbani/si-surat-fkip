@@ -11,20 +11,47 @@ Pastikan sudah terinstall komponen berikut:
 3. Composer
 4. MySQL
 
-## Cara install
+## Cara Install
+
+Ada dua metode instalasi: menggunakan lingkungan *native* (XAMPP/Laragon) atau menggunakan Docker (Laravel Sail). **Direkomendasikan menggunakan Docker** untuk menghindari konflik/masalah versi PHP.
+
+### Metode 1: Menggunakan Docker (Laravel Sail - Direkomendasikan)
+
+Pastikan **Docker Desktop** atau **Docker Engine** sudah menyala di laptopmu.
 
 1. Clone repository ini `git clone https://github.com/fadhilrobbani/si-surat-fkip.git`.
-2. Masuk ke direktori si-surat-fkip. Buat file `.env` di level direktori paling atas (selevel dengan `.env.example`), lalu copy isi file `.env.example` ke dalam `.env`. Atau jika menggunakan bash/powershell gunakan perintah `cp .env.example .env`
-3. Ganti nilai `DB_DATABASE` di file `.env` sesuai nama yang diinginkan, misal `si_surat_fkip`
-4. Pastikan server mysql sudah menyala di port 3306, bisa via XAMPP, Laragon, dan sebagainya.
+2. Masuk ke direktori `si-surat-fkip` dan copy `.env.example` menjadi `.env`.
+3. Jalankan *container sementara* untuk menginstall dependensi composer awal secara aman:
+   ```bash
+   docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/html laravelsail/php82-composer:latest composer install --ignore-platform-reqs
+   ```
+4. Jalankan kontainer utama di mode background:
+   ```bash
+   ./vendor/bin/sail up -d
+   ```
+5. Susun *key*, basis data, dan modul eksternal:
+   ```bash
+   ./vendor/bin/sail artisan key:generate
+   ./vendor/bin/sail artisan migrate --seed
+   ./vendor/bin/sail pnpm install
+   ./vendor/bin/sail pnpm build
+   ```
+   *Catatan: Jika koneksi MySQL di dalam Docker konflik dengan host lokal, pastikan `FORWARD_DB_PORT` di `.env` diset ke port aman (contoh: 3307), dan ganti `DB_HOST=mysql`.*
+6. Buka *website* di `http://localhost/`.
+
+### Metode 2: Manual / Native
+
+1. Clone repository ini `git clone https://github.com/fadhilrobbani/si-surat-fkip.git`.
+2. Masuk ke direktori si-surat-fkip. Buat file `.env` di level direktori paling atas lalu *copy* isi file `.env.example` ke dalam `.env`.
+3. Ganti nilai `DB_DATABASE` di file `.env` sesuai nama database yang kamu siapkan.
+4. Pastikan server mysql sudah menyala di port 3306 (via XAMPP, dsb).
 5. Jalankan `composer install`
-6. Jalankan `npm install` (pastikan nodejs sudah terinstall)
-7. Jalankan `npm run build`
-8. Jalankan `npm run dev`
-9. Buka terminal baru dengan direktori yang masih sama
-10. Jalankan `php artisan key:generate`
-11. Jalankan `php artisan migrate --seed`
-12. Jalankan `php artisan serve`. Lalu buka alamatnya di browser (biasanya di `http://127.0.0.1:8000/`)
+6. Jalankan `pnpm install` (pastikan nodejs sudah terinstall)
+7. Jalankan `pnpm build`
+8. Jalankan `php artisan key:generate`
+9. Jalankan `php artisan migrate --seed`
+10. Jalankan server lokal: `php artisan serve` & `pnpm dev`.
+11. Buka alamatnya di browser (biasanya di `http://127.0.0.1:8000/`)
 
 ## catatan untuk deployment
 
@@ -55,4 +82,4 @@ MAIL_FROM_NAME="FKIP UNIB"
 
 ## Dokumentasi
 
-1. [Panduan Alur Kerja (Workflow) Surat](DOCUMENTATION_WORKFLOW.md)
+1. [Panduan Alur Kerja (Workflow) Surat](docs/DOCUMENTATION_WORKFLOW.md)
