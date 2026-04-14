@@ -52,3 +52,7 @@ MAIL_FROM_NAME="FKIP UNIB"
 
 1. Daftar akun sementara ada pada direktori database/seeders/UserSeeder.php
 2. Mahasiswa, Staff, Kaprodi, Wakil Dekan, dan Akademik login melalui halaman utama `/` sedangkan admin melalui halaman `/admin`.
+
+## Dokumentasi
+
+1. [Panduan Alur Kerja (Workflow) Surat](DOCUMENTATION_WORKFLOW.md)
