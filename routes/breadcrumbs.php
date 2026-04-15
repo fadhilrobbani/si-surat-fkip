@@ -161,6 +161,25 @@ Breadcrumbs::for('unit-kerjasama-show-pengajuan-surat', function (BreadcrumbTrai
     $trail->push('Detail Pengajuan Surat', route('show-detail-pengajuan-surat-unit-kerjasama', $surat));
 });
 
+// Breadcrumbs for lab-pmipa
+Breadcrumbs::for('lab-pmipa-pengajuan-surat', function (BreadcrumbTrail $trail) {
+    $trail->push('Pilih Surat', '/lab-pmipa/pengajuan-surat');
+});
+
+Breadcrumbs::for('lab-pmipa-pengajuan-surat-form', function (BreadcrumbTrail $trail, JenisSurat $jenisSurat) {
+    $trail->parent('lab-pmipa-pengajuan-surat');
+    $trail->push('Form Pengajuan Surat', route('lab-pmipa-show-form-surat', $jenisSurat));
+});
+
+Breadcrumbs::for('lab-pmipa-riwayat-pengajuan-surat', function (BreadcrumbTrail $trail) {
+    $trail->push('Riwayat Pengajuan Surat', '/lab-pmipa/riwayat-pengajuan-surat');
+});
+
+Breadcrumbs::for('lab-pmipa-show-pengajuan-surat', function (BreadcrumbTrail $trail, Surat $surat) {
+    $trail->parent('lab-pmipa-riwayat-pengajuan-surat');
+    $trail->push('Detail Pengajuan Surat', route('show-detail-pengajuan-surat-lab-pmipa', $surat));
+});
+
 Breadcrumbs::for('surat-masuk', function (BreadcrumbTrail $trail) {
     $trail->push('Surat Masuk', '/' . auth()->user()->role->name . '/surat-masuk');
 });

@@ -35,6 +35,7 @@ class RoleSeeder extends Seeder
             ['name' => 'kemahasiswaan', 'description' => 'Kemahasiswaan'],
             ['name' => 'tata-usaha', 'description' => 'Tata Usaha'],
             ['name' => 'unit-kerjasama', 'description' => 'Unit Kerjasama'],
+            ['name' => 'lab-pmipa', 'description' => 'Lab PMIPA'],
         ];
         foreach ($roles as $role) {
             Role::firstOrCreate(

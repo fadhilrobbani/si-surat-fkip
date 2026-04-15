@@ -145,6 +145,11 @@ class JenisSuratSeeder extends Seeder
                 'slug' => 'surat-pengajuan-atk-unit-kerjasama',
                 'user_type' => 'unit-kerjasama'
             ],
+            [
+                'name' => 'Surat Pengajuan ATK',
+                'slug' => 'surat-pengajuan-atk-lab-pmipa',
+                'user_type' => 'lab-pmipa'
+            ],
 
         ];
 

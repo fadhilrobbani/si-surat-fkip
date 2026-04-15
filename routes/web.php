@@ -38,6 +38,7 @@ use App\Http\Controllers\AkademikFakultasController;
 use App\Http\Controllers\KemahasiswaanController;
 use App\Http\Controllers\TataUsahaController;
 use App\Http\Controllers\UnitKerjasamaController;
+use App\Http\Controllers\LabPmipaController;
 use App\Http\Controllers\PengirimLegalisirController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -394,6 +395,24 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile/update/{user}', [UnitKerjasamaController::class, 'updateProfile'])->name('update-profile-unit-kerjasama');
         Route::get('/profile/reset-password', [UnitKerjasamaController::class, 'resetPasswordPage']);
         Route::put('/profile/reset-password/{user}', [UnitKerjasamaController::class, 'resetPassword'])->name('reset-password-unit-kerjasama');
+    });
+
+    Route::prefix('lab-pmipa')->middleware(['userAccess:21'])->group(function () {
+        // Routes for pengajuan surat by lab-pmipa
+        Route::get('/pengajuan-surat', [LabPmipaController::class, 'pengajuanSurat'])->name('lab-pmipa-pengajuan-surat');
+        Route::post('/pengajuan-surat', [JenisSuratController::class, 'redirectToFormSurat'])->name('lab-pmipa-redirect-form-surat');
+        Route::get('/pengajuan-surat/{jenisSurat:slug}', [SuratController::class, 'create'])->name('lab-pmipa-show-form-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}', [SuratController::class, 'storeByLabPmipa'])->name('lab-pmipa-store-surat');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-pengajuan-atk-lab-pmipa', [SuratController::class, 'storeSuratPengajuanAtkByLabPmipa'])->name('lab-pmipa-store-surat-pengajuan-atk');
+        Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->name('lab-pmipa-destroy-surat');
+        Route::get('/riwayat-pengajuan-surat', [LabPmipaController::class, 'riwayatPengajuanSurat'])->name('lab-pmipa-riwayat-pengajuan-surat');
+        Route::get('/riwayat-pengajuan-surat/show/{surat}', [LabPmipaController::class, 'showDetailPengajuanSuratByLabPmipa'])->name('show-detail-pengajuan-surat-lab-pmipa');
+
+        Route::get('/', [LabPmipaController::class, 'dashboard']);
+        Route::get('/profile', [LabPmipaController::class, 'profilePage']);
+        Route::put('/profile/update/{user}', [LabPmipaController::class, 'updateProfile'])->name('update-profile-lab-pmipa');
+        Route::get('/profile/reset-password', [LabPmipaController::class, 'resetPasswordPage']);
+        Route::put('/profile/reset-password/{user}', [LabPmipaController::class, 'resetPassword'])->name('reset-password-lab-pmipa');
     });
 
     Route::prefix('staff-nilai')->middleware(['userAccess:7'])->group(function () {

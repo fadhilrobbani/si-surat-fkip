@@ -656,27 +656,53 @@
             ],
             'unit-kerjasama' => [
                 [
-                    'link' => 'unit-kerjasama',
-                    'title' => 'Dashboard',
-                    'icon' => asset('svg/piechart.svg'),
+                    'link'     => 'unit-kerjasama',
+                    'title'    => 'Dashboard',
+                    'icon'     => asset('svg/piechart.svg'),
                     'dropdown' => [],
                 ],
                 [
-                    'link' => 'unit-kerjasama/pengajuan-surat',
-                    'title' => 'Pengajuan Surat',
-                    'icon' => asset('svg/letterpencil.svg'),
+                    'link'     => 'unit-kerjasama/pengajuan-surat',
+                    'title'    => 'Pengajuan Surat',
+                    'icon'     => asset('svg/letterpencil.svg'),
                     'dropdown' => [],
                 ],
                 [
-                    'link' => 'unit-kerjasama/riwayat-pengajuan-surat',
-                    'title' => 'Riwayat Pengajuan',
-                    'icon' => asset('svg/letterline.svg'),
+                    'link'     => 'unit-kerjasama/riwayat-pengajuan-surat',
+                    'title'    => 'Riwayat Pengajuan',
+                    'icon'     => asset('svg/letterline.svg'),
                     'dropdown' => [],
                 ],
                 [
-                    'link' => 'logout',
-                    'title' => 'Keluar',
-                    'icon' => asset('svg/signout.svg'),
+                    'link'     => 'logout',
+                    'title'    => 'Keluar',
+                    'icon'     => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
+            'lab-pmipa' => [
+                [
+                    'link'     => 'lab-pmipa',
+                    'title'    => 'Dashboard',
+                    'icon'     => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link'     => 'lab-pmipa/pengajuan-surat',
+                    'title'    => 'Pengajuan Surat',
+                    'icon'     => asset('svg/letterpencil.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link'     => 'lab-pmipa/riwayat-pengajuan-surat',
+                    'title'    => 'Riwayat Pengajuan',
+                    'icon'     => asset('svg/letterline.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link'     => 'logout',
+                    'title'    => 'Keluar',
+                    'icon'     => asset('svg/signout.svg'),
                     'dropdown' => [],
                 ],
             ],
@@ -748,6 +774,8 @@
         <x-sidebar :listsData="$listsData['tata-usaha']" />
     @elseif ($authUser->role_id == 20)
         <x-sidebar :listsData="$listsData['unit-kerjasama']" />
+    @elseif ($authUser->role_id == 21)
+        <x-sidebar :listsData="$listsData['lab-pmipa']" />
     @endif
 
 

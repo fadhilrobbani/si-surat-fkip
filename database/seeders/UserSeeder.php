@@ -743,6 +743,17 @@ class UserSeeder extends Seeder
                 'jurusan_id' => null,
                 'program_studi_id' => null,
                 'email_verified_at' => now()
+            ],
+            [
+                'username' => 'lab_pmipa',
+                'name' => 'Lab PMIPA',
+                'email' => 'labpmipa@email.com',
+                'password' => bcrypt('password'),
+                'role_id' => 21,
+                'nip' => null,
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
             ]
         ];
 

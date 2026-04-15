@@ -38,8 +38,27 @@ Pastikan **Docker Desktop** atau **Docker Engine** sudah menyala di laptopmu.
    ```
    *Catatan: Jika koneksi MySQL di dalam Docker konflik dengan host lokal, pastikan `FORWARD_DB_PORT` di `.env` diset ke port aman (contoh: 3307), dan ganti `DB_HOST=mysql`.*
 6. Buka *website* di `http://localhost/`.
-
-### Metode 2: Manual / Native
+ 
+ ## 7. Sistem Environment & Troubleshooting (Laravel Sail)
+ 
+ Saat mengembangkan menggunakan **Laravel Sail (Docker)** terutama di lingkungan Windows (WSL), terdapat beberapa masalah umum terkait *Symbolic Link* (Penyimpanan).
+ 
+ ### Masalah Symlink `public/storage`
+ Jika Anda baru saja melakukan *clone* repository atau berpindah branch, link `public/storage` seringkali rusak atau berubah menjadi file teks biasa (bukan folder alias). Hal ini menyebabkan file lampiran muncul sebagai **404 Not Found** atau URL mengandung `/file-tidak-ditemukan/`.
+ 
+ **Cara Memperbaiki:**
+ Jalankan perintah berikut di terminal (di luar container atau via sail):
+ ```bash
+ # Hapus link lama yang rusak
+ rm public/storage
+ 
+ # Buat ulang link di dalam container
+ ./vendor/bin/sail php artisan storage:link
+ ```
+ 
+ Pastikan status link sudah benar dengan menjalankan `ls -la public/storage`. Link yang benar haruslah menunjuk ke `/var/www/html/storage/app/public`.
+ 
+ ### Metode 2: Manual / Native
 
 1. Clone repository ini `git clone https://github.com/fadhilrobbani/si-surat-fkip.git`.
 2. Masuk ke direktori si-surat-fkip. Buat file `.env` di level direktori paling atas lalu *copy* isi file `.env.example` ke dalam `.env`.
@@ -83,3 +102,4 @@ MAIL_FROM_NAME="FKIP UNIB"
 ## Dokumentasi
 
 1. [Panduan Alur Kerja (Workflow) Surat](docs/DOCUMENTATION_WORKFLOW.md)
+2. [Panduan Menambahkan Role & Workflow Baru](docs/GUIDE_ADDING_NEW_ROLE.md)
