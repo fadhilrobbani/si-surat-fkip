@@ -126,10 +126,40 @@ graph TD
 ---
 
 ## Ringkasan Peran Utama (Role ID)
-*   **Role 3 (Staff Prodi)**: Pengaju / Verifikator Awal Mahasiswa.
-*   **Role 4 (Kaprodi)**: Verifikator tingkat Prodi.
-*   **Role 6 (Akademik)**: Verifikator tingkat Fakultas / Tujuan Akhir Mhs.
-*   **Role 17 (Kabag)**: Verifikator Akhir Keuangan & ATK.
-*   **Role 8 (Dekan) / 5, 9, 10 (WD)**: Otoritas tertinggi penandatangan.
+
+Berikut adalah daftar lengkap ID Role yang digunakan dalam sistem, dikelompokkan berdasarkan fungsinya:
+
+### 1. Pimpinan (Otoritas Tanda Tangan)
+*   **Role 8**: Dekan
+*   **Role 5**: Wakil Dekan 1 (Bidang Akademik)
+*   **Role 9**: Wakil Dekan 2 (Bidang Umum & Keuangan)
+*   **Role 10**: Wakil Dekan 3 (Bidang Kemahasiswaan & Alumni)
+
+### 2. Struktur Program Studi
+*   **Role 3**: Staff Prodi (Verifikator Awal / Pengaju Internal)
+*   **Role 4**: Kaprodi (Verifikator tingkat Program Studi)
+
+### 3. Layanan Akademik & Fakultas
+*   **Role 6**: Akademik (Verifikator tingkat Fakultas / Tujuan Akhir Mhs)
+*   **Role 16**: Akademik Fakultas (Unit Verifikasi Tambahan)
+*   **Role 7**: Staff Nilai (Eksekutor input nilai pada alur BAN)
+*   **Role 15**: Pengirim Legalisir (Proses logistik pengiriman ijazah)
+
+### 4. Administrasi Umum & Unit Kerja
+*   **Role 17**: Kabag (Kepala Bagian - Verifikator Akhir Keuangan/ATK)
+*   **Role 19**: Tata Usaha (Unit Kerja Nonprodi)
+*   **Role 20**: Unit Kerjasama (Unit Kerja Nonprodi)
+*   **Role 21**: Lab PMIPA (Unit Laboratorium)
+*   **Role 18**: Kemahasiswaan (Unit Kerja Nonprodi)
+
+### 5. Staff Pendukung (Staf Administrasi Pimpinan)
+*   **Role 14**: Staff Dekan (Drafting Surat Keluar / Surat Tugas)
+*   **Role 11**: Staff Wakil Dekan 1
+*   **Role 12**: Staff Wakil Dekan 2
+*   **Role 13**: Staff Wakil Dekan 3
+
+### 6. Sistem & Pengguna Umum
+*   **Role 1**: Admin (Akses Developer / Manajemen Database)
+*   **Role 2**: Mahasiswa (Pengaju utama berbagai jenis surat akademik)
 
 
