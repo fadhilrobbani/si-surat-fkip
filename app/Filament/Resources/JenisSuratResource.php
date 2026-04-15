@@ -69,6 +69,7 @@ class JenisSuratResource extends Resource
                                 'kemahasiswaan' => 'Kemahasiswaan',
                                 'tata-usaha' => 'Tata Usaha',
                                 'unit-kerjasama' => 'Unit Kerjasama',
+                                'lab-pmipa' => 'Lab PMIPA',
                             ]),
 
                     ]

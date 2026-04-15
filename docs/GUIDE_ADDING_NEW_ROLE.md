@@ -130,6 +130,19 @@ Jika jenis surat tersebut tidak menghasilkan file PDF (hanya formulir digital), 
 @endif
 ```
 
+### B. Update JenisSuratResource (Filament)
+Agar role baru muncul di pilihan dropdown saat membuat Jenis Surat baru di dashboard admin, Anda harus mendaftarkannya di `app/Filament/Resources/JenisSuratResource.php`.
+- Cari komponen `Select::make('user_type')`.
+- Tambahkan role baru ke dalam array `options`.
+- Contoh:
+```php
+Select::make('user_type')
+    ->options([
+        ...
+        'new-role' => 'Nama Role',
+    ]),
+```
+
 ---
 
 ## 6. Prosedur Deployment & Setup Produksi (SSH)
