@@ -51,7 +51,7 @@
     @endif
     <br>
     <p style="text-align: justify">Sehubungan dengan kegiatan observasi pembelajaran mahasiswa
-        berikut, Kami mohon bantuan Bapak/Ibu untuk dapat memberikan izin melakukan observasi pembelajaran/pengambilan data kepada:</p>
+        berikut, kami mohon bantuan Bapak/Ibu untuk dapat memberikan izin melakukan observasi pembelajaran kepada:</p>
     <br>
     <table class="data-table">
         <tr>
