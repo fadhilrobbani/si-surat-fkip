@@ -76,6 +76,11 @@ class JenisSuratSeeder extends Seeder
                 'user_type' => 'mahasiswa'
             ],
             [
+                'name' => 'Surat Permohonan Izin Observasi Pembelajaran Mahasiswa',
+                'slug' => 'surat-permohonan-izin-observasi-pembelajaran-mahasiswa',
+                'user_type' => 'mahasiswa'
+            ],
+            [
                 'name' => 'Surat Pengantar Pembayaran Uang Yudisium',
                 'slug' => 'surat-pengantar-pembayaran-uang-yudisium',
                 'user_type' => 'mahasiswa'

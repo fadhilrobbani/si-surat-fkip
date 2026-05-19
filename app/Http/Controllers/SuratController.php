@@ -87,6 +87,17 @@ class SuratController extends Controller
             ]);
         }
 
+        if ($jenisSurat->slug == 'surat-permohonan-izin-observasi-pembelajaran-mahasiswa') {
+            return view('mahasiswa.formsurat.form-permohonan-izin-observasi-pembelajaran', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 3)
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->get()
+            ]);
+        }
+
         if ($jenisSurat->slug == 'surat-permohonan-izin-prapenelitian-mahasiswa') {
             return view('mahasiswa.formsurat.form-permohonan-izin-prapenelitian', [
                 'jenisSurat' => $jenisSurat,
@@ -620,6 +631,68 @@ class SuratController extends Controller
                 'tempatPenelitian' => $request->input('tempat-penelitian'),
                 'waktuMulaiPenelitian' => formatTimestampToOnlyDateIndonesian($request->input('waktu-mulai-penelitian')),
                 'waktuSelesaiPenelitian' => formatTimestampToOnlyDateIndonesian($request->input('waktu-selesai-penelitian')),
+
+            ];
+            if ($request->hasFile('berkas-proposal')) {
+                $request->validate([
+                    'berkas-proposal' => 'file|mimes:pdf|max:10240',
+                ]);
+
+                $surat->files = [
+                    'berkasProposal' => $request->file('berkas-proposal')->store('lampiran')
+                ];
+            }
+
+
+            if (
+                Surat::where('jenis_surat_id', $jenisSurat->id)
+                ->where('pengaju_id', auth()->user()->id)
+                ->where('status', 'diproses')
+                ->where('created_at', '>=', now()->subDays(30)) // Menambahkan kondisi untuk created_at
+                ->count() > 0
+            ) {
+                return redirect()->back()->with('deleted', 'Anda masih memiliki surat dengan jenis ini yang sedang diproses. Silahkan tunggu hingga selesai/ditolak atau batalkan pengajuan sebelumnya');
+            }
+            $surat->save();
+            return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
+        } elseif ($jenisSurat->slug == 'surat-permohonan-izin-observasi-pembelajaran-mahasiswa') {
+
+            $request->validate([
+                'name' => 'required',
+                'username' => 'required',
+                'program-studi' => 'required',
+                'email' => 'required|email',
+                'tujuan1' => 'required',
+                'tujuan2' => '',
+                'tujuan3' => '',
+                'judul-skripsi' => 'required',
+                'tempat-penelitian' => 'required',
+                'waktu-mulai-penelitian' => 'required|date',
+                'waktu-selesai-penelitian' => 'required|date',
+                'berkas-proposal' => 'required|file|mimes:pdf|max:10240',
+
+            ]);
+
+            $programStudi = ProgramStudi::select('name')->where('id', '=', $request->input('program-studi'))->first();
+
+            $surat = new Surat;
+            $surat->pengaju_id = auth()->user()->id;
+            $surat->current_user_id = $request->input('penerima');
+            $surat->status = 'diproses';
+            $surat->jenis_surat_id = $jenisSurat->id;
+            $surat->expired_at = now()->addDays(30);
+            $surat->data = [
+                'nama' => $request->input('name'),
+                'npm' => $request->input('username'),
+                'programStudi' => $programStudi->name,
+                'email' => $request->input('email'),
+                'tujuan1' => $request->input('tujuan1'),
+                'tujuan2' => $request->input('tujuan2'),
+                'tujuan3' => $request->input('tujuan3'),
+                'judulSkripsi' => $request->input('judul-skripsi'),
+                'tempatObservasi' => $request->input('tempat-penelitian'),
+                'waktuMulaiObservasi' => formatTimestampToOnlyDateIndonesian($request->input('waktu-mulai-penelitian')),
+                'waktuSelesaiObservasi' => formatTimestampToOnlyDateIndonesian($request->input('waktu-selesai-penelitian')),
 
             ];
             if ($request->hasFile('berkas-proposal')) {
