@@ -1147,11 +1147,13 @@ class SuratController extends Controller
             'email' => 'required|email',
             'nama-dosen.*' => 'required',
             'nip-dosen.*' => 'required',
+            'pangkat-dosen.*' => 'nullable',
             'jabatan-dosen.*' => 'required',
             'acara' => 'required',
             'tempat' => 'required',
             'waktu-mulai-penugasan' => 'required|date',
             'waktu-selesai-penugasan' => 'required|date',
+            'dasar-penugasan' => 'required',
             'lampiran' => 'file|mimes:jpeg,png,jpg,pdf|max:10240',
         ]);
 
@@ -1160,12 +1162,14 @@ class SuratController extends Controller
         $dosen = [];
         $namaDosenArray = $request->input('nama-dosen');
         $nipDosenArray = $request->input('nip-dosen');
+        $pangkatDosenArray = $request->input('pangkat-dosen', []);
         $jabatanDosenArray = $request->input('jabatan-dosen');
         for ($i = 0; $i < count($namaDosenArray); $i++) {
             $dosen[] = [
-                'namaDosen' . $i + 1 => $namaDosenArray[$i],
-                'nipDosen' . $i + 1 => $nipDosenArray[$i],
-                'jabatanDosen' . $i + 1 => $jabatanDosenArray[$i],
+                'namaDosen' . ($i + 1) => $namaDosenArray[$i],
+                'nipDosen' . ($i + 1) => $nipDosenArray[$i],
+                'pangkatDosen' . ($i + 1) => $pangkatDosenArray[$i] ?? '',
+                'jabatanDosen' . ($i + 1) => $jabatanDosenArray[$i],
             ];
         }
 
@@ -1188,6 +1192,7 @@ class SuratController extends Controller
             'dosen' => $dosen,
             'acara' => $request->input('acara'),
             'tempat' => $request->input('tempat'),
+            'dasarPenugasan' => $request->input('dasar-penugasan'),
             'waktuPelaksanaan' => formatTimestampToDayIndonesian($request->input('waktu-mulai-penugasan')) . ' s.d. ' . formatTimestampToDayIndonesian($request->input('waktu-selesai-penugasan')) . ', ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-mulai-penugasan')) . ' s.d. ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-selesai-penugasan')),
         ];
 
@@ -1323,11 +1328,13 @@ class SuratController extends Controller
             'email' => 'required|email',
             'nama-dosen.*' => 'required',
             'nip-dosen.*' => 'required',
+            'pangkat-dosen.*' => 'nullable',
             'jabatan-dosen.*' => 'required',
             'acara' => 'required',
             'tempat' => 'required',
             'waktu-mulai-penugasan' => 'required|date',
             'waktu-selesai-penugasan' => 'required|date',
+            'dasar-penugasan' => 'required',
             'lampiran' => 'file|mimes:jpeg,png,jpg,pdf|max:10240',
         ]);
 
@@ -1336,12 +1343,14 @@ class SuratController extends Controller
         $dosen = [];
         $namaDosenArray = $request->input('nama-dosen');
         $nipDosenArray = $request->input('nip-dosen');
+        $pangkatDosenArray = $request->input('pangkat-dosen', []);
         $jabatanDosenArray = $request->input('jabatan-dosen');
         for ($i = 0; $i < count($namaDosenArray); $i++) {
             $dosen[] = [
-                'namaDosen' . $i + 1 => $namaDosenArray[$i],
-                'nipDosen' . $i + 1 => $nipDosenArray[$i],
-                'jabatanDosen' . $i + 1 => $jabatanDosenArray[$i],
+                'namaDosen' . ($i + 1) => $namaDosenArray[$i],
+                'nipDosen' . ($i + 1) => $nipDosenArray[$i],
+                'pangkatDosen' . ($i + 1) => $pangkatDosenArray[$i] ?? '',
+                'jabatanDosen' . ($i + 1) => $jabatanDosenArray[$i],
             ];
         }
 
@@ -1363,6 +1372,7 @@ class SuratController extends Controller
             'dosen' => $dosen,
             'acara' => $request->input('acara'),
             'tempat' => $request->input('tempat'),
+            'dasarPenugasan' => $request->input('dasar-penugasan'),
             'waktuPelaksanaan' => formatTimestampToDayIndonesian($request->input('waktu-mulai-penugasan')) . ' s.d. ' . formatTimestampToDayIndonesian($request->input('waktu-selesai-penugasan')) . ', ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-mulai-penugasan')) . ' s.d. ' . formatTimestampToOnlyDateIndonesian($request->input('waktu-selesai-penugasan')),
         ];
 
@@ -1772,7 +1782,7 @@ class SuratController extends Controller
                 'tempat' => 'required',
                 'waktu-mulai-penugasan' => 'required|date',
                 'waktu-selesai-penugasan' => 'required|date',
-
+                'dasar-penugasan' => 'required',
             ]);
 
 
@@ -1784,6 +1794,7 @@ class SuratController extends Controller
             // Perbarui atribut yang diinginkan dalam array data
             $data['acara'] = $newData['acara'];
             $data['tempat'] = $newData['tempat'];
+            $data['dasarPenugasan'] = $newData['dasar-penugasan'];
             $data['private']['waktuMulaiPenugasan'] = $newData['waktu-mulai-penugasan'];
             $data['private']['waktuSelesaiPenugasan'] = $newData['waktu-selesai-penugasan'];
             $data['waktuPelaksanaan'] = formatTimestampToDayIndonesian($newData['waktu-mulai-penugasan']) . ' s.d. ' . formatTimestampToDayIndonesian($newData['waktu-selesai-penugasan']) . ', ' . formatTimestampToOnlyDateIndonesian($newData['waktu-mulai-penugasan']) . ' s.d. ' . formatTimestampToOnlyDateIndonesian($newData['waktu-selesai-penugasan']);
@@ -1801,6 +1812,7 @@ class SuratController extends Controller
                 $dosen[] = [
                     "namaDosen{$index}" => $request->input("namaDosen{$index}"),
                     "nipDosen{$index}" => $request->input("nipDosen{$index}"),
+                    "pangkatDosen{$index}" => $request->input("pangkatDosen{$index}"),
                     "jabatanDosen{$index}" => $request->input("jabatanDosen{$index}"),
                 ];
                 $index++;
@@ -1871,7 +1883,7 @@ class SuratController extends Controller
                 'tempat' => 'required',
                 'waktu-mulai-penugasan' => 'required|date',
                 'waktu-selesai-penugasan' => 'required|date',
-
+                'dasar-penugasan' => 'required',
             ]);
 
 
@@ -1883,6 +1895,7 @@ class SuratController extends Controller
             // Perbarui atribut yang diinginkan dalam array data
             $data['acara'] = $newData['acara'];
             $data['tempat'] = $newData['tempat'];
+            $data['dasarPenugasan'] = $newData['dasar-penugasan'];
             $data['private']['waktuMulaiPenugasan'] = $newData['waktu-mulai-penugasan'];
             $data['private']['waktuSelesaiPenugasan'] = $newData['waktu-selesai-penugasan'];
             $data['waktuPelaksanaan'] = formatTimestampToDayIndonesian($newData['waktu-mulai-penugasan']) . ' s.d. ' . formatTimestampToDayIndonesian($newData['waktu-selesai-penugasan']) . ', ' . formatTimestampToOnlyDateIndonesian($newData['waktu-mulai-penugasan']) . ' s.d. ' . formatTimestampToOnlyDateIndonesian($newData['waktu-selesai-penugasan']);
@@ -1900,6 +1913,7 @@ class SuratController extends Controller
                 $dosen[] = [
                     "namaDosen{$index}" => $request->input("namaDosen{$index}"),
                     "nipDosen{$index}" => $request->input("nipDosen{$index}"),
+                    "pangkatDosen{$index}" => $request->input("pangkatDosen{$index}"),
                     "jabatanDosen{$index}" => $request->input("jabatanDosen{$index}"),
                 ];
                 $index++;

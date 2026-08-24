@@ -31,7 +31,7 @@
                     {
                         elementId: "wysiwyg-text-example2",
                         content: (paragrafAkhir ? paragrafAkhir :
-                            "Kami harapkan kepada narasumber untuk membawa Biodata (terlampir) serta membawa Surat Tugas dari instansi Bapak/Ibu. Konfirmasi dan informasi lebih lanjut terkait kegiatan ini dapat menghubungi Saudari Dian Maharani (+62 852-7352-2886).<br><br> Demikianlah atas perhatian dan kerjasama yang baik, kami sampaikan ucapan terima kasih."
+                            "Kami harapkan kepada narasumber untuk membawa Biodata (terlampir) serta membawa Surat Tugas dari instansi Bapak/Ibu. Konfirmasi dan informasi lebih lanjut terkait kegiatan ini dapat menghubungi Saudari Dian Maharani (+62 852-7352-2886)."
                         ),
                     },
                 ]);
@@ -232,8 +232,7 @@
         <div class="grid gap-6 mb-6 md:grid-cols-2 bg-slate-100 p-4 rounded-lg ">
             <div class="md:col-span-2 mt-4">
                 <label for="paragraf-akhir"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Paragraf Bagian Akhir (yang
-                    biasanya setelah data informasi surat di atas, termasuk kalimat penutup)<span
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Paragraf Bagian Akhir (keterangan tambahan sebelum kalimat penutup dinas)<span
                         class="text-red-500">*</span></label>
                 <label for="paragraf-akhir"
                     class="block mb-2 text-sm italic font-medium text-gray-500 dark:text-white">Silahkan edit contoh

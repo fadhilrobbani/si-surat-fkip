@@ -100,17 +100,19 @@ class PDFController extends Controller
             ]);
         }
 
-        // STAFF
+        $isV2 = $surat->created_at ? $surat->created_at->gte('2026-08-24 00:00:00') : true;
+        $viewPrefix = $isV2 ? 'template.v2.' : 'template.';
 
+        // STAFF
         if ($surat->jenisSurat->slug == 'surat-tugas') {
-            $pdf = Pdf::loadview('template.surat-tugas', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+            $pdf = Pdf::loadview($viewPrefix . 'surat-tugas', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
                 'tempDir' => public_path(),
                 'chroot' => public_path()
             ]);
         }
 
         if ($surat->jenisSurat->slug == 'surat-tugas-kelompok') {
-            $pdf = Pdf::loadview('template.surat-tugas-kelompok', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+            $pdf = Pdf::loadview($viewPrefix . 'surat-tugas-kelompok', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
                 'tempDir' => public_path(),
                 'chroot' => public_path()
             ]);
@@ -118,21 +120,21 @@ class PDFController extends Controller
 
         // STAFF DEKAN
         if ($surat->jenisSurat->slug == 'surat-keluar') {
-            $pdf = Pdf::loadview('template.surat-keluar', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+            $pdf = Pdf::loadview($viewPrefix . 'surat-keluar', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
                 'tempDir' => public_path(),
                 'chroot' => public_path()
             ]);
         }
 
         if ($surat->jenisSurat->slug == 'surat-tugas-from-staff-dekan') {
-            $pdf = Pdf::loadview('template.surat-tugas', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+            $pdf = Pdf::loadview($viewPrefix . 'surat-tugas', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
                 'tempDir' => public_path(),
                 'chroot' => public_path()
             ]);
         }
 
         if ($surat->jenisSurat->slug == 'surat-tugas-kelompok-from-staff-dekan') {
-            $pdf = Pdf::loadview('template.surat-tugas-kelompok', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+            $pdf = Pdf::loadview($viewPrefix . 'surat-tugas-kelompok', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
                 'tempDir' => public_path(),
                 'chroot' => public_path()
             ]);
