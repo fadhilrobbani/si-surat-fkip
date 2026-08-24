@@ -100,7 +100,7 @@ class PDFController extends Controller
             ]);
         }
 
-        $isV2 = $surat->created_at ? $surat->created_at->gte('2026-08-24 00:00:00') : true;
+        $isV2 = $surat->created_at ? $surat->created_at->gte('2026-08-25 00:00:00') : true;
         $viewPrefix = $isV2 ? 'template.v2.' : 'template.';
 
         // STAFF
