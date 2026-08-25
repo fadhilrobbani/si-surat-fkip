@@ -87,22 +87,27 @@ class MigrateStorageToR2 extends Command
 
             $this->info("\n📁 Processing directory: {$dir}");
 
-            // Determine source disk and path
-            if ($dir === 'lampiran') {
-                $sourceDisk = 'public';
-                $sourcePath = $dir;
+            $files = [];
 
-                $localPath = storage_path('app/' . $dir);
-                if (is_dir($localPath)) {
-                    $files = $this->getLocalFiles($localPath, $dir);
-                } else {
-                    $files = Storage::disk($sourceDisk)->allFiles($sourcePath);
+            // 1. Scan from public disk (storage/app/public/{dir})
+            try {
+                $publicFiles = Storage::disk('public')->allFiles($dir);
+                if (!empty($publicFiles)) {
+                    $files = array_merge($files, $publicFiles);
                 }
-            } else {
-                $sourceDisk = 'public';
-                $sourcePath = $dir;
-                $files = Storage::disk($sourceDisk)->allFiles($sourcePath);
+            } catch (\Throwable $e) {}
+
+            // 2. Scan from legacy local path (storage/app/{dir}) if exists
+            $legacyLocalPath = storage_path('app/' . $dir);
+            if (is_dir($legacyLocalPath)) {
+                $legacyFiles = $this->getLocalFiles($legacyLocalPath, $dir);
+                if (!empty($legacyFiles)) {
+                    $files = array_merge($files, $legacyFiles);
+                }
             }
+
+            // Remove any duplicate filenames
+            $files = array_values(array_unique($files));
 
             if (empty($files)) {
                 $this->warn("  ⚠️  No files found in {$dir}");
@@ -143,26 +148,21 @@ class MigrateStorageToR2 extends Command
                     $totalSkipped++;
                     // If file is already in R2 and deleteLocal requested, clean up local
                     if ($deleteLocal && !$isDryRun) {
-                        $this->deleteLocalFile($file, $dir);
+                        $this->deleteLocalFile($file);
                     }
                     continue;
                 }
 
                 if ($isDryRun) {
                     $totalMigrated++;
-                    $fileSize = $this->getLocalFileSize($file, $dir);
+                    $fileSize = $this->getLocalFileSize($file);
                     $totalBytesMigrated += $fileSize;
                     continue;
                 }
 
                 try {
                     // Get file contents from source
-                    $localFilePath = storage_path('app/' . $file);
-                    if (file_exists($localFilePath)) {
-                        $contents = file_get_contents($localFilePath);
-                    } else {
-                        $contents = Storage::disk($sourceDisk)->get($file);
-                    }
+                    $contents = $this->getFileContents($file);
 
                     if ($contents === null || $contents === false) {
                         $this->newLine();
@@ -181,7 +181,7 @@ class MigrateStorageToR2 extends Command
                     if ($deleteLocal) {
                         // Integrity check: verify file exists on R2 and exact byte size matches
                         if (Storage::disk('r2')->exists($file) && Storage::disk('r2')->size($file) === $fileSize) {
-                            $this->deleteLocalFile($file, $dir);
+                            $this->deleteLocalFile($file);
                         } else {
                             $this->newLine();
                             $this->error("  ⚠️  Verifikasi ukuran file {$file} gagal di R2. File lokal dipertahankan demi keamanan.");
@@ -230,34 +230,61 @@ class MigrateStorageToR2 extends Command
     }
 
     /**
-     * Delete local file safely.
+     * Get file contents from local storage.
      */
-    private function deleteLocalFile(string $file, string $dir): void
+    private function getFileContents(string $file): ?string
     {
-        $appPath = storage_path('app/' . $file);
-        if (file_exists($appPath)) {
-            @unlink($appPath);
+        // 1. Check public disk path (storage/app/public/{file})
+        $publicPath = storage_path('app/public/' . $file);
+        if (file_exists($publicPath)) {
+            return @file_get_contents($publicPath);
         }
 
+        // 2. Check legacy path (storage/app/{file})
+        $appPath = storage_path('app/' . $file);
+        if (file_exists($appPath)) {
+            return @file_get_contents($appPath);
+        }
+
+        // 3. Fallback to Storage facade
+        try {
+            if (Storage::disk('public')->exists($file)) {
+                return Storage::disk('public')->get($file);
+            }
+        } catch (\Throwable $e) {}
+
+        return null;
+    }
+
+    /**
+     * Delete local file safely from all possible locations.
+     */
+    private function deleteLocalFile(string $file): void
+    {
         $publicPath = storage_path('app/public/' . $file);
         if (file_exists($publicPath)) {
             @unlink($publicPath);
+        }
+
+        $appPath = storage_path('app/' . $file);
+        if (file_exists($appPath)) {
+            @unlink($appPath);
         }
     }
 
     /**
      * Get local file size in bytes.
      */
-    private function getLocalFileSize(string $file, string $dir): int
+    private function getLocalFileSize(string $file): int
     {
-        $appPath = storage_path('app/' . $file);
-        if (file_exists($appPath)) {
-            return filesize($appPath) ?: 0;
-        }
-
         $publicPath = storage_path('app/public/' . $file);
         if (file_exists($publicPath)) {
             return filesize($publicPath) ?: 0;
+        }
+
+        $appPath = storage_path('app/' . $file);
+        if (file_exists($appPath)) {
+            return filesize($appPath) ?: 0;
         }
 
         return 0;
@@ -268,14 +295,14 @@ class MigrateStorageToR2 extends Command
      */
     private function getLocalFileMTime(string $file): int
     {
-        $appPath = storage_path('app/' . $file);
-        if (file_exists($appPath)) {
-            return filemtime($appPath) ?: 0;
-        }
-
         $publicPath = storage_path('app/public/' . $file);
         if (file_exists($publicPath)) {
             return filemtime($publicPath) ?: 0;
+        }
+
+        $appPath = storage_path('app/' . $file);
+        if (file_exists($appPath)) {
+            return filemtime($appPath) ?: 0;
         }
 
         return 0;
