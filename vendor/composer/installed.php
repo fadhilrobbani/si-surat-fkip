@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '03f837b7e14a9ec836d187be86d27a6ff34cbb9b',
+        'reference' => '9d8fb039749f387d31d941bee8cafbeec1758f79',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -25,6 +25,24 @@
             'reference' => 'fc428d533d815178ff494eba85fa28797ca7995e',
             'type' => 'library',
             'install_path' => __DIR__ . '/../archtechx/enums',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'aws/aws-crt-php' => array(
+            'pretty_version' => 'v1.2.7',
+            'version' => '1.2.7.0',
+            'reference' => 'd71d9906c7bb63a28295447ba12e74723bd3730e',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../aws/aws-crt-php',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'aws/aws-sdk-php' => array(
+            'pretty_version' => '3.388.13',
+            'version' => '3.388.13.0',
+            'reference' => '45b9e9814f42cdeceb046434d068c9e77fd2a530',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../aws/aws-sdk-php',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -771,7 +789,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '03f837b7e14a9ec836d187be86d27a6ff34cbb9b',
+            'reference' => '9d8fb039749f387d31d941bee8cafbeec1758f79',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -855,6 +873,15 @@
             'reference' => '1b2aa10f2326e0351399b8ce68e287d8e9209a83',
             'type' => 'library',
             'install_path' => __DIR__ . '/../league/flysystem',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'league/flysystem-aws-s3-v3' => array(
+            'pretty_version' => '3.35.3',
+            'version' => '3.35.3.0',
+            'reference' => 'b03780cb97585ee7e48977f40ed599b33b751634',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../league/flysystem-aws-s3-v3',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -944,6 +971,15 @@
             'replaced' => array(
                 0 => '^1.0',
             ),
+        ),
+        'mtdowling/jmespath.php' => array(
+            'pretty_version' => '2.9.2',
+            'version' => '2.9.2.0',
+            'reference' => '2157c5e50e813ec6a96c1eed3be7f64a20fb32a8',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../mtdowling/jmespath.php',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'myclabs/deep-copy' => array(
             'pretty_version' => '1.11.1',
@@ -1236,8 +1272,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '3.0.0',
-                1 => '1.0|2.0|3.0',
+                0 => '1.0|2.0|3.0',
+                1 => '3.0.0',
             ),
         ),
         'psr/simple-cache' => array(
@@ -1626,6 +1662,15 @@
             'provided' => array(
                 0 => '2.0|3.0',
             ),
+        ),
+        'symfony/filesystem' => array(
+            'pretty_version' => 'v8.1.5',
+            'version' => '8.1.5.0',
+            'reference' => '6b2f4a0eeb28b5d74f90862592923a654bc629b3',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/filesystem',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'symfony/finder' => array(
             'pretty_version' => 'v6.3.5',

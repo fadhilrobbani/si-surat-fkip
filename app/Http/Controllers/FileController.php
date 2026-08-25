@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Surat;
+use App\Services\StorageHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Gate;
@@ -13,28 +14,11 @@ class FileController extends Controller
 {
     public function show(Surat $surat, $filename)
     {
-        // dd('test');
         if (auth()->guest()) {
             return abort(403);
         }
 
-        // if(!Gate::allows('show-file-mahasiswa')){
-        //     abort(403);
-        // }
-        // $path = Storage::path($filename);
-        $path = storage_path('app/lampiran/' . $filename);
-        // $expiration = now()->addHours(1);
-        // $signedUrl = URL::temporarySignedRoute('show-file', $expiration,$filename);
-        // dd($path);
-        // $file = Storage::disk('local')->get($path);
-        // dd($file);
-        // $type       = Storage::mimeType($path);
-        // return response($file, 200)->header('Content-Type', 'application/octet-stream');
-        // return Response::make($file, 200, [
-        //     'Content-Type'        => $type,
-        //     'Content-Disposition' => 'inline; filename="'.$filename.'"'
-        //   ]);
-        // return response()->download($path, null, [], null);
-        return response()->file($path);
+        // Try cloud storage (R2) first, then fallback to local
+        return StorageHelper::response('lampiran/' . $filename);
     }
 }

@@ -74,7 +74,7 @@ class LabPmipaController extends Controller
             ]);
             $uuid = Uuid::uuid4();
             $file = $request->file('stempel');
-            Storage::disk('public')->put('stempel/' . $uuid, file_get_contents($file));
+            Storage::disk(config('filesystems.default'))->put('stempel/' . $uuid, file_get_contents($file));
             $user->update(['tandatangan' => 'stempel/' . $uuid]);
         }
         $user->update($request->only('name'));

@@ -587,20 +587,10 @@ Route::get('/storage/{user}/files/{filename?}/{mimeType}/{extension}', function 
         if (!($authUser && $authUser->id == $userId)) {
             return abort(403);
         }
-        // Jika pengguna login, izinkan akses
-        // dd('hehe boi');
-        // dd($mimeType);
-        $file = public_path('storage/lampiran/' . $filename . '.' . $extension);
-        // $url = url('/storage/lampiran/' . $filename . '.' . $extension);
+        // Jika pengguna login, izinkan akses dan tampilkan preview file
+        $storagePath = 'lampiran/' . $filename . '.' . $extension;
 
-        // return redirect($url);
-        // return response()->file(public_path($file, ['Content-Type' => str_replace('-', '/', $mimeType)]));
-        return response()->file($file, ['Content-Type' => str_replace('-', '/', $mimeType)]);
-
-        // $tempFile = tempnam(sys_get_temp_dir(), $filename . '.' . $extension);
-        // copy($url, $tempFile);
-
-        // return response()->download($tempFile, $filename . '.' . $extension);
+        return \App\Services\StorageHelper::response($storagePath);
     } else {
         // Jika pengguna belum login, tolak akses
         abort(403, 'Unauthorized access');

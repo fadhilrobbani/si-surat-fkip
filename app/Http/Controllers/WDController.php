@@ -75,7 +75,7 @@ class WDController extends Controller
             ]);
             $uuid = Uuid::uuid4();
             $file = $request->file('ttd');
-            Storage::disk('public')->put('ttd/' . $uuid, file_get_contents($file));
+            Storage::disk(config('filesystems.default'))->put('ttd/' . $uuid, file_get_contents($file));
             $user->update(['tandatangan' => 'ttd/' . $uuid]);
         }
         $user->update($request->only('name'));

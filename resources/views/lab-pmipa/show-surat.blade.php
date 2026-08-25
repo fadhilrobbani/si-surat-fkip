@@ -100,10 +100,10 @@
                                     {{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:</td>
                                 <td class="px-6 py-4">
                                     <?php
-                                    $path = public_path('storage/lampiran/' . basename($value));
+                                    $storagePath = 'lampiran/' . basename($value);
                                     $filename = pathInfo(basename($value), PATHINFO_FILENAME);
-                                    if (!empty($path) && file_exists($path)) {
-                                        $mimeType = str_replace('/', '-', mime_content_type($path));
+                                    if (\App\Services\StorageHelper::exists($storagePath)) {
+                                        $mimeType = str_replace('/', '-', \App\Services\StorageHelper::mimeType($storagePath));
                                     } else {
                                         $mimeType = '/file-tidak-ditemukan';
                                     }
