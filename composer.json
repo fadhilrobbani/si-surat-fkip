@@ -21,7 +21,8 @@
         "league/flysystem-aws-s3-v3": "^3.0",
         "pusher/pusher-php-server": "^7.2",
         "simplesoftwareio/simple-qrcode": "~4",
-        "spatie/laravel-backup": "^8.5"
+        "spatie/laravel-backup": "^8.5",
+        "symfony/filesystem": "^6.4"
     },
     "require-dev": {
         "andyabih/laravel-to-uml": "^1.0",
@@ -83,6 +84,9 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "audit": {
+            "block-insecure": false
         }
     },
     "minimum-stability": "stable",
