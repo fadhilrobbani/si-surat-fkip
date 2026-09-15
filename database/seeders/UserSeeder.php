@@ -754,6 +754,17 @@ class UserSeeder extends Seeder
                 'jurusan_id' => null,
                 'program_studi_id' => null,
                 'email_verified_at' => now()
+            ],
+            [
+                'username' => 'bendahara',
+                'name' => 'Bendahara Fakultas',
+                'email' => 'bendaharafkip@unib.ac.id',
+                'password' => bcrypt('password'),
+                'role_id' => 22,
+                'nip' => null,
+                'jurusan_id' => null,
+                'program_studi_id' => null,
+                'email_verified_at' => now()
             ]
         ];
 

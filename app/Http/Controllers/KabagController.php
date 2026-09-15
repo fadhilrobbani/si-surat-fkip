@@ -191,7 +191,7 @@ class KabagController extends Controller
 
         return view('kabag.surat-masuk', [
             'daftarSuratMasuk' => $daftarSuratMasuk,
-            'daftarJenisSurat' => JenisSurat::where('slug', '=', 'surat-pengajuan-atk')->get(),
+            'daftarJenisSurat' => JenisSurat::whereIn('slug', ['surat-pengajuan-atk', 'surat-pencairan-dana', 'surat-pencairan-dana-mahasiswa'])->get(),
             'daftarProgramStudi' => ProgramStudi::all(),
         ]);
     }
@@ -203,6 +203,14 @@ class KabagController extends Controller
             return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
         }
 
+        if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana', 'surat-pencairan-dana-mahasiswa'])) {
+            return view('kabag.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 22) // Bendahara
+                    ->get()
+            ]);
+        }
 
         if ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-pengajuan-atk') {
 
@@ -272,21 +280,24 @@ class KabagController extends Controller
 
     public function setujuiSurat(Request $request, Surat $surat)
     {
-        // if (!auth()->user()->tandatangan) {
-        //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
-        // }
-        // $request->validate([
-        //     // 'no-surat' => 'required|size:4|unique:surat_tables,data->noSurat',
-        //     // 'no-surat' =>  ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id)],
+        if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana', 'surat-pencairan-dana-mahasiswa'])) {
+            $surat->current_user_id = $request->input('penerima');
+            $surat->status = 'diproses';
+            $data = $surat->data;
+            $data['catatanKabag'] = $request->input('note');
+            $surat->data = $data;
+            $surat->save();
 
-        //     'no-surat' => ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')
-        //         ->where(function ($query) {
-        //             $query->whereYear('created_at', date('Y'));
-        //         })],
-        // ]);
-        // SELECT jt.id FROM users u
-        // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
-        // JOIN jurusan_tables jt ON jt.id = pst.jurusan_id ;
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => $request->input('note') ?? 'Disetujui Kabag TU',
+            ]);
+
+            return redirect('/kabag/surat-masuk')->with('success', 'Surat pencairan dana berhasil disetujui dan diteruskan ke Bendahara');
+        }
+
         $surat->current_user_id = $surat->pengaju_id;
         // $surat->penerima_id = $surat->pengaju_id;
         $surat->expired_at = null;

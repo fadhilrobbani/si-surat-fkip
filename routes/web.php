@@ -39,6 +39,7 @@ use App\Http\Controllers\KemahasiswaanController;
 use App\Http\Controllers\TataUsahaController;
 use App\Http\Controllers\UnitKerjasamaController;
 use App\Http\Controllers\LabPmipaController;
+use App\Http\Controllers\BendaharaController;
 use App\Http\Controllers\PengirimLegalisirController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -138,6 +139,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-tugas', [SuratController::class, 'storeSuratTugasByStaff'])->name('staff-store-surat-tugas');
         Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-tugas-kelompok', [SuratController::class, 'storeSuratTugasKelompokByStaff'])->name('staff-store-surat-tugas-kelompok');
         Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-pengajuan-atk', [SuratController::class, 'storeSuratPengajuanAtkByStaff'])->name('staff-store-surat-pengajuan-atk');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-permohonan-narasumber', [SuratController::class, 'storeSuratPermohonanNarasumberByStaff'])->name('staff-store-surat-permohonan-narasumber');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-peminjaman-ruang', [SuratController::class, 'storeSuratPeminjamanRuangByStaff'])->name('staff-store-surat-peminjaman-ruang');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-pencairan-dana', [SuratController::class, 'storeSuratPencairanDanaByStaff'])->name('staff-store-surat-pencairan-dana');
         Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->can('staffCanCancelSurat', 'surat')->name('staff-destroy-surat');
         Route::get('/riwayat-pengajuan-surat', [StaffController::class, 'riwayatPengajuanSurat'])->name('staff-riwayat-pengajuan-surat');
         Route::get('/riwayat-pengajuan-surat/show/{surat}', [StaffController::class, 'showDetailPengajuanSuratByStaff'])->can('staffCanViewShowDetailPengajuanSuratByStaff', 'surat')->name('show-detail-pengajuan-surat-staff');
@@ -550,6 +554,20 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile/update/{user}', [KabagController::class, 'updateProfile'])->name('update-profile-kabag');
         Route::get('/profile/reset-password', [KabagController::class, 'resetPasswordPage']);
         Route::put('/profile/reset-password/{user}', [KabagController::class, 'resetPassword'])->name('reset-password-kabag');
+    });
+
+    Route::prefix('bendahara')->middleware(['userAccess:22'])->group(function () {
+        Route::get('/', [BendaharaController::class, 'dashboard']);
+        Route::get('/surat-masuk', [BendaharaController::class, 'suratMasuk']);
+        Route::get('/surat-masuk/show/{surat}', [BendaharaController::class, 'showSuratMasuk'])->name('show-surat-masuk-bendahara');
+        Route::put('/surat-disetujui/{surat}', [BendaharaController::class, 'setujuiSurat'])->name('setujui-surat-bendahara');
+        Route::get('/surat-ditolak/{surat}', [BendaharaController::class, 'confirmTolakSurat'])->name('confirm-tolak-surat-bendahara');
+        Route::put('/surat-ditolak/{surat}', [BendaharaController::class, 'tolakSurat'])->name('tolak-surat-bendahara');
+        Route::get('/riwayat-persetujuan', [BendaharaController::class, 'riwayatPersetujuan'])->name('riwayat-persetujuan-bendahara');
+        Route::get('/riwayat-persetujuan/show/{approval}', [BendaharaController::class, 'showApproval'])->name('show-approval-bendahara');
+        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->name('preview-surat-bendahara');
+        Route::get('/profile', [BendaharaController::class, 'profilePage']);
+        Route::put('/profile/update/{user}', [BendaharaController::class, 'updateProfile'])->name('update-profile-bendahara');
     });
 
     // Route::prefix('pengirim-legalisir')->middleware(['userAccess:15'])->group(function () {

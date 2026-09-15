@@ -218,6 +218,15 @@ class WD3Controller extends Controller
         }
 
         if ($surat->jenisSurat->user_type == 'mahasiswa') {
+            if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana-mahasiswa', 'surat-peminjaman-ruang-mahasiswa'])) {
+                return view('wd3.show-surat', [
+                    'surat' => $surat,
+                    'daftarPenerima' => User::select('id', 'name', 'username')
+                        ->where('role_id', '=', 9) // WD 2 (Keuangan & Umum)
+                        ->get()
+                ]);
+            }
+
             $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
                 ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')
                 ->where('users.id', $surat->pengaju->id)

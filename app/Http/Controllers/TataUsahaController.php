@@ -116,8 +116,28 @@ class TataUsahaController extends Controller
         ]);
     }
 
-    public function setujuiSurat(Surat $surat)
+    public function setujuiSurat(Request $request, Surat $surat)
     {
+        if (in_array($surat->jenisSurat->slug, ['surat-peminjaman-ruang', 'surat-peminjaman-ruang-mahasiswa'])) {
+            $surat->current_user_id = $surat->pengaju_id;
+            $surat->status = 'selesai';
+            $surat->expired_at = null;
+            $data = $surat->data;
+            $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+            $data['catatanTU'] = $request->input('catatan') ?? $request->input('note');
+            $surat->data = $data;
+            $surat->save();
+
+            Approval::create([
+                'surat_id' => $surat->id,
+                'user_id' => auth()->user()->id,
+                'isApproved' => true,
+                'catatan' => $data['catatanTU'] ?? 'Disetujui Tata Usaha'
+            ]);
+
+            return redirect('/tata-usaha/surat-masuk')->with('success', 'Surat peminjaman ruang berhasil disetujui');
+        }
+
         $surat->current_user_id = $surat->jenisSurat->user_type == 'staff' || $surat->jenisSurat->user_type == 'akademik' || $surat->jenisSurat->user_type == 'akademik_fakultas' || $surat->jenisSurat->user_type == 'kemahasiswaan' || $surat->jenisSurat->user_type == 'tata-usaha' ? User::select('id', 'name', 'username')->where('role_id', '=', 17)->first()->id : null;
         $surat->status = 'diproses';
         $surat->save();

@@ -264,6 +264,15 @@ class DekanController extends Controller
         //     ]);
         // }
 
+        if ($surat->jenisSurat->slug == 'surat-permohonan-narasumber') {
+            return view('dekan.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 14)
+                    ->get()
+            ]);
+        }
+
         if (($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas') || ($surat->jenisSurat->user_type == 'staff' && $surat->jenisSurat->slug == 'surat-tugas-kelompok')) {
 
             return view('dekan.show-surat', [
@@ -318,6 +327,25 @@ class DekanController extends Controller
     {
         if ($surat->jenisSurat->slug == 'berita-acara-nilai') {
             $surat->current_user_id = $request->input('penerima');
+            $surat->save();
+
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => 'setuju',
+            ]);
+            return redirect('dekan/surat-masuk')->with('success', 'Surat berhasil disetujui');
+        }
+
+        if ($surat->jenisSurat->slug == 'surat-permohonan-narasumber') {
+            $surat->current_user_id = $request->input('penerima');
+            $data = $surat->data;
+            if ($data) {
+                $data['private']['namaDekan'] = auth()->user()->name;
+                $data['private']['nipDekan'] = auth()->user()->nip;
+            }
+            $surat->data = $data;
             $surat->save();
 
             Approval::create([

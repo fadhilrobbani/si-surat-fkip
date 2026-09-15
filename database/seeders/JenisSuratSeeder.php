@@ -155,6 +155,31 @@ class JenisSuratSeeder extends Seeder
                 'slug' => 'surat-pengajuan-atk-lab-pmipa',
                 'user_type' => 'lab-pmipa'
             ],
+            [
+                'name' => 'Surat Permohonan Menjadi Narasumber',
+                'slug' => 'surat-permohonan-narasumber',
+                'user_type' => 'staff'
+            ],
+            [
+                'name' => 'Surat Permohonan Peminjaman Ruang',
+                'slug' => 'surat-peminjaman-ruang',
+                'user_type' => 'staff'
+            ],
+            [
+                'name' => 'Surat Permohonan Peminjaman Ruang Kegiatan Mahasiswa',
+                'slug' => 'surat-peminjaman-ruang-mahasiswa',
+                'user_type' => 'mahasiswa'
+            ],
+            [
+                'name' => 'Surat Usulan Pengajuan Dana',
+                'slug' => 'surat-pencairan-dana',
+                'user_type' => 'staff'
+            ],
+            [
+                'name' => 'Surat Pencairan Dana Kegiatan Mahasiswa',
+                'slug' => 'surat-pencairan-dana-mahasiswa',
+                'user_type' => 'mahasiswa'
+            ],
 
         ];
 

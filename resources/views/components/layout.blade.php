@@ -732,6 +732,32 @@
                     'dropdown' => [],
                 ],
             ],
+            'bendahara' => [
+                [
+                    'link' => 'bendahara',
+                    'title' => 'Dashboard',
+                    'icon' => asset('svg/piechart.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'bendahara/surat-masuk',
+                    'title' => 'Surat Masuk',
+                    'icon' => asset('svg/letter.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'bendahara/riwayat-persetujuan',
+                    'title' => 'Riwayat Persetujuan',
+                    'icon' => asset('svg/lettercheck.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'logout',
+                    'title' => 'Keluar',
+                    'icon' => asset('svg/signout.svg'),
+                    'dropdown' => [],
+                ],
+            ],
         ];
     @endphp
     @if ($authUser->role_id == 1)
@@ -776,6 +802,8 @@
         <x-sidebar :listsData="$listsData['unit-kerjasama']" />
     @elseif ($authUser->role_id == 21)
         <x-sidebar :listsData="$listsData['lab-pmipa']" />
+    @elseif ($authUser->role_id == 22)
+        <x-sidebar :listsData="$listsData['bendahara']" />
     @endif
 
 

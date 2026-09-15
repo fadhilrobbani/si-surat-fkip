@@ -236,6 +236,13 @@ class StaffDekanController extends Controller
             ]);
         }
 
+        if ($surat->jenisSurat->slug == 'surat-permohonan-narasumber') {
+            return view('staff-dekan.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => []
+            ]);
+        }
+
         if (($surat->jenisSurat->user_type == 'staff-dekan')) {
 
             return view('staff-dekan.show-surat', [
@@ -249,6 +256,27 @@ class StaffDekanController extends Controller
 
     public function setujuiSurat(Request $request, Surat $surat)
     {
+        if ($surat->jenisSurat->slug == 'surat-permohonan-narasumber') {
+            $surat->current_user_id = $surat->pengaju_id;
+            $surat->expired_at = null;
+            $data = $surat->data;
+            $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+            $data['noSurat'] = $request->input('no-surat');
+            $data['note'] = $request->input('note');
+            $surat->data = $data;
+            $surat->status = 'selesai';
+            $surat->save();
+
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => $request->input('note') ?? 'Disetujui dan diselesaikan oleh Staff Dekan',
+            ]);
+
+            return redirect('/staff-dekan/surat-masuk')->with('success', 'Surat permohonan narasumber berhasil diselesaikan');
+        }
+
         if ($surat->jenisSurat->user_type == 'staff-dekan') {
             // if (!auth()->user()->tandatangan) {
             //     return redirect()->back()->withErrors('Stempel tidak boleh kosong, silahkan atur terlebih dahulu di profil');
@@ -258,7 +286,7 @@ class StaffDekanController extends Controller
                 // 'no-surat' =>  ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id)],
 
 
-                'no-surat' => ['required', 'max:5', Rule::unique('surat_tables', 'data->noSurat')
+                'no-surat' => ['nullable', 'max:5', Rule::unique('surat_tables', 'data->noSurat')
                     ->where(function ($query) {
                         $query->whereYear('created_at', date('Y'));
                     })],
@@ -413,7 +441,7 @@ class StaffDekanController extends Controller
                 // 'no-surat' =>  ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id)],
 
 
-                'no-surat' => ['required', 'max:5', Rule::unique('surat_tables', 'data->noSurat')
+                'no-surat' => ['nullable', 'max:5', Rule::unique('surat_tables', 'data->noSurat')
                     ->where(function ($query) {
                         $query->whereYear('created_at', date('Y'));
                     })],

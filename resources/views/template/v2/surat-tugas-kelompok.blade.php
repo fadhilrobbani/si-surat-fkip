@@ -27,7 +27,7 @@
     <br>
     <p style="text-align: center"><b><u>SURAT TUGAS</u></b></p>
     <p style="text-align: center">
-        <b>Nomor:&nbsp;{{ $surat->data['noSurat'] ?? 'NoSurat' }}/UN30.7/KP/{{ isset($surat->data['tanggal_selesai']) ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ') : 'Tahun' }}
+        <b>Nomor:&nbsp;{{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '..........' }}/UN30.7/KP/{{ isset($surat->data['tanggal_selesai']) ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ') : (isset($surat->created_at) ? $surat->created_at->format('Y') : date('Y')) }}
         </b>
     </p>
     <br>

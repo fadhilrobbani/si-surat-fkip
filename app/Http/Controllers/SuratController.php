@@ -291,6 +291,79 @@ class SuratController extends Controller
                     ->get()
             ]);
         }
+
+        if ($jenisSurat->slug == 'surat-permohonan-narasumber') {
+            return view('staff.formsurat.form-permohonan-narasumber', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->whereIn('role_id', [4])
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
+
+        if ($jenisSurat->slug == 'surat-peminjaman-ruang') {
+            return view('staff.formsurat.form-peminjaman-ruang', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->whereIn('role_id', [4])
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
+
+        if ($jenisSurat->slug == 'surat-pencairan-dana') {
+            return view('staff.formsurat.form-pencairan-dana', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->whereIn('role_id', [4])
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
+
+        if ($jenisSurat->slug == 'surat-peminjaman-ruang-mahasiswa') {
+            $penerima = User::select('id', 'name', 'username')
+                ->where('role_id', '=', 4);
+            if (auth()->user()->program_studi_id) {
+                $penerima->where('program_studi_id', '=', auth()->user()->program_studi_id);
+            }
+            $daftarPenerima = $penerima->orderBy('username', 'asc')->get();
+            if ($daftarPenerima->isEmpty()) {
+                $daftarPenerima = User::select('id', 'name', 'username')->where('role_id', '=', 4)->get();
+            }
+
+            return view('mahasiswa.formsurat.form-peminjaman-ruang-mahasiswa', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => $daftarPenerima
+            ]);
+        }
+
+        if ($jenisSurat->slug == 'surat-pencairan-dana-mahasiswa') {
+            $penerima = User::select('id', 'name', 'username')
+                ->where('role_id', '=', 4);
+            if (auth()->user()->program_studi_id) {
+                $penerima->where('program_studi_id', '=', auth()->user()->program_studi_id);
+            }
+            $daftarPenerima = $penerima->orderBy('username', 'asc')->get();
+            if ($daftarPenerima->isEmpty()) {
+                $daftarPenerima = User::select('id', 'name', 'username')->where('role_id', '=', 4)->get();
+            }
+
+            return view('mahasiswa.formsurat.form-pencairan-dana-mahasiswa', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => $daftarPenerima
+            ]);
+        }
+
         return abort(404);
     }
 
@@ -1056,6 +1129,105 @@ class SuratController extends Controller
 
             $surat->save();
             return redirect('/staff-dekan/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
+        } else if ($jenisSurat->slug == 'surat-peminjaman-ruang-mahasiswa') {
+            $request->validate([
+                'name' => 'required',
+                'username' => 'required',
+                'nama_organisasi' => 'required',
+                'jabatan_pengaju' => 'required',
+                'nama_ruangan' => 'required',
+                'nama_kegiatan' => 'required',
+                'hari_tanggal' => 'required',
+                'jam_pemakaian' => 'required',
+                'berkas_proposal' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:10240',
+            ]);
+
+            $surat = new Surat;
+            $surat->pengaju_id = auth()->user()->id;
+            $surat->current_user_id = $request->input('penerima');
+            $surat->status = 'diproses';
+            $surat->jenis_surat_id = $jenisSurat->id;
+            $surat->expired_at = now()->addDays(30);
+
+            $surat->data = [
+                'nama' => $request->input('name'),
+                'username' => $request->input('username'),
+                'programStudi' => auth()->user()->programStudi->name ?? '',
+                'namaOrganisasi' => $request->input('nama_organisasi'),
+                'jabatanPengaju' => $request->input('jabatan_pengaju'),
+                'namaRuangan' => $request->input('nama_ruangan'),
+                'namaKegiatan' => $request->input('nama_kegiatan'),
+                'hariTanggal' => $request->input('hari_tanggal'),
+                'jamPemakaian' => $request->input('jam_pemakaian'),
+                'jumlahPeserta' => $request->input('jumlah_peserta'),
+                'private' => [
+                    'stepper' => [auth()->user()->role->id],
+                ]
+            ];
+
+            $files = [];
+            if ($request->hasFile('berkas_proposal')) {
+                $files['berkasProposal'] = $request->file('berkas_proposal')->store('lampiran');
+            }
+            $surat->files = $files;
+
+            $surat->save();
+            return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat peminjaman ruang berhasil diajukan');
+        } else if ($jenisSurat->slug == 'surat-pencairan-dana-mahasiswa') {
+            $request->validate([
+                'name' => 'required',
+                'username' => 'required',
+                'nama_organisasi' => 'required',
+                'jabatan_pengaju' => 'required',
+                'nama_kegiatan' => 'required',
+                'tahun_anggaran' => 'required',
+                'nama_bank' => 'required',
+                'nomor_rekening' => 'required',
+                'atas_nama_rekening' => 'required',
+                'lampiran_proposal' => 'required|file|mimes:jpeg,png,jpg,pdf|max:10240',
+            ]);
+
+            $surat = new Surat;
+            $surat->pengaju_id = auth()->user()->id;
+            $surat->current_user_id = $request->input('penerima');
+            $surat->status = 'diproses';
+            $surat->jenis_surat_id = $jenisSurat->id;
+            $surat->expired_at = now()->addDays(30);
+
+            $items = $request->input('items', []);
+            $total = 0;
+            if (is_array($items)) {
+                foreach ($items as $item) {
+                    $total += (float) ($item['nominal'] ?? 0);
+                }
+            }
+
+            $surat->data = [
+                'nama' => $request->input('name'),
+                'username' => $request->input('username'),
+                'programStudi' => auth()->user()->programStudi->name ?? '',
+                'namaOrganisasi' => $request->input('nama_organisasi'),
+                'jabatanPengaju' => $request->input('jabatan_pengaju'),
+                'namaKegiatan' => $request->input('nama_kegiatan'),
+                'tahunAnggaran' => $request->input('tahun_anggaran'),
+                'items' => $items,
+                'totalAnggaran' => $total,
+                'namaBank' => $request->input('nama_bank'),
+                'nomorRekening' => $request->input('nomor_rekening'),
+                'atasNamaRekening' => $request->input('atas_nama_rekening'),
+                'private' => [
+                    'stepper' => [auth()->user()->role->id],
+                ]
+            ];
+
+            $files = [];
+            if ($request->hasFile('lampiran_proposal')) {
+                $files['berkasProposal'] = $request->file('lampiran_proposal')->store('lampiran');
+            }
+            $surat->files = $files;
+
+            $surat->save();
+            return redirect('/mahasiswa/riwayat-pengajuan-surat')->with('success', 'Surat usulan pencairan dana berhasil diajukan');
         }
     }
 
@@ -1420,6 +1592,165 @@ class SuratController extends Controller
 
         $surat->save();
         return redirect('/staff/riwayat-pengajuan-surat')->with('success', 'Surat berhasil diajukan');
+    }
+
+    public function storeSuratPermohonanNarasumberByStaff(Request $request, JenisSurat $jenisSurat)
+    {
+        if ($jenisSurat->slug != 'surat-permohonan-narasumber') {
+            return redirect()->back()->with('error', 'Jenis surat tidak sesuai');
+        }
+
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'nama_narasumber' => 'required',
+            'instansi_narasumber' => 'required',
+            'jabatan_narasumber' => 'required',
+            'nama_kegiatan' => 'required',
+            'tempat_kegiatan' => 'required',
+            'hari_tanggal' => 'required',
+            'waktu' => 'required',
+            'tema_materi' => 'required',
+            'berkas_proposal' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:10240',
+        ]);
+
+        $surat = new Surat;
+        $surat->pengaju_id = auth()->user()->id;
+        $surat->current_user_id = $request->input('penerima');
+        $surat->status = 'diproses';
+        $surat->jenis_surat_id = $jenisSurat->id;
+        $surat->expired_at = now()->addDays(30);
+
+        $surat->data = [
+            'nama' => $request->input('name'),
+            'username' => $request->input('username'),
+            'programStudi' => auth()->user()->programStudi->name ?? '',
+            'namaNarasumber' => $request->input('nama_narasumber'),
+            'instansiNarasumber' => $request->input('instansi_narasumber'),
+            'jabatanNarasumber' => $request->input('jabatan_narasumber'),
+            'namaKegiatan' => $request->input('nama_kegiatan'),
+            'tempatKegiatan' => $request->input('tempat_kegiatan'),
+            'hariTanggal' => $request->input('hari_tanggal'),
+            'waktu' => $request->input('waktu'),
+            'temaMateri' => $request->input('tema_materi'),
+            'private' => [
+                'stepper' => [auth()->user()->role->id],
+            ]
+        ];
+
+        $files = [];
+        if ($request->hasFile('berkas_proposal')) {
+            $files['berkasProposal'] = $request->file('berkas_proposal')->store('lampiran');
+        }
+        $surat->files = $files;
+
+        $surat->save();
+        return redirect('/staff/riwayat-pengajuan-surat')->with('success', 'Surat permohonan narasumber berhasil diajukan');
+    }
+
+    public function storeSuratPeminjamanRuangByStaff(Request $request, JenisSurat $jenisSurat)
+    {
+        if ($jenisSurat->slug != 'surat-peminjaman-ruang') {
+            return redirect()->back()->with('error', 'Jenis surat tidak sesuai');
+        }
+
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'nama_ruangan' => 'required',
+            'nama_kegiatan' => 'required',
+            'hari_tanggal' => 'required',
+            'jam_pemakaian' => 'required',
+            'berkas_proposal' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:10240',
+        ]);
+
+        $surat = new Surat;
+        $surat->pengaju_id = auth()->user()->id;
+        $surat->current_user_id = $request->input('penerima');
+        $surat->status = 'diproses';
+        $surat->jenis_surat_id = $jenisSurat->id;
+        $surat->expired_at = now()->addDays(30);
+
+        $surat->data = [
+            'nama' => $request->input('name'),
+            'username' => $request->input('username'),
+            'programStudi' => auth()->user()->programStudi->name ?? '',
+            'namaRuangan' => $request->input('nama_ruangan'),
+            'namaKegiatan' => $request->input('nama_kegiatan'),
+            'hariTanggal' => $request->input('hari_tanggal'),
+            'jamPemakaian' => $request->input('jam_pemakaian'),
+            'jumlahPeserta' => $request->input('jumlah_peserta'),
+            'private' => [
+                'stepper' => [auth()->user()->role->id],
+            ]
+        ];
+
+        $files = [];
+        if ($request->hasFile('berkas_proposal')) {
+            $files['berkasProposal'] = $request->file('berkas_proposal')->store('lampiran');
+        }
+        $surat->files = $files;
+
+        $surat->save();
+        return redirect('/staff/riwayat-pengajuan-surat')->with('success', 'Surat peminjaman ruang berhasil diajukan');
+    }
+
+    public function storeSuratPencairanDanaByStaff(Request $request, JenisSurat $jenisSurat)
+    {
+        if ($jenisSurat->slug != 'surat-pencairan-dana') {
+            return redirect()->back()->with('error', 'Jenis surat tidak sesuai');
+        }
+
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'nama_kegiatan' => 'required',
+            'tahun_anggaran' => 'required',
+            'nama_bank' => 'required',
+            'nomor_rekening' => 'required',
+            'atas_nama_rekening' => 'required',
+            'berkas_proposal' => 'required|file|mimes:jpeg,png,jpg,pdf|max:10240',
+        ]);
+
+        $surat = new Surat;
+        $surat->pengaju_id = auth()->user()->id;
+        $surat->current_user_id = $request->input('penerima');
+        $surat->status = 'diproses';
+        $surat->jenis_surat_id = $jenisSurat->id;
+        $surat->expired_at = now()->addDays(30);
+
+        $items = $request->input('items', []);
+        $total = 0;
+        if (is_array($items)) {
+            foreach ($items as $item) {
+                $total += (float) ($item['nominal'] ?? 0);
+            }
+        }
+
+        $surat->data = [
+            'nama' => $request->input('name'),
+            'username' => $request->input('username'),
+            'programStudi' => auth()->user()->programStudi->name ?? '',
+            'namaKegiatan' => $request->input('nama_kegiatan'),
+            'tahunAnggaran' => $request->input('tahun_anggaran'),
+            'items' => $items,
+            'totalAnggaran' => $total,
+            'namaBank' => $request->input('nama_bank'),
+            'nomorRekening' => $request->input('nomor_rekening'),
+            'atasNamaRekening' => $request->input('atas_nama_rekening'),
+            'private' => [
+                'stepper' => [auth()->user()->role->id],
+            ]
+        ];
+
+        $files = [];
+        if ($request->hasFile('berkas_proposal')) {
+            $files['berkasProposal'] = $request->file('berkas_proposal')->store('lampiran');
+        }
+        $surat->files = $files;
+
+        $surat->save();
+        return redirect('/staff/riwayat-pengajuan-surat')->with('success', 'Surat usulan pencairan dana berhasil diajukan');
     }
 
     public function storeSuratPengajuanAtkByAkademik(Request $request, JenisSurat $jenisSurat)

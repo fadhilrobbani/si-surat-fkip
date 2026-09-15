@@ -22,6 +22,29 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser
     use HasApiTokens, HasFactory, Notifiable, CanResetPassword;
     use HasUuids;
 
+    const ROLE_ADMIN = 1;
+    const ROLE_MAHASISWA = 2;
+    const ROLE_STAFF = 3;
+    const ROLE_KAPRODI = 4;
+    const ROLE_WD1 = 5;
+    const ROLE_AKADEMIK = 6;
+    const ROLE_STAFF_NILAI = 7;
+    const ROLE_DEKAN = 8;
+    const ROLE_WD2 = 9;
+    const ROLE_WD3 = 10;
+    const ROLE_STAFF_WD1 = 11;
+    const ROLE_STAFF_WD2 = 12;
+    const ROLE_STAFF_WD3 = 13;
+    const ROLE_STAFF_DEKAN = 14;
+    const ROLE_PENGIRIM_LEGALISIR = 15;
+    const ROLE_AKADEMIK_FAKULTAS = 16;
+    const ROLE_KABAG = 17;
+    const ROLE_KEMAHASISWAAN = 18;
+    const ROLE_TATA_USAHA = 19;
+    const ROLE_UNIT_KERJASAMA = 20;
+    const ROLE_LAB_PMIPA = 21;
+    const ROLE_BENDAHARA = 22;
+
     /**
      * The attributes that are mass assignable.
      *

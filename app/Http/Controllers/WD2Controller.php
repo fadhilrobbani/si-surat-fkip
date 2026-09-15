@@ -216,6 +216,24 @@ class WD2Controller extends Controller
             return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
         }
 
+        if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana', 'surat-pencairan-dana-mahasiswa'])) {
+            return view('wd2.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 17) // Kabag
+                    ->get()
+            ]);
+        }
+
+        if (in_array($surat->jenisSurat->slug, ['surat-peminjaman-ruang', 'surat-peminjaman-ruang-mahasiswa'])) {
+            return view('wd2.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => User::select('id', 'name', 'username')
+                    ->where('role_id', '=', 19) // Tata Usaha
+                    ->get()
+            ]);
+        }
+
         if ($surat->jenisSurat->user_type == 'mahasiswa') {
             $idJurusan = User::join('program_studi_tables as pst', 'users.program_studi_id', '=', 'pst.id')
                 ->join('jurusan_tables as jt', 'pst.jurusan_id', '=', 'jt.id')

@@ -218,6 +218,8 @@ class AuthController extends Controller
                 return redirect('/unit-kerjasama')->with('success', 'Anda berhasil login');
             } elseif (auth()->user()->role_id == 21) {
                 return redirect('/lab-pmipa')->with('success', 'Anda berhasil login');
+            } elseif (auth()->user()->role_id == 22) {
+                return redirect('/bendahara')->with('success', 'Anda berhasil login');
             }
         }
 
@@ -265,6 +267,8 @@ class AuthController extends Controller
                 return redirect('/unit-kerjasama');
             } elseif (auth()->user()->role_id == 21) {
                 return redirect('/lab-pmipa');
+            } elseif (auth()->user()->role_id == 22) {
+                return redirect('/bendahara');
             }
         }
         return redirect('/');
