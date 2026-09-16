@@ -132,7 +132,7 @@ class TataUsahaController extends Controller
                 'surat_id' => $surat->id,
                 'user_id' => auth()->user()->id,
                 'isApproved' => true,
-                'catatan' => $data['catatanTU'] ?? 'Disetujui Tata Usaha'
+                'note' => $data['catatanTU'] ?? 'Disetujui Tata Usaha'
             ]);
 
             return redirect('/tata-usaha/surat-masuk')->with('success', 'Surat peminjaman ruang berhasil disetujui');

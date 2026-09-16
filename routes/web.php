@@ -106,7 +106,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [MahasiswaController::class, 'dashboard']);
         // Route::middleware('verified')->group(function () {
 
-        Route::get('/pengajuan-surat', [MahasiswaController::class, 'pengajuanSurat']);
+        Route::get('/pengajuan-surat', [MahasiswaController::class, 'pengajuanSurat'])->name('mahasiswa-pengajuan-surat');
         Route::get('/pengajuan-surat/{jenisSurat:slug}', [SuratController::class, 'create'])->name('show-form-surat');
         Route::get('/pengajuan-legalisir', [MahasiswaController::class, 'pengajuanLegalisir']);
         Route::get('/pengajuan-legalisir/{jenisSurat:slug}', [LegalisirController::class, 'create'])->name('show-form-legalisir');
@@ -123,6 +123,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/riwayat-pengajuan-surat', [MahasiswaController::class, 'riwayatPengajuanSurat']);
         Route::get('/riwayat-pengajuan-surat/show/{surat}', [MahasiswaController::class, 'lihatSurat'])->can('mahasiswaCanViewShowRiwayatPengajuanSurat', 'surat')->name('lihat-surat-mahasiswa');
         Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->can('mahasiswaCanPrintSurat', 'surat')->name('print-surat-mahasiswa');
+        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->can('mahasiswaCanPrintSurat', 'surat')->name('preview-surat-mahasiswa');
         Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->can('mahasiswaCanShowLampiranSurat', 'surat')->name('show-file-mahasiswa');
         // });
         Route::get('/profile', [MahasiswaController::class, 'profilePage']);

@@ -12,6 +12,7 @@ Dokumen ini berisi dokumentasi perubahan fitur terbaru (3 Jenis Surat Prioritas,
    - [Opsi C: Menggunakan SQL Query Langsung](#opsi-c-menggunakan-sql-query-langsung)
 3. [Alur & Cara Penggunaan Fitur Baru](#3-alur--cara-penggunaan-fitur-baru)
 4. [Daftar Akun & Kredensial Pengujian](#4-daftar-akun--kredensial-pengujian)
+5. [Menjalankan Automated Tests (Verifikasi Otomatis)](#5-menjalankan-automated-tests-verifikasi-otomatis)
 
 ---
 
@@ -243,3 +244,28 @@ graph TD
 | **Tata Usaha (TU)** | `tata_usaha` | `password` | `/tata-usaha/surat-masuk` |
 | **Dekan** | `dekan` | `password` | `/dekan/surat-masuk` |
 | **Staff Dekan** | `staff_dekan` | `password` | `/staff-dekan/surat-masuk` |
+
+---
+
+## 5. Menjalankan Automated Tests (Verifikasi Otomatis)
+
+Anda tidak perlu lagi menguji alur surat secara manual dari akun ke akun. Cukup jalankan pengujian otomatis melalui terminal untuk memverifikasi seluruh alur dan template dalam hitungan detik.
+
+### Perintah Menjalankan Seluruh Test:
+```bash
+./vendor/bin/sail artisan test
+```
+
+### File Test Suite yang Tersedia:
+1. **Surat Pencairan Dana** (`tests/Feature/SuratPencairanDanaTest.php`):
+   - Uji form pengajuan dana mahasiswa + upload file proposal.
+   - Uji rantai persetujuan: Mahasiswa $\rightarrow$ Kaprodi $\rightarrow$ WD3 $\rightarrow$ WD2 $\rightarrow$ Kabag $\rightarrow$ Bendahara (`selesai`).
+   - Uji penolakan surat oleh Bendahara beserta alasan penolakan.
+2. **Surat Peminjaman Ruang** (`tests/Feature/SuratPeminjamanRuangTest.php`):
+   - Uji alur peminjaman ruang mahasiswa ke TU.
+   - Uji alur peminjaman ruang staf ke TU.
+3. **Surat Permohonan Narasumber** (`tests/Feature/SuratPermohonanNarasumberTest.php`):
+   - Uji pengajuan narasumber oleh staf.
+   - Uji rantai persetujuan hingga Staff Dekan dengan nomor surat dikosongkan (opsional).
+4. **Render Template PDF** (`tests/Feature/SuratPdfPreviewTest.php`):
+   - Memastikan ketiga dokumen PDF (Narasumber, Ruang, Dana) berhasil dirender oleh DomPDF dengan status HTTP 200 tanpa error.

@@ -347,6 +347,35 @@ class WD2Controller extends Controller
             return redirect('wd2/surat-masuk')->with('success', 'Surat berhasil disetujui');
         }
 
+        if (in_array($surat->jenisSurat->slug, ['surat-peminjaman-ruang', 'surat-pencairan-dana'])) {
+            $surat->current_user_id = $request->input('penerima');
+            $data = $surat->data;
+            if ($data) {
+                if (isset($data['private'])) {
+                    $data['private']['namaWD2'] = auth()->user()->name;
+                    $data['private']['nipWD2'] = auth()->user()->nip;
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                } else {
+                    $data['private'] = [
+                        'namaWD2' => auth()->user()->name,
+                        'nipWD2' => auth()->user()->nip,
+                        'stepper' => [auth()->user()->role->id],
+                    ];
+                }
+            }
+            $surat->data = $data;
+            $surat->save();
+
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => $request->input('note') ?? 'Disetujui WD2',
+            ]);
+
+            return redirect('wd2/surat-masuk')->with('success', 'Surat berhasil disetujui');
+        }
+
         if ($surat->jenisSurat->slug == 'surat-tugas' || $surat->jenisSurat->slug == 'surat-tugas-kelompok') {
             $surat->current_user_id = $request->input('penerima');
 

@@ -281,7 +281,8 @@ class KabagController extends Controller
     public function setujuiSurat(Request $request, Surat $surat)
     {
         if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana', 'surat-pencairan-dana-mahasiswa'])) {
-            $surat->current_user_id = $request->input('penerima');
+            $bendahara = User::where('role_id', User::ROLE_BENDAHARA)->first();
+            $surat->current_user_id = $request->input('penerima') ?? ($bendahara ? $bendahara->id : null);
             $surat->status = 'diproses';
             $data = $surat->data;
             $data['catatanKabag'] = $request->input('note');
