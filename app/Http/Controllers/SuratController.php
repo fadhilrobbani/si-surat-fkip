@@ -1044,6 +1044,8 @@ class SuratController extends Controller
             $surat->data = [
                 'nama' => $request->input('name'),
                 'username' => $request->input('username'),
+                'npm' => $request->input('username'),
+                'email' => auth()->user()->email ?? '',
                 'programStudi' => auth()->user()->programStudi->name ?? '',
                 'namaOrganisasi' => $request->input('nama_organisasi'),
                 'jabatanPengaju' => $request->input('jabatan_pengaju'),
@@ -1097,6 +1099,8 @@ class SuratController extends Controller
             $surat->data = [
                 'nama' => $request->input('name'),
                 'username' => $request->input('username'),
+                'npm' => $request->input('username'),
+                'email' => auth()->user()->email ?? '',
                 'programStudi' => auth()->user()->programStudi->name ?? '',
                 'namaOrganisasi' => $request->input('nama_organisasi'),
                 'jabatanPengaju' => $request->input('jabatan_pengaju'),
@@ -1624,6 +1628,7 @@ class SuratController extends Controller
         $surat->data = [
             'nama' => $request->input('name'),
             'username' => $request->input('username'),
+            'email' => auth()->user()->email ?? '',
             'programStudi' => auth()->user()->programStudi->name ?? '',
             'namaNarasumber' => $request->input('nama_narasumber'),
             'instansiNarasumber' => $request->input('instansi_narasumber'),
@@ -1674,6 +1679,7 @@ class SuratController extends Controller
         $surat->data = [
             'nama' => $request->input('name'),
             'username' => $request->input('username'),
+            'email' => auth()->user()->email ?? '',
             'programStudi' => auth()->user()->programStudi->name ?? '',
             'namaRuangan' => $request->input('nama_ruangan'),
             'namaKegiatan' => $request->input('nama_kegiatan'),
@@ -1730,6 +1736,7 @@ class SuratController extends Controller
         $surat->data = [
             'nama' => $request->input('name'),
             'username' => $request->input('username'),
+            'email' => auth()->user()->email ?? '',
             'programStudi' => auth()->user()->programStudi->name ?? '',
             'namaKegiatan' => $request->input('nama_kegiatan'),
             'tahunAnggaran' => $request->input('tahun_anggaran'),

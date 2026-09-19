@@ -53,6 +53,16 @@ Dokumen ini berisi dokumentasi perubahan fitur terbaru (3 Jenis Surat Prioritas,
   - `surat-ajuan-dana.blade.php`
 - Disesuaikan dengan format resmi FKIP Universitas Bengkulu (Kop Kemendiktisaintek, tata letak, dan QR Code verifikasi).
 
+### E. Stepper Dinamis (Flexible Stepper) untuk Surat Alur Khusus / Ormawa
+- **Latar Belakang Masalah**:
+  - Pada surat standar akademik mahasiswa terdahulu, komponen stepper (`components/stepper.blade.php`) di-hardcode dengan 4 langkah tetap: Mahasiswa $\rightarrow$ Staff $\rightarrow$ Kaprodi $\rightarrow$ Akademik.
+  - Saat surat ormawa/kegiatan mahasiswa baru (seperti surat usulan pencairan dana atau peminjaman ruang) diajukan dan diteruskan ke WD3, WD2, Kabag, atau Bendahara, stepper hardcoded tersebut gagal mengenali Role ID pejabat fakultas sehingga status visual stepper tampak "kereset" kembali ke tahap awal.
+- **Solusi yang Diterapkan**:
+  - **Delegasi Otomatis di Komponen Stepper**: `components/stepper.blade.php` kini mengecek `isset($surat->data['private']['stepper'])`. Jika ada array stepper dinamis, otomatis mengarahkan ke `components/stepper-flexible.blade.php`.
+  - **Komponen `stepper-flexible`**: Menampilkan riwayat persetujuan secara dinamis berdasarkan urutan penandatangan/penyetuju yang sebenarnya (`App\Models\Role::find($role)->description`), menampilkan tanda centang hijau untuk pihak yang telah menyetujui, tanda "Menunggu" pada penerima saat ini (`$surat->current_user`), dan tanda silang merah "Ditolak" jika surat ditolak.
+  - **Pencatatan Riwayat di Controller**: Seluruh controller pada alur (`KaprodiController`, `WD3Controller`, `WD2Controller`, `KabagController`, `BendaharaController`, `TataUsahaController`, `DekanController`, `StaffDekanController`) kini otomatis mencatat role ID pengguna saat ini ke array `$data['private']['stepper']` saat menyetujui atau menolak surat.
+  - **Toleransi Data di Halaman Surat Masuk**: Menambahkan null-coalescing fallback pada NPM/Email pengaju di semua view `surat-masuk.blade.php` pejabat fakultas agar tidak pernah terjadi error `Undefined array key`.
+
 ---
 
 ## 2. Langkah Update di Server Production
@@ -269,3 +279,8 @@ Anda tidak perlu lagi menguji alur surat secara manual dari akun ke akun. Cukup 
    - Uji rantai persetujuan hingga Staff Dekan dengan nomor surat dikosongkan (opsional).
 4. **Render Template PDF** (`tests/Feature/SuratPdfPreviewTest.php`):
    - Memastikan ketiga dokumen PDF (Narasumber, Ruang, Dana) berhasil dirender oleh DomPDF dengan status HTTP 200 tanpa error.
+5. **Smoke Test Form Lama & Uji Regresi Surat Tugas** (`tests/Feature/LegacySuratRegressionTest.php`):
+   - Smoke test memastikan 13 form surat mahasiswa lama terbuka dengan normal (HTTP 200).
+   - Smoke test memastikan 7 form surat staf lama terbuka dengan normal (HTTP 200).
+   - Regression test memastikan fitur pengosongan nomor surat tidak merusak alur persetujuan Surat Tugas lama (diuji baik nomor surat diisi maupun dikosongkan).
+

@@ -263,6 +263,9 @@ class StaffDekanController extends Controller
             $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
             $data['noSurat'] = $request->input('no-surat');
             $data['note'] = $request->input('note');
+            if (isset($data['private']['stepper'])) {
+                $data['private']['stepper'][] = auth()->user()->role->id;
+            }
             $surat->data = $data;
             $surat->status = 'selesai';
             $surat->save();

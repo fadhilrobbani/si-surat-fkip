@@ -88,9 +88,9 @@
         </tbody>
     </table>
 
-    <table style="width: 100%; font-size: 13px; margin-bottom: 10px;">
+    <table class="data-table" style="margin-left: 30px; margin-bottom: 15px;">
         <tr>
-            <td style="width: 150px;">Nama Pengaju / PIC</td>
+            <td style="width: 170px;">Nama Pengaju / PIC</td>
             <td>: {{ $surat->data['nama'] ?? ($surat->data['namaPengaju'] ?? '-') }} ({{ $surat->data['username'] ?? ($surat->data['usernamePengaju'] ?? '-') }})</td>
         </tr>
         @if (!empty($surat->data['jabatanPengaju']))

@@ -370,6 +370,9 @@ class KaprodiController extends Controller
             if (isset($data['private'])) {
                 $data['private']['namaWD1'] =  $wd1->name;
                 $data['private']['nipWD1'] =  $wd1->nip;
+                if (isset($data['private']['stepper'])) {
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                }
             } else {
                 $data['private'] = [
                     'namaWD1' =>  $wd1->name,
@@ -434,6 +437,11 @@ class KaprodiController extends Controller
 
         if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana', 'surat-peminjaman-ruang', 'surat-permohonan-narasumber'])) {
             $surat->current_user_id = $request->input('penerima');
+            $data = $surat->data;
+            if (isset($data['private']['stepper'])) {
+                $data['private']['stepper'][] = auth()->user()->role->id;
+            }
+            $surat->data = $data;
             $surat->save();
 
             Approval::create([
@@ -539,6 +547,9 @@ class KaprodiController extends Controller
         $surat->expired_at = null;
         $data = $surat->data;
         $data['alasanPenolakan'] = $request->input('note');
+        if (isset($data['private']['stepper'])) {
+            $data['private']['stepper'][] = auth()->user()->role->id;
+        }
         $surat->data = $data;
         $surat->save();
         Approval::create([

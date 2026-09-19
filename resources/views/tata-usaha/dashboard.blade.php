@@ -32,27 +32,43 @@
     </div>
     {{-- END copy bagian ini ke atas dan paste ke dashboard lain jika ingin menambah qr code nya --}}
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        <a href="/tata-usaha/surat-masuk">
+            <div
+                class="flex items-center gap-2 flex-col hover:bg-slate-300 justify-center rounded p-4 bg-gray-50 dark:bg-gray-800 min-h-28 h-full">
+                <p class="font-semibold text-slate-600 text-lg text-center">Surat Masuk</p>
+                <div class="flex flex-wrap justify-center text-white text-sm font-semibold gap-2">
+                    <div class="bg-blue-600 p-2 rounded-lg">Menunggu: {{ $suratMasuk }}</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="/tata-usaha/riwayat-persetujuan">
+            <div
+                class="flex items-center gap-2 flex-col hover:bg-slate-300 justify-center rounded p-4 bg-gray-50 dark:bg-gray-800 min-h-28 h-full">
+                <p class="font-semibold text-slate-600 text-lg text-center">Riwayat Persetujuan</p>
+                <div class="flex flex-wrap justify-center text-white text-sm font-semibold gap-2">
+                    <div class="bg-green-500 p-2 rounded-lg">Disetujui: {{ $suratDisetujui }}</div>
+                    <div class="bg-rose-500 p-2 rounded-lg">Ditolak: {{ $suratDitolak }}</div>
+                </div>
+            </div>
+        </a>
+
         <a href="/tata-usaha/riwayat-pengajuan-surat">
             <div
-                class="flex items-center gap-2 flex-col hover:bg-slate-300 justify-center rounded p-4 bg-gray-50 dark:bg-gray-800 min-h-28">
+                class="flex items-center gap-2 flex-col hover:bg-slate-300 justify-center rounded p-4 bg-gray-50 dark:bg-gray-800 min-h-28 h-full">
                 <p class="font-semibold text-slate-600 text-lg text-center">Riwayat Pengajuan Anda</p>
                 <div class="flex flex-wrap justify-center text-white text-sm font-semibold gap-2">
                     <div class="bg-green-400 p-2 rounded-lg">Selesai: {{ count($pengajuanSelesai->toArray()) }}</div>
                     <div class="bg-yellow-400 p-2 rounded-lg">Diproses: {{ count($pengajuanDiproses->toArray()) }}</div>
-                    <div class="bg-blue-400 p-2 rounded-lg">Dikirim: {{ count($pengajuanDikirim->toArray()) }}</div>
-                    <div class="bg-pink-500 p-2 rounded-lg">Menunggu Dibayar:
-                        {{ count($pengajuanMenungguDibayar->toArray()) }}</div>
                     <div class="bg-rose-500 p-2 rounded-lg">Ditolak: {{ count($pengajuanDitolak->toArray()) }}</div>
-                    <div class="bg-rose-700 p-2 rounded-lg">Kadaluarsa: {{ count($pengajuanKadaluarsa->toArray()) }}
-                    </div>
                 </div>
             </div>
         </a>
 
         <a href="/tata-usaha/profile">
             <div
-                class="flex hover:bg-slate-300 p-4 items-center justify-center gap-4 rounded bg-gray-50 dark:bg-gray-800 h-full">
+                class="flex hover:bg-slate-300 p-4 items-center justify-center gap-4 rounded bg-gray-50 dark:bg-gray-800 min-h-28 h-full">
                 <p class="font-semibold text-slate-600 text-lg cursor-pointer text-center">Pengaturan Akun</p>
                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" viewBox="0 0 20 18" fill="none"
                     xmlns="http://www.w3.org/2000/svg">

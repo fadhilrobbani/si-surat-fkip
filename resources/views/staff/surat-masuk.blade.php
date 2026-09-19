@@ -124,11 +124,11 @@
                                 </th>
                                 <th scope="row"
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ $surat->data['nama'] }}
+                                    {{ $surat->data['nama'] ?? ($surat->pengaju->name ?? 'User') }}
                                 </th>
 
-                                <td class="px-4 py-3">{{ $surat->data['npm'] }}</td>
-                                <td class="px-4 py-3">{{ $surat->data['email'] }}</td>
+                                <td class="px-4 py-3">{{ $surat->data['npm'] ?? ($surat->data['username'] ?? ($surat->pengaju->username ?? '-')) }}</td>
+                                <td class="px-4 py-3">{{ $surat->data['email'] ?? ($surat->pengaju->email ?? '-') }}</td>
                                 @php
                                     $jenisSurat = App\Models\JenisSurat::find($surat->jenis_surat_id);
                                 @endphp

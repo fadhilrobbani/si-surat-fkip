@@ -286,6 +286,9 @@ class KabagController extends Controller
             $surat->status = 'diproses';
             $data = $surat->data;
             $data['catatanKabag'] = $request->input('note');
+            if (isset($data['private']['stepper'])) {
+                $data['private']['stepper'][] = auth()->user()->role->id;
+            }
             $surat->data = $data;
             $surat->save();
 
@@ -347,6 +350,9 @@ class KabagController extends Controller
         $surat->expired_at = null;
         $data = $surat->data;
         $data['alasanPenolakan'] = $request->input('note');
+        if (isset($data['private']['stepper'])) {
+            $data['private']['stepper'][] = auth()->user()->role->id;
+        }
         $surat->data = $data;
         $surat->save();
         Approval::create([

@@ -81,6 +81,10 @@ class SuratPermohonanNarasumberTest extends TestCase
 
         // 2. Kaprodi menyetujui -> diteruskan ke Dekan
         $this->actingAs($kaprodi)
+            ->get('/kaprodi/surat-masuk')
+            ->assertStatus(200);
+
+        $this->actingAs($kaprodi)
             ->put('/kaprodi/surat-staff-disetujui/' . $surat->id, [
                 'penerima' => $dekan->id,
             ])
@@ -91,6 +95,10 @@ class SuratPermohonanNarasumberTest extends TestCase
 
         // 3. Dekan menyetujui -> diteruskan ke Staff Dekan
         $this->actingAs($dekan)
+            ->get('/dekan/surat-masuk')
+            ->assertStatus(200);
+
+        $this->actingAs($dekan)
             ->put('/dekan/surat-staff-disetujui/' . $surat->id, [
                 'penerima' => $staffDekan->id,
             ])
@@ -100,6 +108,10 @@ class SuratPermohonanNarasumberTest extends TestCase
         $this->assertEquals($staffDekan->id, $surat->current_user_id);
 
         // 4. Staff Dekan menyetujui dan menyelesaikan DENGAN nomor surat dikosongkan (opsional)
+        $this->actingAs($staffDekan)
+            ->get('/staff-dekan/surat-masuk')
+            ->assertStatus(200);
+
         $this->actingAs($staffDekan)
             ->put('/staff-dekan/surat-disetujui/' . $surat->id, [
                 'no-surat' => '', // Dikosongkan sesuai permintaan WD1

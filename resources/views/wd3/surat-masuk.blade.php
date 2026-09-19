@@ -130,8 +130,8 @@
                     <tbody>
                         @foreach ($daftarSuratMasuk as $surat)
                             @php
-                                $avatar =
-                                    'https://ui-avatars.com/api/?name=' . $surat->data['nama'] . '&background=random';
+                                $namaPengaju = $surat->data['nama'] ?? ($surat->pengaju->name ?? 'User');
+                                $avatar = 'https://ui-avatars.com/api/?name=' . urlencode($namaPengaju) . '&background=random';
                             @endphp
                             <tr class=" border-b dark:border-gray-700 hover:bg-slate-100">
                                 <th scope="row"
@@ -140,13 +140,13 @@
                                 </th>
                                 <th scope="row"
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ $surat->data['nama'] }}
+                                    {{ $namaPengaju }}
                                 </th>
 
                                 <td class="px-4 py-3">
-                                    {{ $surat->jenisSurat->user_type == 'mahasiswa' ? $surat->data['npm'] : $surat->data['username'] }}
+                                    {{ $surat->jenisSurat->user_type == 'mahasiswa' ? ($surat->data['npm'] ?? $surat->data['username'] ?? $surat->pengaju->username ?? '-') : ($surat->data['username'] ?? $surat->pengaju->username ?? '-') }}
                                 </td>
-                                <td class="px-4 py-3">{{ $surat->data['programStudi'] ?? '-' }}</td>
+                                <td class="px-4 py-3">{{ $surat->data['programStudi'] ?? ($surat->pengaju->programStudi->name ?? '-') }}</td>
                                 @php
                                     $jenisSurat = App\Models\JenisSurat::find($surat->jenis_surat_id);
                                 @endphp

@@ -42,6 +42,12 @@ class TataUsahaController extends Controller
                 $now = Carbon::now();
                 $query->whereNull('expired_at')->orWhere('expired_at', '<', $now);
             })->get(),
+            'suratMasuk' => Surat::where('current_user_id', auth()->user()->id)->where('status', 'diproses')->where(function ($query) {
+                $now = Carbon::now();
+                $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
+            })->count(),
+            'suratDisetujui' => Approval::where('user_id', auth()->user()->id)->where('isApproved', 1)->count(),
+            'suratDitolak' => Approval::where('user_id', auth()->user()->id)->where('isApproved', 0)->count(),
         ]);
     }
 
@@ -94,18 +100,36 @@ class TataUsahaController extends Controller
 
     public function suratMasuk(Request $request)
     {
-        $daftarSuratMasuk = Surat::with('pengaju', 'pengaju.programStudi')
+        $query = Surat::with(['pengaju', 'pengaju.programStudi', 'jenisSurat'])
             ->where('current_user_id', auth()->user()->id)
             ->where('status', 'diproses')
-            ->where(function ($query) {
+            ->where(function ($q) {
                 $now = Carbon::now();
-                $query->whereNull('expired_at')->orWhere('expired_at', '>', $now);
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
+                $q->whereNull('expired_at')->orWhere('expired_at', '>', $now);
+            });
+
+        if ($request->filled('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('pengaju', function ($userQuery) use ($search) {
+                    $userQuery->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('username', 'LIKE', '%' . $search . '%');
+                })->orWhere('data', 'LIKE', '%' . $search . '%');
+            });
+        }
+
+        if ($request->filled('jenis-surat')) {
+            $query->where('jenis_surat_id', $request->get('jenis-surat'));
+        }
+
+        $order = $request->get('order') == 'asc' ? 'asc' : 'desc';
+        $daftarSuratMasuk = $query->orderBy('created_at', $order)
+            ->paginate(10)
+            ->appends(request()->query());
 
         return view('tata-usaha.surat-masuk', [
-            'daftarSuratMasuk' => $daftarSuratMasuk
+            'daftarSuratMasuk' => $daftarSuratMasuk,
+            'daftarJenisSurat' => JenisSurat::all(),
         ]);
     }
 
@@ -125,6 +149,9 @@ class TataUsahaController extends Controller
             $data = $surat->data;
             $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
             $data['catatanTU'] = $request->input('catatan') ?? $request->input('note');
+            if (isset($data['private']['stepper'])) {
+                $data['private']['stepper'][] = auth()->user()->role->id;
+            }
             $surat->data = $data;
             $surat->save();
 
@@ -180,23 +207,43 @@ class TataUsahaController extends Controller
     {
         $surat->current_user_id = null;
         $surat->status = 'ditolak';
+        $data = $surat->data;
+        $alasan = $request->input('catatan') ?? $request->input('note') ?? 'Pengajuan ditolak oleh Tata Usaha';
+        $data['alasanPenolakan'] = $alasan;
+        if (isset($data['private']['stepper'])) {
+            $data['private']['stepper'][] = auth()->user()->role->id;
+        }
+        $surat->data = $data;
         $surat->save();
 
         Approval::create([
             'surat_id' => $surat->id,
             'user_id' => auth()->user()->id,
             'isApproved' => false,
-            'catatan' => $request->input('catatan')
+            'note' => $alasan
         ]);
         return redirect('/tata-usaha/surat-masuk')->with('success', 'Surat berhasil ditolak');
     }
 
-    public function riwayatPersetujuan()
+    public function riwayatPersetujuan(Request $request)
     {
-        $daftarRiwayatPersetujuan = Approval::with(['surat', 'surat.pengaju', 'surat.pengaju.programStudi'])
-            ->where('user_id', auth()->user()->id)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Approval::with(['surat', 'surat.pengaju', 'surat.pengaju.programStudi', 'surat.jenisSurat'])
+            ->where('user_id', auth()->user()->id);
+
+        if ($request->filled('search')) {
+            $search = $request->get('search');
+            $query->whereHas('surat', function ($sq) use ($search) {
+                $sq->whereHas('pengaju', function ($uq) use ($search) {
+                    $uq->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('username', 'LIKE', '%' . $search . '%');
+                })->orWhere('data', 'LIKE', '%' . $search . '%');
+            });
+        }
+
+        $order = $request->get('order') == 'asc' ? 'asc' : 'desc';
+        $daftarRiwayatPersetujuan = $query->orderBy('created_at', $order)
+            ->paginate(10)
+            ->appends(request()->query());
 
         return view('tata-usaha.riwayat-persetujuan', [
             'daftarRiwayatPersetujuan' => $daftarRiwayatPersetujuan

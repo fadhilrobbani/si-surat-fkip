@@ -303,6 +303,9 @@ class WD2Controller extends Controller
             if (isset($data['private'])) {
                 $data['private']['namaWD1'] =  auth()->user()->name;
                 $data['private']['nipWD1'] =  auth()->user()->nip;
+                if (isset($data['private']['stepper'])) {
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                }
             } else {
                 $data['private'] = [
                     'namaWD1' =>  auth()->user()->name,

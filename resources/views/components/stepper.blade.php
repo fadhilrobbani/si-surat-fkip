@@ -1,4 +1,8 @@
 @props(['surat'])
+
+@if (isset($surat->data['private']['stepper']))
+    <x-stepper-flexible :surat="$surat" />
+@else
 <div>
     <ol class="relative mx-8 text-gray-500 border-l border-gray-200 dark:border-gray-700 dark:text-gray-400">
         <li class="mb-10 ml-6">
@@ -196,3 +200,4 @@
         </li>
     </ol>
 </div>
+@endif

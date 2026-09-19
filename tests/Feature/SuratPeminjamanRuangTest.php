@@ -85,6 +85,10 @@ class SuratPeminjamanRuangTest extends TestCase
 
         // 2. Kaprodi -> WD3
         $this->actingAs($kaprodi)
+            ->get('/kaprodi/surat-masuk')
+            ->assertStatus(200);
+
+        $this->actingAs($kaprodi)
             ->put('/kaprodi/surat-disetujui/' . $surat->id, [
                 'penerima' => $wd3->id,
             ])
@@ -92,8 +96,19 @@ class SuratPeminjamanRuangTest extends TestCase
 
         $surat->refresh();
         $this->assertEquals($wd3->id, $surat->current_user_id);
+        $this->assertEquals([2, 4], $surat->data['private']['stepper']);
 
         // 3. WD3 -> WD2
+        $this->actingAs($wd3)
+            ->get('/wd3/surat-masuk')
+            ->assertStatus(200);
+
+        $this->actingAs($wd3)
+            ->get(route('show-surat-wd3', $surat->id))
+            ->assertStatus(200)
+            ->assertSee('Wakil Dekan Bidang Kemahasiswaan')
+            ->assertSee('Menunggu');
+
         $this->actingAs($wd3)
             ->put('/wd3/surat-disetujui/' . $surat->id, [
                 'penerima' => $wd2->id,
@@ -102,8 +117,19 @@ class SuratPeminjamanRuangTest extends TestCase
 
         $surat->refresh();
         $this->assertEquals($wd2->id, $surat->current_user_id);
+        $this->assertEquals([2, 4, 10], $surat->data['private']['stepper']);
 
         // 4. WD2 -> TU
+        $this->actingAs($wd2)
+            ->get('/wd2/surat-masuk')
+            ->assertStatus(200);
+
+        $this->actingAs($wd2)
+            ->get(route('show-surat-wd2', $surat->id))
+            ->assertStatus(200)
+            ->assertSee('Wakil Dekan Bidang Keuangan dan Umum')
+            ->assertSee('Menunggu');
+
         $this->actingAs($wd2)
             ->put('/wd2/surat-disetujui/' . $surat->id, [
                 'penerima' => $tu->id,
@@ -112,17 +138,107 @@ class SuratPeminjamanRuangTest extends TestCase
 
         $surat->refresh();
         $this->assertEquals($tu->id, $surat->current_user_id);
+        $this->assertEquals([2, 4, 10, 9], $surat->data['private']['stepper']);
 
-        // 5. TU -> Setujui & Selesaikan
+        // 5. TU -> Verifikasi Dashboard & Surat Masuk
+        $this->actingAs($tu)
+            ->get('/tata-usaha')
+            ->assertStatus(200)
+            ->assertSee('Surat Masuk');
+
+        $this->actingAs($tu)
+            ->get('/tata-usaha/surat-masuk')
+            ->assertStatus(200)
+            ->assertSee('Aula Bukit Daun');
+
+        $this->actingAs($tu)
+            ->get(route('show-surat-masuk-tata-usaha', $surat->id))
+            ->assertStatus(200)
+            ->assertSee('Aula Bukit Daun')
+            ->assertSee('Setujui Surat')
+            ->assertSee('Tolak Surat');
+
+        // TU -> Setujui & Selesaikan
         $this->actingAs($tu)
             ->post('/tata-usaha/surat-masuk/setujui/' . $surat->id, [
-                'note' => 'Ruangan telah dijadwalkan dan siap digunakan.'
+                'catatan' => 'Ruangan telah dijadwalkan dan siap digunakan.'
             ])
             ->assertRedirect('/tata-usaha/surat-masuk');
 
         $surat->refresh();
         $this->assertEquals('selesai', $surat->status);
         $this->assertEquals($mhs->id, $surat->current_user_id);
+        $this->assertEquals([2, 4, 10, 9, 19], $surat->data['private']['stepper']);
+
+        // 6. TU -> Riwayat Persetujuan
+        $this->actingAs($tu)
+            ->get('/tata-usaha/riwayat-persetujuan')
+            ->assertStatus(200)
+            ->assertSee('Disetujui');
+
+        $approval = Approval::where('surat_id', $surat->id)->where('user_id', $tu->id)->first();
+        $this->assertNotNull($approval);
+        $this->assertEquals('Ruangan telah dijadwalkan dan siap digunakan.', $approval->note);
+
+        $this->actingAs($tu)
+            ->get(route('show-approval-tata-usaha', $approval->id))
+            ->assertStatus(200)
+            ->assertSee('Aula Bukit Daun');
+
+        $this->actingAs($mhs)
+            ->get(route('lihat-surat-mahasiswa', $surat->id))
+            ->assertStatus(200)
+            ->assertSee('Tata Usaha')
+            ->assertSee('Disetujui')
+            ->assertDontSee('Menunggu');
+    }
+
+    public function test_tata_usaha_can_reject_peminjaman_ruang()
+    {
+        $mhs = User::where('role_id', User::ROLE_MAHASISWA)->first();
+        $tu = User::where('role_id', User::ROLE_TATA_USAHA)->first();
+        $jenisSurat = JenisSurat::where('slug', 'surat-peminjaman-ruang-mahasiswa')->first();
+
+        $surat = Surat::create([
+            'pengaju_id' => $mhs->id,
+            'jenis_surat_id' => $jenisSurat->id,
+            'current_user_id' => $tu->id,
+            'status' => 'diproses',
+            'expired_at' => \Carbon\Carbon::now()->addDays(7),
+            'data' => [
+                'nama' => $mhs->name,
+                'npm' => $mhs->username,
+                'namaRuangan' => 'Aula Rektorat',
+                'namaKegiatan' => 'Seminar Nasional',
+                'private' => ['stepper' => [2, 4, 10, 9]]
+            ]
+        ]);
+
+        $this->actingAs($tu)
+            ->get(route('confirm-tolak-surat-tata-usaha', $surat->id))
+            ->assertStatus(200)
+            ->assertSee('Konfirmasi Penolakan');
+
+        $this->actingAs($tu)
+            ->post(route('tolak-surat-tata-usaha', $surat->id), [
+                'catatan' => 'Ruangan bentrok dengan agenda rektorat.'
+            ])
+            ->assertRedirect('/tata-usaha/surat-masuk');
+
+        $surat->refresh();
+        $this->assertEquals('ditolak', $surat->status);
+        $this->assertNull($surat->current_user_id);
+        $this->assertEquals([2, 4, 10, 9, 19], $surat->data['private']['stepper']);
+
+        $approval = Approval::where('surat_id', $surat->id)->where('user_id', $tu->id)->first();
+        $this->assertNotNull($approval);
+        $this->assertEquals(0, $approval->isApproved);
+        $this->assertEquals('Ruangan bentrok dengan agenda rektorat.', $approval->note);
+
+        $this->actingAs($tu)
+            ->get('/tata-usaha/riwayat-persetujuan')
+            ->assertStatus(200)
+            ->assertSee('Ditolak');
     }
 
     public function test_staff_can_submit_peminjaman_ruang_and_chain_to_tata_usaha()

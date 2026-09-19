@@ -352,13 +352,15 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('tata-usaha')->middleware(['userAccess:19'])->group(function () {
         // Route::middleware('verified')->group(function () {
-        Route::get('/surat-masuk', [TataUsahaController::class, 'suratMasuk']);
-        Route::get('/riwayat-persetujuan', [TataUsahaController::class, 'riwayatPersetujuan']);
+        Route::get('/surat-masuk', [TataUsahaController::class, 'suratMasuk'])->name('surat-masuk-tata-usaha');
+        Route::get('/riwayat-persetujuan', [TataUsahaController::class, 'riwayatPersetujuan'])->name('riwayat-persetujuan-tata-usaha');
         Route::get('/riwayat-persetujuan/show/{approval}', [TataUsahaController::class, 'showApproval'])->name('show-approval-tata-usaha');
         Route::get('/surat-masuk/show/{surat}', [TataUsahaController::class, 'showSuratMasuk'])->name('show-surat-masuk-tata-usaha');
         Route::post('/surat-masuk/setujui/{surat}', [TataUsahaController::class, 'setujuiSurat'])->name('setujui-surat-tata-usaha');
         Route::get('/surat-masuk/tolak/{surat}', [TataUsahaController::class, 'confirmTolakSurat'])->name('confirm-tolak-surat-tata-usaha');
         Route::post('/surat-masuk/tolak/{surat}', [TataUsahaController::class, 'tolakSurat'])->name('tolak-surat-tata-usaha');
+        Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->name('preview-surat-tata-usaha');
+        Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-tata-usaha');
         // });
         // Routes for pengajuan surat by tata-usaha
         Route::get('/pengajuan-surat', [TataUsahaController::class, 'pengajuanSurat'])->name('tata-usaha-pengajuan-surat');

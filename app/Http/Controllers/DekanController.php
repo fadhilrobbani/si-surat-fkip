@@ -344,6 +344,9 @@ class DekanController extends Controller
             if ($data) {
                 $data['private']['namaDekan'] = auth()->user()->name;
                 $data['private']['nipDekan'] = auth()->user()->nip;
+                if (isset($data['private']['stepper'])) {
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                }
             }
             $surat->data = $data;
             $surat->save();

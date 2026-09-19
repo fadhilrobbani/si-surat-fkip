@@ -1,25 +1,18 @@
 @php
     $authUser = auth()->user();
-    $step = [];
+    $surat = $approval->surat;
     $namaPengaju = $surat->data['nama'] ?? ($surat->pengaju->name ?? 'User');
     $avatar = 'https://ui-avatars.com/api/?name=' . urlencode($namaPengaju) . '&background=random';
 @endphp
 
 <x-layout :authUser='$authUser'>
     <x-slot:title>
-        Tata Usaha | Detail Surat
+        Tata Usaha | Detail Riwayat Persetujuan
     </x-slot:title>
-
-    @if (request()->routeIs('show-surat-masuk-tata-usaha'))
-        {{ Breadcrumbs::render('detail-surat-masuk', $surat) }}
-    @else
-        {{ Breadcrumbs::render('tata-usaha-show-pengajuan-surat', $surat) }}
-    @endif
-
+    {{ Breadcrumbs::render('detail-persetujuan', $approval) }}
     <h1 class="mx-auto text-center font-bold text-xl my-4">{{ $surat->jenisSurat->name }}</h1>
 
     <div class="flex flex-col gap-4 md:flex-row justify-evenly items-start">
-
         <div class="w-full overflow-x-auto shadow-lg sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-700 dark:text-gray-400">
                 <tbody>
@@ -33,51 +26,24 @@
                         </td>
                     </tr>
                     <tr class="border-b border-gray-200 dark:border-gray-700">
-                        @php
-                            $recentStatus = 'Posisi Surat';
-                            if ($surat->status == 'diproses') {
-                                $recentStatus = 'Menunggu';
-                            } elseif ($surat->status == 'ditolak') {
-                                $recentStatus = 'Ditolak oleh';
-                            } elseif ($surat->status == 'selesai') {
-                                $recentStatus = 'Penerima';
-                            }
-                        @endphp
-                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">{{ $recentStatus }}:&nbsp;
+                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Hasil Konfirmasi Anda:&nbsp;</td>
+                        <td class="px-6 py-4 font-semibold {{ $approval->isApproved == 1 ? 'text-green-600' : 'text-rose-600' }}">
+                            {{ $approval->isApproved == 1 ? 'Disetujui' : 'Ditolak' }}
                         </td>
-                        <td class="px-6 py-4">{{ $surat->current_user->name ?? '-' }}</td>
                     </tr>
-                    @php
-                        $riwayatPenolakan = App\Models\Approval::where('surat_id', '=', $surat->id)
-                            ->where('isApproved', '=', 0)
-                            ->first();
-                    @endphp
-
-                    @if ($surat->status == 'ditolak' && $riwayatPenolakan)
+                    @if ($approval->note)
                         <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Catatan Penolakan:&nbsp;
-                            </td>
-                            <td class="px-6 py-4 text-rose-600 font-medium">{{ $riwayatPenolakan->note }}</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Penolakan:&nbsp;
-                            </td>
-                            <td class="px-6 py-4">{{ formatTimestampToIndonesian($riwayatPenolakan->created_at) }}
-                            </td>
+                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Catatan Anda:&nbsp;</td>
+                            <td class="px-6 py-4">{{ $approval->note }}</td>
                         </tr>
                     @endif
-                    @if ($surat->status == 'selesai' && isset($surat->data['tanggal_selesai']))
-                        <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Disetujui:&nbsp;
-                            </td>
-                            <td class="px-6 py-4">{{ $surat->data['tanggal_selesai'] }}
-                            </td>
-                        </tr>
-                    @endif
-
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Diajukan:&nbsp;</td>
                         <td class="px-6 py-4">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
+                    </tr>
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">Tanggal Ditinjau:&nbsp;</td>
+                        <td class="px-6 py-4">{{ formatTimestampToIndonesian($approval->created_at) }}</td>
                     </tr>
                     @if ($surat->expired_at && $surat->status == 'diproses')
                         <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -88,22 +54,25 @@
 
                     @foreach ($surat->data as $key => $value)
                         @if ($key == 'tanggal_selesai')
+                            <tr class="border-b border-gray-200 dark:border-gray-700">
+                                <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">
+                                    {{ Str::title(str_replace('_', ' Surat ', $key)) }}:&nbsp;
+                                </td>
+                                <td class="px-6 py-4">{{ $value }}</td>
+                            </tr>
                             @continue
                         @endif
-                        @if ($key == 'ttdWD1' || $key == 'ttdWD')
-                            @continue
-                        @endif
-                        @if ($key == 'private')
+                        @if (in_array($key, ['ttdWD1', 'ttdWD', 'note', 'private', 'catatanTU', 'alasanPenolakan']))
                             @continue
                         @endif
                         @if ($key == 'dosen')
                             @foreach ($value as $id => $data)
-                                @foreach ($data as $dosenKey => $dosenVal)
+                                @foreach ($data as $dosenKey => $dosenValue)
                                     <tr class="border-b border-gray-200 dark:border-gray-700">
                                         <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">
                                             {{ convertToTitleCase($dosenKey) }}:&nbsp;
                                         </td>
-                                        <td class="px-6 py-4">{{ $dosenVal }}</td>
+                                        <td class="px-6 py-4">{{ $dosenValue }}</td>
                                     </tr>
                                 @endforeach
                             @endforeach
@@ -124,7 +93,6 @@
                                     @php
                                         $storagePath = 'lampiran/' . basename($value);
                                         $filename = pathInfo(basename($value), PATHINFO_FILENAME);
-
                                         if (\App\Services\StorageHelper::exists($storagePath)) {
                                             $mimeType = str_replace('/', '-', \App\Services\StorageHelper::mimeType($storagePath));
                                         } else {
@@ -138,13 +106,11 @@
                                             'extension' => $extension,
                                         ]);
                                     @endphp
-
                                     <a class="text-blue-700 underline font-medium" href="{{ $url }}">Lihat Lampiran</a>
                                 </td>
                             </tr>
                         @endforeach
                     @endif
-
                 </tbody>
             </table>
         </div>
@@ -156,53 +122,20 @@
                 <x-stepper :surat='$surat' />
             @endif
         </div>
-
     </div>
 
-    {{-- ACTION BAR UNTUK VERIFIKASI SURAT MASUK OLEH TATA USAHA --}}
-    @if ($surat->current_user_id == auth()->user()->id && $surat->status == 'diproses')
-        <div class="mt-8 p-6 bg-slate-100 dark:bg-gray-800 rounded-lg shadow-sm">
-            <form action="{{ route('setujui-surat-tata-usaha', $surat->id) }}" method="POST">
-                @csrf
-                <div class="mb-4">
-                    <label for="catatan" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Catatan Persetujuan (Opsional)
-                    </label>
-                    <textarea id="catatan" name="catatan" rows="2"
-                        class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="Tambahkan catatan jika diperlukan (misal: kunci ruangan dapat diambil di ruang TU)..."></textarea>
-                </div>
-
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
-                    <a href="{{ route('confirm-tolak-surat-tata-usaha', $surat->id) }}"
-                        class="w-full sm:w-auto text-center px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-medium rounded-lg text-sm transition">
-                        Tolak Surat
-                    </a>
-
-                    <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                        <a href="{{ route('preview-surat-tata-usaha', $surat->id) }}" target="_blank"
-                            class="text-center px-5 py-2.5 bg-slate-600 hover:bg-slate-700 text-white font-medium rounded-lg text-sm transition">
-                            Preview Dokumen
-                        </a>
-                        <button type="submit"
-                            class="text-center px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg text-sm transition">
-                            Setujui Surat
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    @elseif ($surat->status == 'selesai' && $surat->jenisSurat->slug != 'surat-pengajuan-atk-tata-usaha')
+    @if ($surat->jenisSurat->slug != 'surat-pengajuan-atk-tata-usaha')
         <div class="flex items-center gap-3 mt-8">
-            <a href="{{ route('print-surat-tata-usaha', $surat->id) }}" target="_blank"
-                class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">
-                Cetak Surat
-            </a>
+            @if ($surat->status == 'selesai')
+                <a href="{{ route('print-surat-tata-usaha', $surat->id) }}" target="_blank"
+                    class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                    Cetak Surat
+                </a>
+            @endif
             <a href="{{ route('preview-surat-tata-usaha', $surat->id) }}" target="_blank"
                 class="text-white bg-slate-600 hover:bg-slate-700 font-medium rounded-lg text-sm px-5 py-2.5">
                 Preview Surat
             </a>
         </div>
     @endif
-
 </x-layout>

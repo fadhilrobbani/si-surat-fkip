@@ -65,25 +65,37 @@
                 <label class="block mb-2 text-sm font-medium text-gray-900">
                     Rincian Kebutuhan Anggaran:
                 </label>
-                <div class="space-y-2 border p-3 rounded-lg bg-gray-50">
-                    <template x-for="(item, index) in items" :key="index">
-                        <div class="flex gap-2 items-center">
-                            <input type="text" :name="'items[' + index + '][uraian]'" x-model="item.uraian" required
-                                placeholder="Uraian (Contoh: Konsumsi Acara, Banner/Spanduk, Sertifikat)"
-                                class="bg-white border border-gray-300 text-sm rounded-lg block w-2/3 p-2">
-                            <input type="number" :name="'items[' + index + '][nominal]'" x-model.number="item.nominal" @input="calculateTotal" required
-                                placeholder="Jumlah (Rp)"
-                                class="bg-white border border-gray-300 text-sm rounded-lg block w-1/3 p-2 text-right">
-                            <button type="button" @click="removeItem(index)" x-show="items.length > 1"
-                                class="p-2 text-rose-600 hover:text-rose-800 font-bold">&times;</button>
-                        </div>
-                    </template>
-                    <div class="flex justify-between items-center pt-2">
-                        <button type="button" @click="addItem" class="text-sm bg-blue-50 text-blue-600 hover:bg-blue-100 font-semibold px-3 py-1.5 rounded-lg border border-blue-200">
-                            + Tambah Item Anggaran
+                <div class="border rounded-lg bg-gray-50 overflow-hidden">
+                    <div class="p-3 bg-gray-200/70 border-b flex justify-between items-center text-xs font-bold text-gray-700">
+                        <span class="w-8 text-center">No</span>
+                        <span class="flex-1 px-2">Uraian / Kebutuhan Anggaran</span>
+                        <span class="w-48 text-right px-2">Jumlah Anggaran (Rp)</span>
+                        <span class="w-8 text-center">Aksi</span>
+                    </div>
+                    <div class="p-3 space-y-2">
+                        <template x-for="(item, index) in items" :key="index">
+                            <div class="flex gap-2 items-center">
+                                <span class="w-8 text-center text-sm font-bold text-gray-500" x-text="index + 1"></span>
+                                <input type="text" :name="'items[' + index + '][uraian]'" x-model="item.uraian" required
+                                    placeholder="Contoh: Konsumsi Peserta / Banner / Sewa Panggung"
+                                    class="bg-white border border-gray-300 text-sm rounded-lg block flex-1 p-2 focus:ring-blue-500 focus:border-blue-500">
+                                <input type="number" :name="'items[' + index + '][nominal]'" x-model.number="item.nominal" @input="calculateTotal" required
+                                    placeholder="Nominal (Rp)" min="0"
+                                    class="bg-white border border-gray-300 text-sm rounded-lg block w-48 p-2 text-right font-medium focus:ring-blue-500 focus:border-blue-500">
+                                <button type="button" @click="removeItem(index)" x-show="items.length > 1"
+                                    title="Hapus baris ini"
+                                    class="w-8 text-rose-600 hover:text-rose-800 font-bold text-lg text-center leading-none">&times;</button>
+                                <div class="w-8" x-show="items.length <= 1"></div>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="p-3 bg-white border-t flex justify-between items-center">
+                        <button type="button" @click="addItem" class="text-sm bg-blue-50 text-blue-600 hover:bg-blue-100 font-semibold px-3 py-1.5 rounded-lg border border-blue-200 inline-flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                            + Tambah Baris Anggaran
                         </button>
-                        <div class="text-right font-bold text-gray-700">
-                            Total: Rp <span x-text="formatRupiah(total)">0</span>
+                        <div class="text-right font-bold text-gray-800 text-base">
+                            Total Usulan: <span class="text-emerald-600">Rp <span x-text="formatRupiah(total)">0</span></span>
                             <input type="hidden" name="total_anggaran" :value="total">
                         </div>
                     </div>

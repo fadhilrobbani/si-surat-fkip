@@ -636,6 +636,18 @@
                     'dropdown' => [],
                 ],
                 [
+                    'link' => 'tata-usaha/surat-masuk',
+                    'title' => 'Surat Masuk',
+                    'icon' => asset('svg/letter.svg'),
+                    'dropdown' => [],
+                ],
+                [
+                    'link' => 'tata-usaha/riwayat-persetujuan',
+                    'title' => 'Riwayat Persetujuan',
+                    'icon' => asset('svg/lettercheck.svg'),
+                    'dropdown' => [],
+                ],
+                [
                     'link' => 'tata-usaha/pengajuan-surat',
                     'title' => 'Pengajuan Surat',
                     'icon' => asset('svg/letterpencil.svg'),

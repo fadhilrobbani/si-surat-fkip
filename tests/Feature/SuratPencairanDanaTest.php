@@ -103,7 +103,23 @@ class SuratPencairanDanaTest extends TestCase
             ]
         ]);
 
-        // 2. Kaprodi menyetujui -> diteruskan ke WD3
+        $surat->refresh();
+        $this->assertEquals($kaprodi->id, $surat->current_user_id);
+        $this->assertEquals([User::ROLE_MAHASISWA], $surat->data['private']['stepper']);
+
+        // Check stepper on mahasiswa show-surat
+        $this->actingAs($mhs)
+            ->get(route('lihat-surat-mahasiswa', $surat->id))
+            ->assertStatus(200)
+            ->assertSee('Kaprodi')
+            ->assertSee('Menunggu');
+
+        // 2. Kaprodi buka surat-masuk & menyetujui -> diteruskan ke WD3
+        $this->actingAs($kaprodi)
+            ->get('/kaprodi/surat-masuk')
+            ->assertStatus(200)
+            ->assertSee('Surat Pencairan Dana Kegiatan Mahasiswa');
+
         $this->actingAs($kaprodi)
             ->put('/kaprodi/surat-disetujui/' . $surat->id, [
                 'penerima' => $wd3->id,
@@ -113,8 +129,21 @@ class SuratPencairanDanaTest extends TestCase
         $surat->refresh();
         $this->assertEquals($wd3->id, $surat->current_user_id);
         $this->assertEquals('diproses', $surat->status);
+        $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI], $surat->data['private']['stepper']);
 
-        // 3. WD3 menyetujui -> diteruskan ke WD2
+        // 3. WD3 buka surat-masuk & menyetujui -> diteruskan ke WD2
+        $this->actingAs($wd3)
+            ->get('/wd3/surat-masuk')
+            ->assertStatus(200)
+            ->assertSee('Surat Pencairan Dana Kegiatan Mahasiswa');
+
+        // Stepper on WD3 show-surat should show dynamic chain: Mahasiswa -> Kaprodi -> WD3 (Menunggu)
+        $this->actingAs($wd3)
+            ->get(route('show-surat-wd3', $surat->id))
+            ->assertStatus(200)
+            ->assertSee('Wakil Dekan Bidang Kemahasiswaan')
+            ->assertSee('Menunggu');
+
         $this->actingAs($wd3)
             ->put('/wd3/surat-disetujui/' . $surat->id, [
                 'penerima' => $wd2->id,
@@ -123,8 +152,21 @@ class SuratPencairanDanaTest extends TestCase
 
         $surat->refresh();
         $this->assertEquals($wd2->id, $surat->current_user_id);
+        $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI, User::ROLE_WD3], $surat->data['private']['stepper']);
 
-        // 4. WD2 menyetujui -> diteruskan ke Kabag
+        // 4. WD2 buka surat-masuk & menyetujui -> diteruskan ke Kabag
+        $this->actingAs($wd2)
+            ->get('/wd2/surat-masuk')
+            ->assertStatus(200)
+            ->assertSee('Surat Pencairan Dana Kegiatan Mahasiswa');
+
+        // Stepper on WD2 show-surat should show WD3 approved, WD2 waiting
+        $this->actingAs($wd2)
+            ->get(route('show-surat-wd2', $surat->id))
+            ->assertStatus(200)
+            ->assertSee('Wakil Dekan Bidang Keuangan dan Umum')
+            ->assertSee('Menunggu');
+
         $this->actingAs($wd2)
             ->put('/wd2/surat-disetujui/' . $surat->id, [
                 'penerima' => $kabag->id,
@@ -133,8 +175,20 @@ class SuratPencairanDanaTest extends TestCase
 
         $surat->refresh();
         $this->assertEquals($kabag->id, $surat->current_user_id);
+        $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI, User::ROLE_WD3, User::ROLE_WD2], $surat->data['private']['stepper']);
 
-        // 5. Kabag menyetujui -> diteruskan ke Bendahara (status tetap diproses)
+        // 5. Kabag buka surat-masuk & menyetujui -> diteruskan ke Bendahara
+        $this->actingAs($kabag)
+            ->get('/kabag/surat-masuk')
+            ->assertStatus(200)
+            ->assertSee('Surat Pencairan Dana Kegiatan Mahasiswa');
+
+        $this->actingAs($kabag)
+            ->get(route('show-surat-kabag', $surat->id))
+            ->assertStatus(200)
+            ->assertSee('Kabag')
+            ->assertSee('Menunggu');
+
         $this->actingAs($kabag)
             ->put('/kabag/surat-disetujui/' . $surat->id)
             ->assertRedirect('/kabag/surat-masuk');
@@ -142,8 +196,14 @@ class SuratPencairanDanaTest extends TestCase
         $surat->refresh();
         $this->assertEquals($bendahara->id, $surat->current_user_id);
         $this->assertEquals('diproses', $surat->status);
+        $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI, User::ROLE_WD3, User::ROLE_WD2, User::ROLE_KABAG], $surat->data['private']['stepper']);
 
-        // 6. Bendahara menyetujui & mencairkan dana -> status SELESAI
+        // 6. Bendahara buka surat-masuk & menyetujui -> status SELESAI
+        $this->actingAs($bendahara)
+            ->get('/bendahara/surat-masuk')
+            ->assertStatus(200)
+            ->assertSee('Gebyar FKIP 2026');
+
         $this->actingAs($bendahara)
             ->put('/bendahara/surat-disetujui/' . $surat->id, [
                 'no_bukti_pencairan' => 'KAS-FKIP/2026/001',
@@ -155,6 +215,15 @@ class SuratPencairanDanaTest extends TestCase
         $this->assertEquals('selesai', $surat->status);
         $this->assertEquals('KAS-FKIP/2026/001', $surat->data['nomorBuktiPencairan']);
         $this->assertEquals($mhs->id, $surat->current_user_id);
+        $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI, User::ROLE_WD3, User::ROLE_WD2, User::ROLE_KABAG, User::ROLE_BENDAHARA], $surat->data['private']['stepper']);
+
+        // Stepper on final completed show-surat: all roles approved, no waiting step
+        $this->actingAs($mhs)
+            ->get(route('lihat-surat-mahasiswa', $surat->id))
+            ->assertStatus(200)
+            ->assertSee('Bendahara')
+            ->assertSee('Disetujui')
+            ->assertDontSee('Menunggu');
     }
 
     public function test_bendahara_can_reject_pencairan_dana()
@@ -183,5 +252,43 @@ class SuratPencairanDanaTest extends TestCase
         $surat->refresh();
         $this->assertEquals('ditolak', $surat->status);
         $this->assertEquals('RAB tidak sesuai pagu anggaran fakultas', $surat->data['alasanPenolakan']);
+    }
+
+    public function test_mahasiswa_and_approvers_can_view_show_surat_pencairan_dana()
+    {
+        $mhs = User::where('role_id', User::ROLE_MAHASISWA)->first();
+        $kaprodi = User::where('role_id', User::ROLE_KAPRODI)->first();
+        $jenisSurat = JenisSurat::where('slug', 'surat-pencairan-dana-mahasiswa')->first();
+
+        $surat = Surat::create([
+            'pengaju_id' => $mhs->id,
+            'current_user_id' => $kaprodi->id,
+            'jenis_surat_id' => $jenisSurat->id,
+            'status' => 'diproses',
+            'expired_at' => now()->addDays(30),
+            'data' => [
+                'namaKegiatan' => 'Festival Budaya 2026',
+                'namaOrganisasi' => 'BEM FKIP',
+                'totalAnggaran' => 4000000,
+                'rincian_biaya' => [
+                    ['uraian' => 'Sewa Panggung', 'volume' => 1, 'satuan' => 'Paket', 'harga_satuan' => 2500000, 'subtotal' => 2500000],
+                    ['uraian' => 'Konsumsi', 'volume' => 50, 'satuan' => 'Kotak', 'harga_satuan' => 30000, 'subtotal' => 1500000],
+                ],
+                'namaBank' => 'Bank Bengkulu',
+                'nomorRekening' => '123456789',
+                'atasNamaRekening' => 'BEM FKIP',
+            ]
+        ]);
+
+        $this->actingAs($mhs)
+            ->get(route('lihat-surat-mahasiswa', $surat->id))
+            ->assertStatus(200)
+            ->assertSee('Sewa Panggung')
+            ->assertSee('Konsumsi');
+
+        $this->actingAs($kaprodi)
+            ->get(route('show-surat-kaprodi', $surat->id))
+            ->assertStatus(200)
+            ->assertSee('Sewa Panggung');
     }
 }

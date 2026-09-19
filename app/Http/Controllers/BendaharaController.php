@@ -132,6 +132,9 @@ class BendaharaController extends Controller
         $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
         $data['catatanBendahara'] = $request->input('note');
         $data['nomorBuktiPencairan'] = $request->input('no_bukti_pencairan');
+        if (isset($data['private']['stepper'])) {
+            $data['private']['stepper'][] = auth()->user()->role->id;
+        }
         $surat->data = $data;
         $surat->save();
 
@@ -169,6 +172,9 @@ class BendaharaController extends Controller
         $surat->expired_at = null;
         $data = $surat->data;
         $data['alasanPenolakan'] = $request->input('note');
+        if (isset($data['private']['stepper'])) {
+            $data['private']['stepper'][] = auth()->user()->role->id;
+        }
         $surat->data = $data;
         $surat->save();
 
