@@ -291,4 +291,80 @@ class SuratPencairanDanaTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Sewa Panggung');
     }
+
+    public function test_staff_can_submit_pencairan_dana_with_nomor_rekening()
+    {
+        $staff = User::where('role_id', User::ROLE_STAFF)->first();
+        $kaprodi = User::where('role_id', User::ROLE_KAPRODI)->first();
+        $jenisSurat = JenisSurat::where('slug', 'surat-pencairan-dana')->first();
+
+        \Illuminate\Support\Facades\Storage::fake('local');
+        $file = \Illuminate\Http\UploadedFile::fake()->create('proposal.pdf', 500, 'application/pdf');
+
+        $response = $this->actingAs($staff)->post(route('staff-store-surat-pencairan-dana', $jenisSurat->slug), [
+            'name' => $staff->name,
+            'username' => $staff->username,
+            'penerima' => $kaprodi->id,
+            'nama_kegiatan' => 'Workshop Kurikulum 2026',
+            'tahun_anggaran' => '2026',
+            'nama_bank' => 'Bank Bengkulu',
+            'nomor_rekening' => '010203040506',
+            'atas_nama_rekening' => 'Prodi Pendidikan Bahasa',
+            'berkas_proposal' => $file,
+            'items' => [
+                ['uraian' => 'Konsumsi Peserta', 'nominal' => 1500000],
+                ['uraian' => 'Sertifikat dan ATK', 'nominal' => 500000],
+            ],
+        ]);
+
+        $response->assertRedirect('/staff/riwayat-pengajuan-surat');
+
+        $surat = Surat::where('pengaju_id', $staff->id)
+            ->where('jenis_surat_id', $jenisSurat->id)
+            ->latest('id')
+            ->first();
+
+        $this->assertNotNull($surat);
+        $this->assertEquals('010203040506', $surat->data['nomorRekening']);
+        $this->assertEquals(2000000, $surat->data['totalAnggaran']);
+    }
+
+    public function test_bendahara_show_surat_has_setujui_button_and_finishes()
+    {
+        $staff = User::where('role_id', User::ROLE_STAFF)->first();
+        $bendahara = User::where('role_id', User::ROLE_BENDAHARA)->first();
+        $jenisSurat = JenisSurat::where('slug', 'surat-pencairan-dana')->first();
+
+        $surat = Surat::create([
+            'pengaju_id' => $staff->id,
+            'current_user_id' => $bendahara->id,
+            'jenis_surat_id' => $jenisSurat->id,
+            'status' => 'diproses',
+            'expired_at' => now()->addDays(30),
+            'data' => [
+                'namaKegiatan' => 'Seminar Pendidikan',
+                'namaBank' => 'Bank Bengkulu',
+                'nomorRekening' => '010203040506',
+                'atasNamaRekening' => 'Bendahara Panitia',
+                'totalAnggaran' => 2000000,
+            ]
+        ]);
+
+        $this->actingAs($bendahara)
+            ->get(route('show-surat-masuk-bendahara', $surat->id))
+            ->assertStatus(200)
+            ->assertSee('Setujui')
+            ->assertSee('Selesaikan Pencairan');
+
+        $this->actingAs($bendahara)
+            ->put(route('setujui-surat-bendahara', $surat->id), [
+                'no_bukti_pencairan' => 'KAS-001',
+                'note' => 'Dana sudah ditransfer',
+            ])
+            ->assertRedirect('/bendahara/surat-masuk');
+
+        $surat->refresh();
+        $this->assertEquals('selesai', $surat->status);
+        $this->assertEquals('KAS-001', $surat->data['nomorBuktiPencairan']);
+    }
 }

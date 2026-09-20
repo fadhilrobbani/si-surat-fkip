@@ -98,10 +98,11 @@
             </div>
 
             <div>
-                <label for="no_rekening" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                <label for="nomor_rekening" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     Nomor Rekening <span class="text-red-500">*</span>
                 </label>
-                <input type="text" id="no_rekening" name="no_rekening" required
+                <input type="text" id="nomor_rekening" name="nomor_rekening" required
+                    value="{{ old('nomor_rekening', old('no_rekening')) }}"
                     placeholder="Masukkan Nomor Rekening"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
             </div>
@@ -116,11 +117,14 @@
             </div>
 
             <div class="md:col-span-2">
-                <label for="berkas_proposal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Upload Berkas Proposal & Rincian Anggaran (RAB) Lengkap <span class="text-red-500">*</span> (PDF max 10MB)
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="berkas_proposal">
+                    Upload Berkas Proposal & Rincian Anggaran (RAB) Lengkap <span class="text-red-500">*</span>
                 </label>
-                <input type="file" id="berkas_proposal" name="berkas_proposal" accept=".pdf" required
-                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 p-2">
+                <input
+                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    aria-describedby="berkas_proposal_help" id="berkas_proposal" type="file" name="berkas_proposal"
+                    accept=".pdf" required>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="berkas_proposal_help">PDF (MAX. 10 MB).</p>
             </div>
         </div>
 

@@ -55,7 +55,12 @@
                             <th scope="col" class="px-4 py-3">Surat</th>
                             <th scope="col" class="px-4 py-3">Tanggal Ditinjau</th>
                             <th scope="col" class="px-4 py-3">Hasil Konfirmasi</th>
-                            <th scope="col" class="px-4 py-3 text-center">Aksi</th>
+                            <th scope="col" class="px-4 py-3 text-center">
+                                <span class="inline-flex items-center justify-center gap-1">
+                                    Aksi
+                                    <x-info-tooltip id="tooltip-riwayat-tu" size="w-3.5 h-3.5" />
+                                </span>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,10 +89,25 @@
                                     {{ $riwayatSurat->isApproved == 1 ? 'Disetujui' : 'Ditolak' }}
                                 </td>
                                 <td class="px-4 py-3 text-center">
-                                    <a href="{{ route('show-approval-tata-usaha', $riwayatSurat->id) }}"
-                                        class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-xs px-3 py-1.5 transition">
-                                        Lihat
-                                    </a>
+                                    <div class="flex items-center justify-center gap-1.5">
+                                        <a href="{{ route('show-approval-tata-usaha', $riwayatSurat->id) }}"
+                                            class="inline-block bg-slate-700 hover:bg-slate-800 text-white font-medium rounded-lg text-xs px-2.5 py-1.5 transition">
+                                            Lihat
+                                        </a>
+                                        @if ($riwayatSurat->surat->jenisSurat->slug != 'surat-pengajuan-atk-tata-usaha')
+                                            @if ($riwayatSurat->surat->status == 'selesai')
+                                                <a href="{{ route('print-surat-tata-usaha', $riwayatSurat->surat->id) }}" target="_blank"
+                                                    class="inline-block bg-blue-700 hover:bg-blue-800 text-white font-medium rounded-lg text-xs px-2.5 py-1.5 transition">
+                                                    Cetak
+                                                </a>
+                                            @else
+                                                <a href="{{ route('preview-surat-tata-usaha', $riwayatSurat->surat->id) }}" target="_blank"
+                                                    class="inline-block bg-slate-600 hover:bg-slate-700 text-white font-medium rounded-lg text-xs px-2.5 py-1.5 transition">
+                                                    Preview
+                                                </a>
+                                            @endif
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

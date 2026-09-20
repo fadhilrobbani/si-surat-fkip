@@ -162,6 +162,10 @@
     {{-- ACTION BAR UNTUK VERIFIKASI SURAT MASUK OLEH TATA USAHA --}}
     @if ($surat->current_user_id == auth()->user()->id && $surat->status == 'diproses')
         <div class="mt-8 p-6 bg-slate-100 dark:bg-gray-800 rounded-lg shadow-sm">
+            <div class="flex items-center gap-1.5 mb-4">
+                <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-300">Tindakan Verifikasi</h2>
+                <x-info-tooltip id="tooltip-preview-tu" />
+            </div>
             <form action="{{ route('setujui-surat-tata-usaha', $surat->id) }}" method="POST">
                 @csrf
                 <div class="mb-4">
@@ -173,19 +177,21 @@
                         placeholder="Tambahkan catatan jika diperlukan (misal: kunci ruangan dapat diambil di ruang TU)..."></textarea>
                 </div>
 
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
                     <a href="{{ route('confirm-tolak-surat-tata-usaha', $surat->id) }}"
-                        class="w-full sm:w-auto text-center px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-medium rounded-lg text-sm transition">
+                        style="background-color: #e11d48; color: #ffffff;"
+                        class="w-full sm:w-auto text-center px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-medium rounded-lg text-sm transition order-last sm:order-first">
                         Tolak Surat
                     </a>
 
-                    <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                    <div class="flex flex-col sm:flex-row items-stretch gap-2 flex-1 sm:justify-end">
                         <a href="{{ route('preview-surat-tata-usaha', $surat->id) }}" target="_blank"
-                            class="text-center px-5 py-2.5 bg-slate-600 hover:bg-slate-700 text-white font-medium rounded-lg text-sm transition">
+                            class="flex-1 text-center px-4 py-2.5 bg-slate-600 hover:bg-slate-700 text-white font-medium rounded-lg text-sm transition">
                             Preview Dokumen
                         </a>
                         <button type="submit"
-                            class="text-center px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg text-sm transition">
+                            style="background-color: #16a34a; color: #ffffff;"
+                            class="flex-1 text-center px-6 py-2.5 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg text-sm shadow cursor-pointer transition">
                             Setujui Surat
                         </button>
                     </div>
@@ -193,14 +199,10 @@
             </form>
         </div>
     @elseif ($surat->status == 'selesai' && $surat->jenisSurat->slug != 'surat-pengajuan-atk-tata-usaha')
-        <div class="flex items-center gap-3 mt-8">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-8">
             <a href="{{ route('print-surat-tata-usaha', $surat->id) }}" target="_blank"
-                class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                class="w-full sm:w-auto text-center text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 transition">
                 Cetak Surat
-            </a>
-            <a href="{{ route('preview-surat-tata-usaha', $surat->id) }}" target="_blank"
-                class="text-white bg-slate-600 hover:bg-slate-700 font-medium rounded-lg text-sm px-5 py-2.5">
-                Preview Surat
             </a>
         </div>
     @endif

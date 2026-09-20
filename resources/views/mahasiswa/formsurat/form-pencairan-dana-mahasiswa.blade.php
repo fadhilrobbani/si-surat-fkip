@@ -130,11 +130,14 @@
             </div>
 
             <div>
-                <label for="lampiran_proposal" class="block mb-2 text-sm font-medium text-gray-900">
-                    Unggah Dokumen Proposal / RAB Lengkap (PDF, maks 5MB) <span class="text-red-500">*</span>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="lampiran_proposal">
+                    Unggah Dokumen Proposal / RAB Lengkap <span class="text-red-500">*</span>
                 </label>
-                <input type="file" id="lampiran_proposal" name="lampiran_proposal" accept=".pdf" required
-                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2">
+                <input
+                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    aria-describedby="lampiran_proposal_help" id="lampiran_proposal" type="file" name="lampiran_proposal"
+                    accept=".pdf" required>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="lampiran_proposal_help">PDF (MAX. 5 MB).</p>
             </div>
         </div>
 

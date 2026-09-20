@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 class BendaharaController extends Controller
 {
@@ -208,5 +209,24 @@ class BendaharaController extends Controller
             'approval' => $approval,
             'surat' => $approval->surat
         ]);
+    }
+
+    public function resetPasswordPage()
+    {
+        return view('bendahara.reset-password');
+    }
+
+    public function resetPassword(Request $request, User $user)
+    {
+        if (!Hash::check($request->input('old-password'), $user->password)) {
+            return back()->withErrors(['old-password' => 'Password lama yang anda masukkan salah!']);
+        }
+        $request->validate([
+            'password' => 'required|confirmed|min:6'
+        ]);
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+        return redirect('/bendahara/profile')->with('success', 'Password berhasil direset');
     }
 }

@@ -18,7 +18,12 @@
                         <th class="px-6 py-3">Total Anggaran</th>
                         <th class="px-6 py-3">Status Pencairan</th>
                         <th class="px-6 py-3">Tanggal Verifikasi</th>
-                        <th class="px-6 py-3 text-center">Detail</th>
+                        <th class="px-6 py-3 text-center">
+                            <span class="inline-flex items-center justify-center gap-1">
+                                Detail & Aksi
+                                <x-info-tooltip id="tooltip-riwayat-bendahara" size="w-3.5 h-3.5" />
+                            </span>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,10 +52,23 @@
                             </td>
                             <td class="px-6 py-4">{{ formatTimestampToIndonesian($approval->created_at) }}</td>
                             <td class="px-6 py-4 text-center">
-                                <a href="{{ route('show-approval-bendahara', $approval->id) }}"
-                                    class="text-white bg-slate-700 hover:bg-slate-800 font-medium rounded-lg text-xs px-3 py-1.5">
-                                    Lihat Riwayat
-                                </a>
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <a href="{{ route('show-approval-bendahara', $approval->id) }}"
+                                        class="text-white bg-slate-700 hover:bg-slate-800 font-medium rounded-lg text-xs px-2.5 py-1.5 transition">
+                                        Lihat
+                                    </a>
+                                    @if ($approval->surat->status == 'selesai')
+                                        <a href="{{ route('print-surat-bendahara', $approval->surat->id) }}" target="_blank"
+                                            class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-xs px-2.5 py-1.5 transition">
+                                            Cetak
+                                        </a>
+                                    @else
+                                        <a href="{{ route('preview-surat-bendahara', $approval->surat->id) }}" target="_blank"
+                                            class="text-white bg-slate-600 hover:bg-slate-700 font-medium rounded-lg text-xs px-2.5 py-1.5 transition">
+                                            Preview
+                                        </a>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @empty

@@ -124,4 +124,36 @@ class SuratPermohonanNarasumberTest extends TestCase
         $this->assertEmpty($surat->data['noSurat']);
         $this->assertEquals($staff->id, $surat->current_user_id);
     }
+
+    public function test_staff_submits_permohonan_narasumber_with_tempat_kegiatan_and_optional_jabatan()
+    {
+        $staff = User::where('role_id', User::ROLE_STAFF)->first();
+        $kaprodi = User::where('role_id', User::ROLE_KAPRODI)->first();
+        $jenisSurat = JenisSurat::where('slug', 'surat-permohonan-narasumber')->first();
+
+        $response = $this->actingAs($staff)->post(route('staff-store-surat-permohonan-narasumber', $jenisSurat->slug), [
+            'name' => $staff->name,
+            'username' => $staff->username,
+            'penerima' => $kaprodi->id,
+            'nama_narasumber' => 'Prof. Dr. Ir. Budi Santoso, M.Eng.',
+            'instansi_narasumber' => 'Institut Teknologi Bandung',
+            'nama_kegiatan' => 'Workshop Penulisan Jurnal Internasional',
+            'tempat_kegiatan' => 'Ruang Rapat Dekanat FKIP',
+            'hari_tanggal' => 'Rabu, 15 November 2026',
+            'waktu' => '09.00 s.d 13.00 WIB',
+            'tema_materi' => 'Strategi Publikasi di Jurnal Bereputasi Q1',
+        ]);
+
+        $response->assertRedirect('/staff/riwayat-pengajuan-surat');
+
+        $surat = Surat::where('pengaju_id', $staff->id)
+            ->where('jenis_surat_id', $jenisSurat->id)
+            ->latest('id')
+            ->first();
+
+        $this->assertNotNull($surat);
+        $this->assertEquals('Ruang Rapat Dekanat FKIP', $surat->data['tempatKegiatan']);
+        $this->assertNull($surat->data['jabatanNarasumber']);
+    }
 }
+

@@ -125,17 +125,19 @@
     </div>
 
     @if ($surat->jenisSurat->slug != 'surat-pengajuan-atk-tata-usaha')
-        <div class="flex items-center gap-3 mt-8">
+        <div class="flex items-center gap-2 mt-8">
             @if ($surat->status == 'selesai')
                 <a href="{{ route('print-surat-tata-usaha', $surat->id) }}" target="_blank"
-                    class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                    class="w-full sm:w-auto text-center text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 transition">
                     Cetak Surat
                 </a>
+            @else
+                <a href="{{ route('preview-surat-tata-usaha', $surat->id) }}" target="_blank"
+                    class="w-full sm:w-auto text-center text-white bg-slate-600 hover:bg-slate-700 font-medium rounded-lg text-sm px-5 py-2.5 transition">
+                    Preview Surat
+                </a>
+                <x-info-tooltip id="tooltip-approval-tu" />
             @endif
-            <a href="{{ route('preview-surat-tata-usaha', $surat->id) }}" target="_blank"
-                class="text-white bg-slate-600 hover:bg-slate-700 font-medium rounded-lg text-sm px-5 py-2.5">
-                Preview Surat
-            </a>
         </div>
     @endif
 </x-layout>

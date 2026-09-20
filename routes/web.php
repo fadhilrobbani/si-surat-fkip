@@ -569,8 +569,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/riwayat-persetujuan', [BendaharaController::class, 'riwayatPersetujuan'])->name('riwayat-persetujuan-bendahara');
         Route::get('/riwayat-persetujuan/show/{approval}', [BendaharaController::class, 'showApproval'])->name('show-approval-bendahara');
         Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->name('preview-surat-bendahara');
+        Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-bendahara');
         Route::get('/profile', [BendaharaController::class, 'profilePage']);
         Route::put('/profile/update/{user}', [BendaharaController::class, 'updateProfile'])->name('update-profile-bendahara');
+        Route::get('/profile/reset-password', [BendaharaController::class, 'resetPasswordPage']);
+        Route::put('/profile/reset-password/{user}', [BendaharaController::class, 'resetPassword'])->name('reset-password-bendahara');
     });
 
     // Route::prefix('pengirim-legalisir')->middleware(['userAccess:15'])->group(function () {

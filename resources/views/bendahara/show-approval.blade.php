@@ -46,15 +46,29 @@
             @endif
         </div>
 
-        <div class="flex justify-between mt-6">
+        <div class="my-4">
+            <x-stepper-flexible :surat="$surat" />
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 mt-6">
             <a href="{{ route('riwayat-persetujuan-bendahara') }}"
-                class="px-4 py-2 bg-gray-600 text-white rounded-lg text-sm font-medium hover:bg-gray-700">
+                class="w-full sm:w-auto text-center px-4 py-2 bg-gray-600 text-white rounded-lg text-sm font-medium hover:bg-gray-700 transition order-last sm:order-first">
                 Kembali
             </a>
-            <a href="{{ route('preview-surat-bendahara', $surat->id) }}" target="_blank"
-                class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700">
-                Preview Dokumen
-            </a>
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                @if ($surat->status == 'selesai')
+                    <a href="{{ route('print-surat-bendahara', $surat->id) }}" target="_blank"
+                        class="w-full sm:w-auto text-center px-5 py-2.5 bg-blue-700 hover:bg-blue-800 text-white font-medium rounded-lg text-sm transition">
+                        Cetak Surat
+                    </a>
+                @else
+                    <a href="{{ route('preview-surat-bendahara', $surat->id) }}" target="_blank"
+                        class="w-full sm:w-auto text-center px-5 py-2.5 bg-slate-600 hover:bg-slate-700 text-white font-medium rounded-lg text-sm transition">
+                        Preview Dokumen
+                    </a>
+                    <x-info-tooltip id="tooltip-approval-bendahara" />
+                @endif
+            </div>
         </div>
     </div>
 </x-layout>

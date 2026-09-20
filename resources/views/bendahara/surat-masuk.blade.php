@@ -37,7 +37,12 @@
                         <th class="px-6 py-3">Nama Kegiatan</th>
                         <th class="px-6 py-3">Total Anggaran</th>
                         <th class="px-6 py-3">Tanggal Masuk</th>
-                        <th class="px-6 py-3 text-center">Aksi</th>
+                        <th class="px-6 py-3 text-center">
+                            <span class="inline-flex items-center justify-center gap-1">
+                                Aksi
+                                <x-info-tooltip id="tooltip-masuk-bendahara" size="w-3.5 h-3.5" />
+                            </span>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -63,10 +68,16 @@
                             </td>
                             <td class="px-6 py-4">{{ formatTimestampToIndonesian($surat->created_at) }}</td>
                             <td class="px-6 py-4 text-center">
-                                <a href="{{ route('show-surat-masuk-bendahara', $surat->id) }}"
-                                    class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-xs px-3 py-1.5">
-                                    Periksa & Cairkan
-                                </a>
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <a href="{{ route('preview-surat-bendahara', $surat->id) }}" target="_blank"
+                                        class="text-white bg-slate-600 hover:bg-slate-700 font-medium rounded-lg text-xs px-2.5 py-1.5 transition inline-flex items-center gap-1">
+                                        Preview
+                                    </a>
+                                    <a href="{{ route('show-surat-masuk-bendahara', $surat->id) }}"
+                                        class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-xs px-3 py-1.5 transition">
+                                        Periksa & Cairkan
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     @empty

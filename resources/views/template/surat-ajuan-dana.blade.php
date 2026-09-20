@@ -17,23 +17,30 @@
 <body>
     @include('components.kop-v2', ['surat' => $surat])
     <br>
-    <table style="width: 100%;">
+    <table style="width: 100%; border-collapse: collapse;">
         <tr>
-            <td style="width: 15%;">Nomor</td>
-            <td style="width: 45%;">: {{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '..........' }}/UN30.7.10/KU/{{ isset($surat->data['tanggal_selesai']) ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ') : (isset($surat->created_at) ? $surat->created_at->format('Y') : date('Y')) }}</td>
-            <td style="width: 40%; text-align: right;">
-                {{ isset($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : (isset($surat->created_at) ? formatTimestampToDateIndonesian($surat->created_at) : '') }}
+            <td style="vertical-align: top; width: 62%;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="width: 75px; vertical-align: top;">Nomor</td>
+                        <td style="width: 10px; vertical-align: top;">:</td>
+                        <td style="vertical-align: top;">{{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '..........' }}/UN30.7.10/KU/{{ isset($surat->data['tanggal_selesai']) ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ') : (isset($surat->created_at) ? $surat->created_at->format('Y') : date('Y')) }}</td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top;">Lampiran</td>
+                        <td style="vertical-align: top;">:</td>
+                        <td style="vertical-align: top;">{{ !empty($surat->files['berkasProposal']) ? '1 (satu) Berkas Proposal & RAB' : '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top;">Perihal</td>
+                        <td style="vertical-align: top;">:</td>
+                        <td style="vertical-align: top;"><b>Usulan Pengajuan Dana {{ $surat->data['namaKegiatan'] ?? '' }}</b></td>
+                    </tr>
+                </table>
             </td>
-        </tr>
-        <tr>
-            <td>Lampiran</td>
-            <td>: {{ !empty($surat->files['berkasProposal']) ? '1 (satu) Berkas Proposal & RAB' : '-' }}</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td style="vertical-align: top;">Perihal</td>
-            <td>: <b>Usulan Pengajuan Dana {{ $surat->data['namaKegiatan'] ?? '' }}</b></td>
-            <td></td>
+            <td style="vertical-align: top; text-align: right; width: 38%;">
+                <p>{{ isset($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : (isset($surat->created_at) ? formatTimestampToDateIndonesian($surat->created_at) : '') }}</p>
+            </td>
         </tr>
     </table>
 
@@ -112,6 +119,32 @@
     </p>
     <br><br>
 
+    @php
+        $wdApproval = $surat->approvals
+            ->where('isApproved', true)
+            ->filter(function ($a) {
+                $roleId = $a->user->role_id ?? 0;
+                $roleName = strtolower($a->user->role->name ?? '');
+                $roleDesc = strtolower($a->user->role->description ?? '');
+                $userName = strtolower($a->user->name ?? '');
+                return in_array($roleId, [8, 9, 10]) || 
+                       str_contains($roleName, 'wd') || 
+                       str_contains($roleName, 'wakil dekan') ||
+                       str_contains($roleDesc, 'wakil dekan') ||
+                       str_contains($userName, 'wakil dekan');
+            })
+            ->last();
+        $wdUser = $wdApproval ? $wdApproval->user : null;
+
+        $namaWD = $surat->data['private']['namaWD2'] 
+            ?? $surat->data['private']['namaWD'] 
+            ?? ($wdUser ? $wdUser->name : ($surat->data['private']['namaWD1'] ?? null));
+
+        $nipWD = $surat->data['private']['nipWD2'] 
+            ?? $surat->data['private']['nipWD'] 
+            ?? ($wdUser ? ($wdUser->nip ?: $wdUser->username) : ($surat->data['private']['nipWD1'] ?? null));
+    @endphp
+
     <div class="tandatangan">
         <div>
             <p>a.n. Dekan,</p>
@@ -124,8 +157,8 @@
             @endif
         </div>
         <div>
-            <p><b>{{ $surat->data['private']['namaWD2'] ?? 'Wakil Dekan II' }}</b></p>
-            <p>NIP {{ $surat->data['private']['nipWD2'] ?? '........................' }}</p>
+            <p><b>{{ $namaWD ?? 'Wakil Dekan II' }}</b></p>
+            <p>NIP {{ $nipWD ?? '........................' }}</p>
         </div>
     </div>
 </body>

@@ -35,6 +35,10 @@
             </div>
         </div>
 
+        <div class="my-4">
+            <x-stepper-flexible :surat="$surat" />
+        </div>
+
         <div class="py-2">
             <h2 class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">Rincian Ajuan Dana:</h2>
             <div class="bg-gray-50 p-4 rounded-lg space-y-3 text-sm">
@@ -105,48 +109,75 @@
             </div>
         </div>
 
-        {{-- Form Tindakan Bendahara --}}
-        <div class="mt-6 pt-4 border-t">
-            <form action="{{ route('setujui-surat-bendahara', $surat->id) }}" method="POST">
-                @csrf
-                @method('PUT')
-
-                <div class="mb-4">
-                    <label for="no_bukti_pencairan" class="block mb-1 text-sm font-medium text-gray-700">
-                        Nomor Bukti Pencairan / Referensi Kas (Opsional)
-                    </label>
-                    <input type="text" id="no_bukti_pencairan" name="no_bukti_pencairan"
-                        placeholder="Contoh: KAS/2026/09/012 (boleh dikosongkan jika manual)"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+        @if ($surat->status == 'diproses')
+            {{-- Form Tindakan Bendahara --}}
+            <div class="mt-6 pt-4 border-t">
+                <div class="flex items-center gap-1.5 mb-3">
+                    <h2 class="text-sm font-semibold text-gray-700">Tindakan Verifikasi</h2>
+                    <x-info-tooltip id="tooltip-preview-bendahara" />
                 </div>
+                <form action="{{ route('setujui-surat-bendahara', $surat->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
 
-                <div class="mb-4">
-                    <label for="note" class="block mb-1 text-sm font-medium text-gray-700">
-                        Catatan Bendahara (Opsional)
-                    </label>
-                    <textarea id="note" name="note" rows="2"
-                        placeholder="Tambahkan catatan pencairan dana atau informasi transfer..."
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"></textarea>
-                </div>
-
-                <div class="flex flex-col sm:flex-row justify-between gap-3 mt-6">
-                    <a href="{{ route('confirm-tolak-surat-bendahara', $surat->id) }}"
-                        class="text-center px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-medium rounded-lg text-sm">
-                        Tolak Pengajuan
-                    </a>
-
-                    <div class="flex gap-2">
-                        <a href="{{ route('preview-surat-bendahara', $surat->id) }}" target="_blank"
-                            class="text-center px-4 py-2.5 bg-slate-600 hover:bg-slate-700 text-white font-medium rounded-lg text-sm">
-                            Preview Dokumen
-                        </a>
-                        <button type="submit"
-                            class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-sm">
-                            Setujui & Selesaikan Pencairan
-                        </button>
+                    <div class="mb-4">
+                        <label for="no_bukti_pencairan" class="block mb-1 text-sm font-medium text-gray-700">
+                            Nomor Bukti Pencairan / Referensi Kas (Opsional)
+                        </label>
+                        <input type="text" id="no_bukti_pencairan" name="no_bukti_pencairan"
+                            placeholder="Contoh: KAS/2026/09/012 (boleh dikosongkan jika manual)"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
                     </div>
+
+                    <div class="mb-4">
+                        <label for="note" class="block mb-1 text-sm font-medium text-gray-700">
+                            Catatan Bendahara (Opsional)
+                        </label>
+                        <textarea id="note" name="note" rows="2"
+                            placeholder="Tambahkan catatan pencairan dana atau informasi transfer..."
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"></textarea>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 mt-6">
+                        <a href="{{ route('confirm-tolak-surat-bendahara', $surat->id) }}"
+                            style="background-color: #e11d48; color: #ffffff;"
+                            class="w-full sm:w-auto text-center px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-medium rounded-lg text-sm transition order-last sm:order-first">
+                            Tolak Pengajuan
+                        </a>
+
+                        <div class="flex flex-col sm:flex-row items-stretch gap-2 flex-1 sm:justify-end">
+                            <a href="{{ route('preview-surat-bendahara', $surat->id) }}" target="_blank"
+                                class="flex-1 text-center px-4 py-2.5 bg-slate-600 hover:bg-slate-700 text-white font-medium rounded-lg text-sm transition">
+                                Preview Dokumen
+                            </a>
+                            <button type="submit"
+                                style="background-color: #059669; color: #ffffff;"
+                                class="flex-1 text-center px-5 py-2.5 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg text-sm shadow cursor-pointer transition">
+                                Setujui & Selesaikan Pencairan
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        @elseif ($surat->status == 'selesai')
+            <div class="mt-6 pt-4 border-t">
+                <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400">
+                    <span class="font-bold">Status Surat: Selesai.</span> Pengajuan dana ini telah diverifikasi dan disetujui untuk dicairkan.
+                    @if (!empty($surat->data['nomorBuktiPencairan']))
+                        <span class="block mt-1 font-mono text-xs">No. Bukti Kas: {{ $surat->data['nomorBuktiPencairan'] }}</span>
+                    @endif
                 </div>
-            </form>
-        </div>
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <a href="{{ route('print-surat-bendahara', $surat->id) }}" target="_blank"
+                        class="w-full sm:w-auto text-center text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 transition">
+                        Cetak Surat
+                    </a>
+                    <a href="{{ route('riwayat-persetujuan-bendahara') }}"
+                        class="w-full sm:w-auto text-center text-gray-700 bg-gray-200 hover:bg-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 transition">
+                        Kembali ke Riwayat
+                    </a>
+                </div>
+            </div>
+        @endif
     </div>
 </x-layout>

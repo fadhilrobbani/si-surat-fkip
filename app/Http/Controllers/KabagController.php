@@ -313,6 +313,9 @@ class KabagController extends Controller
         // $data['stempel'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg';
         // $data['noSurat'] = $request->input('no-surat') ?? str_pad($surat->id, 4, '0', STR_PAD_LEFT);
         $data['note'] = $request->input('note');
+        if (isset($data['private']['stepper'])) {
+            $data['private']['stepper'][] = auth()->user()->role->id;
+        }
         $surat->data = $data;
         // $file = $surat->files;
         // if ($file) {

@@ -81,7 +81,12 @@
                             <th scope="col" class="px-4 py-3">Program Studi</th>
                             <th scope="col" class="px-4 py-3">Surat yang Diajukan</th>
                             <th scope="col" class="px-4 py-3">Tanggal Diajukan</th>
-                            <th scope="col" class="px-4 py-3 text-center">Aksi</th>
+                            <th scope="col" class="px-4 py-3 text-center">
+                                <span class="inline-flex items-center justify-center gap-1">
+                                    Aksi
+                                    <x-info-tooltip id="tooltip-masuk-tu" size="w-3.5 h-3.5" />
+                                </span>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -115,10 +120,16 @@
                                     {{ formatTimestampToIndonesian($surat->created_at) }}
                                 </td>
                                 <td class="px-4 py-3 text-center">
-                                    <a href="{{ route('show-surat-masuk-tata-usaha', $surat->id) }}"
-                                        class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-xs px-3 py-1.5 transition">
-                                        Periksa
-                                    </a>
+                                    <div class="flex items-center justify-center gap-1.5">
+                                        <a href="{{ route('preview-surat-tata-usaha', $surat->id) }}" target="_blank"
+                                            class="inline-block bg-slate-600 hover:bg-slate-700 text-white font-medium rounded-lg text-xs px-2.5 py-1.5 transition">
+                                            Preview
+                                        </a>
+                                        <a href="{{ route('show-surat-masuk-tata-usaha', $surat->id) }}"
+                                            class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-xs px-3 py-1.5 transition">
+                                            Periksa
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

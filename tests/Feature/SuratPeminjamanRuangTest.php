@@ -290,6 +290,12 @@ class SuratPeminjamanRuangTest extends TestCase
 
         // 4. TU approves -> selesai
         $this->actingAs($tu)
+            ->get(route('show-surat-masuk-tata-usaha', $surat->id))
+            ->assertStatus(200)
+            ->assertSee('Setujui Surat')
+            ->assertSee('Tolak Surat');
+
+        $this->actingAs($tu)
             ->post('/tata-usaha/surat-masuk/setujui/' . $surat->id, [
                 'note' => 'Ruangan disetujui untuk rapat dosen.'
             ]);

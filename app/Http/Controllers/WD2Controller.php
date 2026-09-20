@@ -299,31 +299,48 @@ class WD2Controller extends Controller
         // }
         $surat->current_user_id = $request->input('penerima');
         $data = $surat->data;
+        $name = auth()->user()->name;
+        $nip = auth()->user()->nip ?: (auth()->user()->username ?? '');
+        $desc = auth()->user()->role->description ?? 'Wakil Dekan Bidang Keuangan dan Umum';
+
         if ($data) {
             if (isset($data['private'])) {
-                $data['private']['namaWD1'] =  auth()->user()->name;
-                $data['private']['nipWD1'] =  auth()->user()->nip;
+                $data['private']['namaWD2'] = $name;
+                $data['private']['nipWD2'] = $nip;
+                $data['private']['namaWD'] = $name;
+                $data['private']['nipWD'] = $nip;
+                $data['private']['deskripsiWD'] = $desc;
+                $data['private']['namaWD1'] = $name;
+                $data['private']['nipWD1'] = $nip;
                 if (isset($data['private']['stepper'])) {
                     $data['private']['stepper'][] = auth()->user()->role->id;
                 }
             } else {
                 $data['private'] = [
-                    'namaWD1' =>  auth()->user()->name,
-                    'nipWD1' =>  auth()->user()->nip,
+                    'namaWD2' => $name,
+                    'nipWD2' => $nip,
+                    'namaWD' => $name,
+                    'nipWD' => $nip,
+                    'deskripsiWD' => $desc,
+                    'namaWD1' => $name,
+                    'nipWD1' => $nip,
                 ];
             }
         } else {
             $data = [
                 'private' => [
-                    'namaWD1' =>  auth()->user()->name,
-                    'nipWD1' =>  auth()->user()->nip
+                    'namaWD2' => $name,
+                    'nipWD2' => $nip,
+                    'namaWD' => $name,
+                    'nipWD' => $nip,
+                    'deskripsiWD' => $desc,
+                    'namaWD1' => $name,
+                    'nipWD1' => $nip,
                 ]
             ];
         }
         $surat->data = $data;
-        // $surat->current_user_id = $surat->penerima_id;
         $surat->current_user_id = $request->input('penerima');
-        // $surat->penerima_id = $surat->pengaju_id;
         $surat->save();
 
         Approval::create([
@@ -350,18 +367,27 @@ class WD2Controller extends Controller
             return redirect('wd2/surat-masuk')->with('success', 'Surat berhasil disetujui');
         }
 
-        if (in_array($surat->jenisSurat->slug, ['surat-peminjaman-ruang', 'surat-pencairan-dana'])) {
+        if (in_array($surat->jenisSurat->slug, ['surat-peminjaman-ruang', 'surat-peminjaman-ruang-mahasiswa', 'surat-pencairan-dana', 'surat-pencairan-dana-mahasiswa'])) {
             $surat->current_user_id = $request->input('penerima');
             $data = $surat->data;
             if ($data) {
+                $name = auth()->user()->name;
+                $nip = auth()->user()->nip ?: (auth()->user()->username ?? '');
+                $desc = auth()->user()->role->description ?? 'Wakil Dekan Bidang Keuangan dan Umum';
                 if (isset($data['private'])) {
-                    $data['private']['namaWD2'] = auth()->user()->name;
-                    $data['private']['nipWD2'] = auth()->user()->nip;
+                    $data['private']['namaWD2'] = $name;
+                    $data['private']['nipWD2'] = $nip;
+                    $data['private']['namaWD'] = $name;
+                    $data['private']['nipWD'] = $nip;
+                    $data['private']['deskripsiWD'] = $desc;
                     $data['private']['stepper'][] = auth()->user()->role->id;
                 } else {
                     $data['private'] = [
-                        'namaWD2' => auth()->user()->name,
-                        'nipWD2' => auth()->user()->nip,
+                        'namaWD2' => $name,
+                        'nipWD2' => $nip,
+                        'namaWD' => $name,
+                        'nipWD' => $nip,
+                        'deskripsiWD' => $desc,
                         'stepper' => [auth()->user()->role->id],
                     ];
                 }
