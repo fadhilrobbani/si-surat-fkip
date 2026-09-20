@@ -2,6 +2,41 @@
     $url = URL::signedRoute('preview-surat-qr', [
         'surat' => $surat->id,
     ]);
+
+    $pengaju = $surat->pengaju;
+    $prodi = $pengaju ? $pengaju->programStudi : null;
+    $jurusan = $pengaju ? $pengaju->jurusan : null;
+    if (!$jurusan && $prodi) {
+        $jurusan = $prodi->jurusan;
+    }
+    $prodiName = $prodi ? $prodi->name : ($surat->data['programStudi'] ?? '');
+    $jurusanName = $jurusan ? $jurusan->name : ($surat->data['jurusan'] ?? 'Pendidikan MIPA');
+    $tahun = isset($surat->data['tahunAnggaran']) 
+        ? $surat->data['tahunAnggaran'] 
+        : (isset($surat->created_at) ? $surat->created_at->format('Y') : date('Y'));
+
+    $kaprodiApproval = $surat->approvals
+        ->where('isApproved', true)
+        ->filter(function ($a) {
+            $roleId = $a->user->role_id ?? 0;
+            $roleName = strtolower($a->user->role->name ?? '');
+            return $roleId == 4 || str_contains($roleName, 'kaprodi');
+        })
+        ->last();
+
+    $prodiId = $surat->pengaju->program_studi_id ?? ($prodi ? $prodi->id : null);
+    $kaprodiUser = $kaprodiApproval ? $kaprodiApproval->user : null;
+    if (!$kaprodiUser && $prodiId) {
+        $kaprodiUser = \App\Models\User::where('role_id', 4)->where('program_studi_id', $prodiId)->first();
+    }
+    if (!$kaprodiUser && ($surat->pengaju->role_id ?? 0) == 4) {
+        $kaprodiUser = $surat->pengaju;
+    }
+
+    $namaKaprodi = $surat->data['private']['namaKaprodi'] 
+        ?? ($kaprodiUser ? $kaprodiUser->name : 'Koordinator Program Studi');
+    $nipKaprodi = $surat->data['private']['nipKaprodi'] 
+        ?? ($kaprodiUser ? ($kaprodiUser->nip ?: $kaprodiUser->username) : '........................');
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -24,7 +59,7 @@
                     <tr>
                         <td style="width: 75px; vertical-align: top;">Nomor</td>
                         <td style="width: 10px; vertical-align: top;">:</td>
-                        <td style="vertical-align: top;">{{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '..........' }}/UN30.7/PP/{{ isset($surat->data['tanggal_selesai']) ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ') : (isset($surat->created_at) ? $surat->created_at->format('Y') : date('Y')) }}</td>
+                        <td style="vertical-align: top;">{{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '..........' }}/UN30.7.11/PP/{{ $tahun }}</td>
                     </tr>
                     <tr>
                         <td style="vertical-align: top;">Lampiran</td>
@@ -34,7 +69,7 @@
                     <tr>
                         <td style="vertical-align: top;">Hal</td>
                         <td style="vertical-align: top;">:</td>
-                        <td style="vertical-align: top;"><b>Permohonan Peminjaman Ruang {{ $surat->data['namaRuangan'] ?? '' }}</b></td>
+                        <td style="vertical-align: top;"><b>Permohonan Peminjaman {{ $surat->data['namaRuangan'] ?? 'Ruangan' }}</b></td>
                     </tr>
                 </table>
             </td>
@@ -51,94 +86,32 @@
 
     <br>
     <p style="text-align: justify; text-indent: 30px;">
-        Sehubungan dengan akan dilaksanakannya kegiatan <b>“{{ $surat->data['namaKegiatan'] ?? '' }}”</b>
-        @if (!empty($surat->data['namaOrganisasi']))
-            oleh <b>{{ $surat->data['namaOrganisasi'] }}</b>,
-        @elseif (!empty($surat->data['programStudi']))
-            Program Studi {{ $surat->data['programStudi'] }},
-        @endif
-        bersama ini kami mengajukan permohonan peminjaman ruangan dengan rincian sebagai berikut:
+        Sehubungan dengan akan dilaksanakannya kegiatan <b>“{{ $surat->data['namaKegiatan'] ?? '' }}”</b> Program Studi {{ $prodiName }} Jurusan {{ $jurusanName }} (pamflet terlampir), bersama ini kami mengajukan permohonan peminjaman ruang {{ $surat->data['namaRuangan'] ?? '' }} pada :
     </p>
     <br>
 
     <table class="data-table" style="margin-left: 30px; width: calc(100% - 30px); border-collapse: collapse;">
         <tr>
-            <td style="width: 220px; vertical-align: top;">Ruangan / Fasilitas</td>
+            <td style="width: 140px; vertical-align: top;">Hari/tanggal</td>
             <td style="width: 10px; vertical-align: top;">:</td>
-            <td style="vertical-align: top;"><b>{{ $surat->data['namaRuangan'] ?? '-' }}</b></td>
-        </tr>
-        <tr>
-            <td style="vertical-align: top;">Hari / Tanggal Pemakaian</td>
-            <td style="vertical-align: top;">:</td>
             <td style="vertical-align: top;">{{ $surat->data['hariTanggal'] ?? '-' }}</td>
         </tr>
         <tr>
-            <td style="vertical-align: top;">Waktu / Jam Pemakaian</td>
+            <td style="vertical-align: top;">Jam</td>
             <td style="vertical-align: top;">:</td>
-            <td style="vertical-align: top;">{{ $surat->data['jamPemakaian'] ?? '-' }}</td>
+            <td style="vertical-align: top;">{{ $surat->data['jamPemakaian'] ?? '-' }} WIB</td>
         </tr>
-        @if (!empty($surat->data['jumlahPeserta']))
-        <tr>
-            <td style="vertical-align: top;">Estimasi Jumlah Peserta</td>
-            <td style="vertical-align: top;">:</td>
-            <td style="vertical-align: top;">{{ $surat->data['jumlahPeserta'] }} Orang</td>
-        </tr>
-        @endif
-        <tr>
-            <td style="vertical-align: top;">Nama Pemohon / Penanggungjawab</td>
-            <td style="vertical-align: top;">:</td>
-            <td style="vertical-align: top;">{{ $surat->data['nama'] ?? ($surat->data['namaPengaju'] ?? '-') }}</td>
-        </tr>
-        <tr>
-            <td style="vertical-align: top;">NIP / NPM</td>
-            <td style="vertical-align: top;">:</td>
-            <td style="vertical-align: top;">{{ $surat->data['username'] ?? ($surat->data['usernamePengaju'] ?? '-') }}</td>
-        </tr>
-        @if (!empty($surat->data['jabatanPengaju']))
-        <tr>
-            <td style="vertical-align: top;">Jabatan Organisasi</td>
-            <td style="vertical-align: top;">:</td>
-            <td style="vertical-align: top;">{{ $surat->data['jabatanPengaju'] }}</td>
-        </tr>
-        @endif
     </table>
 
     <br>
     <p style="text-align: justify; text-indent: 30px;">
-        Demikian permohonan ini kami sampaikan. Atas perhatian, izin, dan kerja sama yang baik, kami ucapkan terima kasih.
+        Demikian atas perhatian dan kerjasama yang baik, disampaikan terima kasih.
     </p>
     <br><br>
 
-    @php
-        $wdApproval = $surat->approvals
-            ->where('isApproved', true)
-            ->filter(function ($a) {
-                $roleId = $a->user->role_id ?? 0;
-                $roleName = strtolower($a->user->role->name ?? '');
-                $roleDesc = strtolower($a->user->role->description ?? '');
-                $userName = strtolower($a->user->name ?? '');
-                return in_array($roleId, [8, 9, 10]) || 
-                       str_contains($roleName, 'wd') || 
-                       str_contains($roleName, 'wakil dekan') ||
-                       str_contains($roleDesc, 'wakil dekan') ||
-                       str_contains($userName, 'wakil dekan');
-            })
-            ->last();
-        $wdUser = $wdApproval ? $wdApproval->user : null;
-
-        $namaWD = $surat->data['private']['namaWD2'] 
-            ?? $surat->data['private']['namaWD'] 
-            ?? ($wdUser ? $wdUser->name : ($surat->data['private']['namaWD1'] ?? null));
-
-        $nipWD = $surat->data['private']['nipWD2'] 
-            ?? $surat->data['private']['nipWD'] 
-            ?? ($wdUser ? ($wdUser->nip ?: $wdUser->username) : ($surat->data['private']['nipWD1'] ?? null));
-    @endphp
-
     <div class="tandatangan">
         <div>
-            <p>a.n. Dekan,</p>
-            <p>Wakil Dekan Bidang Keuangan dan Umum,</p>
+            <p>Koordinator Program Studi,</p>
         </div>
         <div class="parent">
             @if ($surat->status == 'selesai')
@@ -147,8 +120,8 @@
             @endif
         </div>
         <div>
-            <p><b>{{ $namaWD ?? 'Wakil Dekan II' }}</b></p>
-            <p>NIP {{ $nipWD ?? '........................' }}</p>
+            <p><b>{{ $namaKaprodi }}</b></p>
+            <p>NIP {{ $nipKaprodi }}</p>
         </div>
     </div>
 </body>

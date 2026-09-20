@@ -26,44 +26,66 @@
                     <tbody>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Nomor Surat:</td>
-                            <td class="px-4 py-3">{{ $surat->data['noSurat'] }}</td>
+                            <td class="px-4 py-3">{{ $surat->data['noSurat'] ?? '-' }}</td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Tanggal Surat Diterbitkan:</td>
-                            <td class="px-4 py-3">{{ $surat->data['tanggal_selesai'] }}</td>
+                            <td class="px-4 py-3">{{ $surat->data['tanggal_selesai'] ?? '-' }}</td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Nama:</td>
-                            <td class="px-4 py-3">{{ $surat->data['nama'] }}</td>
+                            <td class="px-4 py-3">{{ $surat->data['nama'] ?? '-' }}</td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">NPM:</td>
                             <td class="px-4 py-3">
-                                {{ isset($surat->data['npm']) ? $surat->data['npm'] : $surat->data['username'] }}</td>
+                                {{ isset($surat->data['npm']) ? $surat->data['npm'] : ($surat->data['username'] ?? '-') }}</td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Jenis Surat:</td>
                             <td class="px-4 py-3">{{ $surat->jenisSurat->name }}</td>
                         </tr>
 
+                        @php
+                            $isKaprodiSigned = in_array($surat->jenisSurat->slug, [
+                                'surat-permohonan-narasumber',
+                                'surat-peminjaman-ruang',
+                                'surat-peminjaman-ruang-mahasiswa',
+                                'surat-pencairan-dana',
+                                'surat-pencairan-dana-mahasiswa'
+                            ]);
+
+                            $namaSigner = $isKaprodiSigned
+                                ? ($surat->data['private']['namaKaprodi'] ?? 'Koordinator Program Studi')
+                                : ($surat->data['private']['namaWD1'] ?? ($surat->data['private']['namaWD'] ?? ($surat->data['private']['namaDekan'] ?? '(Nama tidak tersedia)')));
+
+                            $jabatanSigner = $isKaprodiSigned
+                                ? ($surat->data['private']['deskripsiKaprodi'] ?? 'Koordinator Program Studi')
+                                : ($surat->data['private']['deksripsiWD1'] ?? ($surat->data['private']['deskripsiWD'] ?? ($surat->data['private']['deskripsiDekan'] ?? 'Wakil Dekan Bidang Akademik')));
+
+                            $nipSigner = $isKaprodiSigned
+                                ? ($surat->data['private']['nipKaprodi'] ?? '-')
+                                : ($surat->data['private']['nipWD1'] ?? ($surat->data['private']['nipWD'] ?? ($surat->data['private']['nipDekan'] ?? '(NIP tidak tersedia)')));
+                        @endphp
+
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Ditandatangani oleh:</td>
                             <td class="px-4 py-3">
-                                {{ $surat->data['private']['namaWD1'] ?? ($surat->data['private']['namaWD'] ?? ($surat->data['private']['namaDekan'] ?? '(Nama tidak tersedia)')) }}
+                                {{ $namaSigner }}
                             </td>
                         </tr>
 
                         <tr class="border-b">
-                            <td class="px-4 py-3 font-semibold bg-gray-50"></td>
+                            <td class="px-4 py-3 font-semibold bg-gray-50">Jabatan:</td>
                             <td class="px-4 py-3">
-                                {{ $surat->data['private']['deksripsiWD1'] ?? ($surat->data['private']['deskripsiWD'] ?? ($surat->data['private']['deskripsiDekan'] ?? 'Wakil Dekan Bidang Akademik')) }}
+                                {{ $jabatanSigner }}
                             </td>
                         </tr>
 
                         <tr class="border-b">
-                            <td class="px-4 py-3 font-semibold bg-gray-50"></td>
+                            <td class="px-4 py-3 font-semibold bg-gray-50">NIP:</td>
                             <td class="px-4 py-3">
-                                {{ $surat->data['private']['nipWD1'] ?? ($surat->data['private']['nipWD'] ?? ($surat->data['private']['nipDekan'] ?? '(Nama tidak tersedia)')) }}
+                                {{ $nipSigner }}
                             </td>
                         </tr>
 
@@ -88,10 +110,14 @@
                                     'email',
                                     'perihal',
                                     'npm',
+                                    'items',
                                 ]))
                                 @continue
                             @endif
 
+                            @if (is_array($value))
+                                @continue
+                            @endif
 
                             @if ($key == 'dosen')
                                 @foreach ($value as $id => $data)
@@ -112,7 +138,7 @@
                                     <td class="px-4 py-3 font-semibold bg-gray-50">
                                         {{ convertToTitleCase($key) }}:</td>
                                     <td class="px-4 py-3">
-                                        {!! html_entity_decode($value) !!}</td>
+                                        {!! html_entity_decode((string) $value) !!}</td>
                                 </tr>
                             @endif
                         @endforeach
@@ -218,6 +244,83 @@
                 </table>
 
 
+            </div>
+        @elseif ($surat->jenisSurat->user_type == 'staff' && in_array($surat->jenisSurat->slug, ['surat-permohonan-narasumber', 'surat-peminjaman-ruang', 'surat-pencairan-dana']))
+            <div class="overflow-x-auto border-2 border-slate-300 rounded-lg">
+                <table class="w-full text-sm text-left text-gray-700 bg-white">
+                    <tbody>
+                        <tr class="border-b">
+                            <td class="px-4 py-3 font-semibold bg-gray-50">Nomor Surat:</td>
+                            <td class="px-4 py-3">{{ $surat->data['noSurat'] ?? '-' }}</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-3 font-semibold bg-gray-50">Tanggal Surat Diterbitkan:</td>
+                            <td class="px-4 py-3">{{ $surat->data['tanggal_selesai'] ?? '-' }}</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-3 font-semibold bg-gray-50">Nama Pengaju:</td>
+                            <td class="px-4 py-3">{{ $surat->data['nama'] ?? ($surat->pengaju->name ?? '-') }}</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-3 font-semibold bg-gray-50">Program Studi:</td>
+                            <td class="px-4 py-3">{{ $surat->data['programStudi'] ?? ($surat->pengaju->programStudi->name ?? '-') }}</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-3 font-semibold bg-gray-50">Jenis Surat:</td>
+                            <td class="px-4 py-3">{{ $surat->jenisSurat->name }}</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-3 font-semibold bg-gray-50">Ditandatangani oleh:</td>
+                            <td class="px-4 py-3">{{ $surat->data['private']['namaKaprodi'] ?? 'Koordinator Program Studi' }}</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-3 font-semibold bg-gray-50">Jabatan:</td>
+                            <td class="px-4 py-3">{{ $surat->data['private']['deskripsiKaprodi'] ?? 'Koordinator Program Studi' }}</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-3 font-semibold bg-gray-50">NIP:</td>
+                            <td class="px-4 py-3">{{ $surat->data['private']['nipKaprodi'] ?? '-' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="overflow-x-auto border-2 border-slate-300 rounded-lg mt-4">
+                <table class="w-full text-sm text-left text-gray-700 bg-white">
+                    <tbody>
+                        @foreach ($surat->data as $key => $value)
+                            @if (in_array($key, [
+                                    'private',
+                                    'ttdWD',
+                                    'ttdWD1',
+                                    'noSurat',
+                                    'note',
+                                    'tanggal_selesai',
+                                    'nama',
+                                    'username',
+                                    'email',
+                                    'perihal',
+                                    'programStudi',
+                                    'items',
+                                ]))
+                                @continue
+                            @endif
+
+                            @if (is_array($value))
+                                @continue
+                            @endif
+
+                            @if ($value != null)
+                                <tr class="border-b">
+                                    <td class="px-4 py-3 font-semibold bg-gray-50">
+                                        {{ convertToTitleCase($key) }}:</td>
+                                    <td class="px-4 py-3">
+                                        {!! html_entity_decode((string) $value) !!}</td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         @endif
 

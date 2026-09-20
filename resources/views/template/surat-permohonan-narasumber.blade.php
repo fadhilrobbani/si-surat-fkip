@@ -2,6 +2,41 @@
     $url = URL::signedRoute('preview-surat-qr', [
         'surat' => $surat->id,
     ]);
+
+    $pengaju = $surat->pengaju;
+    $prodi = $pengaju ? $pengaju->programStudi : null;
+    $jurusan = $pengaju ? $pengaju->jurusan : null;
+    if (!$jurusan && $prodi) {
+        $jurusan = $prodi->jurusan;
+    }
+    $prodiName = $prodi ? $prodi->name : ($surat->data['programStudi'] ?? '');
+    $jurusanName = $jurusan ? $jurusan->name : ($surat->data['jurusan'] ?? '');
+    $tahun = isset($surat->data['tahunAnggaran']) 
+        ? $surat->data['tahunAnggaran'] 
+        : (isset($surat->created_at) ? $surat->created_at->format('Y') : date('Y'));
+
+    $kaprodiApproval = $surat->approvals
+        ->where('isApproved', true)
+        ->filter(function ($a) {
+            $roleId = $a->user->role_id ?? 0;
+            $roleName = strtolower($a->user->role->name ?? '');
+            return $roleId == 4 || str_contains($roleName, 'kaprodi');
+        })
+        ->last();
+
+    $prodiId = $surat->pengaju->program_studi_id ?? ($prodi ? $prodi->id : null);
+    $kaprodiUser = $kaprodiApproval ? $kaprodiApproval->user : null;
+    if (!$kaprodiUser && $prodiId) {
+        $kaprodiUser = \App\Models\User::where('role_id', 4)->where('program_studi_id', $prodiId)->first();
+    }
+    if (!$kaprodiUser && ($surat->pengaju->role_id ?? 0) == 4) {
+        $kaprodiUser = $surat->pengaju;
+    }
+
+    $namaKaprodi = $surat->data['private']['namaKaprodi'] 
+        ?? ($kaprodiUser ? $kaprodiUser->name : 'Koordinator Program Studi');
+    $nipKaprodi = $surat->data['private']['nipKaprodi'] 
+        ?? ($kaprodiUser ? ($kaprodiUser->nip ?: $kaprodiUser->username) : '........................');
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -24,7 +59,7 @@
                     <tr>
                         <td style="width: 75px; vertical-align: top;">Nomor</td>
                         <td style="width: 10px; vertical-align: top;">:</td>
-                        <td style="vertical-align: top;">{{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '..........' }}/UN30.7/DT.06/{{ isset($surat->data['tanggal_selesai']) ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ') : (isset($surat->created_at) ? $surat->created_at->format('Y') : date('Y')) }}</td>
+                        <td style="vertical-align: top;">{{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '..........' }}/UN30.7.10/DT.06/{{ $tahun }}</td>
                     </tr>
                     <tr>
                         <td style="vertical-align: top;">Lampiran</td>
@@ -45,73 +80,59 @@
     </table>
 
     <br>
-    <p>Kepada Yth.</p>
-    <p><b>{{ $surat->data['namaNarasumber'] ?? '' }}</b></p>
-    @if (!empty($surat->data['jabatanNarasumber']))
-        <p>{{ $surat->data['jabatanNarasumber'] }}</p>
-    @endif
+    <p>Yth. {{ $surat->data['namaNarasumber'] ?? '' }}</p>
     @if (!empty($surat->data['instansiNarasumber']))
-        <p>{{ $surat->data['instansiNarasumber'] }}</p>
+        <p>({{ $surat->data['instansiNarasumber'] }})</p>
     @endif
     <p>di Tempat</p>
 
     <br>
     <p style="text-align: justify; text-indent: 30px;">
-        Sehubungan dengan rencana pelaksanaan kegiatan <b>{{ $surat->data['namaKegiatan'] ?? '' }}</b>
-        Fakultas Keguruan dan Ilmu Pendidikan Universitas Bengkulu, bersama ini kami memohon kesediaan Bapak/Ibu untuk berkenan menjadi <b>Narasumber</b> pada kegiatan tersebut yang akan diselenggarakan pada:
+        Sehubungan akan dilaksanakannya Kegiatan {{ $surat->data['namaKegiatan'] ?? '' }} Program Studi {{ $prodiName }} Fakultas Keguruan dan Ilmu Pendidikan Universitas Bengkulu Tahun {{ $tahun }}, dengan ini kami mohon kesediaan Bapak/Ibu untuk dapat menjadi Narasumber kegiatan yang akan diselenggarakan pada:
     </p>
     <br>
 
     <table class="data-table" style="margin-left: 30px; width: calc(100% - 30px); border-collapse: collapse;">
         <tr>
-            <td style="width: 170px; vertical-align: top;">Hari / Tanggal</td>
+            <td style="width: 140px; vertical-align: top;">Hari/Tanggal</td>
             <td style="width: 10px; vertical-align: top;">:</td>
             <td style="vertical-align: top;">{{ $surat->data['hariTanggal'] ?? '-' }}</td>
         </tr>
         <tr>
-            <td style="vertical-align: top;">Pukul / Waktu</td>
-            <td style="vertical-align: top;">:</td>
+            <td style="vertical-align: top;">Pukul</td>
+            <td style="width: 10px; vertical-align: top;">:</td>
             <td style="vertical-align: top;">{{ $surat->data['waktu'] ?? '-' }}</td>
         </tr>
         <tr>
-            <td style="vertical-align: top;">Tempat Kegiatan</td>
-            <td style="vertical-align: top;">:</td>
-            <td style="vertical-align: top;">{{ $surat->data['tempatKegiatan'] ?? '-' }}</td>
+            <td style="vertical-align: top;">Acara</td>
+            <td style="width: 10px; vertical-align: top;">:</td>
+            <td style="vertical-align: top;">{{ $surat->data['namaKegiatan'] ?? '-' }}</td>
         </tr>
+        @if (!empty($surat->data['temaMateri']) && $surat->data['temaMateri'] != ($surat->data['namaKegiatan'] ?? ''))
         <tr>
             <td style="vertical-align: top;">Tema / Materi</td>
-            <td style="vertical-align: top;">:</td>
-            <td style="vertical-align: top;">{{ $surat->data['temaMateri'] ?? '-' }}</td>
+            <td style="width: 10px; vertical-align: top;">:</td>
+            <td style="vertical-align: top;">{{ $surat->data['temaMateri'] }}</td>
         </tr>
+        @endif
+        @if (!empty($surat->data['tempatKegiatan']))
+        <tr>
+            <td style="vertical-align: top;">Tempat</td>
+            <td style="width: 10px; vertical-align: top;">:</td>
+            <td style="vertical-align: top;">{{ $surat->data['tempatKegiatan'] }}</td>
+        </tr>
+        @endif
     </table>
 
     <br>
     <p style="text-align: justify; text-indent: 30px;">
-        Demikian permohonan ini kami sampaikan. Atas perhatian, kesediaan, dan kerja sama yang baik, kami ucapkan terima kasih.
+        Demikianlah surat ini kami sampaikan. Atas perhatian dan kerjasama yang baik kami ucapkan terima kasih.
     </p>
     <br><br>
 
-    @php
-        $dekanApproval = $surat->approvals
-            ->where('isApproved', true)
-            ->filter(function ($a) {
-                $roleId = $a->user->role_id ?? 0;
-                $roleName = strtolower($a->user->role->name ?? '');
-                return $roleId == 7 || str_contains($roleName, 'dekan');
-            })
-            ->last();
-        $dekanUser = $dekanApproval ? $dekanApproval->user : (isset($dekan) ? $dekan : null);
-
-        $namaDekan = $surat->data['private']['namaDekan'] 
-            ?? ($dekanUser ? $dekanUser->name : 'Dekan FKIP');
-
-        $nipDekan = $surat->data['private']['nipDekan'] 
-            ?? ($dekanUser ? ($dekanUser->nip ?: $dekanUser->username) : '........................');
-    @endphp
-
     <div class="tandatangan">
         <div>
-            <p>Dekan,</p>
+            <p>Koordinator Prodi,</p>
         </div>
         <div class="parent">
             @if ($surat->status == 'selesai')
@@ -120,8 +141,8 @@
             @endif
         </div>
         <div>
-            <p><b>{{ $namaDekan }}</b></p>
-            <p>NIP {{ $nipDekan }}</p>
+            <p><b>{{ $namaKaprodi }}</b></p>
+            <p>NIP {{ $nipKaprodi }}</p>
         </div>
     </div>
 </body>

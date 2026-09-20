@@ -303,6 +303,14 @@ class WD2Controller extends Controller
         $nip = auth()->user()->nip ?: (auth()->user()->username ?? '');
         $desc = auth()->user()->role->description ?? 'Wakil Dekan Bidang Keuangan dan Umum';
 
+        $isKaprodiSigned = in_array($surat->jenisSurat->slug, [
+            'surat-permohonan-narasumber',
+            'surat-peminjaman-ruang',
+            'surat-peminjaman-ruang-mahasiswa',
+            'surat-pencairan-dana',
+            'surat-pencairan-dana-mahasiswa'
+        ]);
+
         if ($data) {
             if (isset($data['private'])) {
                 $data['private']['namaWD2'] = $name;
@@ -310,8 +318,10 @@ class WD2Controller extends Controller
                 $data['private']['namaWD'] = $name;
                 $data['private']['nipWD'] = $nip;
                 $data['private']['deskripsiWD'] = $desc;
-                $data['private']['namaWD1'] = $name;
-                $data['private']['nipWD1'] = $nip;
+                if (!$isKaprodiSigned) {
+                    $data['private']['namaWD1'] = $name;
+                    $data['private']['nipWD1'] = $nip;
+                }
                 if (isset($data['private']['stepper'])) {
                     $data['private']['stepper'][] = auth()->user()->role->id;
                 }
@@ -322,9 +332,11 @@ class WD2Controller extends Controller
                     'namaWD' => $name,
                     'nipWD' => $nip,
                     'deskripsiWD' => $desc,
-                    'namaWD1' => $name,
-                    'nipWD1' => $nip,
                 ];
+                if (!$isKaprodiSigned) {
+                    $data['private']['namaWD1'] = $name;
+                    $data['private']['nipWD1'] = $nip;
+                }
             }
         } else {
             $data = [
@@ -334,10 +346,12 @@ class WD2Controller extends Controller
                     'namaWD' => $name,
                     'nipWD' => $nip,
                     'deskripsiWD' => $desc,
-                    'namaWD1' => $name,
-                    'nipWD1' => $nip,
                 ]
             ];
+            if (!$isKaprodiSigned) {
+                $data['private']['namaWD1'] = $name;
+                $data['private']['nipWD1'] = $nip;
+            }
         }
         $surat->data = $data;
         $surat->current_user_id = $request->input('penerima');

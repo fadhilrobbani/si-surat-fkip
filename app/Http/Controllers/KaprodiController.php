@@ -363,30 +363,34 @@ class KaprodiController extends Controller
         //     ->where('jurusan_id', '=', $idJurusan->id)
         //     ->first();
 
+        $isKaprodiSigned = in_array($surat->jenisSurat->slug, [
+            'surat-permohonan-narasumber',
+            'surat-peminjaman-ruang',
+            'surat-peminjaman-ruang-mahasiswa',
+            'surat-pencairan-dana',
+            'surat-pencairan-dana-mahasiswa'
+        ]);
+
         $wd1 = User::where('role_id', '=', 5)->first();
         $surat->current_user_id = $request->input('penerima');
         $data = $surat->data;
-        if ($data) {
-            if (isset($data['private'])) {
-                $data['private']['namaWD1'] =  $wd1->name;
-                $data['private']['nipWD1'] =  $wd1->nip;
-                if (isset($data['private']['stepper'])) {
-                    $data['private']['stepper'][] = auth()->user()->role->id;
-                }
-            } else {
-                $data['private'] = [
-                    'namaWD1' =>  $wd1->name,
-                    'nipWD1' =>  $wd1->nip,
-                ];
-            }
-        } else {
-            $data = [
-                'private' => [
-                    'namaWD1' =>  $wd1->name,
-                    'nipWD1' =>  $wd1->nip
-                ]
-            ];
+        if (!isset($data['private'])) {
+            $data['private'] = [];
         }
+
+        if (!$isKaprodiSigned && $wd1) {
+            $data['private']['namaWD1'] =  $wd1->name;
+            $data['private']['nipWD1'] =  $wd1->nip;
+        }
+
+        $data['private']['namaKaprodi'] = auth()->user()->name;
+        $data['private']['nipKaprodi'] = auth()->user()->nip ?: auth()->user()->username;
+        $data['private']['deskripsiKaprodi'] = 'Koordinator Program Studi';
+
+        if (isset($data['private']['stepper'])) {
+            $data['private']['stepper'][] = auth()->user()->role->id;
+        }
+
         $surat->data = $data;
 
 
@@ -438,6 +442,12 @@ class KaprodiController extends Controller
         if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana', 'surat-peminjaman-ruang', 'surat-permohonan-narasumber'])) {
             $surat->current_user_id = $request->input('penerima');
             $data = $surat->data;
+            if (!isset($data['private'])) {
+                $data['private'] = [];
+            }
+            $data['private']['namaKaprodi'] = auth()->user()->name;
+            $data['private']['nipKaprodi'] = auth()->user()->nip ?: auth()->user()->username;
+            $data['private']['deskripsiKaprodi'] = 'Koordinator Program Studi';
             if (isset($data['private']['stepper'])) {
                 $data['private']['stepper'][] = auth()->user()->role->id;
             }
