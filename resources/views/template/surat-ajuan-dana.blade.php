@@ -59,7 +59,7 @@
                     <tr>
                         <td style="width: 75px; vertical-align: top;">Nomor</td>
                         <td style="width: 10px; vertical-align: top;">:</td>
-                        <td style="vertical-align: top;">{{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '..........' }}/UN30.7.11/KU.01.02/{{ $tahun }}</td>
+                        <td style="vertical-align: top;">{{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '..........' }}/DST/UN30.7.11/KU.01.02/{{ $tahun }}</td>
                     </tr>
                     <tr>
                         <td style="vertical-align: top;">Lampiran</td>
