@@ -336,6 +336,87 @@
                     </tbody>
                 </table>
             </div>
+
+            @if (!empty($surat->data['items']) && is_array($surat->data['items']))
+                @php
+                    $itemsQr = $surat->data['items'];
+                    $hasMakQr = false;
+                    foreach ($itemsQr as $it) {
+                        if (is_array($it) && !empty($it['mak'])) {
+                            $hasMakQr = true;
+                            break;
+                        }
+                    }
+                @endphp
+                <div class="mt-4">
+                    <h3 class="font-semibold text-gray-800 text-sm mb-2">Rincian Kebutuhan Anggaran:</h3>
+                    <div class="overflow-x-auto border-2 border-slate-300 rounded-lg">
+                        <table class="w-full text-xs text-left text-gray-700 bg-white">
+                            <thead class="bg-gray-100 uppercase text-gray-700 font-semibold text-[11px]">
+                                <tr>
+                                    <th class="px-3 py-2 text-center w-12 border-b">No</th>
+                                    <th class="px-3 py-2 border-b">Kegiatan / Uraian Kebutuhan Anggaran</th>
+                                    @if ($hasMakQr)
+                                        <th class="px-3 py-2 text-center w-28 border-b">Kode Akun / MAK</th>
+                                    @endif
+                                    <th class="px-3 py-2 text-right w-40 border-b">Jumlah Anggaran</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($itemsQr as $idx => $item)
+                                    @if (!empty($item['has_sub']) && !empty($item['sub_items']))
+                                        {{-- Header Kegiatan Utama --}}
+                                        <tr class="bg-gray-100 font-semibold text-gray-900 border-b">
+                                            <td class="px-3 py-2 text-center text-gray-500">{{ $idx + 1 }}</td>
+                                            <td class="px-3 py-2">{{ $item['uraian'] ?? '-' }}</td>
+                                            @if ($hasMakQr)
+                                                <td class="px-3 py-2 text-center font-mono text-gray-600">{{ $item['mak'] ?? '-' }}</td>
+                                            @endif
+                                            <td class="px-3 py-2 text-right font-bold text-emerald-700">
+                                                Rp {{ number_format((float)($item['nominal'] ?? 0), 0, ',', '.') }}
+                                            </td>
+                                        </tr>
+                                        {{-- Sub-kegiatan --}}
+                                        @foreach ($item['sub_items'] as $sub)
+                                            <tr class="border-b hover:bg-gray-50">
+                                                <td class="px-3 py-2 text-center"></td>
+                                                <td class="px-3 py-2 pl-6 text-gray-700">
+                                                    {{ $sub['uraian'] ?? '-' }}
+                                                    @if (!empty($sub['volume']) && !empty($sub['satuan']))
+                                                        <span class="text-gray-500 text-[11px] block sm:inline sm:ml-1">({{ $sub['volume'] }} {{ $sub['satuan'] }} @ Rp {{ number_format((float)($sub['harga_satuan'] ?? 0), 0, ',', '.') }})</span>
+                                                    @endif
+                                                </td>
+                                                @if ($hasMakQr)
+                                                    <td class="px-3 py-2 text-center text-gray-400">-</td>
+                                                @endif
+                                                <td class="px-3 py-2 text-right text-gray-700">
+                                                    Rp {{ number_format((float)($sub['nominal'] ?? 0), 0, ',', '.') }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr class="border-b hover:bg-gray-50">
+                                            <td class="px-3 py-2 text-center font-medium text-gray-500">{{ $idx + 1 }}</td>
+                                            <td class="px-3 py-2 font-medium text-gray-900">
+                                                {{ $item['uraian'] ?? '-' }}
+                                                @if (!empty($item['volume']) && !empty($item['satuan']))
+                                                    <span class="text-gray-500 text-[11px] block sm:inline sm:ml-1">({{ $item['volume'] }} {{ $item['satuan'] }} @ Rp {{ number_format((float)($item['harga_satuan'] ?? 0), 0, ',', '.') }})</span>
+                                                @endif
+                                            </td>
+                                            @if ($hasMakQr)
+                                                <td class="px-3 py-2 text-center font-mono text-gray-600">{{ $item['mak'] ?? '-' }}</td>
+                                            @endif
+                                            <td class="px-3 py-2 text-right font-semibold text-emerald-700">
+                                                Rp {{ number_format((float)($item['nominal'] ?? ($item['subtotal'] ?? 0)), 0, ',', '.') }}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endif
         @endif
 
         @if ($surat->jenisSurat->user_type == 'staff-dekan' && $surat->jenisSurat->slug == 'surat-keluar')

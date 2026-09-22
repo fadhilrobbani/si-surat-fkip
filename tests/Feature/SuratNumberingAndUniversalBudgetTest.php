@@ -286,7 +286,24 @@ class SuratNumberingAndUniversalBudgetTest extends TestCase
         $posMak = strpos($htmlHierarki, 'Kode Akun / MAK');
         $this->assertTrue($posMak > $posKegiatan, 'Kolom MAK harus berada di sebelah kanan Kegiatan / Uraian');
 
-        // D. Render cetak template jika tanpa MAK dan tanpa subkegiatan (Flat murni)
+        // D. Verifikasi halaman Show Surat Bendahara merender subkegiatan dan MAK
+        $bendahara = User::where('role_id', User::ROLE_BENDAHARA)->first();
+        $surat->update(['current_user_id' => $bendahara->id, 'status' => 'diproses']);
+        $responseShowBendahara = $this->actingAs($bendahara)->get(route('show-surat-masuk-bendahara', $surat->id));
+        $responseShowBendahara->assertOk();
+        $responseShowBendahara->assertSee('Honorarium dan Konsumsi Asesor');
+        $responseShowBendahara->assertSee('Honor Asesor 1');
+        $responseShowBendahara->assertSee('Konsumsi Rapat');
+        $responseShowBendahara->assertSee('521211');
+        $responseShowBendahara->assertDontSee('>1.1<');
+
+        // E. Verifikasi halaman QR Preview juga merender subkegiatan dan MAK
+        $htmlQr = view('previews.show-surat-qr', ['surat' => $surat])->render();
+        $this->assertStringContainsString('Honorarium dan Konsumsi Asesor', $htmlQr);
+        $this->assertStringContainsString('Honor Asesor 1', $htmlQr);
+        $this->assertStringContainsString('521211', $htmlQr);
+
+        // F. Render cetak template jika tanpa MAK dan tanpa subkegiatan (Flat murni)
         $suratFlat = Surat::create([
             'pengaju_id' => $staff->id,
             'current_user_id' => $staff->id,

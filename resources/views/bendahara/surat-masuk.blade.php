@@ -75,7 +75,7 @@
                                     </a>
                                     <a href="{{ route('show-surat-masuk-bendahara', $surat->id) }}"
                                         class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-xs px-3 py-1.5 transition">
-                                        Periksa & Cairkan
+                                        Periksa
                                     </a>
                                 </div>
                             </td>

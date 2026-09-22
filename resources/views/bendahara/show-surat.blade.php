@@ -52,26 +52,78 @@
                 </div>
 
                 @if (isset($surat->data['items']) && is_array($surat->data['items']))
+                    @php
+                        $items = $surat->data['items'];
+                        $hasMak = false;
+                        foreach ($items as $it) {
+                            if (is_array($it) && !empty($it['mak'])) {
+                                $hasMak = true;
+                                break;
+                            }
+                        }
+                    @endphp
                     <div class="mt-3">
                         <span class="text-gray-500 font-medium block mb-1">Rincian Kebutuhan Anggaran:</span>
-                        <table class="w-full text-xs border border-gray-200">
-                            <thead class="bg-gray-200 text-gray-700">
-                                <tr>
-                                    <th class="p-2 text-left">No</th>
-                                    <th class="p-2 text-left">Uraian / Kebutuhan</th>
-                                    <th class="p-2 text-right">Jumlah (Rp)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($surat->data['items'] as $idx => $item)
-                                    <tr class="border-t">
-                                        <td class="p-2">{{ $idx + 1 }}</td>
-                                        <td class="p-2 font-medium">{{ $item['uraian'] ?? '-' }}</td>
-                                        <td class="p-2 text-right">Rp {{ number_format($item['nominal'] ?? 0, 0, ',', '.') }}</td>
+                        <div class="overflow-x-auto border border-gray-200 rounded-lg">
+                            <table class="w-full text-xs">
+                                <thead class="bg-gray-200 text-gray-700">
+                                    <tr>
+                                        <th class="p-2 text-center w-10">No</th>
+                                        <th class="p-2 text-left">Kegiatan / Uraian Kebutuhan Anggaran</th>
+                                        @if ($hasMak)
+                                            <th class="p-2 text-center w-28">Kode Akun / MAK</th>
+                                        @endif
+                                        <th class="p-2 text-right w-36">Jumlah (Rp)</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($items as $idx => $item)
+                                        @if (!empty($item['has_sub']) && !empty($item['sub_items']))
+                                            {{-- Header Kegiatan Utama --}}
+                                            <tr class="border-t bg-gray-100 font-semibold text-gray-900">
+                                                <td class="p-2 text-center">{{ $idx + 1 }}</td>
+                                                <td class="p-2">{{ $item['uraian'] ?? '-' }}</td>
+                                                @if ($hasMak)
+                                                    <td class="p-2 text-center font-mono text-gray-700">{{ $item['mak'] ?? '-' }}</td>
+                                                @endif
+                                                <td class="p-2 text-right font-bold">Rp {{ number_format((float)($item['nominal'] ?? 0), 0, ',', '.') }}</td>
+                                            </tr>
+                                            {{-- Baris Sub-kegiatan --}}
+                                            @foreach ($item['sub_items'] as $sub)
+                                                <tr class="border-t bg-white hover:bg-gray-50">
+                                                    <td class="p-2 text-center"></td>
+                                                    <td class="p-2 pl-6 text-gray-700">
+                                                        {{ $sub['uraian'] ?? '-' }}
+                                                        @if (!empty($sub['volume']) && !empty($sub['satuan']))
+                                                            <span class="text-gray-500 text-[11px] block sm:inline sm:ml-1">({{ $sub['volume'] }} {{ $sub['satuan'] }} @ Rp {{ number_format((float)($sub['harga_satuan'] ?? 0), 0, ',', '.') }})</span>
+                                                        @endif
+                                                    </td>
+                                                    @if ($hasMak)
+                                                        <td class="p-2 text-center text-gray-400">-</td>
+                                                    @endif
+                                                    <td class="p-2 text-right text-gray-700">Rp {{ number_format((float)($sub['nominal'] ?? 0), 0, ',', '.') }}</td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            {{-- Baris Flat --}}
+                                            <tr class="border-t bg-white hover:bg-gray-50">
+                                                <td class="p-2 text-center">{{ $idx + 1 }}</td>
+                                                <td class="p-2 font-medium text-gray-800">
+                                                    {{ $item['uraian'] ?? '-' }}
+                                                    @if (!empty($item['volume']) && !empty($item['satuan']))
+                                                        <span class="text-gray-500 text-[11px] block sm:inline sm:ml-1">({{ $item['volume'] }} {{ $item['satuan'] }} @ Rp {{ number_format((float)($item['harga_satuan'] ?? 0), 0, ',', '.') }})</span>
+                                                    @endif
+                                                </td>
+                                                @if ($hasMak)
+                                                    <td class="p-2 text-center font-mono text-gray-700">{{ $item['mak'] ?? '-' }}</td>
+                                                @endif
+                                                <td class="p-2 text-right font-semibold text-gray-900">Rp {{ number_format((float)($item['nominal'] ?? ($item['subtotal'] ?? 0)), 0, ',', '.') }}</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 @endif
 
@@ -97,13 +149,40 @@
                     </div>
                 </div>
 
-                @if (isset($surat->files['berkasProposal']))
-                    <div class="mt-3">
-                        <span class="text-gray-500 font-medium mr-2">Lampiran Berkas Proposal & RAB:</span>
-                        <a href="{{ asset('storage/' . $surat->files['berkasProposal']) }}" target="_blank"
-                            class="text-blue-600 hover:underline font-semibold text-xs inline-flex items-center gap-1">
-                            Lihat Dokumen PDF
-                        </a>
+                @if (isset($surat->files) && is_array($surat->files))
+                    <div class="mt-3 space-y-2">
+                        @foreach ($surat->files as $key => $value)
+                            @if ($key == 'private' || empty($value))
+                                @continue
+                            @endif
+                            @php
+                                $storagePath = 'lampiran/' . basename($value);
+                                $filename = pathInfo(basename($value), PATHINFO_FILENAME);
+                                if (\App\Services\StorageHelper::exists($storagePath)) {
+                                    $mimeType = str_replace('/', '-', \App\Services\StorageHelper::mimeType($storagePath));
+                                } else {
+                                    $mimeType = 'application-pdf';
+                                }
+                                $extension = pathinfo(basename($value), PATHINFO_EXTENSION) ?: 'pdf';
+                                $url = URL::signedRoute('show-file', [
+                                    'user' => $authUser->id,
+                                    'filename' => $filename,
+                                    'mimeType' => $mimeType,
+                                    'extension' => $extension,
+                                ]);
+                                $label = $key === 'berkasProposal'
+                                    ? 'Lampiran Berkas Proposal & RAB'
+                                    : 'Lampiran ' . ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key)));
+                            @endphp
+                            <div class="flex items-center gap-2">
+                                <span class="text-gray-500 font-medium mr-2">{{ $label }}:</span>
+                                <a href="{{ $url }}" target="_blank"
+                                    class="text-blue-600 hover:underline font-semibold text-xs inline-flex items-center gap-1">
+                                    <x-heroicon-o-document-text class="w-4 h-4" />
+                                    Lihat Dokumen PDF
+                                </a>
+                            </div>
+                        @endforeach
                     </div>
                 @endif
             </div>

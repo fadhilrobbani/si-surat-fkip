@@ -44,6 +44,40 @@
                     <span class="font-mono font-bold text-blue-700">{{ $surat->data['nomorBuktiPencairan'] }}</span>
                 </div>
             @endif
+            @if (isset($surat->files) && is_array($surat->files))
+                @foreach ($surat->files as $key => $value)
+                    @if ($key == 'private' || empty($value))
+                        @continue
+                    @endif
+                    @php
+                        $storagePath = 'lampiran/' . basename($value);
+                        $filename = pathInfo(basename($value), PATHINFO_FILENAME);
+                        if (\App\Services\StorageHelper::exists($storagePath)) {
+                            $mimeType = str_replace('/', '-', \App\Services\StorageHelper::mimeType($storagePath));
+                        } else {
+                            $mimeType = 'application-pdf';
+                        }
+                        $extension = pathinfo(basename($value), PATHINFO_EXTENSION) ?: 'pdf';
+                        $url = URL::signedRoute('show-file', [
+                            'user' => $authUser->id,
+                            'filename' => $filename,
+                            'mimeType' => $mimeType,
+                            'extension' => $extension,
+                        ]);
+                        $label = $key === 'berkasProposal'
+                            ? 'Lampiran Berkas Proposal & RAB'
+                            : 'Lampiran ' . ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key)));
+                    @endphp
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-500">{{ $label }}:</span>
+                        <a href="{{ $url }}" target="_blank"
+                            class="text-blue-600 hover:underline font-semibold text-xs inline-flex items-center gap-1">
+                            <x-heroicon-o-document-text class="w-4 h-4" />
+                            Lihat Dokumen PDF
+                        </a>
+                    </div>
+                @endforeach
+            @endif
         </div>
 
         <div class="my-4">

@@ -100,8 +100,13 @@ class SuratPencairanDanaTest extends TestCase
                 'private' => [
                     'stepper' => [2]
                 ]
+            ],
+            'files' => [
+                'berkasProposal' => 'lampiran/proposal_gebyar.pdf'
             ]
         ]);
+
+        \Illuminate\Support\Facades\Storage::disk('local')->put('lampiran/proposal_gebyar.pdf', '%PDF-1.4 dummy content');
 
         $surat->refresh();
         $this->assertEquals($kaprodi->id, $surat->current_user_id);
@@ -209,6 +214,14 @@ class SuratPencairanDanaTest extends TestCase
             ->get('/bendahara/surat-masuk')
             ->assertStatus(200)
             ->assertSee('Gebyar FKIP 2026');
+
+        $resBendaharaShow = $this->actingAs($bendahara)->get(route('show-surat-masuk-bendahara', $surat->id));
+        $resBendaharaShow->assertOk();
+        $resBendaharaShow->assertSee('Lihat Dokumen PDF');
+
+        $filename = basename($surat->files['berkasProposal']);
+        $resFile = $this->actingAs($bendahara)->get(route('show-file-bendahara', ['surat' => $surat->id, 'filename' => $filename]));
+        $resFile->assertOk();
 
         $this->actingAs($bendahara)
             ->put('/bendahara/surat-disetujui/' . $surat->id, [

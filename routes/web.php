@@ -570,6 +570,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/riwayat-persetujuan/show/{approval}', [BendaharaController::class, 'showApproval'])->name('show-approval-bendahara');
         Route::get('/preview-surat/{surat}', [PDFController::class, 'previewSurat'])->name('preview-surat-bendahara');
         Route::get('/print-surat/{surat}', [PDFController::class, 'printSurat'])->name('print-surat-bendahara');
+        Route::get('/show-file/{surat}/{filename}', [FileController::class, 'show'])->name('show-file-bendahara');
         Route::get('/profile', [BendaharaController::class, 'profilePage']);
         Route::put('/profile/update/{user}', [BendaharaController::class, 'updateProfile'])->name('update-profile-bendahara');
         Route::get('/profile/reset-password', [BendaharaController::class, 'resetPasswordPage']);

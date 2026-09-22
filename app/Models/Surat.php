@@ -14,7 +14,7 @@ class Surat extends Model
     use HasFactory;
     use HasUuids;
     protected $table = 'surat_tables';
-    protected $fillable = ['pengaju_id', 'current_user_id', 'penerima_id', 'status', 'jenis_surat_id', 'data'];
+    protected $fillable = ['pengaju_id', 'current_user_id', 'penerima_id', 'status', 'jenis_surat_id', 'data', 'files', 'expired_at'];
     protected $casts = [
         'data' => 'json',
         'files' => 'json'
