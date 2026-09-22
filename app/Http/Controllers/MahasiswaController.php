@@ -98,7 +98,13 @@ class MahasiswaController extends Controller
     {
 
         return view('mahasiswa.pengajuan-surat', [
-            'daftarJenisSurat' => JenisSurat::where('user_type', 'mahasiswa')->where('slug', '!=', 'legalisir-ijazah')->get(),
+            'daftarJenisSurat' => JenisSurat::where('user_type', 'mahasiswa')
+                ->whereNotIn('slug', [
+                    'legalisir-ijazah',
+                    'surat-peminjaman-ruang-mahasiswa',
+                    'surat-pencairan-dana-mahasiswa',
+                ])
+                ->get(),
         ]);
     }
 

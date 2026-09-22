@@ -37,6 +37,9 @@
         ?? ($kaprodiUser ? $kaprodiUser->name : 'Koordinator Program Studi');
     $nipKaprodi = $surat->data['private']['nipKaprodi'] 
         ?? ($kaprodiUser ? ($kaprodiUser->nip ?: $kaprodiUser->username) : '........................');
+
+    $cleanProdiName = preg_replace('/^Program Studi\s+/i', '', trim($prodiName));
+    $cleanNamaKegiatan = preg_replace('/^Kegiatan\s+/i', '', trim($surat->data['namaKegiatan'] ?? ''));
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -59,7 +62,7 @@
                     <tr>
                         <td style="width: 75px; vertical-align: top;">Nomor</td>
                         <td style="width: 10px; vertical-align: top;">:</td>
-                        <td style="vertical-align: top;">{{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '..........' }}/DST/UN30.7.10/DT.06/{{ $tahun }}</td>
+                        <td style="vertical-align: top;">{{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '....................................................' }}</td>
                     </tr>
                     <tr>
                         <td style="vertical-align: top;">Lampiran</td>
@@ -69,7 +72,7 @@
                     <tr>
                         <td style="vertical-align: top;">Perihal</td>
                         <td style="vertical-align: top;">:</td>
-                        <td style="vertical-align: top;"><b>Permohonan Menjadi Narasumber</b></td>
+                        <td style="vertical-align: top;">Permohonan Menjadi Narasumber</td>
                     </tr>
                 </table>
             </td>
@@ -88,7 +91,7 @@
 
     <br>
     <p style="text-align: justify; text-indent: 30px;">
-        Sehubungan akan dilaksanakannya Kegiatan {{ $surat->data['namaKegiatan'] ?? '' }} Program Studi {{ $prodiName }} Fakultas Keguruan dan Ilmu Pendidikan Universitas Bengkulu Tahun {{ $tahun }}, dengan ini kami mohon kesediaan Bapak/Ibu untuk dapat menjadi Narasumber kegiatan yang akan diselenggarakan pada:
+        Sehubungan akan dilaksanakannya Kegiatan {{ $cleanNamaKegiatan }} Program Studi {{ $cleanProdiName }} Fakultas Keguruan dan Ilmu Pendidikan Universitas Bengkulu Tahun {{ $tahun }}, dengan ini kami mohon kesediaan Bapak/Ibu untuk dapat menjadi Narasumber kegiatan yang akan diselenggarakan pada:
     </p>
     <br>
 
@@ -141,7 +144,7 @@
             @endif
         </div>
         <div>
-            <p><b>{{ $namaKaprodi }}</b></p>
+            <p>{{ $namaKaprodi }}</p>
             <p>NIP {{ $nipKaprodi }}</p>
         </div>
     </div>

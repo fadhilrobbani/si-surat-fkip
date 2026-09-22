@@ -168,6 +168,29 @@
             </div>
             <form action="{{ route('setujui-surat-tata-usaha', $surat->id) }}" method="POST">
                 @csrf
+                @if (in_array($surat->jenisSurat->slug, ['surat-peminjaman-ruang', 'surat-peminjaman-ruang-mahasiswa']))
+                    <div class="mb-4">
+                        <label for="no-surat" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Nomor Surat <span class="text-xs font-normal text-gray-500">(Opsional)</span>
+                        </label>
+                        <input type="text" id="no-surat" name="no-surat"
+                            value="{{ old('no-surat', $surat->data['noSurat'] ?? '') }}"
+                            placeholder="Contoh: 042/DST/UN30.7.11/PP/{{ date('Y') }}"
+                            class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                        <div class="mt-1.5 flex items-center gap-2">
+                            <button type="button"
+                                onclick="fillNoSuratTU('/DST/UN30.7.11/PP/{{ date('Y') }}')"
+                                class="text-xs inline-flex items-center gap-1 font-semibold text-blue-600 hover:text-blue-800 dark:text-blue-400 bg-blue-50 dark:bg-gray-700 hover:bg-blue-100 px-2 py-1 rounded border border-blue-200 dark:border-gray-600 transition">
+                                📋 Gunakan Format: /DST/UN30.7.11/PP/{{ date('Y') }}
+                            </button>
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Kosongkan jika nomor belum terbit (akan dicetak titik-titik pada surat). Jika diisi, wajib sertakan format lengkap.</p>
+                        @error('no-surat')
+                            <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+                @endif
+
                 <div class="mb-4">
                     <label for="catatan" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                         Catatan Persetujuan (Opsional)
@@ -207,4 +230,19 @@
         </div>
     @endif
 
+    <script>
+        function fillNoSuratTU(format) {
+            const input = document.getElementById('no-surat');
+            if (!input) return;
+            const currentVal = input.value.trim();
+            if (!currentVal) {
+                input.value = format;
+                input.focus();
+                input.setSelectionRange(0, 0);
+            } else if (!currentVal.includes('/')) {
+                input.value = currentVal + format;
+                input.focus();
+            }
+        }
+    </script>
 </x-layout>

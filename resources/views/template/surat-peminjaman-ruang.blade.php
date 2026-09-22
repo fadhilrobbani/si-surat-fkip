@@ -37,6 +37,16 @@
         ?? ($kaprodiUser ? $kaprodiUser->name : 'Koordinator Program Studi');
     $nipKaprodi = $surat->data['private']['nipKaprodi'] 
         ?? ($kaprodiUser ? ($kaprodiUser->nip ?: $kaprodiUser->username) : '........................');
+
+    $cleanProdiName = preg_replace('/^Program Studi\s+/i', '', trim($prodiName));
+    $cleanJurusanName = !empty($jurusanName) 
+        ? \Illuminate\Support\Str::start(preg_replace('/^Jurusan\s+/i', '', trim($jurusanName)), 'Jurusan ') 
+        : '';
+    $cleanNamaKegiatan = preg_replace('/^Kegiatan\s+/i', '', trim($surat->data['namaKegiatan'] ?? ''));
+    $cleanNamaRuangan = trim($surat->data['namaRuangan'] ?? '');
+    $ruanganDisplay = \Illuminate\Support\Str::startsWith(strtolower($cleanNamaRuangan), 'ruang')
+        ? $cleanNamaRuangan
+        : 'ruang ' . $cleanNamaRuangan;
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -59,7 +69,7 @@
                     <tr>
                         <td style="width: 75px; vertical-align: top;">Nomor</td>
                         <td style="width: 10px; vertical-align: top;">:</td>
-                        <td style="vertical-align: top;">{{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '..........' }}/DST/UN30.7.11/PP/{{ $tahun }}</td>
+                        <td style="vertical-align: top;">{{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '....................................................' }}</td>
                     </tr>
                     <tr>
                         <td style="vertical-align: top;">Lampiran</td>
@@ -69,7 +79,7 @@
                     <tr>
                         <td style="vertical-align: top;">Hal</td>
                         <td style="vertical-align: top;">:</td>
-                        <td style="vertical-align: top;"><b>Permohonan Peminjaman {{ $surat->data['namaRuangan'] ?? 'Ruangan' }}</b></td>
+                        <td style="vertical-align: top;">Permohonan Peminjaman {{ \Illuminate\Support\Str::startsWith(strtolower($cleanNamaRuangan), 'ruang') ? $cleanNamaRuangan : 'Ruangan ' . ($cleanNamaRuangan ?: 'Ruangan') }}</td>
                     </tr>
                 </table>
             </td>
@@ -86,7 +96,7 @@
 
     <br>
     <p style="text-align: justify; text-indent: 30px;">
-        Sehubungan dengan akan dilaksanakannya kegiatan <b>“{{ $surat->data['namaKegiatan'] ?? '' }}”</b> Program Studi {{ $prodiName }} Jurusan {{ $jurusanName }} (pamflet terlampir), bersama ini kami mengajukan permohonan peminjaman ruang {{ $surat->data['namaRuangan'] ?? '' }} pada :
+        Sehubungan dengan akan dilaksanakannya kegiatan “{{ $cleanNamaKegiatan }}” Program Studi {{ $cleanProdiName }} {{ $cleanJurusanName }} (pamflet terlampir), bersama ini kami mengajukan permohonan peminjaman {{ $ruanganDisplay }} pada :
     </p>
     <br>
 
@@ -120,7 +130,7 @@
             @endif
         </div>
         <div>
-            <p><b>{{ $namaKaprodi }}</b></p>
+            <p>{{ $namaKaprodi }}</p>
             <p>NIP {{ $nipKaprodi }}</p>
         </div>
     </div>

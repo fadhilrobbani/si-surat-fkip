@@ -272,14 +272,39 @@
                             'surat-peminjaman-ruang',
                             'surat-peminjaman-ruang-mahasiswa',
                             'surat-pencairan-dana',
-                            'surat-pencairan-dana-mahasiswa'
+                            'surat-pencairan-dana-mahasiswa',
+                            'surat-tugas',
+                            'surat-tugas-kelompok',
                         ]);
+                        $defaultFormat = null;
+                        if ($surat->jenisSurat->slug == 'surat-permohonan-narasumber') {
+                            $defaultFormat = '/DST/UN30.7.10/DT.06/' . date('Y');
+                        } elseif (in_array($surat->jenisSurat->slug, ['surat-tugas', 'surat-tugas-kelompok', 'surat-tugas-from-staff-dekan', 'surat-tugas-kelompok-from-staff-dekan'])) {
+                            $defaultFormat = '/DST/UN30.7/KP/' . date('Y');
+                        } elseif ($surat->jenisSurat->slug == 'surat-peminjaman-ruang') {
+                            $defaultFormat = '/DST/UN30.7.11/PP/' . date('Y');
+                        } elseif ($surat->jenisSurat->slug == 'surat-pencairan-dana') {
+                            $defaultFormat = '/DST/UN30.7.11/KU.01.02/' . date('Y');
+                        }
                     @endphp
                     <label for="no-surat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
                         Surat @if (!$isNewLetter)<span class="text-red-600">*</span>@else <span class="text-xs font-normal text-gray-500">(opsional)</span>@endif</label>
-                    <input type="number" id="no-surat" name="no-surat" value="{{ old('no-surat') }}"
+                    <input type="text" id="no-surat" name="no-surat" value="{{ old('no-surat', $surat->data['noSurat'] ?? '') }}"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="{{ $isNewLetter ? 'Masukkan no. surat jika ada (opsional)' : 'Masukkan no. surat, misal 501' }}" {{ $isNewLetter ? '' : 'required' }}>
+                        placeholder="{{ $defaultFormat ? 'Contoh: 045' . $defaultFormat : 'Masukkan nomor surat lengkap' }}" {{ $isNewLetter ? '' : 'required' }}>
+                    @if ($defaultFormat)
+                        <div class="mt-1.5 flex items-center gap-2">
+                            <button type="button"
+                                onclick="fillNoSuratStaffDekan('{{ $defaultFormat }}', 'no-surat')"
+                                class="text-xs inline-flex items-center gap-1 font-semibold text-blue-600 hover:text-blue-800 dark:text-blue-400 bg-blue-50 dark:bg-gray-700 hover:bg-blue-100 px-2 py-1 rounded border border-blue-200 dark:border-gray-600 transition">
+                                📋 Gunakan Format: {{ $defaultFormat }}
+                            </button>
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Kosongkan jika nomor belum terbit. Jika diisi, wajib sertakan format lengkap.</p>
+                    @endif
+                    @error('no-surat')
+                        <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- <div class="w-full max-w-[400px]">
@@ -405,14 +430,35 @@
                             'surat-peminjaman-ruang',
                             'surat-peminjaman-ruang-mahasiswa',
                             'surat-pencairan-dana',
-                            'surat-pencairan-dana-mahasiswa'
+                            'surat-pencairan-dana-mahasiswa',
+                            'surat-tugas',
+                            'surat-tugas-kelompok',
+                            'surat-tugas-from-staff-dekan',
+                            'surat-tugas-kelompok-from-staff-dekan',
                         ]);
+                        $defaultFormat2 = null;
+                        if (in_array($surat->jenisSurat->slug, ['surat-tugas-from-staff-dekan', 'surat-tugas-kelompok-from-staff-dekan', 'surat-tugas', 'surat-tugas-kelompok'])) {
+                            $defaultFormat2 = '/DST/UN30.7/KP/' . date('Y');
+                        }
                     @endphp
-                    <label for="no-surat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
+                    <label for="no-surat-2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
                         Surat @if (!$isNewLetter)<span class="text-red-600">*</span>@else <span class="text-xs font-normal text-gray-500">(opsional)</span>@endif</label>
-                    <input type="number" id="no-surat" name="no-surat" value="{{ old('no-surat') }}"
+                    <input type="text" id="no-surat-2" name="no-surat" value="{{ old('no-surat', $surat->data['noSurat'] ?? '') }}"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="{{ $isNewLetter ? 'Masukkan no. surat jika ada (opsional)' : 'Masukkan no. surat, misal 501' }}" {{ $isNewLetter ? '' : 'required' }}>
+                        placeholder="{{ $defaultFormat2 ? 'Contoh: 045' . $defaultFormat2 : 'Masukkan nomor surat lengkap' }}" {{ $isNewLetter ? '' : 'required' }}>
+                    @if ($defaultFormat2)
+                        <div class="mt-1.5 flex items-center gap-2">
+                            <button type="button"
+                                onclick="fillNoSuratStaffDekan('{{ $defaultFormat2 }}', 'no-surat-2')"
+                                class="text-xs inline-flex items-center gap-1 font-semibold text-blue-600 hover:text-blue-800 dark:text-blue-400 bg-blue-50 dark:bg-gray-700 hover:bg-blue-100 px-2 py-1 rounded border border-blue-200 dark:border-gray-600 transition">
+                                📋 Gunakan Format: {{ $defaultFormat2 }}
+                            </button>
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Kosongkan jika nomor belum terbit. Jika diisi, wajib sertakan format lengkap.</p>
+                    @endif
+                    @error('no-surat')
+                        <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- <div class="w-full max-w-[400px]">
@@ -493,6 +539,19 @@
     </div>
     </form>
 
-    </div>
-
+    <script>
+        function fillNoSuratStaffDekan(format, elementId = 'no-surat') {
+            const input = document.getElementById(elementId);
+            if (!input) return;
+            const currentVal = input.value.trim();
+            if (!currentVal) {
+                input.value = format;
+                input.focus();
+                input.setSelectionRange(0, 0);
+            } else if (!currentVal.includes('/')) {
+                input.value = currentVal + format;
+                input.focus();
+            }
+        }
+    </script>
 </x-layout>

@@ -263,9 +263,20 @@ class StaffDekanController extends Controller
             'surat-pencairan-dana',
             'surat-pencairan-dana-mahasiswa'
         ])) {
-            $request->validate([
-                'no-surat' => ['nullable', 'max:20'],
-            ]);
+            if ($request->filled('no-surat')) {
+                $request->validate([
+                    'no-surat' => [
+                        'required',
+                        'string',
+                        'max:100',
+                        function ($attribute, $value, $fail) {
+                            if (!str_contains($value, '/')) {
+                                $fail('Nomor surat harus berformat lengkap dengan kode instansi (contoh: 045/DST/UN30.7.10/DT.06/' . date('Y') . '). Gunakan tombol bantuan di bawah kolom.');
+                            }
+                        },
+                    ],
+                ]);
+            }
             $surat->current_user_id = $surat->pengaju_id;
             $surat->expired_at = null;
             $data = $surat->data;
@@ -298,10 +309,19 @@ class StaffDekanController extends Controller
                 // 'no-surat' =>  ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id)],
 
 
-                'no-surat' => ['nullable', 'max:5', Rule::unique('surat_tables', 'data->noSurat')
-                    ->where(function ($query) {
-                        $query->whereYear('created_at', date('Y'));
-                    })],
+                'no-surat' => [
+                    'nullable',
+                    'max:100',
+                    Rule::unique('surat_tables', 'data->noSurat')
+                        ->where(function ($query) {
+                            $query->whereYear('created_at', date('Y'));
+                        }),
+                    function ($attribute, $value, $fail) {
+                        if (!empty($value) && !str_contains($value, '/')) {
+                            $fail('Nomor surat harus berformat lengkap dengan kode instansi (contoh: 045/DST/UN30.7/KP/' . date('Y') . '). Gunakan tombol bantuan di bawah kolom.');
+                        }
+                    },
+                ],
             ]);
             // SELECT jt.id FROM users u
             // JOIN program_studi_tables pst ON pst.id = u.program_studi_id
@@ -453,10 +473,19 @@ class StaffDekanController extends Controller
                 // 'no-surat' =>  ['required', 'size:4', Rule::unique('surat_tables', 'data->noSurat')->where('jenis_surat_id', $surat->jenisSurat->id)],
 
 
-                'no-surat' => ['nullable', 'max:5', Rule::unique('surat_tables', 'data->noSurat')
-                    ->where(function ($query) {
-                        $query->whereYear('created_at', date('Y'));
-                    })],
+                'no-surat' => [
+                    'nullable',
+                    'max:100',
+                    Rule::unique('surat_tables', 'data->noSurat')
+                        ->where(function ($query) {
+                            $query->whereYear('created_at', date('Y'));
+                        }),
+                    function ($attribute, $value, $fail) {
+                        if (!empty($value) && !str_contains($value, '/')) {
+                            $fail('Nomor surat harus berformat lengkap dengan kode instansi (contoh: 045/DST/UN30.7/KP/' . date('Y') . '). Gunakan tombol bantuan di bawah kolom.');
+                        }
+                    },
+                ],
             ]);
             // SELECT jt.id FROM users u
             // JOIN program_studi_tables pst ON pst.id = u.program_studi_id

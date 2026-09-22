@@ -226,6 +226,28 @@
                             value="ok">
                         <img class="w-20" src="{{ asset('storage/' . $authUser->tandatangan) }}" alt="">
                     </div> --}}
+                @if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana', 'surat-pencairan-dana-mahasiswa']))
+                    <div class="w-full max-w-[400px]">
+                        <label for="no-surat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Nomor Surat <span class="text-xs font-normal text-gray-500">(Opsional - lengkapi jika belum ada)</span>
+                        </label>
+                        <input type="text" id="no-surat" name="no-surat" value="{{ old('no-surat', $surat->data['noSurat'] ?? '') }}"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                            placeholder="Contoh: 015/DST/UN30.7.11/KU.01.02/{{ date('Y') }}">
+                        <div class="mt-1.5 flex items-center gap-2">
+                            <button type="button"
+                                onclick="fillNoSuratKabag('/DST/UN30.7.11/KU.01.02/{{ date('Y') }}')"
+                                class="text-xs inline-flex items-center gap-1 font-semibold text-blue-600 hover:text-blue-800 dark:text-blue-400 bg-blue-50 dark:bg-gray-700 hover:bg-blue-100 px-2 py-1 rounded border border-blue-200 dark:border-gray-600 transition">
+                                📋 Gunakan Format: /DST/UN30.7.11/KU.01.02/{{ date('Y') }}
+                            </button>
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Kosongkan jika nomor belum terbit. Jika diisi, wajib sertakan format lengkap.</p>
+                        @error('no-surat')
+                            <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+                @endif
+
                 <div class="w-full max-w-[400px]">
                     <label for="note"
                         class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white">Catatan
@@ -283,5 +305,19 @@
             </a>
         </div>
     @endif
-
+    <script>
+        function fillNoSuratKabag(format) {
+            const input = document.getElementById('no-surat');
+            if (!input) return;
+            const currentVal = input.value.trim();
+            if (!currentVal) {
+                input.value = format;
+                input.focus();
+                input.setSelectionRange(0, 0);
+            } else if (!currentVal.includes('/')) {
+                input.value = currentVal + format;
+                input.focus();
+            }
+        }
+    </script>
 </x-layout>

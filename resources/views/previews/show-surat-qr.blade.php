@@ -160,11 +160,25 @@
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Nomor Surat:</td>
                             <td class="px-4 py-3">
-                                {{ $surat->data['noSurat'] . '/UN30.7/KP/' . $surat->created_at->year }}</td>
+                                @php
+                                    $noSuratQr = $surat->data['noSurat'] ?? null;
+                                    if (!empty($noSuratQr)) {
+                                        if (!str_contains($noSuratQr, '/')) {
+                                            $tahunSurat = isset($surat->data['tanggal_selesai'])
+                                                ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ')
+                                                : ($surat->created_at ? $surat->created_at->year : date('Y'));
+                                            $noSuratQr = $noSuratQr . '/UN30.7/KP/' . $tahunSurat;
+                                        }
+                                    } else {
+                                        $noSuratQr = '-';
+                                    }
+                                @endphp
+                                {{ $noSuratQr }}
+                            </td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Tanggal Surat Diterbitkan:</td>
-                            <td class="px-4 py-3">{{ $surat->data['tanggal_selesai'] }}</td>
+                            <td class="px-4 py-3">{{ $surat->data['tanggal_selesai'] ?? '-' }}</td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Jenis Surat / Perihal:</td>
@@ -331,15 +345,29 @@
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Nomor Surat:</td>
                             <td class="px-4 py-3">
-                                {{ $surat->data['noSurat'] . '/UN30.7/PP/' . $surat->created_at->year }}</td>
+                                @php
+                                    $noSuratKeluarQr = $surat->data['noSurat'] ?? null;
+                                    if (!empty($noSuratKeluarQr)) {
+                                        if (!str_contains($noSuratKeluarQr, '/')) {
+                                            $tahunSuratKeluar = isset($surat->data['tanggal_selesai'])
+                                                ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ')
+                                                : ($surat->created_at ? $surat->created_at->year : date('Y'));
+                                            $noSuratKeluarQr = $noSuratKeluarQr . '/UN30.7/PP/' . $tahunSuratKeluar;
+                                        }
+                                    } else {
+                                        $noSuratKeluarQr = '-';
+                                    }
+                                @endphp
+                                {{ $noSuratKeluarQr }}
+                            </td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Tanggal Surat Diterbitkan:</td>
-                            <td class="px-4 py-3">{{ $surat->data['tanggal_selesai'] }}</td>
+                            <td class="px-4 py-3">{{ $surat->data['tanggal_selesai'] ?? '-' }}</td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Jenis Surat / Perihal:</td>
-                            <td class="px-4 py-3">{{ $surat->data['perihal'] }}</td>
+                            <td class="px-4 py-3">{{ $surat->data['perihal'] ?? ($surat->jenisSurat->name ?? '-') }}</td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Ditandatangani oleh:</td>

@@ -130,6 +130,27 @@
                     </div>
 
                     <div class="mb-4">
+                        <label for="no-surat" class="block mb-1 text-sm font-medium text-gray-700">
+                            Nomor Surat <span class="text-xs font-normal text-gray-500">(Opsional - lengkapi jika belum ada)</span>
+                        </label>
+                        <input type="text" id="no-surat" name="no-surat"
+                            value="{{ old('no-surat', $surat->data['noSurat'] ?? '') }}"
+                            placeholder="Contoh: 015/DST/UN30.7.11/KU.01.02/{{ date('Y') }}"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                        <div class="mt-1.5 flex items-center gap-2">
+                            <button type="button"
+                                onclick="fillNoSuratBendahara('/DST/UN30.7.11/KU.01.02/{{ date('Y') }}')"
+                                class="text-xs inline-flex items-center gap-1 font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded border border-blue-200 transition">
+                                📋 Gunakan Format: /DST/UN30.7.11/KU.01.02/{{ date('Y') }}
+                            </button>
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500">Kosongkan jika nomor belum terbit. Jika diisi, wajib sertakan format lengkap.</p>
+                        @error('no-surat')
+                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
                         <label for="note" class="block mb-1 text-sm font-medium text-gray-700">
                             Catatan Bendahara (Opsional)
                         </label>
@@ -180,4 +201,20 @@
             </div>
         @endif
     </div>
+
+    <script>
+        function fillNoSuratBendahara(format) {
+            const input = document.getElementById('no-surat');
+            if (!input) return;
+            const currentVal = input.value.trim();
+            if (!currentVal) {
+                input.value = format;
+                input.focus();
+                input.setSelectionRange(0, 0);
+            } else if (!currentVal.includes('/')) {
+                input.value = currentVal + format;
+                input.focus();
+            }
+        }
+    </script>
 </x-layout>

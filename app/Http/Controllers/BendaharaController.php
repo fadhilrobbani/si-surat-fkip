@@ -133,6 +133,21 @@ class BendaharaController extends Controller
         $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
         $data['catatanBendahara'] = $request->input('note');
         $data['nomorBuktiPencairan'] = $request->input('no_bukti_pencairan');
+        if ($request->filled('no-surat')) {
+            $request->validate([
+                'no-surat' => [
+                    'required',
+                    'string',
+                    'max:100',
+                    function ($attribute, $value, $fail) {
+                        if (!str_contains($value, '/')) {
+                            $fail('Nomor surat harus berformat lengkap dengan kode instansi (contoh: 015/DST/UN30.7.11/KU.01.02/' . date('Y') . '). Gunakan tombol bantuan di bawah kolom.');
+                        }
+                    },
+                ],
+            ]);
+            $data['noSurat'] = $request->input('no-surat');
+        }
         if (isset($data['private']['stepper'])) {
             $data['private']['stepper'][] = auth()->user()->role->id;
         }

@@ -1719,6 +1719,21 @@ class SuratController extends Controller
             'berkas_proposal' => 'required|file|mimes:jpeg,png,jpg,pdf|max:10240',
         ]);
 
+        if ($request->filled('no_surat')) {
+            $request->validate([
+                'no_surat' => [
+                    'required',
+                    'string',
+                    'max:100',
+                    function ($attribute, $value, $fail) {
+                        if (!str_contains($value, '/')) {
+                            $fail('Nomor surat harus berformat lengkap dengan kode instansi (contoh: 015/DST/UN30.7.11/KU.01.02/' . date('Y') . '). Gunakan tombol bantuan di bawah kolom.');
+                        }
+                    },
+                ],
+            ]);
+        }
+
         $surat = new Surat;
         $surat->pengaju_id = auth()->user()->id;
         $surat->current_user_id = $request->input('penerima');
@@ -1726,11 +1741,67 @@ class SuratController extends Controller
         $surat->jenis_surat_id = $jenisSurat->id;
         $surat->expired_at = now()->addDays(30);
 
-        $items = $request->input('items', []);
+        $kegiatans = $request->input('kegiatans');
+        $items = [];
         $total = 0;
-        if (is_array($items)) {
-            foreach ($items as $item) {
-                $total += (float) ($item['nominal'] ?? 0);
+
+        if (is_array($kegiatans) && count($kegiatans) > 0) {
+            foreach ($kegiatans as $k) {
+                $mode = $k['mode'] ?? 'flat';
+                $nama = $k['nama'] ?? ($k['uraian'] ?? '');
+                if (trim($nama) === '') continue;
+                $mak = !empty($k['mak']) ? trim($k['mak']) : null;
+
+                if ($mode === 'rincian' && !empty($k['sub_items']) && is_array($k['sub_items'])) {
+                    $subItems = [];
+                    $kegiatanTotal = 0;
+                    foreach ($k['sub_items'] as $sub) {
+                        $subUraian = $sub['uraian'] ?? '';
+                        if (trim($subUraian) === '') continue;
+                        $vol = (float) ($sub['volume'] ?? 1);
+                        $satuan = $sub['satuan'] ?? '';
+                        $harga = (float) ($sub['harga_satuan'] ?? 0);
+                        $subTotal = $vol * $harga;
+                        $kegiatanTotal += $subTotal;
+                        $subItems[] = [
+                            'uraian' => $subUraian,
+                            'volume' => $vol,
+                            'satuan' => $satuan,
+                            'harga_satuan' => $harga,
+                            'nominal' => $subTotal,
+                        ];
+                    }
+                    $total += $kegiatanTotal;
+                    $items[] = [
+                        'uraian' => $nama,
+                        'mak' => $mak,
+                        'nominal' => $kegiatanTotal,
+                        'has_sub' => true,
+                        'sub_items' => $subItems,
+                    ];
+                } else {
+                    $nom = (float) ($k['nominal'] ?? 0);
+                    $total += $nom;
+                    $items[] = [
+                        'uraian' => $nama,
+                        'mak' => $mak,
+                        'nominal' => $nom,
+                        'has_sub' => false,
+                        'sub_items' => [],
+                    ];
+                }
+            }
+        } elseif (is_array($request->input('items'))) {
+            foreach ($request->input('items') as $it) {
+                $nom = (float) ($it['nominal'] ?? 0);
+                $total += $nom;
+                $items[] = [
+                    'uraian' => $it['uraian'] ?? '',
+                    'mak' => null,
+                    'nominal' => $nom,
+                    'has_sub' => false,
+                    'sub_items' => [],
+                ];
             }
         }
 
@@ -1739,6 +1810,7 @@ class SuratController extends Controller
             'username' => $request->input('username'),
             'email' => auth()->user()->email ?? '',
             'programStudi' => auth()->user()->programStudi->name ?? '',
+            'noSurat' => $request->input('no_surat') ?: null,
             'namaKegiatan' => $request->input('nama_kegiatan'),
             'tahunAnggaran' => $request->input('tahun_anggaran'),
             'items' => $items,

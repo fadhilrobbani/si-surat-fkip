@@ -157,15 +157,16 @@ class LegacySuratRegressionTest extends TestCase
             ]
         ]);
 
+        $noSurat = '1234/DST/UN30.7/KP/' . date('Y');
         $this->actingAs($staffDekan)
             ->put('/staff-dekan/surat-disetujui/' . $surat->id, [
-                'no-surat' => '1234',
+                'no-surat' => $noSurat,
                 'note' => 'Disetujui dengan nomor surat'
             ]);
 
         $surat->refresh();
         $this->assertEquals('selesai', $surat->status);
-        $this->assertEquals('1234', $surat->data['noSurat']);
+        $this->assertEquals($noSurat, $surat->data['noSurat']);
 
         $pdfResponse = $this->actingAs($staff)->get('/staff/preview-surat/' . $surat->id);
         $pdfResponse->assertStatus(200);

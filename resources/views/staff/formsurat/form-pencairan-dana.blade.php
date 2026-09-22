@@ -26,6 +26,26 @@
                     class="bg-gray-100 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
             </div>
 
+            <div class="md:col-span-2">
+                <label for="no_surat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Nomor Surat <span class="text-xs font-normal text-gray-500">(Opsional - kosongkan jika belum ada nomor surat)</span>
+                </label>
+                <input type="text" id="no_surat" name="no_surat" value="{{ old('no_surat') }}"
+                    placeholder="Contoh: 015/DST/UN30.7.11/KU.01.02/{{ date('Y') }}"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                <div class="mt-1.5 flex items-center gap-2">
+                    <button type="button"
+                        onclick="fillNoSuratDana('/DST/UN30.7.11/KU.01.02/{{ date('Y') }}')"
+                        class="text-xs inline-flex items-center gap-1 font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded border border-blue-200 transition">
+                        📋 Gunakan Format: /DST/UN30.7.11/KU.01.02/{{ date('Y') }}
+                    </button>
+                </div>
+                <p class="mt-1 text-xs text-gray-500">Kosongkan jika nomor belum terbit (akan dicetak titik-titik pada surat). Jika diisi, wajib sertakan format lengkap.</p>
+                @error('no_surat')
+                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
             <div>
                 <label for="nama_kegiatan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     Nama Kegiatan / Usulan Dana <span class="text-red-500">*</span>
@@ -44,37 +64,138 @@
             </div>
 
             <div class="md:col-span-2">
-                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Rincian Kebutuhan Anggaran:
-                </label>
-                <div class="border rounded-lg bg-gray-50 overflow-hidden">
-                    <div class="p-3 bg-gray-200/70 border-b flex justify-between items-center text-xs font-bold text-gray-700">
-                        <span class="w-8 text-center">No</span>
-                        <span class="flex-1 px-2">Uraian / Kebutuhan Anggaran</span>
-                        <span class="w-48 text-right px-2">Jumlah Anggaran (Rp)</span>
-                        <span class="w-8 text-center">Aksi</span>
-                    </div>
-                    <div class="p-3 space-y-2">
-                        <template x-for="(item, index) in items" :key="index">
-                            <div class="flex gap-2 items-center">
-                                <span class="w-8 text-center text-sm font-bold text-gray-500" x-text="index + 1"></span>
-                                <input type="text" :name="'items[' + index + '][uraian]'" x-model="item.uraian" required
-                                    placeholder="Contoh: Konsumsi Snack / Fotokopi / Spanduk"
-                                    class="bg-white border border-gray-300 text-sm rounded-lg block flex-1 p-2 focus:ring-blue-500 focus:border-blue-500">
-                                <input type="number" :name="'items[' + index + '][nominal]'" x-model.number="item.nominal" @input="calculateTotal" required
-                                    placeholder="Nominal (Rp)" min="0"
-                                    class="bg-white border border-gray-300 text-sm rounded-lg block w-48 p-2 text-right font-medium focus:ring-blue-500 focus:border-blue-500">
-                                <button type="button" @click="removeItem(index)" x-show="items.length > 1"
-                                    title="Hapus baris ini"
-                                    class="w-8 text-rose-600 hover:text-rose-800 font-bold text-lg text-center leading-none">&times;</button>
-                                <div class="w-8" x-show="items.length <= 1"></div>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+                    <label class="block text-sm font-semibold text-gray-900 dark:text-white">
+                        Rincian Komponen / Kegiatan Anggaran <span class="text-red-500">*</span>
+                    </label>
+                    <span class="text-xs text-gray-500">Mendukung pengajuan flat (nominal langsung) maupun kegiatan ber-subkegiatan & MAK</span>
+                </div>
+
+                <div class="space-y-4">
+                    <template x-for="(kegiatan, kIndex) in kegiatans" :key="kIndex">
+                        <div class="border rounded-xl bg-white shadow-sm border-gray-200 overflow-hidden">
+                            <!-- Header Bar Kegiatan -->
+                            <div class="p-3 bg-slate-100 border-b border-gray-200 flex flex-col md:flex-row gap-2.5 items-stretch md:items-center justify-between">
+                                <div class="flex items-center gap-2 flex-1">
+                                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center" x-text="kIndex + 1"></span>
+                                    <input type="text" :name="'kegiatans[' + kIndex + '][nama]'" x-model="kegiatan.nama" required
+                                        placeholder="Nama Kegiatan / Komponen Belanja (contoh: Belanja ATK / Pelaksanaan Workshop)"
+                                        class="bg-white border border-gray-300 text-sm font-semibold rounded-lg block flex-1 p-2 focus:ring-blue-500 focus:border-blue-500">
+                                </div>
+
+                                <div class="flex items-center gap-2 justify-end">
+                                    <div class="w-36">
+                                        <input type="text" :name="'kegiatans[' + kIndex + '][mak]'" x-model="kegiatan.mak"
+                                            placeholder="MAK (opsional)" title="Mata Anggaran Kegiatan / Kode Akun (opsional)"
+                                            class="bg-white border border-gray-300 text-xs rounded-lg block w-full p-2 text-center">
+                                    </div>
+
+                                    <!-- Switch Mode -->
+                                    <div class="inline-flex rounded-lg border border-gray-300 overflow-hidden p-0.5 bg-gray-200">
+                                        <button type="button" @click="setMode(kegiatan, 'flat')"
+                                            :class="kegiatan.mode === 'flat' ? 'bg-white text-blue-700 font-bold shadow-sm' : 'text-gray-600 hover:text-gray-900'"
+                                            class="px-2.5 py-1 text-xs rounded-md transition">
+                                            Nominal Langsung
+                                        </button>
+                                        <button type="button" @click="setMode(kegiatan, 'rincian')"
+                                            :class="kegiatan.mode === 'rincian' ? 'bg-white text-blue-700 font-bold shadow-sm' : 'text-gray-600 hover:text-gray-900'"
+                                            class="px-2.5 py-1 text-xs rounded-md transition">
+                                            + Subkegiatan
+                                        </button>
+                                    </div>
+
+                                    <button type="button" @click="removeKegiatan(kIndex)" x-show="kegiatans.length > 1"
+                                        title="Hapus kegiatan ini"
+                                        class="text-rose-600 hover:text-rose-800 p-1 font-bold text-lg leading-none">&times;</button>
+                                </div>
                             </div>
-                        </template>
-                    </div>
-                    <div class="p-3 bg-white border-t">
-                        <button type="button" @click="addItem" class="text-sm bg-blue-50 text-blue-600 hover:bg-blue-100 font-semibold px-3 py-1.5 rounded-lg border border-blue-200 inline-flex items-center gap-1">
+
+                            <input type="hidden" :name="'kegiatans[' + kIndex + '][mode]'" :value="kegiatan.mode">
+
+                            <!-- Mode Flat: Input Nominal Langsung -->
+                            <div class="p-3.5" x-show="kegiatan.mode === 'flat'">
+                                <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
+                                    <span class="text-xs text-gray-500">Nominal langsung untuk kegiatan ini (tanpa rincian subkegiatan):</span>
+                                    <div class="flex items-center gap-2 w-full sm:w-64">
+                                        <span class="text-sm font-bold text-gray-500">Rp</span>
+                                        <input type="number" :name="'kegiatans[' + kIndex + '][nominal]'" x-model.number="kegiatan.nominal" @input="calculateTotal"
+                                            :required="kegiatan.mode === 'flat'" min="0" placeholder="Nominal (Rp)"
+                                            class="bg-white border border-gray-300 text-sm font-bold text-right rounded-lg block w-full p-2 focus:ring-blue-500 focus:border-blue-500">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mode Rincian: Subkegiatan -->
+                            <div class="p-3 bg-slate-50/50" x-show="kegiatan.mode === 'rincian'">
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-xs text-left">
+                                        <thead>
+                                            <tr class="text-gray-600 border-b border-gray-200">
+                                                <th class="py-1 px-2 w-10 text-center">No</th>
+                                                <th class="py-1 px-2">Uraian Barang / Rincian Belanja</th>
+                                                <th class="py-1 px-2 w-20 text-center">Volume</th>
+                                                <th class="py-1 px-2 w-24 text-center">Satuan</th>
+                                                <th class="py-1 px-2 w-32 text-right">Harga Satuan (Rp)</th>
+                                                <th class="py-1 px-2 w-32 text-right">Subtotal (Rp)</th>
+                                                <th class="py-1 px-2 w-10 text-center">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template x-for="(sub, sIndex) in kegiatan.sub_items" :key="sIndex">
+                                                <tr class="border-b border-gray-100">
+                                                    <td class="py-1.5 px-2 text-center text-gray-400 font-bold" x-text="(kIndex + 1) + '.' + (sIndex + 1)"></td>
+                                                    <td class="py-1.5 px-2">
+                                                        <input type="text" :name="'kegiatans[' + kIndex + '][sub_items][' + sIndex + '][uraian]'" x-model="sub.uraian"
+                                                            :required="kegiatan.mode === 'rincian'"
+                                                            placeholder="Contoh: Honor Narasumber / Snack Box / Kertas HVS"
+                                                            class="w-full bg-white border border-gray-300 rounded p-1.5 text-xs focus:ring-blue-500 focus:border-blue-500">
+                                                    </td>
+                                                    <td class="py-1.5 px-2">
+                                                        <input type="number" :name="'kegiatans[' + kIndex + '][sub_items][' + sIndex + '][volume]'" x-model.number="sub.volume"
+                                                            @input="updateSubTotal(kegiatan, sub); calculateTotal()"
+                                                            :required="kegiatan.mode === 'rincian'" min="1"
+                                                            class="w-full bg-white border border-gray-300 rounded p-1.5 text-xs text-center">
+                                                    </td>
+                                                    <td class="py-1.5 px-2">
+                                                        <input type="text" :name="'kegiatans[' + kIndex + '][sub_items][' + sIndex + '][satuan]'" x-model="sub.satuan"
+                                                            placeholder="Satuan (Pkt/Kotak/Rim)"
+                                                            class="w-full bg-white border border-gray-300 rounded p-1.5 text-xs text-center">
+                                                    </td>
+                                                    <td class="py-1.5 px-2">
+                                                        <input type="number" :name="'kegiatans[' + kIndex + '][sub_items][' + sIndex + '][harga_satuan]'" x-model.number="sub.harga_satuan"
+                                                            @input="updateSubTotal(kegiatan, sub); calculateTotal()"
+                                                            :required="kegiatan.mode === 'rincian'" min="0" placeholder="0"
+                                                            class="w-full bg-white border border-gray-300 rounded p-1.5 text-xs text-right font-medium">
+                                                    </td>
+                                                    <td class="py-1.5 px-2 text-right font-bold text-gray-800" x-text="formatRupiah(sub.total)"></td>
+                                                    <td class="py-1.5 px-2 text-center">
+                                                        <button type="button" @click="removeSubItem(kegiatan, sIndex)" x-show="kegiatan.sub_items.length > 1"
+                                                            title="Hapus baris rincian ini"
+                                                            class="text-rose-500 hover:text-rose-700 font-bold text-sm">&times;</button>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mt-2.5 flex items-center justify-between">
+                                    <button type="button" @click="addSubItem(kegiatan)"
+                                        class="text-xs bg-white text-blue-600 hover:bg-blue-50 font-semibold px-2.5 py-1 rounded border border-blue-200 inline-flex items-center gap-1">
+                                        + Tambah Baris Rincian
+                                    </button>
+                                    <div class="text-xs font-semibold text-gray-700">
+                                        Subtotal Kegiatan: <span class="text-blue-700 font-bold" x-text="formatRupiah(kegiatan.subtotal)"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <div class="pt-1">
+                        <button type="button" @click="addKegiatan"
+                            class="text-sm bg-blue-50 text-blue-700 hover:bg-blue-100 font-semibold px-4 py-2 rounded-lg border border-blue-300 inline-flex items-center gap-1.5 shadow-sm transition">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                            + Tambah Baris Anggaran
+                            + Tambah Komponen / Kegiatan Anggaran
                         </button>
                     </div>
                 </div>
@@ -142,22 +263,89 @@
     <script>
         function danaForm() {
             return {
-                items: [
-                    { uraian: '', nominal: null }
+                kegiatans: [
+                    {
+                        nama: '',
+                        mak: '',
+                        mode: 'flat',
+                        nominal: null,
+                        sub_items: [
+                            { uraian: '', volume: 1, satuan: 'Paket', harga_satuan: 0, total: 0 }
+                        ],
+                        subtotal: 0
+                    }
                 ],
                 total: 0,
-                addItem() {
-                    this.items.push({ uraian: '', nominal: null });
+                setMode(kegiatan, mode) {
+                    kegiatan.mode = mode;
+                    this.calculateTotal();
                 },
-                removeItem(index) {
-                    if (this.items.length > 1) {
-                        this.items.splice(index, 1);
+                addKegiatan() {
+                    this.kegiatans.push({
+                        nama: '',
+                        mak: '',
+                        mode: 'flat',
+                        nominal: null,
+                        sub_items: [
+                            { uraian: '', volume: 1, satuan: 'Paket', harga_satuan: 0, total: 0 }
+                        ],
+                        subtotal: 0
+                    });
+                },
+                removeKegiatan(index) {
+                    if (this.kegiatans.length > 1) {
+                        this.kegiatans.splice(index, 1);
                         this.calculateTotal();
                     }
                 },
+                addSubItem(kegiatan) {
+                    kegiatan.sub_items.push({ uraian: '', volume: 1, satuan: '', harga_satuan: 0, total: 0 });
+                },
+                removeSubItem(kegiatan, sIndex) {
+                    if (kegiatan.sub_items.length > 1) {
+                        kegiatan.sub_items.splice(sIndex, 1);
+                        this.updateKegiatanSubtotal(kegiatan);
+                        this.calculateTotal();
+                    }
+                },
+                updateSubTotal(kegiatan, sub) {
+                    const vol = Number(sub.volume) || 0;
+                    const harga = Number(sub.harga_satuan) || 0;
+                    sub.total = vol * harga;
+                    this.updateKegiatanSubtotal(kegiatan);
+                },
+                updateKegiatanSubtotal(kegiatan) {
+                    kegiatan.subtotal = kegiatan.sub_items.reduce((acc, curr) => acc + (Number(curr.total) || 0), 0);
+                },
                 calculateTotal() {
-                    this.total = this.items.reduce((acc, curr) => acc + (Number(curr.nominal) || 0), 0);
+                    let sum = 0;
+                    this.kegiatans.forEach(k => {
+                        if (k.mode === 'flat') {
+                            sum += (Number(k.nominal) || 0);
+                        } else {
+                            k.subtotal = k.sub_items.reduce((acc, curr) => acc + (Number(curr.total) || 0), 0);
+                            sum += k.subtotal;
+                        }
+                    });
+                    this.total = sum;
+                },
+                formatRupiah(amount) {
+                    return 'Rp ' + (Number(amount) || 0).toLocaleString('id-ID');
                 }
+            }
+        }
+
+        function fillNoSuratDana(format) {
+            const input = document.getElementById('no_surat');
+            if (!input) return;
+            const currentVal = input.value.trim();
+            if (!currentVal) {
+                input.value = format;
+                input.focus();
+                input.setSelectionRange(0, 0);
+            } else if (!currentVal.includes('/')) {
+                input.value = currentVal + format;
+                input.focus();
             }
         }
     </script>

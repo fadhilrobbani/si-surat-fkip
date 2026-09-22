@@ -37,6 +37,12 @@
         ?? ($kaprodiUser ? $kaprodiUser->name : 'Koordinator Program Studi');
     $nipKaprodi = $surat->data['private']['nipKaprodi'] 
         ?? ($kaprodiUser ? ($kaprodiUser->nip ?: $kaprodiUser->username) : '........................');
+
+    $cleanProdiName = preg_replace('/^Program Studi\s+/i', '', trim($prodiName));
+    $cleanJurusanName = !empty($jurusanName) 
+        ? \Illuminate\Support\Str::start(preg_replace('/^Jurusan\s+/i', '', trim($jurusanName)), 'Jurusan ') 
+        : '';
+    $cleanNamaKegiatan = preg_replace('/^Kegiatan\s+/i', '', trim($surat->data['namaKegiatan'] ?? ''));
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -47,6 +53,25 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ public_path('styles/surat-alumni.css') }}" type="text/css">
     <title>Surat Usulan Pengajuan Dana</title>
+    <style>
+        table.border {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 12pt;
+        }
+        table.border th,
+        table.border td {
+            font-size: 12pt;
+            border: 1px solid #000;
+            padding: 5px 6px;
+        }
+        table.border th {
+            text-align: center;
+            font-size: 12pt;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
@@ -59,7 +84,7 @@
                     <tr>
                         <td style="width: 75px; vertical-align: top;">Nomor</td>
                         <td style="width: 10px; vertical-align: top;">:</td>
-                        <td style="vertical-align: top;">{{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '..........' }}/DST/UN30.7.11/KU.01.02/{{ $tahun }}</td>
+                        <td style="vertical-align: top;">{{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '....................................................' }}</td>
                     </tr>
                     <tr>
                         <td style="vertical-align: top;">Lampiran</td>
@@ -70,8 +95,8 @@
                         <td style="vertical-align: top;">Perihal</td>
                         <td style="vertical-align: top;">:</td>
                         <td style="vertical-align: top;">
-                            <b>Usulan Pengajuan Dana {{ $surat->data['namaKegiatan'] ?? '' }} Prodi {{ $prodiName }}</b><br>
-                            <b>{{ $jurusanName }} FKIP Universitas Bengkulu</b>
+                            Usulan Pengajuan Dana {{ $cleanNamaKegiatan }} Prodi {{ $cleanProdiName }}<br>
+                            {{ $cleanJurusanName }} FKIP Universitas Bengkulu
                         </td>
                     </tr>
                 </table>
@@ -88,38 +113,89 @@
 
     <br>
     <p style="text-align: justify; text-indent: 30px;">
-        Sehubungan dengan akan dilaksanakannya Kegiatan {{ $surat->data['namaKegiatan'] ?? '' }}, bersama ini kami mengusulkan ajuan dana pengembangan Program Studi S1 {{ $prodiName }} Jurusan {{ $jurusanName }} FKIP Universitas Bengkulu Tahun Anggaran {{ $tahun }} dengan rincian sebagai berikut :
+        Sehubungan dengan akan dilaksanakannya Kegiatan {{ $cleanNamaKegiatan }}, bersama ini kami mengusulkan ajuan dana pengembangan Program Studi {{ $cleanProdiName }} {{ $cleanJurusanName }} FKIP Universitas Bengkulu Tahun Anggaran {{ $tahun }} dengan rincian sebagai berikut :
     </p>
     <br>
 
-    <table class="border" style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+    @php
+        $items = $surat->data['items'] ?? [];
+        $hasMakColumn = false;
+        foreach ($items as $it) {
+            if (!empty($it['mak'])) {
+                $hasMakColumn = true;
+                break;
+            }
+        }
+    @endphp
+
+    <table class="border" style="width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 12pt;">
         <thead>
             <tr style="background-color: #f2f2f2;">
-                <th style="border: 1px solid #000; padding: 6px; width: 40px; text-align: center;">No</th>
-                <th style="border: 1px solid #000; padding: 6px; text-align: left;">Kegiatan / Uraian Kebutuhan Anggaran</th>
-                <th style="border: 1px solid #000; padding: 6px; width: 150px; text-align: right;">Jumlah Total (Rp)</th>
+                <th style="border: 1px solid #000; padding: 5px 6px; width: 35px; text-align: center; font-size: 12pt;">No</th>
+                <th style="border: 1px solid #000; padding: 5px 6px; text-align: left; font-size: 12pt;">Kegiatan / Uraian Kebutuhan Anggaran</th>
+                @if ($hasMakColumn)
+                    <th style="border: 1px solid #000; padding: 5px 6px; width: 110px; text-align: center; font-size: 12pt;">Kode Akun / MAK</th>
+                @endif
+                <th style="border: 1px solid #000; padding: 5px 6px; width: 140px; text-align: right; font-size: 12pt;">Jumlah Total (Rp)</th>
             </tr>
         </thead>
         <tbody>
-            @php
-                $items = $surat->data['items'] ?? [];
-            @endphp
             @forelse ($items as $idx => $item)
-                <tr>
-                    <td style="border: 1px solid #000; padding: 6px; text-align: center;">{{ $idx + 1 }}</td>
-                    <td style="border: 1px solid #000; padding: 6px;">{{ $item['uraian'] ?? '-' }}</td>
-                    <td style="border: 1px solid #000; padding: 6px; text-align: right;">
-                        {{ number_format((float) ($item['nominal'] ?? 0), 0, ',', '.') }}
-                    </td>
-                </tr>
+                @if (!empty($item['has_sub']) && !empty($item['sub_items']))
+                    {{-- Row Kegiatan Utama / Header --}}
+                    <tr style="background-color: #f9f9f9;">
+                        <td style="border: 1px solid #000; padding: 5px 6px; text-align: center; font-size: 12pt;">{{ $idx + 1 }}</td>
+                        <td style="border: 1px solid #000; padding: 5px 6px; font-size: 12pt;">{{ $item['uraian'] ?? '-' }}</td>
+                        @if ($hasMakColumn)
+                            <td style="border: 1px solid #000; padding: 5px 6px; text-align: center; font-size: 12pt;">
+                                {{ $item['mak'] ?? '-' }}
+                            </td>
+                        @endif
+                        <td style="border: 1px solid #000; padding: 5px 6px; text-align: right; font-size: 12pt;">
+                            {{ number_format((float) ($item['nominal'] ?? 0), 0, ',', '.') }}
+                        </td>
+                    </tr>
+                    {{-- Sub-items rincian --}}
+                    @foreach ($item['sub_items'] as $sIdx => $sub)
+                        <tr>
+                            <td style="border: 1px solid #000; padding: 5px 6px; text-align: center; font-size: 12pt;"></td>
+                            <td style="border: 1px solid #000; padding: 5px 6px 5px 18px; font-size: 12pt;">
+                                {{ $sub['uraian'] ?? '-' }}
+                                @if (!empty($sub['volume']) && !empty($sub['satuan']))
+                                    <span style="color: #555;">({{ $sub['volume'] }} {{ $sub['satuan'] }} @ Rp {{ number_format((float) ($sub['harga_satuan'] ?? 0), 0, ',', '.') }})</span>
+                                @endif
+                            </td>
+                            @if ($hasMakColumn)
+                                <td style="border: 1px solid #000; padding: 5px 6px; text-align: center; color: #888; font-size: 12pt;">-</td>
+                            @endif
+                            <td style="border: 1px solid #000; padding: 5px 6px; text-align: right; font-size: 12pt;">
+                                {{ number_format((float) ($sub['nominal'] ?? 0), 0, ',', '.') }}
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    {{-- Flat mode --}}
+                    <tr>
+                        <td style="border: 1px solid #000; padding: 5px 6px; text-align: center; font-size: 12pt;">{{ $idx + 1 }}</td>
+                        <td style="border: 1px solid #000; padding: 5px 6px; font-size: 12pt;">{{ $item['uraian'] ?? '-' }}</td>
+                        @if ($hasMakColumn)
+                            <td style="border: 1px solid #000; padding: 5px 6px; text-align: center; font-size: 12pt;">
+                                {{ $item['mak'] ?? '-' }}
+                            </td>
+                        @endif
+                        <td style="border: 1px solid #000; padding: 5px 6px; text-align: right; font-size: 12pt;">
+                            {{ number_format((float) ($item['nominal'] ?? 0), 0, ',', '.') }}
+                        </td>
+                    </tr>
+                @endif
             @empty
                 <tr>
-                    <td colspan="3" style="border: 1px solid #000; padding: 6px; text-align: center;">Tidak ada rincian</td>
+                    <td colspan="{{ $hasMakColumn ? 4 : 3 }}" style="border: 1px solid #000; padding: 5px 6px; text-align: center; font-size: 12pt;">Tidak ada rincian</td>
                 </tr>
             @endforelse
             <tr style="font-weight: bold; background-color: #fafafa;">
-                <td colspan="2" style="border: 1px solid #000; padding: 6px; text-align: right;">Jumlah Total</td>
-                <td style="border: 1px solid #000; padding: 6px; text-align: right;">
+                <td colspan="{{ $hasMakColumn ? 3 : 2 }}" style="border: 1px solid #000; padding: 5px 6px; text-align: right; font-size: 12pt;">Jumlah Total</td>
+                <td style="border: 1px solid #000; padding: 5px 6px; text-align: right; font-size: 12pt;">
                     Rp {{ number_format((float) ($surat->data['totalAnggaran'] ?? 0), 0, ',', '.') }}
                 </td>
             </tr>
@@ -142,7 +218,7 @@
             @endif
         </div>
         <div>
-            <p><b>{{ $namaKaprodi }}</b></p>
+            <p>{{ $namaKaprodi }}</p>
             <p>NIP {{ $nipKaprodi }}</p>
         </div>
     </div>

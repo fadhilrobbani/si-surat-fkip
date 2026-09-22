@@ -143,12 +143,30 @@ class TataUsahaController extends Controller
     public function setujuiSurat(Request $request, Surat $surat)
     {
         if (in_array($surat->jenisSurat->slug, ['surat-peminjaman-ruang', 'surat-peminjaman-ruang-mahasiswa'])) {
+            if ($request->filled('no-surat')) {
+                $request->validate([
+                    'no-surat' => [
+                        'required',
+                        'string',
+                        'max:100',
+                        function ($attribute, $value, $fail) {
+                            if (!str_contains($value, '/')) {
+                                $fail('Nomor surat harus berformat lengkap dengan kode instansi (contoh: 042/DST/UN30.7.11/PP/' . date('Y') . '). Gunakan tombol bantuan di bawah kolom.');
+                            }
+                        },
+                    ],
+                ]);
+            }
+
             $surat->current_user_id = $surat->pengaju_id;
             $surat->status = 'selesai';
             $surat->expired_at = null;
             $data = $surat->data;
             $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
             $data['catatanTU'] = $request->input('catatan') ?? $request->input('note');
+            if ($request->filled('no-surat')) {
+                $data['noSurat'] = $request->input('no-surat');
+            }
             if (isset($data['private']['stepper'])) {
                 $data['private']['stepper'][] = auth()->user()->role->id;
             }
