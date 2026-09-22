@@ -146,6 +146,8 @@
             <x-stepper-flexible :surat='$surat' />
         @elseif($surat->jenisSurat->user_type == 'staff-dekan')
             <x-stepper-flexible :surat='$surat' />
+        @else
+            <x-stepper-flexible :surat='$surat' />
         @endif
     </div>
 
@@ -159,16 +161,26 @@
             $approval->surat->jenisSurat->slug != 'surat-pengajuan-atk-unit-kerjasama' &&
             $approval->surat->jenisSurat->slug != 'surat-pengajuan-atk-lab-pmipa')
 
-        @if ($approval->surat->status == 'selesai')
-            <a href="{{ route('print-surat-kabag', $approval->surat->id) }}"><button type="button"
-                    class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button></a>
-        @else
-            <a href="{{ route('preview-surat-kabag', $approval->surat->id) }}"><button type="button"
-                    class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
-            <p class="italic text-slate-500">Surat dianggap sah jika status surat adalah selesai dan sudah terdapat
-                tanda tangan berupa QR Code.
-            </p>
-        @endif
+        <div class="flex items-center gap-2 mt-8">
+            @if ($approval->surat->status == 'selesai')
+                <a href="{{ route('print-surat-kabag', $approval->surat->id) }}" target="_blank">
+                    <button type="button"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button>
+                </a>
+                <a href="{{ route('preview-surat-kabag', $approval->surat->id) }}" target="_blank">
+                    <button type="button"
+                        class="text-white bg-slate-600 hover:bg-slate-700 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">Preview</button>
+                </a>
+            @else
+                <a href="{{ route('preview-surat-kabag', $approval->surat->id) }}" target="_blank">
+                    <button type="button"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button>
+                </a>
+                <p class="italic text-slate-500">Surat dianggap sah jika status surat adalah selesai dan sudah terdapat
+                    tanda tangan berupa QR Code.
+                </p>
+            @endif
+        </div>
 
     @endif
 </x-layout>

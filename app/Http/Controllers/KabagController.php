@@ -276,6 +276,13 @@ class KabagController extends Controller
                     ->get()
             ]);
         }
+
+        return view('kabag.show-surat', [
+            'surat' => $surat,
+            'daftarPenerima' => User::select('id', 'name', 'username')
+                ->whereIn('role_id', [7, 22])
+                ->get()
+        ]);
     }
 
     public function setujuiSurat(Request $request, Surat $surat)
@@ -487,24 +494,21 @@ class KabagController extends Controller
 
         return view('kabag.riwayat-persetujuan', [
             'daftarRiwayatSurat' => $daftarRiwayatSurat,
-            'daftarJenisSurat' => JenisSurat::where('slug', 'surat-pengajuan-atk')->get(),
+            'daftarJenisSurat' => JenisSurat::whereIn('slug', ['surat-pengajuan-atk', 'surat-pencairan-dana', 'surat-pencairan-dana-mahasiswa'])->get(),
             'daftarStatus' => [true => 'Disetujui', false => 'Ditolak'],
         ]);
     }
 
     public function showApproval(Approval $approval)
     {
-        // if ($surat->current_user_id == auth()->user()->id) {
+        if ($approval->user_id != auth()->user()->id) {
+            return redirect()->back()->with('deleted', 'Anda tidak dapat mengakses halaman yang dituju');
+        }
 
         return view('kabag.show-approval', [
             'approval' => $approval,
-            'surat' => Surat::join('approvals', 'approvals.surat_id', '=', 'surat_tables.id')
-                ->where('approvals.user_id', auth()->user()->id)
-                ->where('approvals.id', $approval->id)
-                ->first()
+            'surat' => $approval->surat
         ]);
-        // }
-        // return redirect('/staff/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 
     public function resetPasswordPage()

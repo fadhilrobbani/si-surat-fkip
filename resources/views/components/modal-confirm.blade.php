@@ -1,4 +1,4 @@
-@props(['daftarPenerima'])
+@props(['daftarPenerima' => null, 'message' => null])
 
 <div id="authentication-modal" tabindex="-1" aria-hidden="true"
     class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -18,7 +18,7 @@
             <div class="px-6 py-6 lg:px-8 flex flex-col gap-4">
                 {{-- <form class="space-y-6" action="#"> --}}
                 <div class="mt-6">
-                    <p class="text-center">Apakah anda yakin untuk menandai surat/berita acara ini telah selesai? </p>
+                    <p class="text-center">{{ $message ?? 'Apakah anda yakin untuk menyetujui surat / pengajuan ini?' }}</p>
                 </div>
 
                 <div class="flex gap-4">

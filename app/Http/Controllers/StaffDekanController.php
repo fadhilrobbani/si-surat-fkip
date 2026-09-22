@@ -256,12 +256,21 @@ class StaffDekanController extends Controller
 
     public function setujuiSurat(Request $request, Surat $surat)
     {
-        if ($surat->jenisSurat->slug == 'surat-permohonan-narasumber') {
+        if (in_array($surat->jenisSurat->slug, [
+            'surat-permohonan-narasumber',
+            'surat-peminjaman-ruang',
+            'surat-peminjaman-ruang-mahasiswa',
+            'surat-pencairan-dana',
+            'surat-pencairan-dana-mahasiswa'
+        ])) {
+            $request->validate([
+                'no-surat' => ['nullable', 'max:20'],
+            ]);
             $surat->current_user_id = $surat->pengaju_id;
             $surat->expired_at = null;
             $data = $surat->data;
             $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
-            $data['noSurat'] = $request->input('no-surat');
+            $data['noSurat'] = $request->input('no-surat') ?: null;
             $data['note'] = $request->input('note');
             if (isset($data['private']['stepper'])) {
                 $data['private']['stepper'][] = auth()->user()->role->id;
@@ -277,7 +286,7 @@ class StaffDekanController extends Controller
                 'note' => $request->input('note') ?? 'Disetujui dan diselesaikan oleh Staff Dekan',
             ]);
 
-            return redirect('/staff-dekan/surat-masuk')->with('success', 'Surat permohonan narasumber berhasil diselesaikan');
+            return redirect('/staff-dekan/surat-masuk')->with('success', 'Surat berhasil diselesaikan');
         }
 
         if ($surat->jenisSurat->user_type == 'staff-dekan') {

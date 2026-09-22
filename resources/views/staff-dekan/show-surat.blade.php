@@ -266,11 +266,20 @@
             @method('put')
             <div class=" flex flex-col gap-4 mt-10 items-center justify-center">
                 <div class=" w-full max-w-[400px]">
+                    @php
+                        $isNewLetter = in_array($surat->jenisSurat->slug, [
+                            'surat-permohonan-narasumber',
+                            'surat-peminjaman-ruang',
+                            'surat-peminjaman-ruang-mahasiswa',
+                            'surat-pencairan-dana',
+                            'surat-pencairan-dana-mahasiswa'
+                        ]);
+                    @endphp
                     <label for="no-surat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
-                        Surat <span class="text-red-600">*</span></label>
+                        Surat @if (!$isNewLetter)<span class="text-red-600">*</span>@else <span class="text-xs font-normal text-gray-500">(opsional)</span>@endif</label>
                     <input type="number" id="no-surat" name="no-surat" value="{{ old('no-surat') }}"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Masukkan no. surat, misal 501" required>
+                        placeholder="{{ $isNewLetter ? 'Masukkan no. surat jika ada (opsional)' : 'Masukkan no. surat, misal 501' }}" {{ $isNewLetter ? '' : 'required' }}>
                 </div>
 
                 {{-- <div class="w-full max-w-[400px]">
@@ -390,11 +399,20 @@
             @method('put')
             <div class=" flex flex-col gap-4 mt-10 items-center justify-center">
                 <div class=" w-full max-w-[400px]">
+                    @php
+                        $isNewLetter = in_array($surat->jenisSurat->slug, [
+                            'surat-permohonan-narasumber',
+                            'surat-peminjaman-ruang',
+                            'surat-peminjaman-ruang-mahasiswa',
+                            'surat-pencairan-dana',
+                            'surat-pencairan-dana-mahasiswa'
+                        ]);
+                    @endphp
                     <label for="no-surat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
-                        Surat <span class="text-red-600">*</span></label>
+                        Surat @if (!$isNewLetter)<span class="text-red-600">*</span>@else <span class="text-xs font-normal text-gray-500">(opsional)</span>@endif</label>
                     <input type="number" id="no-surat" name="no-surat" value="{{ old('no-surat') }}"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Masukkan no. surat, misal 501" required>
+                        placeholder="{{ $isNewLetter ? 'Masukkan no. surat jika ada (opsional)' : 'Masukkan no. surat, misal 501' }}" {{ $isNewLetter ? '' : 'required' }}>
                 </div>
 
                 {{-- <div class="w-full max-w-[400px]">
@@ -418,7 +436,7 @@
 
             <div class="flex mt-8 justify-between flex-col sm:flex-row ">
                 <div class="flex flex-col gap-4 sm:flex-row">
-                    <a href="{{ route('preview-surat-staff-dekan', $surat->id) }}"><button type="button"
+                    <a href="{{ route('preview-surat-staff-dekan', $surat->id) }}" target="_blank"><button type="button"
                             class="text-white w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
                     <a href="{{ route('edit-surat-staff-dekan', $surat->id) }}"><button type="button"
                             class="text-white w-full p-2 m-2 bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button></a>
@@ -426,7 +444,6 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row">
-
 
 
 
@@ -448,18 +465,29 @@
 
     @if (Route::is('show-detail-pengajuan-surat-staff-dekan'))
         @if ($surat->status == 'selesai')
-            <a href="{{ route('preview-surat-staff-dekan', $surat->id) }}">
+            <a href="{{ route('preview-surat-staff-dekan', $surat->id) }}" target="_blank">
                 <button type="button"
                     class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cetak</button>
             </a>
         @else
-            <a href="{{ route('preview-surat-staff-dekan', $surat->id) }}">
+            <a href="{{ route('preview-surat-staff-dekan', $surat->id) }}" target="_blank">
                 <button type="button"
                     class="text-white mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button>
             </a>
             <p class="italic text-slate-500">Surat akan resmi diterbitkan jika telah ditandatangani secara digital (QR
                 Code). Jika terdapat kesalahan dalam surat, silahkan batalkan pengajuan surat</p>
         @endif
+    @elseif ($surat->status == 'selesai')
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-8">
+            <a href="{{ route('print-surat-staff-dekan', $surat->id) }}" target="_blank"
+                class="w-full sm:w-auto text-center text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 transition">
+                Cetak Surat
+            </a>
+            <a href="{{ route('preview-surat-staff-dekan', $surat->id) }}" target="_blank"
+                class="w-full sm:w-auto text-center text-white bg-slate-600 hover:bg-slate-700 font-medium rounded-lg text-sm px-5 py-2.5 transition">
+                Preview Surat
+            </a>
+        </div>
     @endif
 
     </div>

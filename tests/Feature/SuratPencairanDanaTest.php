@@ -187,7 +187,13 @@ class SuratPencairanDanaTest extends TestCase
             ->get(route('show-surat-kabag', $surat->id))
             ->assertStatus(200)
             ->assertSee('Kabag')
-            ->assertSee('Menunggu');
+            ->assertSee('Menunggu')
+            ->assertSee('Preview Dokumen')
+            ->assertSee(route('preview-surat-kabag', $surat->id));
+
+        $this->actingAs($kabag)
+            ->get(route('preview-surat-kabag', $surat->id))
+            ->assertStatus(200);
 
         $this->actingAs($kabag)
             ->put('/kabag/surat-disetujui/' . $surat->id)
@@ -216,6 +222,20 @@ class SuratPencairanDanaTest extends TestCase
         $this->assertEquals('KAS-FKIP/2026/001', $surat->data['nomorBuktiPencairan']);
         $this->assertEquals($mhs->id, $surat->current_user_id);
         $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI, User::ROLE_WD3, User::ROLE_WD2, User::ROLE_KABAG, User::ROLE_BENDAHARA], $surat->data['private']['stepper']);
+
+        // Kabag can view approval history with both Cetak and Preview buttons
+        $approvalKabag = Approval::where('user_id', $kabag->id)->where('surat_id', $surat->id)->first();
+        $this->actingAs($kabag)
+            ->get(route('show-approval-kabag', $approvalKabag->id))
+            ->assertStatus(200)
+            ->assertSee('Cetak')
+            ->assertSee('Preview')
+            ->assertSee(route('print-surat-kabag', $surat->id))
+            ->assertSee(route('preview-surat-kabag', $surat->id));
+
+        $this->actingAs($kabag)
+            ->get(route('print-surat-kabag', $surat->id))
+            ->assertStatus(200);
 
         // Stepper on final completed show-surat: all roles approved, no waiting step
         $this->actingAs($mhs)

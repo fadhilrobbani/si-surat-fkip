@@ -113,6 +113,12 @@ class SuratPermohonanNarasumberTest extends TestCase
             ->assertStatus(200);
 
         $this->actingAs($staffDekan)
+            ->get(route('show-surat-staff-dekan', $surat->id))
+            ->assertStatus(200)
+            ->assertSee('(opsional)')
+            ->assertDontSee('placeholder="Masukkan no. surat, misal 501" required', false);
+
+        $this->actingAs($staffDekan)
             ->put('/staff-dekan/surat-disetujui/' . $surat->id, [
                 'no-surat' => '', // Dikosongkan sesuai permintaan WD1
                 'note' => 'Diselesaikan, nomor surat akan diisi manual di TU'

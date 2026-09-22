@@ -232,42 +232,56 @@
                         (opsional)</label>
                     <textarea id="note" name="note"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Masukkan catatan yang ingin disampaikan ke staff prodi">{{ old('note') }}</textarea>
+                        placeholder="Masukkan catatan yang ingin disampaikan">{{ old('note') }}</textarea>
                 </div>
             </div>
 
-            <div class="flex mt-8 justify-center flex-col sm:flex-row ">
-                {{-- <a href="{{ route('preview-surat-kabag', $surat->id) }}"><button type="button"
-                            class="text-white w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a> --}}
-                <div class="flex flex-col sm:flex-row">
-
-
-
-
-                    {{-- <button
-                            class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
-                            type="submit">
-                            Selesai </button> --}}
+            <div class="flex mt-8 justify-center flex-col sm:flex-row items-center gap-3">
+                @if (
+                    $surat->jenisSurat->slug != 'berita-acara-nilai' &&
+                    $surat->jenisSurat->slug != 'surat-pengajuan-atk' &&
+                    $surat->jenisSurat->slug != 'surat-pengajuan-atk-akademik' &&
+                    $surat->jenisSurat->slug != 'surat-pengajuan-atk-akademik-fakultas' &&
+                    $surat->jenisSurat->slug != 'surat-pengajuan-atk-kemahasiswaan' &&
+                    $surat->jenisSurat->slug != 'surat-pengajuan-atk-tata-usaha' &&
+                    $surat->jenisSurat->slug != 'surat-pengajuan-atk-unit-kerjasama' &&
+                    $surat->jenisSurat->slug != 'surat-pengajuan-atk-lab-pmipa'
+                )
+                    <a href="{{ route('preview-surat-kabag', $surat->id) }}" target="_blank">
+                        <button type="button"
+                            class="text-white px-5 py-2.5 bg-slate-600 hover:bg-slate-700 focus:ring-4 focus:ring-slate-300 font-medium rounded-lg text-sm transition">
+                            Preview Dokumen
+                        </button>
+                    </a>
+                @endif
+                <div class="flex flex-col sm:flex-row items-center gap-2">
                     <x-modal-confirm :daftarPenerima='$daftarPenerima' />
                     <button type="button"
-                        class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
+                        class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 px-5 py-2.5 text-white font-medium text-sm transition"
                         data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
-                        Setuju </button>
-
+                        Setuju
+                    </button>
 
                     <a href="{{ route('confirm-tolak-surat-kabag', $surat->id) }}">
                         <div
-                            class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 p-2 text-white m-2">
+                            class="hover:bg-pink-800 cursor-pointer rounded-lg text-center bg-pink-600 px-5 py-2.5 text-white font-medium text-sm transition">
                             Tolak
-
                         </div>
                     </a>
                 </div>
+            </div>
+        </form>
+    @elseif ($surat->status == 'selesai')
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-8">
+            <a href="{{ route('print-surat-kabag', $surat->id) }}" target="_blank"
+                class="w-full sm:w-auto text-center text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 transition">
+                Cetak Surat
+            </a>
+            <a href="{{ route('preview-surat-kabag', $surat->id) }}" target="_blank"
+                class="w-full sm:w-auto text-center text-white bg-slate-600 hover:bg-slate-700 font-medium rounded-lg text-sm px-5 py-2.5 transition">
+                Preview Surat
+            </a>
+        </div>
     @endif
-
-    </div>
-    </form>
-
-    </div>
 
 </x-layout>
