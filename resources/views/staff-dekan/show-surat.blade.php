@@ -275,6 +275,9 @@
                             'surat-pencairan-dana-mahasiswa',
                             'surat-tugas',
                             'surat-tugas-kelompok',
+                            'surat-keluar',
+                            'surat-tugas-from-staff-dekan',
+                            'surat-tugas-kelompok-from-staff-dekan',
                         ]);
                         $defaultFormat = null;
                         if ($surat->jenisSurat->slug == 'surat-permohonan-narasumber') {
@@ -285,6 +288,8 @@
                             $defaultFormat = '/DST/UN30.7.11/PP/' . date('Y');
                         } elseif ($surat->jenisSurat->slug == 'surat-pencairan-dana') {
                             $defaultFormat = '/DST/UN30.7.11/KU.01.02/' . date('Y');
+                        } elseif ($surat->jenisSurat->slug == 'surat-keluar') {
+                            $defaultFormat = '/UN30.7/PP/' . date('Y');
                         }
                     @endphp
                     <label for="no-surat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
@@ -439,6 +444,8 @@
                         $defaultFormat2 = null;
                         if (in_array($surat->jenisSurat->slug, ['surat-tugas-from-staff-dekan', 'surat-tugas-kelompok-from-staff-dekan', 'surat-tugas', 'surat-tugas-kelompok'])) {
                             $defaultFormat2 = '/DST/UN30.7/KP/' . date('Y');
+                        } elseif ($surat->jenisSurat->slug == 'surat-keluar') {
+                            $defaultFormat2 = '/UN30.7/PP/' . date('Y');
                         }
                     @endphp
                     <label for="no-surat-2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor

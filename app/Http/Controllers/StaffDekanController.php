@@ -316,9 +316,12 @@ class StaffDekanController extends Controller
                         ->where(function ($query) {
                             $query->whereYear('created_at', date('Y'));
                         }),
-                    function ($attribute, $value, $fail) {
+                    function ($attribute, $value, $fail) use ($surat) {
                         if (!empty($value) && !str_contains($value, '/')) {
-                            $fail('Nomor surat harus berformat lengkap dengan kode instansi (contoh: 045/DST/UN30.7/KP/' . date('Y') . '). Gunakan tombol bantuan di bawah kolom.');
+                            $formatContoh = ($surat->jenisSurat->slug === 'surat-keluar')
+                                ? '045/UN30.7/PP/' . date('Y')
+                                : '045/DST/UN30.7/KP/' . date('Y');
+                            $fail('Nomor surat harus berformat lengkap dengan kode instansi (contoh: ' . $formatContoh . '). Gunakan tombol bantuan di bawah kolom.');
                         }
                     },
                 ],
@@ -480,9 +483,12 @@ class StaffDekanController extends Controller
                         ->where(function ($query) {
                             $query->whereYear('created_at', date('Y'));
                         }),
-                    function ($attribute, $value, $fail) {
+                    function ($attribute, $value, $fail) use ($surat) {
                         if (!empty($value) && !str_contains($value, '/')) {
-                            $fail('Nomor surat harus berformat lengkap dengan kode instansi (contoh: 045/DST/UN30.7/KP/' . date('Y') . '). Gunakan tombol bantuan di bawah kolom.');
+                            $formatContoh = ($surat->jenisSurat->slug === 'surat-keluar')
+                                ? '045/UN30.7/PP/' . date('Y')
+                                : '045/DST/UN30.7/KP/' . date('Y');
+                            $fail('Nomor surat harus berformat lengkap dengan kode instansi (contoh: ' . $formatContoh . '). Gunakan tombol bantuan di bawah kolom.');
                         }
                     },
                 ],

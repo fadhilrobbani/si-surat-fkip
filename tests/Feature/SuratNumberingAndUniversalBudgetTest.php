@@ -460,5 +460,102 @@ class SuratNumberingAndUniversalBudgetTest extends TestCase
         $htmlQrKosong = view('previews.show-surat-qr', ['surat' => $suratKosong])->render();
         $this->assertStringContainsString('-', $htmlQrKosong);
     }
+
+    /**
+     * Test Surat Keluar di Staff Dekan:
+     * - Tombol autofill format /UN30.7/PP/{tahun}
+     * - Validasi ketat jika diisi tanpa '/' (pesan error sesuai format surat keluar)
+     * - Dukungan nomor kosong (titik-titik dinas)
+     * - Backward-compatibility data lama (angka saja otomatis ditambah suffix)
+     * - Dukungan nomor baru format lengkap (tanpa dobel suffix)
+     */
+    public function test_surat_keluar_numbering_validation_and_backward_compatibility()
+    {
+        $staffDekan = User::where('role_id', User::ROLE_STAFF_DEKAN)->first();
+        $jenisSuratKeluar = JenisSurat::where('slug', 'surat-keluar')->first();
+        $currentYear = date('Y');
+
+        $surat = Surat::create([
+            'pengaju_id' => $staffDekan->id,
+            'current_user_id' => $staffDekan->id,
+            'jenis_surat_id' => $jenisSuratKeluar->id,
+            'status' => 'diproses',
+            'data' => [
+                'perihal' => 'Undangan Workshop Literasi',
+                'tujuan1' => 'Kepala Dinas Pendidikan Provinsi Bengkulu',
+                'jumlahLampiran' => 1,
+                'paragrafAwal' => 'Sehubungan akan dilaksanakan kegiatan...',
+                'paragrafAkhir' => 'Demikian surat ini kami sampaikan...',
+                'tanggalPelaksanaan' => '10 Oktober 2026',
+                'waktu' => '08:00 - selesai',
+                'tempat' => 'Gedung Serbaguna',
+                'private' => [
+                    'stepper' => [User::ROLE_STAFF_DEKAN]
+                ]
+            ]
+        ]);
+
+        // 1. Cek halaman verifikasi Staff Dekan: tombol autofill format Surat Keluar muncul
+        $responseShow = $this->actingAs($staffDekan)->get(route('show-surat-staff-dekan', $surat->id));
+        $responseShow->assertOk();
+        $responseShow->assertSee('📋 Gunakan Format: /UN30.7/PP/' . $currentYear);
+
+        // 2. Submit hanya angka tanpa slash '/' -> validasi gagal dengan contoh format surat keluar
+        $responseInvalid = $this->actingAs($staffDekan)->put(route('setujui-surat-staff-staff-dekan', $surat->id), [
+            'no-surat' => '123',
+            'note' => 'Disetujui',
+        ]);
+        $responseInvalid->assertSessionHasErrors('no-surat');
+        $errorMsg = session('errors')->first('no-surat');
+        $this->assertStringContainsString('/UN30.7/PP/', $errorMsg);
+        $this->assertStringNotContainsString('/KP/', $errorMsg);
+
+        // 3. Submit nomor kosong -> berhasil disetujui
+        $responseKosong = $this->actingAs($staffDekan)->put(route('setujui-surat-staff-staff-dekan', $surat->id), [
+            'no-surat' => '',
+            'note' => 'Nomor menyusul',
+        ]);
+        $responseKosong->assertSessionHasNoErrors();
+        $surat->refresh();
+        $this->assertEquals('selesai', $surat->status);
+        $this->assertNull($surat->data['noSurat']);
+
+        // Render template surat keluar saat kosong -> titik-titik dinas
+        $htmlKosongV1 = view('template.surat-keluar', ['surat' => $surat, 'url' => 'https://example.com'])->render();
+        $this->assertStringContainsString('....................................................', $htmlKosongV1);
+        $this->assertStringNotContainsString('[NoSurat]', $htmlKosongV1);
+
+        $htmlKosongV2 = view('template.v2.surat-keluar', ['surat' => $surat, 'url' => 'https://example.com'])->render();
+        $this->assertStringContainsString('....................................................', $htmlKosongV2);
+        $this->assertStringNotContainsString('[NoSurat]', $htmlKosongV2);
+
+        // 4. Backward-compatibility arsip lama (nomor angka murni di database misal '45')
+        $surat->update([
+            'data' => array_merge($surat->data, ['noSurat' => '45'])
+        ]);
+        $htmlLegacyV1 = view('template.surat-keluar', ['surat' => $surat, 'url' => 'https://example.com'])->render();
+        $this->assertStringContainsString('45/UN30.7/PP/', $htmlLegacyV1);
+
+        $htmlLegacyV2 = view('template.v2.surat-keluar', ['surat' => $surat, 'url' => 'https://example.com'])->render();
+        $this->assertStringContainsString('45/UN30.7/PP/', $htmlLegacyV2);
+
+        // 5. Format baru / full format (misal '045/UN30.7/PP/2026') -> dicetak utuh tanpa dobel suffix
+        $fullNumber = '045/UN30.7/PP/' . $currentYear;
+        $surat->update([
+            'data' => array_merge($surat->data, ['noSurat' => $fullNumber])
+        ]);
+        $htmlFullV1 = view('template.surat-keluar', ['surat' => $surat, 'url' => 'https://example.com'])->render();
+        $this->assertStringContainsString($fullNumber, $htmlFullV1);
+        $this->assertStringNotContainsString($fullNumber . '/UN30.7/PP', $htmlFullV1);
+
+        $htmlFullV2 = view('template.v2.surat-keluar', ['surat' => $surat, 'url' => 'https://example.com'])->render();
+        $this->assertStringContainsString($fullNumber, $htmlFullV2);
+        $this->assertStringNotContainsString($fullNumber . '/UN30.7/PP', $htmlFullV2);
+
+        // 6. Halaman validasi QR code
+        $htmlQr = view('previews.show-surat-qr', ['surat' => $surat])->render();
+        $this->assertStringContainsString($fullNumber, $htmlQr);
+        $this->assertStringNotContainsString($fullNumber . '/UN30.7/PP', $htmlQr);
+    }
 }
 

@@ -17,11 +17,24 @@
 <body>
     @include('components.kop', ['surat' => $surat])
     <br>
+    @php
+        $noSurat = $surat->data['noSurat'] ?? null;
+        $tahunSurat = isset($surat->data['tanggal_selesai'])
+            ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ')
+            : ($surat->created_at ? $surat->created_at->year : date('Y'));
+        if (empty($noSurat)) {
+            $renderedNoSurat = '....................................................';
+        } elseif (!str_contains($noSurat, '/')) {
+            $renderedNoSurat = $noSurat . '/UN30.7/PP/' . $tahunSurat;
+        } else {
+            $renderedNoSurat = $noSurat;
+        }
+    @endphp
     <table>
         <tr>
             <td>Nomor</td>
             <td>:
-                {{ $surat->data['noSurat'] ?? '[NoSurat]' }}/UN30.7/PP/{{ isset($surat->data['tanggal_selesai']) ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ') : '[Tahun]' }}
+                {{ $renderedNoSurat }}
             </td>
         </tr>
         <tr>
