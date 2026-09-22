@@ -174,12 +174,22 @@ php artisan migrate
 > [!NOTE]
 > Perintah `migrate` aman digunakan di produksi karena hanya mengubah skema (Struktur), bukan menghapus data.
 
-### 5. Setup Data Manual (Rekomendasi Aman)
-Menjalankan `db:seed` di produksi sangat berisiko karena dapat menyebabkan duplikasi data atau error ("spamming" akun). Sangat disarankan untuk menginput data role/user/jenis surat baru secara manual melalui dashboard admin:
-1. Login ke panel **Filament Admin** (`/admin`).
-2. Masuk ke menu **Manajemen Role**: Tambahkan role baru (misal: `lab-pmipa`).
-3. Masuk ke menu **Manajemen Akun**: Buat akun baru untuk role tersebut.
-4. Masuk ke menu **Jenis Surat**: Tambahkan jenis surat baru (misal: `surat-pengajuan-atk-lab-pmipa`) dan arahkan `user_type`-nya ke role yang baru dibuat.
+### 5. Setup Data Manual Tanpa Script / Seeder (Rekomendasi Aman & Bebas Risiko)
+Menjalankan `db:seed` di server production seringkali menimbulkan risiko duplikasi data, error ("spamming" akun), atau ketakutan salah ketik perintah di terminal. Selain itu, mengisi password akun melalui seeder membuat kata sandi terekspos dalam plaintext di repositori git.
+
+Sangat disarankan untuk menginput data role, akun pengguna, dan jenis surat baru secara manual melalui dashboard admin Filament (`/admin`):
+1. **Login ke Filament Admin** (`https://domain-anda/admin`).
+2. **Tambah Role Baru**:
+   - Masuk ke menu **Developer Tools** $\rightarrow$ **Role** (`/admin/roles`).
+   - Klik tombol **New Role** (misal: name: `bendahara`, description: `Bendahara`).
+3. **Tambah Akun Pengguna (Password Langsung Diinput Aman)**:
+   - Masuk ke menu **Manajemen Akun** $\rightarrow$ Pilih role yang bersangkutan (misal: **Bendahara** di `/admin/akun-bendahara`).
+   - Klik tombol **New / Buat**.
+   - Masukkan username, email dinas, nama lengkap, NIP, serta **Kata Sandi Baru & Konfirmasi**.
+   - Password langsung dienkripsi (Bcrypt) saat tombol simpan ditekan, tanpa pernah tertulis mentah di file kodingan.
+4. **Tambah Jenis Surat Baru (Jika Ada)**:
+   - Masuk ke menu **Developer Tools** $\rightarrow$ **Jenis Surat** (`/admin/jenis-surat`).
+   - Tambahkan jenis surat baru dan tentukan `user_type` yang sesuai.
 
 ### 6. Optimasi Akhir
 Pastikan cache diperbarui agar route dan config baru terbaca:

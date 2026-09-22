@@ -70,11 +70,64 @@ Dokumen ini berisi dokumentasi perubahan fitur terbaru (3 Jenis Surat Prioritas,
 > [!IMPORTANT]
 > **JANGAN PERNAH** menjalankan `php artisan migrate:fresh` atau `php artisan migrate:refresh` di server production, karena perintah tersebut akan menghapus seluruh data surat dan pengguna yang sudah ada!
 
-Ikuti salah satu opsi aman di bawah ini untuk mengupdate server production.
+Ikuti salah satu opsi aman di bawah ini untuk mengupdate server production. **Opsi 1 (melalui Admin Filament)** sangat direkomendasikan jika Anda ingin menghindari eksekusi script seeder dan ingin password akun langsung dimasukkan secara rahasia tanpa terekspos dalam kode git.
 
 ---
 
-### Opsi A: Menggunakan Artisan Seeder (Direkomendasikan & Aman)
+### Opsi 1: Setup Manual Melalui Dashboard Admin Filament (Paling Direkomendasikan, Zero-Script, & Password Terlindungi)
+
+Dengan tersedianya resource panel **Bendahara** di Filament Admin (`/admin`), Anda dapat menambahkan role, jenis surat, dan akun Bendahara murni menggunakan antarmuka grafis web (GUI).
+
+> [!TIP]
+> **Keunggulan Opsi Ini:**
+> - **100% Zero-Script**: Tidak perlu menjalankan class seeder di terminal server yang berisiko ("ngeri-ngeri sedap" salah perintah).
+> - **Password Aman & Rahasia**: Password diinput langsung saat pembuatan akun di browser, otomatis dienkripsi dengan algoritma hash aman Bcrypt bawaan Laravel, dan **sama sekali tidak pernah terekspos** sebagai teks mentah (plaintext) di file git seeder atau terminal history server.
+
+#### Langkah-langkah:
+1. **Tarik Kode Terbaru di Server Production**:
+   ```bash
+   cd /path/to/si-surat-fkip
+   git pull origin main
+   php artisan optimize:clear
+   php artisan optimize
+   ```
+
+2. **Login ke Panel Admin**:
+   - Buka browser dan akses: `https://domain-anda/admin/login`
+   - Masuk menggunakan akun administrator.
+
+3. **Tambah Role Bendahara (Jika Belum Ada)**:
+   - Di bilah sidebar kiri, buka menu **Developer Tools** $\rightarrow$ **Role** (`/admin/roles`).
+   - Periksa apakah role `bendahara` sudah ada. Jika belum:
+     - Klik tombol **New Role** / **Buat Role**.
+     - Isi **Name**: `bendahara`.
+     - Isi **Description**: `Bendahara`.
+     - Klik **Create** / **Simpan**.
+
+4. **Tambah / Kelola Akun Bendahara (Langsung Isi Password Pribadi)**:
+   - Di sidebar kiri, buka menu **Manajemen Akun** $\rightarrow$ **Bendahara** (`/admin/akun-bendahara`).
+   - Klik tombol **New Bendahara** / **Buat Bendahara**.
+   - Lengkapi formulir pendaftaran akun:
+     - **Username**: `bendahara` (atau username khusus sesuai nama pejabat).
+     - **Email**: `bendaharafkip@unib.ac.id` (atau email resmi kampus).
+     - **Nama**: `Bendahara Fakultas` (atau nama lengkap beserta gelar).
+     - **NIP**: Masukkan NIP dinas pejabat (opsional).
+     - **Kata Sandi Baru**: Masukkan password kuat Anda secara langsung.
+     - **Konfirmasi Kata Sandi Baru**: Masukkan ulang kata sandi yang sama.
+   - Klik tombol **Create** / **Buat**.
+   - *Hasil*: Akun bendahara langsung aktif, otomatis terhubung dengan `role_id = 22` (Role Bendahara), dan pejabat terkait langsung dapat login di halaman `/bendahara/surat-masuk`.
+
+5. **Daftarkan Jenis Surat Baru (Jika Belum Ada)**:
+   - Di menu **Developer Tools** $\rightarrow$ **Jenis Surat** (`/admin/jenis-surat`), klik **New Jenis Surat**:
+     - *Surat Permohonan Narasumber*: Nama: `Surat Permohonan Narasumber`, Slug: `surat-permohonan-narasumber`, Tipe Pengguna: `Staff`.
+     - *Surat Peminjaman Ruang*: Nama: `Surat Peminjaman Ruang`, Slug: `surat-peminjaman-ruang`, Tipe Pengguna: `Staff`.
+     - *Surat Peminjaman Ruang Mahasiswa*: Nama: `Surat Peminjaman Ruang Mahasiswa`, Slug: `surat-peminjaman-ruang-mahasiswa`, Tipe Pengguna: `Mahasiswa`.
+     - *Surat Usulan Pengajuan Dana*: Nama: `Surat Usulan Pengajuan Dana`, Slug: `surat-pencairan-dana`, Tipe Pengguna: `Staff`.
+     - *Surat Pencairan Dana Kegiatan Mahasiswa*: Nama: `Surat Pencairan Dana Kegiatan Mahasiswa`, Slug: `surat-pencairan-dana-mahasiswa`, Tipe Pengguna: `Mahasiswa`.
+
+---
+
+### Opsi 2: Menggunakan Artisan Seeder (Otomatis & Idempoten)
 
 Seluruh seeder yang kita perbarui (`RoleSeeder`, `JenisSuratSeeder`, dan `UserSeeder`) menggunakan metode `firstOrCreate`. Artinya:
 - **TIDAK AKAN** mengubah data pengguna yang sudah ada.
@@ -114,7 +167,7 @@ Seluruh seeder yang kita perbarui (`RoleSeeder`, `JenisSuratSeeder`, dan `UserSe
 
 ---
 
-### Opsi B: Menggunakan Laravel Tinker (Manual & Presisi)
+### Opsi 3: Menggunakan Laravel Tinker (Manual & Presisi)
 
 Jika Anda tidak ingin menjalankan class seeder sama sekali dan hanya ingin menyisipkan data baru secara presisi, gunakan perintah `php artisan tinker`:
 
@@ -167,7 +220,7 @@ Jika Anda tidak ingin menjalankan class seeder sama sekali dan hanya ingin menyi
 
 ---
 
-### Opsi C: Menggunakan SQL Query Langsung
+### Opsi 4: Menggunakan SQL Query Langsung
 
 Jika lebih nyaman mengeksekusi langsung via PhpMyAdmin / MySQL CLI / DBeaver:
 
@@ -306,6 +359,11 @@ Anda tidak perlu lagi menguji alur surat secara manual dari akun ke akun. Cukup 
 | **14. Teks Popup Konfirmasi Persetujuan Kabag Kurang Relevan** | Teks pada modal konfirmasi persetujuan (`modal-confirm.blade.php`) berbunyi *"Apakah anda yakin untuk menandai surat/berita acara ini telah selesai?"*. Pada alur baru (seperti surat pencairan dana), persetujuan Kabag bukan menandai surat selesai, melainkan meneruskan ke Bendahara. | Teks popup di `resources/views/components/modal-confirm.blade.php` diubah menjadi lebih umum: **"Apakah anda yakin untuk menyetujui surat / pengajuan ini?"** serta mendukung props kustom `:message` opsional jika dibutuhkan pesan spesifik di masa mendatang. |
 | **15. Standardisasi Penomoran Surat (Bebas Hardcode + Validasi Ketat + Auto-Fill) & Universal RAB Pengajuan Dana** | 1. Template surat memaksakan suffix kode yang kaku saat nomor surat belum terbit (padahal kode instansi/klasifikasi berbeda antarsurat dan dapat berubah).<br>2. Form verifikasi Tata Usaha untuk surat peminjaman ruang belum memiliki kolom nomor surat.<br>3. Form pengajuan dana staf masih berstruktur flat sederhana, belum mendukung Mata Anggaran Kegiatan (MAK) dan rincian subkegiatan (hierarkis).<br>4. Surat baru mahasiswa belum final namun sudah muncul di pilihan dropdown mahasiswa. | 1. **Template Cetak Bersih Tanpa Hardcode**: Seluruh template PDF (`surat-permohonan-narasumber`, `surat-peminjaman-ruang`, `surat-ajuan-dana`, `surat-tugas`, `surat-tugas-kelompok`) mencetak `$surat->data['noSurat']` secara utuh apa adanya (WYSIWYG) jika diisi, atau **murni titik-titik panjang** (`....................................................`) jika kosong tanpa ada embel-embel kode hardcoded.<br>2. **Tombol Auto-Fill & Validasi Ketat**: Disediakan tombol pembantu `[📋 Gunakan Format: ...]` pada form verifikasi Staff Dekan, Tata Usaha, Kabag, Bendahara, dan form staf pengajuan dana. Jika staf mengisi nomor, diberlakukan validasi ketat (harus memuat kode/slash `/`, tidak boleh angka murni) guna mencegah kesalahan cetak nomor gundul.<br>3. **Universal RAB Pengajuan Dana**: Form staf pencairan dana diperbarui dengan builder Alpine.js dinamis yang mendukung mode flat (nominal langsung) maupun mode ber-subkegiatan (Uraian, Volume, Satuan, Harga Satuan, Auto-Subtotal) serta kolom MAK opsional. Di cetakan PDF, kolom MAK hanya muncul jika ada yang mengisinya, dan rincian belanja tercetak berindentasi rapi tanpa merusak tata letak.<br>4. **Pembersihan Dropdown Mahasiswa**: Slug `surat-peminjaman-ruang-mahasiswa` dan `surat-pencairan-dana-mahasiswa` difilter keluar dari `MahasiswaController::pengajuanSurat` sehingga mahasiswa hanya melihat surat akademik aktif. |
 | **16. Kompatibilitas Penomoran Surat Arsip Lama (Surat Tugas, Surat Keluar, & Validasi QR)** | Arsip surat tugas lama di database hanya menyimpan angka gundul (misal `"64"` atau `"432"`), karena dulu suffix `/UN30.7/KP/...` ditempel di template. Jika template dicetak murni apa adanya, surat lama akan tercetak angka gundul tanpa kode instansi. Selain itu pada halaman QR (`show-surat-qr.blade.php`), terjadi risiko duplikasi suffix pada surat dengan skema baru. | 1. **Smart Detection di Template**: Pada template `surat-tugas.blade.php`, `surat-tugas-kelompok.blade.php`, serta versi `v2`-nya, dipasang fallback cerdas: jika nomor diisi tapi tidak memuat karakter `/` (data arsip lama), sistem otomatis menambahkan suffix `/UN30.7/KP/{tahun}` sehingga cetakan surat arsip lama tetap utuh sempurna.<br>2. **Data Baru & Kosong Terjaga**: Jika surat baru (ada `/`), dicetak utuh tanpa suffix ganda. Jika kosong, dicetak murni titik-titik dinas.<br>3. **Halaman Validasi QR Terintegrasi**: `show-surat-qr.blade.php` diperbarui dengan logika yang sama untuk surat tugas dan surat keluar, serta null-safe `?? '-'` untuk `tanggal_selesai` dan `perihal`. |
+| **17. Perbaikan Visual Tabel RAB, Subkegiatan, & Duplikasi Kata Jurusan/Prodi** | 1. Terdapat kata berulang seperti *"Jurusan Jurusan"* atau *"S1 S1"* pada pembuka surat.<br>2. Penomoran subkegiatan menggunakan `1.1` yang kurang disukai dan posisi MAK di sebelah kiri.<br>3. Ukuran teks header/footer tabel anggaran lebih besar dari badan surat.<br>4. Rincian subkegiatan belum terender di halaman detail/show surat. | 1. Pembuka surat dibersihkan dari duplikasi prefix (`Str::replaceFirst` / sanitasi teks dinamis).<br>2. Subnomor `1.1` dihilangkan, subkegiatan diberi indentasi visual dengan bullet strip (`-`), dan posisi kolom MAK dipindahkan ke sebelah kanan.<br>3. Ukuran font tabel dan header/footer diseragamkan dengan teks badan surat.<br>4. View detail surat (`bendahara/show-surat`, `components/surat-data-value`, `show-surat-qr`) diperbarui untuk merender tabel hierarki RAB beserta subkegiatannya. |
+| **18. Tombol Periksa Singkat & Perbaikan 404 Lampiran PDF Bendahara** | 1. Tombol *"Periksa & Cairkan"* di inbox surat masuk bendahara terlalu panjang.<br>2. Tombol *"Lihat Dokumen PDF"* di bendahara menghasilkan 404 Not Found karena menggunakan path `asset('storage/...')` alih-alih signed route. | 1. Teks tombol dipersingkat menjadi **"Periksa"**.<br>2. Route `show-file-bendahara` didaftarkan di `routes/web.php` dan link dokumen PDF diubah menggunakan `URL::signedRoute('show-file-bendahara', ...)` sehingga seluruh berkas lampiran aman dibuka oleh Bendahara. |
+| **19. Format Nomor Surat Keluar pada Staff Dekan** | Pengisian nomor surat keluar di Staff Dekan belum memiliki panduan format dinamis dan tombol auto-fill seperti surat tugas, serta perlu smart rendering agar tidak merusak arsip lama. | 1. Label dan validasi form di `StaffDekanController` disesuaikan per jenis surat.<br>2. Tombol auto-fill `[📋 Gunakan Format: /UN30.7/PP/2026]` diaktifkan pada form verifikasi Staff Dekan.<br>3. Template cetak `surat-keluar.blade.php` (dan `v2`) diberi logika cerdas: nomor lama tanpa slash otomatis diberi kode instansi, nomor baru dengan slash dicetak utuh tanpa dobel suffix, dan nomor kosong dicetak titik-titik panjang. |
+| **20. Penambahan Panel / Resource Bendahara di Filament Admin** | Role baru `bendahara` (ID: 22) belum memiliki Filament Resource di dashboard admin, sehingga akun Bendahara belum dapat dikelola melalui panel admin Filament (`/admin`). | 1. Dibuat model proxy `App\Models\Bendahara` yang meng-extend `App\Models\User`.<br>2. Dibuat `App\Filament\Resources\BendaharaResource` lengkap dengan sub-pages `ListBendaharas`, `CreateBendahara`, dan `EditBendahara`.<br>3. Terdaftar di menu sidebar admin pada navigasi grup **"Manajemen Akun"** (`slug: akun-bendahara`, sort order: 23, icon: `heroicon-o-banknotes`).<br>4. Menyediakan fitur CRUD penuh (username, email, nama, NIP, kata sandi terkonfirmasi, role ID ter-assign otomatis) dengan query terisolasi khusus role Bendahara.<br>5. Dilengkapi unit/feature test komprehensif (`tests/Feature/BendaharaFilamentResourceTest.php`) dengan hasil uji 100% PASS. |
+
 
 
 
