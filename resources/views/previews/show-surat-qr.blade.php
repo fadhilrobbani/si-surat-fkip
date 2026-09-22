@@ -422,8 +422,8 @@
 
         <p class="text-center mt-6  text-gray-700  mb-6">Untuk memastikan bahwa Anda mengakses data surat yang
             benar, pastikan URL pada
-            browser berasal dari <a class="underline" href=" https://esurat-fkip.unib.ac.id">
-                https://esurat-fkip.unib.ac.id</a></p>
+            browser berasal dari <a class="underline" href=" https://esurat.fkip.unib.ac.id">
+                https://esurat.fkip.unib.ac.id</a></p>
         @php
             $url = URL::signedRoute('cetak-surat-qr', ['surat' => $surat->id]);
         @endphp
