@@ -36,6 +36,8 @@
                     ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ')
                     : (isset($surat->created_at) ? $surat->created_at->format('Y') : date('Y'));
                 $renderedNoSurat = $noSurat . '/UN30.7/KP/' . $tahunSurat;
+            } elseif (str_starts_with(trim($noSurat), '/')) {
+                $renderedNoSurat = '........' . trim($noSurat);
             } else {
                 $renderedNoSurat = $noSurat;
             }

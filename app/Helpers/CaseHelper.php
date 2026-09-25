@@ -16,3 +16,20 @@ if (!function_exists('convertToTitleCase')) {
         return $titleCase;
     }
 }
+
+if (!function_exists('formatNomorSurat')) {
+    function formatNomorSurat($noSurat, $defaultEmpty = '....................................................', $dotsPrefix = '........')
+    {
+        if (empty($noSurat) || trim($noSurat) === '') {
+            return $defaultEmpty;
+        }
+
+        $trimmed = trim($noSurat);
+        if (str_starts_with($trimmed, '/')) {
+            return $dotsPrefix . $trimmed;
+        }
+
+        return $noSurat;
+    }
+}
+

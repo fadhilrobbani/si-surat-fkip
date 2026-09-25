@@ -84,7 +84,7 @@
                     <tr>
                         <td style="width: 75px; vertical-align: top;">Nomor</td>
                         <td style="width: 10px; vertical-align: top;">:</td>
-                        <td style="vertical-align: top;">{{ !empty($surat->data['noSurat']) ? $surat->data['noSurat'] : '....................................................' }}</td>
+                        <td style="vertical-align: top;">{{ formatNomorSurat($surat->data['noSurat'] ?? null) }}</td>
                     </tr>
                     <tr>
                         <td style="vertical-align: top;">Lampiran</td>

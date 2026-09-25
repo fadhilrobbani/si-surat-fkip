@@ -29,8 +29,10 @@
     <p style="text-align: center">
         @php
             $noSurat = $surat->data['noSurat'] ?? null;
-            if (empty($noSurat)) {
+            if (empty($noSurat) || trim($noSurat) === '') {
                 $renderedNoSurat = '....................................................';
+            } elseif (str_starts_with(trim($noSurat), '/')) {
+                $renderedNoSurat = '........' . trim($noSurat);
             } elseif (!str_contains($noSurat, '/')) {
                 $tahunSurat = isset($surat->data['tanggal_selesai'])
                     ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ')

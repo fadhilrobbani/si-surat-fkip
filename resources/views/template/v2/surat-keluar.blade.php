@@ -26,8 +26,10 @@
                         $tahunSurat = isset($surat->data['tanggal_selesai'])
                             ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ')
                             : ($surat->created_at ? $surat->created_at->year : date('Y'));
-                        if (empty($noSurat)) {
+                        if (empty($noSurat) || trim($noSurat) === '') {
                             $renderedNoSurat = '....................................................';
+                        } elseif (str_starts_with(trim($noSurat), '/')) {
+                            $renderedNoSurat = '........' . trim($noSurat);
                         } elseif (!str_contains($noSurat, '/')) {
                             $renderedNoSurat = $noSurat . '/UN30.7/PP/' . $tahunSurat;
                         } else {

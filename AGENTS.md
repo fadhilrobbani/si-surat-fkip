@@ -121,7 +121,8 @@ Tabel utama persuratan adalah `surats` dengan skema:
 1. **Prinsip Murni WYSIWYG & Bebas Hardcode**:
    - Jangan pernah menambahkan suffix kode surat statis di dalam file blade template PDF (seperti `.../UN30.7/...`).
    - Jika nomor surat kosong/belum terisi: Cetak murni **titik-titik panjang dinas** (`....................................................`).
-   - Jika nomor surat diisi: Cetak apa adanya sesuai nilai `$surat->data['noSurat']`.
+   - Jika nomor surat diawali tanda slash `/` (misal staf hanya mengisi kode seperti ` /DST/UN30.7.11/KU.01.02/2026` karena nomor urut angka masih kosong): Sistem via helper `formatNomorSurat()` secara otomatis membubuhkan titik-titik dinas di depannya (`......../DST/...`) sebagai tempat pengisian manual atau cap nomor.
+   - Jika nomor surat diisi lengkap dengan angka (misal `123/UN30...`): Cetak apa adanya sesuai input pengguna.
 2. **Tombol Auto-Fill Standar di Form Persetujuan**:
    - Disediakan tombol pembantu `[📋 Gunakan Format: /...]` pada form verifikasi Staff Dekan, Tata Usaha, dan form staf pengajuan dana.
    - Suffix acuan per jenis surat:

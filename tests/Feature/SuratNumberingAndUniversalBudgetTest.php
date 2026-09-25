@@ -557,5 +557,103 @@ class SuratNumberingAndUniversalBudgetTest extends TestCase
         $this->assertStringContainsString($fullNumber, $htmlQr);
         $this->assertStringNotContainsString($fullNumber . '/UN30.7/PP', $htmlQr);
     }
+
+    /**
+     * 7. Test nomor surat yang diawali slash (nomor urut belum diisi/kosong).
+     * Contoh input: " /DST/UN30.7.11/KU.01.02/2026" atau "/UN30.7.11/PP/2026"
+     * Harus dirender dengan prefix titik-titik "......../DST/..." untuk tempat isi manual.
+     */
+    public function test_surat_number_with_slash_prefix_renders_dots_prefix()
+    {
+        // 1. Helper function unit check
+        $slashNumber = ' /DST/UN30.7.11/KU.01.02/2026';
+        $formatted = formatNomorSurat($slashNumber);
+        $this->assertEquals('......../DST/UN30.7.11/KU.01.02/2026', $formatted);
+
+        $this->assertEquals('....................................................', formatNomorSurat(''));
+        $this->assertEquals('....................................................', formatNomorSurat(null));
+        $this->assertEquals('123/UN30.7/PP/2026', formatNomorSurat('123/UN30.7/PP/2026'));
+
+        // 2. Test pada template Ajuan Dana
+        $staff = User::where('role_id', User::ROLE_STAFF)->first();
+        $jenisDana = JenisSurat::where('slug', 'surat-pencairan-dana')->first();
+        $suratDana = Surat::create([
+            'pengaju_id' => $staff->id,
+            'current_user_id' => $staff->id,
+            'jenis_surat_id' => $jenisDana->id,
+            'status' => 'selesai',
+            'data' => [
+                'namaKegiatan' => 'Seminar Pendidikan',
+                'noSurat' => ' /DST/UN30.7.11/KU.01.02/2026',
+                'rab' => [
+                    ['uraian' => 'Konsumsi', 'total' => 500000]
+                ]
+            ]
+        ]);
+
+        $htmlDana = view('template.surat-ajuan-dana', ['surat' => $suratDana, 'url' => 'https://example.com'])->render();
+        $this->assertStringContainsString('......../DST/UN30.7.11/KU.01.02/2026', $htmlDana);
+
+        // 3. Test pada template Surat Tugas & V2
+        $jenisTugas = JenisSurat::where('slug', 'surat-tugas')->first();
+        $suratTugas = Surat::create([
+            'pengaju_id' => $staff->id,
+            'current_user_id' => $staff->id,
+            'jenis_surat_id' => $jenisTugas->id,
+            'status' => 'selesai',
+            'data' => [
+                'acara' => 'Bimbingan Teknis',
+                'tempat' => 'Ruang Rapat FKIP',
+                'waktuPelaksanaan' => '25 September 2026',
+                'dasarPenugasan' => 'Nota Dinas',
+                'noSurat' => '/UN30.7/KP/2026',
+                'dosen' => [
+                    ['namaDosen' => 'Dr. Dosen', 'nipDosen' => '19850101', 'pangkatDosen' => 'IV/a', 'jabatanFungsionalDosen' => 'Lektor Kepala']
+                ],
+                'private' => [
+                    'namaWD1' => 'Dr. Wakil Dekan I',
+                    'nipWD1' => '19700101',
+                    'deskripsiWD1' => 'Wakil Dekan Bidang Akademik'
+                ]
+            ]
+        ]);
+
+        $htmlTugasV1 = view('template.surat-tugas', ['surat' => $suratTugas, 'url' => 'https://example.com'])->render();
+        $this->assertStringContainsString('......../UN30.7/KP/2026', $htmlTugasV1);
+
+        $htmlTugasV2 = view('template.v2.surat-tugas', ['surat' => $suratTugas, 'url' => 'https://example.com'])->render();
+        $this->assertStringContainsString('......../UN30.7/KP/2026', $htmlTugasV2);
+
+        // 4. Test pada template Surat Keluar & V2
+        $dekan = User::where('role_id', User::ROLE_STAFF_DEKAN)->first();
+        $jenisKeluar = JenisSurat::where('slug', 'surat-keluar')->first();
+        $suratKeluar = Surat::create([
+            'pengaju_id' => $dekan->id,
+            'current_user_id' => $dekan->id,
+            'jenis_surat_id' => $jenisKeluar->id,
+            'status' => 'selesai',
+            'data' => [
+                'perihal' => 'Undangan Rapat',
+                'tujuan1' => 'Kepala Dinas',
+                'noSurat' => ' /UN30.7/PP/2026',
+                'jumlahLampiran' => 0,
+                'paragrafAwal' => 'Sehubungan dengan...',
+                'paragrafAkhir' => 'Demikian surat...',
+                'tanggalPelaksanaan' => '10 Oktober 2026',
+                'waktu' => '08:00',
+                'tempat' => 'Aula FKIP'
+            ]
+        ]);
+
+        $htmlKeluarV1 = view('template.surat-keluar', ['surat' => $suratKeluar, 'url' => 'https://example.com'])->render();
+        $this->assertStringContainsString('......../UN30.7/PP/2026', $htmlKeluarV1);
+
+        $htmlKeluarV2 = view('template.v2.surat-keluar', ['surat' => $suratKeluar, 'url' => 'https://example.com'])->render();
+        $this->assertStringContainsString('......../UN30.7/PP/2026', $htmlKeluarV2);
+
+        // 5. Test pada halaman QR preview
+        $htmlQr = view('previews.show-surat-qr', ['surat' => $suratDana])->render();
+        $this->assertStringContainsString('......../DST/UN30.7.11/KU.01.02/2026', $htmlQr);
+    }
 }
 

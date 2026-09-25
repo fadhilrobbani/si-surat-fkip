@@ -26,7 +26,7 @@
                     <tbody>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Nomor Surat:</td>
-                            <td class="px-4 py-3">{{ $surat->data['noSurat'] ?? '-' }}</td>
+                            <td class="px-4 py-3">{{ formatNomorSurat($surat->data['noSurat'] ?? null, '-') }}</td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Tanggal Surat Diterbitkan:</td>
@@ -162,8 +162,10 @@
                             <td class="px-4 py-3">
                                 @php
                                     $noSuratQr = $surat->data['noSurat'] ?? null;
-                                    if (!empty($noSuratQr)) {
-                                        if (!str_contains($noSuratQr, '/')) {
+                                    if (!empty($noSuratQr) && trim($noSuratQr) !== '') {
+                                        if (str_starts_with(trim($noSuratQr), '/')) {
+                                            $noSuratQr = '........' . trim($noSuratQr);
+                                        } elseif (!str_contains($noSuratQr, '/')) {
                                             $tahunSurat = isset($surat->data['tanggal_selesai'])
                                                 ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ')
                                                 : ($surat->created_at ? $surat->created_at->year : date('Y'));
@@ -265,7 +267,7 @@
                     <tbody>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Nomor Surat:</td>
-                            <td class="px-4 py-3">{{ $surat->data['noSurat'] ?? '-' }}</td>
+                            <td class="px-4 py-3">{{ formatNomorSurat($surat->data['noSurat'] ?? null, '-') }}</td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Tanggal Surat Diterbitkan:</td>
@@ -428,8 +430,10 @@
                             <td class="px-4 py-3">
                                 @php
                                     $noSuratKeluarQr = $surat->data['noSurat'] ?? null;
-                                    if (!empty($noSuratKeluarQr)) {
-                                        if (!str_contains($noSuratKeluarQr, '/')) {
+                                    if (!empty($noSuratKeluarQr) && trim($noSuratKeluarQr) !== '') {
+                                        if (str_starts_with(trim($noSuratKeluarQr), '/')) {
+                                            $noSuratKeluarQr = '........' . trim($noSuratKeluarQr);
+                                        } elseif (!str_contains($noSuratKeluarQr, '/')) {
                                             $tahunSuratKeluar = isset($surat->data['tanggal_selesai'])
                                                 ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ')
                                                 : ($surat->created_at ? $surat->created_at->year : date('Y'));
