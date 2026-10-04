@@ -236,10 +236,39 @@ class StaffDekanController extends Controller
             ]);
         }
 
-        if ($surat->jenisSurat->slug == 'surat-permohonan-narasumber') {
+        if (in_array($surat->jenisSurat->slug, [
+            'surat-permohonan-narasumber',
+            'surat-peminjaman-ruang',
+            'surat-peminjaman-ruang-mahasiswa',
+            'surat-pencairan-dana',
+            'surat-pencairan-dana-mahasiswa'
+        ])) {
+            $lastStep = isset($surat->data['private']['stepper']) && is_array($surat->data['private']['stepper']) && count($surat->data['private']['stepper']) > 0
+                ? $surat->data['private']['stepper'][count($surat->data['private']['stepper']) - 1]
+                : null;
+
+            // Jika surat permohonan narasumber sudah disetujui Dekan (stepper terakhir Dekan = 8), maka Staff Dekan menyelesaikan
+            if ($surat->jenisSurat->slug === 'surat-permohonan-narasumber' && $lastStep === User::ROLE_DEKAN) {
+                $daftarPenerima = [];
+            } else {
+                // Di tengah siklus (berasal dari Kaprodi): teruskan ke Dekan / Wakil Dekan yang sesuai
+                $targetRole = match ($surat->jenisSurat->slug) {
+                    'surat-permohonan-narasumber' => User::ROLE_DEKAN, // 8
+                    'surat-peminjaman-ruang', 'surat-pencairan-dana' => User::ROLE_WD2, // 9
+                    'surat-peminjaman-ruang-mahasiswa', 'surat-pencairan-dana-mahasiswa' => User::ROLE_WD3, // 10
+                };
+
+                $penerimaUtama = User::select('id', 'name', 'username', 'role_id')->where('role_id', $targetRole)->get();
+                $penerimaLain = User::select('id', 'name', 'username', 'role_id')
+                    ->whereIn('role_id', [User::ROLE_DEKAN, User::ROLE_WD1, User::ROLE_WD2, User::ROLE_WD3])
+                    ->where('role_id', '!=', $targetRole)
+                    ->get();
+                $daftarPenerima = $penerimaUtama->merge($penerimaLain);
+            }
+
             return view('staff-dekan.show-surat', [
                 'surat' => $surat,
-                'daftarPenerima' => []
+                'daftarPenerima' => $daftarPenerima
             ]);
         }
 
@@ -263,6 +292,45 @@ class StaffDekanController extends Controller
             'surat-pencairan-dana',
             'surat-pencairan-dana-mahasiswa'
         ])) {
+            $lastStep = isset($surat->data['private']['stepper']) && is_array($surat->data['private']['stepper']) && count($surat->data['private']['stepper']) > 0
+                ? $surat->data['private']['stepper'][count($surat->data['private']['stepper']) - 1]
+                : null;
+
+            // Jika ada input penerima ATAU berasal dari kaprodi (di tengah siklus / diteruskan ke Dekan/WD)
+            if ($request->filled('penerima') || $lastStep === User::ROLE_KAPRODI) {
+                $targetPenerima = $request->input('penerima');
+                if (!$targetPenerima) {
+                    $defaultRole = match ($surat->jenisSurat->slug) {
+                        'surat-permohonan-narasumber' => User::ROLE_DEKAN,
+                        'surat-peminjaman-ruang', 'surat-pencairan-dana' => User::ROLE_WD2,
+                        'surat-peminjaman-ruang-mahasiswa', 'surat-pencairan-dana-mahasiswa' => User::ROLE_WD3,
+                    };
+                    $targetPenerima = User::where('role_id', $defaultRole)->value('id');
+                }
+
+                $surat->current_user_id = $targetPenerima;
+                $data = $surat->data;
+                if ($request->filled('no-surat')) {
+                    $data['noSurat'] = $request->input('no-surat');
+                }
+                $data['note'] = $request->input('note');
+                if (isset($data['private']['stepper'])) {
+                    $data['private']['stepper'][] = auth()->user()->role->id;
+                }
+                $surat->data = $data;
+                $surat->save();
+
+                Approval::create([
+                    'user_id' => auth()->user()->id,
+                    'surat_id' => $surat->id,
+                    'isApproved' => true,
+                    'note' => $request->input('note') ?? 'Disetujui dan diteruskan ke Pimpinan oleh Staff Dekan',
+                ]);
+
+                return redirect('/staff-dekan/surat-masuk')->with('success', 'Surat berhasil disetujui dan diteruskan ke Pimpinan');
+            }
+
+            // Jika di akhir siklus (misal permohonan narasumber setelah disetujui Dekan)
             if ($request->filled('no-surat')) {
                 $request->validate([
                     'no-surat' => [
@@ -280,7 +348,7 @@ class StaffDekanController extends Controller
             $surat->current_user_id = $surat->pengaju_id;
             $surat->expired_at = null;
             $data = $surat->data;
-            $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+            $data['tanggal_selesai'] = resolveTanggalSelesai($request);
             $data['noSurat'] = $request->input('no-surat') ?: null;
             $data['note'] = $request->input('note');
             if (isset($data['private']['stepper'])) {
@@ -333,7 +401,7 @@ class StaffDekanController extends Controller
             // $surat->penerima_id = $surat->pengaju_id;
             $surat->expired_at = null;
             $data = $surat->data;
-            $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+            $data['tanggal_selesai'] = resolveTanggalSelesai($request);
             // $data['ttdWD1'] = $request->input('ttd') ;
             // $data['stempel'] = $request->input('stempel') ;
             // $data['ttdWD1'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg' ;

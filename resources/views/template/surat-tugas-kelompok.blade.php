@@ -19,22 +19,7 @@
     <br>
     <p style="text-align: center"><b><u>SURAT TUGAS</u></b></p>
     <p style="text-align: center">
-        @php
-            $noSurat = $surat->data['noSurat'] ?? null;
-            if (empty($noSurat)) {
-                $renderedNoSurat = '....................................................';
-            } elseif (!str_contains($noSurat, '/')) {
-                $tahunSurat = isset($surat->data['tanggal_selesai'])
-                    ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ')
-                    : (isset($surat->created_at) ? $surat->created_at->format('Y') : date('Y'));
-                $renderedNoSurat = $noSurat . '/UN30.7/KP/' . $tahunSurat;
-            } elseif (str_starts_with(trim($noSurat), '/')) {
-                $renderedNoSurat = '........' . trim($noSurat);
-            } else {
-                $renderedNoSurat = $noSurat;
-            }
-        @endphp
-        <b>Nomor:&nbsp;{{ $renderedNoSurat }}</b>
+        <b>Nomor:&nbsp;{{ formatNomorSuratDenganFormat($surat->data['noSurat'] ?? null, '/UN30.7/KP/', $surat) }}</b>
     </p>
     <br>
     <br>
@@ -93,7 +78,7 @@
             <div class="tandatangan">
                 <div>
                     <p>Bengkulu,
-                        {{ isset($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '' }}
+                        {{ $surat->status == 'selesai' ? formatTanggalSurat($surat->data['tanggal_selesai'] ?? null) : '' }}
                     </p>
                     <p>a.n. Dekan</p>
 
@@ -121,7 +106,7 @@
             <div class="tandatangan">
                 <div>
                     <p>Bengkulu,
-                        {{ isset($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '' }}
+                        {{ $surat->status == 'selesai' ? formatTanggalSurat($surat->data['tanggal_selesai'] ?? null) : '' }}
                     </p>
                     <p>Dekan</p>
                 </div>

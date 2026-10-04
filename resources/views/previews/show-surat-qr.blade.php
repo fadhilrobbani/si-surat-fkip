@@ -26,11 +26,32 @@
                     <tbody>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Nomor Surat:</td>
-                            <td class="px-4 py-3">{{ formatNomorSurat($surat->data['noSurat'] ?? null, '-') }}</td>
+                            <td class="px-4 py-3">
+                                @php
+                                    $suffixMahasiswa = match ($surat->jenisSurat->slug) {
+                                        'surat-keterangan-lulus' => '/UN30.7.10/KM/',
+                                        'surat-keterangan-aktif-kuliah', 'surat-keterangan-pernah-kuliah' => '/UN30.7/KM/',
+                                        'surat-keterangan-alumni', 'surat-keterangan-eligible-pin', 'surat-keterangan-kesalahan-ijazah' => '/UN30.7/PP/',
+                                        'surat-pengantar-pembayaran-uang-yudisium' => '/UN30.7/KU/',
+                                        'surat-rekomendasi-mbkm' => '/UN30.7/MBKM/',
+                                        'surat-permohonan-izin-penelitian-mahasiswa', 'surat-permohonan-izin-prapenelitian-mahasiswa', 'surat-permohonan-izin-observasi-pembelajaran-mahasiswa' => '/UN30.7/PL/',
+                                        default => null,
+                                    };
+                                    $noSuratMhs = $surat->data['noSurat'] ?? null;
+                                    $renderedNoSuratMhs = $suffixMahasiswa
+                                        ? formatNomorSuratDenganFormat($noSuratMhs, $suffixMahasiswa, $surat, '-')
+                                        : formatNomorSurat($noSuratMhs, '-');
+                                @endphp
+                                {{ $renderedNoSuratMhs }}
+                            </td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Tanggal Surat Diterbitkan:</td>
-                            <td class="px-4 py-3">{{ $surat->data['tanggal_selesai'] ?? '-' }}</td>
+                            <td class="px-4 py-3">{{ !empty($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '-' }}</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-3 font-semibold bg-gray-50">Waktu Verifikasi Sistem:</td>
+                            <td class="px-4 py-3">{{ formatTimestampToIndonesian($surat->updated_at) }}</td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Nama:</td>
@@ -160,27 +181,16 @@
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Nomor Surat:</td>
                             <td class="px-4 py-3">
-                                @php
-                                    $noSuratQr = $surat->data['noSurat'] ?? null;
-                                    if (!empty($noSuratQr) && trim($noSuratQr) !== '') {
-                                        if (str_starts_with(trim($noSuratQr), '/')) {
-                                            $noSuratQr = '........' . trim($noSuratQr);
-                                        } elseif (!str_contains($noSuratQr, '/')) {
-                                            $tahunSurat = isset($surat->data['tanggal_selesai'])
-                                                ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ')
-                                                : ($surat->created_at ? $surat->created_at->year : date('Y'));
-                                            $noSuratQr = $noSuratQr . '/UN30.7/KP/' . $tahunSurat;
-                                        }
-                                    } else {
-                                        $noSuratQr = '-';
-                                    }
-                                @endphp
-                                {{ $noSuratQr }}
+                                {{ formatNomorSuratDenganFormat($surat->data['noSurat'] ?? null, '/UN30.7/KP/', $surat, '-') }}
                             </td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Tanggal Surat Diterbitkan:</td>
-                            <td class="px-4 py-3">{{ $surat->data['tanggal_selesai'] ?? '-' }}</td>
+                            <td class="px-4 py-3">{{ !empty($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '-' }}</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-3 font-semibold bg-gray-50">Waktu Verifikasi Sistem:</td>
+                            <td class="px-4 py-3">{{ formatTimestampToIndonesian($surat->updated_at) }}</td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Jenis Surat / Perihal:</td>
@@ -271,7 +281,11 @@
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Tanggal Surat Diterbitkan:</td>
-                            <td class="px-4 py-3">{{ $surat->data['tanggal_selesai'] ?? '-' }}</td>
+                            <td class="px-4 py-3">{{ !empty($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '-' }}</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-3 font-semibold bg-gray-50">Waktu Verifikasi Sistem:</td>
+                            <td class="px-4 py-3">{{ formatTimestampToIndonesian($surat->updated_at) }}</td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Nama Pengaju:</td>
@@ -428,27 +442,16 @@
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Nomor Surat:</td>
                             <td class="px-4 py-3">
-                                @php
-                                    $noSuratKeluarQr = $surat->data['noSurat'] ?? null;
-                                    if (!empty($noSuratKeluarQr) && trim($noSuratKeluarQr) !== '') {
-                                        if (str_starts_with(trim($noSuratKeluarQr), '/')) {
-                                            $noSuratKeluarQr = '........' . trim($noSuratKeluarQr);
-                                        } elseif (!str_contains($noSuratKeluarQr, '/')) {
-                                            $tahunSuratKeluar = isset($surat->data['tanggal_selesai'])
-                                                ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ')
-                                                : ($surat->created_at ? $surat->created_at->year : date('Y'));
-                                            $noSuratKeluarQr = $noSuratKeluarQr . '/UN30.7/PP/' . $tahunSuratKeluar;
-                                        }
-                                    } else {
-                                        $noSuratKeluarQr = '-';
-                                    }
-                                @endphp
-                                {{ $noSuratKeluarQr }}
+                                {{ formatNomorSuratDenganFormat($surat->data['noSurat'] ?? null, '/UN30.7/PP/', $surat, '-') }}
                             </td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Tanggal Surat Diterbitkan:</td>
-                            <td class="px-4 py-3">{{ $surat->data['tanggal_selesai'] ?? '-' }}</td>
+                            <td class="px-4 py-3">{{ !empty($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '-' }}</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-3 font-semibold bg-gray-50">Waktu Verifikasi Sistem:</td>
+                            <td class="px-4 py-3">{{ formatTimestampToIndonesian($surat->updated_at) }}</td>
                         </tr>
                         <tr class="border-b">
                             <td class="px-4 py-3 font-semibold bg-gray-50">Jenis Surat / Perihal:</td>

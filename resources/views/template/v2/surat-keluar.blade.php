@@ -21,25 +21,10 @@
         <tr>
             <td style="vertical-align: top; width: 62%;">
                 <table>
-                    @php
-                        $noSurat = $surat->data['noSurat'] ?? null;
-                        $tahunSurat = isset($surat->data['tanggal_selesai'])
-                            ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ')
-                            : ($surat->created_at ? $surat->created_at->year : date('Y'));
-                        if (empty($noSurat) || trim($noSurat) === '') {
-                            $renderedNoSurat = '....................................................';
-                        } elseif (str_starts_with(trim($noSurat), '/')) {
-                            $renderedNoSurat = '........' . trim($noSurat);
-                        } elseif (!str_contains($noSurat, '/')) {
-                            $renderedNoSurat = $noSurat . '/UN30.7/PP/' . $tahunSurat;
-                        } else {
-                            $renderedNoSurat = $noSurat;
-                        }
-                    @endphp
                     <tr>
                         <td style="width: 70px; vertical-align: top;">Nomor</td>
                         <td style="width: 8px; vertical-align: top;">:</td>
-                        <td style="vertical-align: top;">{{ $renderedNoSurat }}</td>
+                        <td style="vertical-align: top;">{{ formatNomorSuratDenganFormat($surat->data['noSurat'] ?? null, '/UN30.7/PP/', $surat) }}</td>
                     </tr>
                     @if (isset($surat->data['jumlahLampiran']) && $surat->data['jumlahLampiran'] > 0)
                         <tr>

@@ -655,5 +655,69 @@ class SuratNumberingAndUniversalBudgetTest extends TestCase
         $htmlQr = view('previews.show-surat-qr', ['surat' => $suratDana])->render();
         $this->assertStringContainsString('......../DST/UN30.7.11/KU.01.02/2026', $htmlQr);
     }
+
+    /**
+     * 8. Test Surat Keterangan Lulus dan Surat Mahasiswa lainnya:
+     * - Nomor surat hanya input angka (misal '132') -> otomatis ditambahkan suffix kode dan tahun ('132/UN30.7.10/KM/2026')
+     * - TIDAK PERNAH mencetak teks literal 'Tahun' atau 'NoSurat' baik saat status diproses, tanggal selesai kosong, maupun backdate.
+     */
+    public function test_surat_keterangan_lulus_numbering_never_renders_literal_tahun_string()
+    {
+        $mhs = User::where('role_id', User::ROLE_MAHASISWA)->first();
+        $akademik = User::where('role_id', User::ROLE_AKADEMIK)->first();
+        $jenisSKL = JenisSurat::where('slug', 'surat-keterangan-lulus')->first();
+
+        // 1. Surat masih diproses (belum disetujui / noSurat & tanggal_selesai belum ada)
+        $surat = Surat::create([
+            'pengaju_id' => $mhs->id,
+            'current_user_id' => $akademik->id,
+            'jenis_surat_id' => $jenisSKL->id,
+            'status' => 'diproses',
+            'data' => [
+                'nama' => 'Budi Pratama',
+                'npm' => 'A1A022001',
+                'tempatLahir' => 'Bengkulu',
+                'tanggalLahir' => '10 Januari 2004',
+                'programStudi' => 'Pendidikan Matematika',
+                'jenisUjian' => 'Skripsi',
+                'tanggalUjian' => '15 Juli 2026',
+                'gelar' => 'Sarjana Pendidikan (S.Pd.)',
+                'periodeWisuda' => '105',
+                'tanggalWisuda' => '20 Agustus 2026',
+                'private' => [
+                    'namaWD1' => 'Dr. Wakil Dekan',
+                    'nipWD1' => '19750101',
+                ]
+            ]
+        ]);
+
+        $htmlDiproses = view('template.surat-keterangan-lulus', ['surat' => $surat, 'url' => 'https://example.com'])->render();
+        $this->assertStringContainsString('....................................................', $htmlDiproses);
+        $this->assertStringNotContainsString('Tahun', $htmlDiproses);
+        $this->assertStringNotContainsString('NoSurat', $htmlDiproses);
+
+        // 2. Disetujui via Akademik dengan nomor '132' dan tanggal kosong (cap manual)
+        $response = $this->actingAs($akademik)->put(route('setujui-surat-akademik', $surat->id), [
+            'no-surat' => '132',
+            'tanggal-surat' => '',
+            'note' => 'Disetujui cap manual'
+        ]);
+        $response->assertRedirect('/akademik/surat-masuk');
+
+        $surat->refresh();
+        $this->assertEquals('selesai', $surat->status);
+        $this->assertNull($surat->data['tanggal_selesai']);
+        $this->assertEquals('132', $surat->data['noSurat']);
+
+        $htmlSelesaiTanpaTanggal = view('template.surat-keterangan-lulus', ['surat' => $surat, 'url' => 'https://example.com'])->render();
+        $this->assertStringContainsString('132/UN30.7.10/KM/' . date('Y'), $htmlSelesaiTanpaTanggal);
+        $this->assertStringNotContainsString('Tahun', $htmlSelesaiTanpaTanggal);
+        $this->assertStringContainsString('....................', $htmlSelesaiTanpaTanggal);
+
+        // 3. Halaman verifikasi QR code
+        $htmlQr = view('previews.show-surat-qr', ['surat' => $surat])->render();
+        $this->assertStringContainsString('132/UN30.7.10/KM/' . date('Y'), $htmlQr);
+        $this->assertStringNotContainsString('Tahun', $htmlQr);
+    }
 }
 

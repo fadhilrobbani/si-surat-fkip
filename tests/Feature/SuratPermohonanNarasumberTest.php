@@ -79,21 +79,45 @@ class SuratPermohonanNarasumberTest extends TestCase
             ]
         ]);
 
-        // 2. Kaprodi menyetujui -> diteruskan ke Dekan
+        // 2. Kaprodi menyetujui -> diteruskan ke Staff Dekan
         $this->actingAs($kaprodi)
             ->get('/kaprodi/surat-masuk')
             ->assertStatus(200);
 
+        $kaprodiView = $this->actingAs($kaprodi)->get(route('show-surat-kaprodi', $surat->id));
+        $kaprodiView->assertStatus(200);
+        $this->assertTrue(collect($kaprodiView->viewData('daftarPenerima'))->pluck('id')->contains($staffDekan->id));
+
         $this->actingAs($kaprodi)
             ->put('/kaprodi/surat-staff-disetujui/' . $surat->id, [
-                'penerima' => $dekan->id,
+                'penerima' => $staffDekan->id,
             ])
             ->assertRedirect('/kaprodi/surat-masuk');
 
         $surat->refresh();
-        $this->assertEquals($dekan->id, $surat->current_user_id);
+        $this->assertEquals($staffDekan->id, $surat->current_user_id);
 
-        // 3. Dekan menyetujui -> diteruskan ke Staff Dekan
+        // 3. Staff Dekan menyetujui -> diteruskan ke Dekan (default penerima adalah Dekan)
+        $this->actingAs($staffDekan)
+            ->get('/staff-dekan/surat-masuk')
+            ->assertStatus(200);
+
+        $staffDekanView = $this->actingAs($staffDekan)->get(route('show-surat-staff-dekan', $surat->id));
+        $staffDekanView->assertStatus(200);
+        $this->assertEquals($dekan->id, $staffDekanView->viewData('daftarPenerima')->first()->id);
+
+        $this->actingAs($staffDekan)
+            ->put('/staff-dekan/surat-disetujui/' . $surat->id, [
+                'penerima' => $dekan->id,
+                'note' => 'Diteruskan ke Dekan oleh Staff Dekan'
+            ])
+            ->assertRedirect('/staff-dekan/surat-masuk');
+
+        $surat->refresh();
+        $this->assertEquals($dekan->id, $surat->current_user_id);
+        $this->assertEquals('diproses', $surat->status);
+
+        // 4. Dekan menyetujui -> diteruskan kembali ke Staff Dekan untuk penomoran
         $this->actingAs($dekan)
             ->get('/dekan/surat-masuk')
             ->assertStatus(200);
@@ -107,7 +131,7 @@ class SuratPermohonanNarasumberTest extends TestCase
         $surat->refresh();
         $this->assertEquals($staffDekan->id, $surat->current_user_id);
 
-        // 4. Staff Dekan menyetujui dan menyelesaikan DENGAN nomor surat dikosongkan (opsional)
+        // 5. Staff Dekan menyetujui dan menyelesaikan DENGAN nomor surat dikosongkan (opsional)
         $this->actingAs($staffDekan)
             ->get('/staff-dekan/surat-masuk')
             ->assertStatus(200);

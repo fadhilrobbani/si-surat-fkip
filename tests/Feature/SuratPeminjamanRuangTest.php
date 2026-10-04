@@ -63,6 +63,7 @@ class SuratPeminjamanRuangTest extends TestCase
     {
         $mhs = User::where('role_id', User::ROLE_MAHASISWA)->first();
         $kaprodi = User::where('role_id', User::ROLE_KAPRODI)->first();
+        $staffDekan = User::where('role_id', User::ROLE_STAFF_DEKAN)->first();
         $wd3 = User::where('role_id', User::ROLE_WD3)->first();
         $wd2 = User::where('role_id', User::ROLE_WD2)->first();
         $tu = User::where('role_id', User::ROLE_TATA_USAHA)->first();
@@ -83,22 +84,45 @@ class SuratPeminjamanRuangTest extends TestCase
             ]
         ]);
 
-        // 2. Kaprodi -> WD3
+        // 2. Kaprodi -> Staff Dekan
         $this->actingAs($kaprodi)
             ->get('/kaprodi/surat-masuk')
             ->assertStatus(200);
 
+        $kaprodiView = $this->actingAs($kaprodi)->get(route('show-surat-kaprodi', $surat->id));
+        $this->assertTrue(collect($kaprodiView->viewData('daftarPenerima'))->pluck('id')->contains($staffDekan->id));
+
         $this->actingAs($kaprodi)
             ->put('/kaprodi/surat-disetujui/' . $surat->id, [
-                'penerima' => $wd3->id,
+                'penerima' => $staffDekan->id,
             ])
             ->assertRedirect('/kaprodi/surat-masuk');
 
         $surat->refresh();
-        $this->assertEquals($wd3->id, $surat->current_user_id);
+        $this->assertEquals($staffDekan->id, $surat->current_user_id);
         $this->assertEquals([2, 4], $surat->data['private']['stepper']);
 
-        // 3. WD3 -> WD2
+        // 3. Staff Dekan -> WD3 (default adalah WD3 untuk surat mahasiswa)
+        $this->actingAs($staffDekan)
+            ->get('/staff-dekan/surat-masuk')
+            ->assertStatus(200);
+
+        $staffDekanView = $this->actingAs($staffDekan)->get(route('show-surat-staff-dekan', $surat->id));
+        $staffDekanView->assertStatus(200);
+        $this->assertEquals($wd3->id, $staffDekanView->viewData('daftarPenerima')->first()->id);
+
+        $this->actingAs($staffDekan)
+            ->put('/staff-dekan/surat-disetujui/' . $surat->id, [
+                'penerima' => $wd3->id,
+                'note' => 'Diteruskan ke WD3 oleh Staff Dekan'
+            ])
+            ->assertRedirect('/staff-dekan/surat-masuk');
+
+        $surat->refresh();
+        $this->assertEquals($wd3->id, $surat->current_user_id);
+        $this->assertEquals([2, 4, 14], $surat->data['private']['stepper']);
+
+        // 4. WD3 -> WD2
         $this->actingAs($wd3)
             ->get('/wd3/surat-masuk')
             ->assertStatus(200);
@@ -117,9 +141,9 @@ class SuratPeminjamanRuangTest extends TestCase
 
         $surat->refresh();
         $this->assertEquals($wd2->id, $surat->current_user_id);
-        $this->assertEquals([2, 4, 10], $surat->data['private']['stepper']);
+        $this->assertEquals([2, 4, 14, 10], $surat->data['private']['stepper']);
 
-        // 4. WD2 -> TU
+        // 5. WD2 -> TU
         $this->actingAs($wd2)
             ->get('/wd2/surat-masuk')
             ->assertStatus(200);
@@ -138,7 +162,7 @@ class SuratPeminjamanRuangTest extends TestCase
 
         $surat->refresh();
         $this->assertEquals($tu->id, $surat->current_user_id);
-        $this->assertEquals([2, 4, 10, 9], $surat->data['private']['stepper']);
+        $this->assertEquals([2, 4, 14, 10, 9], $surat->data['private']['stepper']);
 
         // 5. TU -> Verifikasi Dashboard & Surat Masuk
         $this->actingAs($tu)
@@ -168,7 +192,7 @@ class SuratPeminjamanRuangTest extends TestCase
         $surat->refresh();
         $this->assertEquals('selesai', $surat->status);
         $this->assertEquals($mhs->id, $surat->current_user_id);
-        $this->assertEquals([2, 4, 10, 9, 19], $surat->data['private']['stepper']);
+        $this->assertEquals([2, 4, 14, 10, 9, 19], $surat->data['private']['stepper']);
 
         // 6. TU -> Riwayat Persetujuan
         $this->actingAs($tu)
@@ -245,6 +269,7 @@ class SuratPeminjamanRuangTest extends TestCase
     {
         $staff = User::where('role_id', User::ROLE_STAFF)->first();
         $kaprodi = User::where('role_id', User::ROLE_KAPRODI)->first();
+        $staffDekan = User::where('role_id', User::ROLE_STAFF_DEKAN)->first();
         $wd2 = User::where('role_id', User::ROLE_WD2)->first();
         $tu = User::where('role_id', User::ROLE_TATA_USAHA)->first();
         $jenisSurat = JenisSurat::where('slug', 'surat-peminjaman-ruang')->first();
@@ -270,16 +295,26 @@ class SuratPeminjamanRuangTest extends TestCase
         $this->assertNotNull($surat);
         $this->assertEquals($kaprodi->id, $surat->current_user_id);
 
-        // 2. Kaprodi -> WD2
+        // 2. Kaprodi -> Staff Dekan
         $this->actingAs($kaprodi)
             ->put('/kaprodi/surat-staff-disetujui/' . $surat->id, [
+                'penerima' => $staffDekan->id,
+            ]);
+
+        $surat->refresh();
+        $this->assertEquals($staffDekan->id, $surat->current_user_id);
+
+        // 3. Staff Dekan -> WD2
+        $this->actingAs($staffDekan)
+            ->put('/staff-dekan/surat-disetujui/' . $surat->id, [
                 'penerima' => $wd2->id,
+                'note' => 'Diteruskan ke WD2 oleh Staff Dekan'
             ]);
 
         $surat->refresh();
         $this->assertEquals($wd2->id, $surat->current_user_id);
 
-        // 3. WD2 -> TU
+        // 4. WD2 -> TU
         $this->actingAs($wd2)
             ->put('/wd2/surat-staff-disetujui/' . $surat->id, [
                 'penerima' => $tu->id,
@@ -288,7 +323,7 @@ class SuratPeminjamanRuangTest extends TestCase
         $surat->refresh();
         $this->assertEquals($tu->id, $surat->current_user_id);
 
-        // 4. TU approves -> selesai
+        // 5. TU approves -> selesai
         $this->actingAs($tu)
             ->get(route('show-surat-masuk-tata-usaha', $surat->id))
             ->assertStatus(200)

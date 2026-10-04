@@ -230,6 +230,16 @@
                     </div>
 
                     <div class="mb-4">
+                        <label for="tanggal-surat" class="block mb-1 text-sm font-medium text-gray-700">
+                            Tanggal Surat <span class="text-xs font-normal text-gray-500">(Opsional)</span>
+                        </label>
+                        <input type="date" id="tanggal-surat" name="tanggal-surat"
+                            value="{{ old('tanggal-surat', date('Y-m-d')) }}"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                        <p class="mt-1 text-xs text-gray-500">Default terisi hari ini. Ubah jika ingin tanggal mundur, atau kosongkan jika penanggalan manual fisik.</p>
+                    </div>
+
+                    <div class="mb-4">
                         <label for="note" class="block mb-1 text-sm font-medium text-gray-700">
                             Catatan Bendahara (Opsional)
                         </label>

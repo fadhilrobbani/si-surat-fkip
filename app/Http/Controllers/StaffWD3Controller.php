@@ -248,7 +248,7 @@ class StaffWD3Controller extends Controller
         // $surat->penerima_id = $surat->pengaju_id;
         $surat->expired_at = null;
         $data = $surat->data;
-        $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+        $data['tanggal_selesai'] = resolveTanggalSelesai($request);
         // $data['ttdWD1'] = $request->input('ttd') ;
         // $data['stempel'] = $request->input('stempel') ;
         // $data['ttdWD1'] = 'storage/ttd/AOqKQVPwY53QkHoHnDvjs4ljWQE3B0-metaaWx1c3RyYXNpLWthbWFyLWJlcmFudGFrYW4uanBn-.jpg' ;

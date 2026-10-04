@@ -111,14 +111,7 @@
                             @endforeach
                             @continue
                         @endif
-                        <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-semibold">
-                                {{ ucwords(implode(' ', preg_split('/(?=[A-Z])/', $key))) }}:&nbsp;
-                            </td>
-                            <td class="px-6 py-4">{!! html_entity_decode($value) !!}</td>
-                            {{-- <td class="px-6 py-4">{{ $value }}</td> --}}
-
-                        </tr>
+                        <x-surat-data-row :key="$key" :value="$value" />
                     @endforeach
                     @if (isset($surat->files))
                         @foreach ($surat->files as $key => $value)
@@ -312,6 +305,13 @@
                     @enderror
                 </div>
 
+                <div class="w-full max-w-[400px]">
+                    <label for="tanggal-surat" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Surat <span class="text-xs font-normal text-gray-500">(opsional)</span></label>
+                    <input type="date" id="tanggal-surat" name="tanggal-surat" value="{{ old('tanggal-surat', date('Y-m-d')) }}"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Default hari ini. Ubah jika ingin tanggal mundur, atau kosongkan jika penanggalan manual fisik.</p>
+                </div>
+
                 {{-- <div class="w-full max-w-[400px]">
                 <label for="stempel"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stempel yang
@@ -368,12 +368,13 @@
     @endif
 
 
-    {{-- ACTION BARU UNTUK SETUJU/TOLAK SURAT DARI STAFF dan DITENGAH SIKLUS/user sebelumnya kaprodi --}}
+    {{-- ACTION BARU UNTUK SETUJU/TOLAK SURAT DARI STAFF/MAHASISWA dan DITENGAH SIKLUS/user sebelumnya kaprodi --}}
 
     @if (
         $surat->current_user_id == auth()->user()->id &&
             $surat->status == 'diproses' &&
-            $surat->jenisSurat->user_type == 'staff' &&
+            ($surat->jenisSurat->user_type == 'staff' || in_array($surat->jenisSurat->slug, ['surat-peminjaman-ruang-mahasiswa', 'surat-pencairan-dana-mahasiswa'])) &&
+            isset($surat->data['private']['stepper']) &&
             $surat->data['private']['stepper'][count($surat->data['private']['stepper']) - 1] === 4)
         <form action="{{ route('setujui-surat-staff-staff-dekan', $surat->id) }}" method="POST"
             class="bg-slate-100 mt-4 p-2 rounded-lg w-full">
@@ -385,9 +386,10 @@
                 <div class="flex flex-col gap-4 sm:flex-row">
                     <a href="{{ route('preview-surat-staff-dekan', $surat->id) }}"><button type="button"
                             class="text-white w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
-                    <a href="{{ route('edit-surat-staff-dekan', $surat->id) }}"><button type="button"
-                            class="text-white w-full p-2 m-2 bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button></a>
-
+                    @if (in_array($surat->jenisSurat->slug, ['surat-tugas', 'surat-tugas-kelompok']))
+                        <a href="{{ route('edit-surat-staff-dekan', $surat->id) }}"><button type="button"
+                                class="text-white w-full p-2 m-2 bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button></a>
+                    @endif
                 </div>
 
                 <div class="flex flex-col sm:flex-row">
@@ -466,6 +468,13 @@
                     @error('no-surat')
                         <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
                     @enderror
+                </div>
+
+                <div class="w-full max-w-[400px]">
+                    <label for="tanggal-surat-2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Surat <span class="text-xs font-normal text-gray-500">(opsional)</span></label>
+                    <input type="date" id="tanggal-surat-2" name="tanggal-surat" value="{{ old('tanggal-surat', date('Y-m-d')) }}"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Default hari ini. Ubah jika ingin tanggal mundur, atau kosongkan jika penanggalan manual fisik.</p>
                 </div>
 
                 {{-- <div class="w-full max-w-[400px]">

@@ -19,8 +19,7 @@
     <br>
     <p style="text-align: center"><b><u>SURAT KETERANGAN MASIH KULIAH</u></b></p>
     <p style="text-align: center">
-        <b>Nomor:&nbsp;{{ $surat->data['noSurat'] ?? 'NoSurat' }}/UN30.7/KM/{{ isset($surat->data['tanggal_selesai']) ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ') : 'Tahun' }}
-        </b>
+        <b>Nomor:&nbsp;{{ formatNomorSuratDenganFormat($surat->data['noSurat'] ?? null, '/UN30.7/KM/', $surat) }}</b>
     </p>
     <br>
     <br>
@@ -107,7 +106,7 @@
         <div class="tandatangan">
             <div>
                 <p>Bengkulu,
-                    {{ isset($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : '' }}
+                    {{ $surat->status == 'selesai' ? formatTanggalSurat($surat->data['tanggal_selesai'] ?? null) : '' }}
                 </p>
                 <p>Wakil Dekan Bidang Akademik</p>
             </div>

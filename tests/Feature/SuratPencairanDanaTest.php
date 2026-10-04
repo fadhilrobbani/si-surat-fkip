@@ -71,6 +71,7 @@ class SuratPencairanDanaTest extends TestCase
     {
         $mhs = User::where('role_id', User::ROLE_MAHASISWA)->first();
         $kaprodi = User::where('role_id', User::ROLE_KAPRODI)->first();
+        $staffDekan = User::where('role_id', User::ROLE_STAFF_DEKAN)->first();
         $wd3 = User::where('role_id', User::ROLE_WD3)->first();
         $wd2 = User::where('role_id', User::ROLE_WD2)->first();
         $kabag = User::where('role_id', User::ROLE_KABAG)->first();
@@ -119,30 +120,53 @@ class SuratPencairanDanaTest extends TestCase
             ->assertSee('Kaprodi')
             ->assertSee('Menunggu');
 
-        // 2. Kaprodi buka surat-masuk & menyetujui -> diteruskan ke WD3
+        // 2. Kaprodi buka surat-masuk & menyetujui -> diteruskan ke Staff Dekan
         $this->actingAs($kaprodi)
             ->get('/kaprodi/surat-masuk')
             ->assertStatus(200)
             ->assertSee('Surat Pencairan Dana Kegiatan Mahasiswa');
 
+        $kaprodiView = $this->actingAs($kaprodi)->get(route('show-surat-kaprodi', $surat->id));
+        $this->assertTrue(collect($kaprodiView->viewData('daftarPenerima'))->pluck('id')->contains($staffDekan->id));
+
         $this->actingAs($kaprodi)
             ->put('/kaprodi/surat-disetujui/' . $surat->id, [
-                'penerima' => $wd3->id,
+                'penerima' => $staffDekan->id,
             ])
             ->assertRedirect('/kaprodi/surat-masuk');
 
         $surat->refresh();
-        $this->assertEquals($wd3->id, $surat->current_user_id);
+        $this->assertEquals($staffDekan->id, $surat->current_user_id);
         $this->assertEquals('diproses', $surat->status);
         $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI], $surat->data['private']['stepper']);
 
-        // 3. WD3 buka surat-masuk & menyetujui -> diteruskan ke WD2
+        // 3. Staff Dekan buka surat-masuk & menyetujui -> diteruskan ke WD3 (default WD3)
+        $this->actingAs($staffDekan)
+            ->get('/staff-dekan/surat-masuk')
+            ->assertStatus(200);
+
+        $staffDekanView = $this->actingAs($staffDekan)->get(route('show-surat-staff-dekan', $surat->id));
+        $staffDekanView->assertStatus(200);
+        $this->assertEquals($wd3->id, $staffDekanView->viewData('daftarPenerima')->first()->id);
+
+        $this->actingAs($staffDekan)
+            ->put('/staff-dekan/surat-disetujui/' . $surat->id, [
+                'penerima' => $wd3->id,
+                'note' => 'Diteruskan ke WD3 oleh Staff Dekan'
+            ])
+            ->assertRedirect('/staff-dekan/surat-masuk');
+
+        $surat->refresh();
+        $this->assertEquals($wd3->id, $surat->current_user_id);
+        $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI, User::ROLE_STAFF_DEKAN], $surat->data['private']['stepper']);
+
+        // 4. WD3 buka surat-masuk & menyetujui -> diteruskan ke WD2
         $this->actingAs($wd3)
             ->get('/wd3/surat-masuk')
             ->assertStatus(200)
             ->assertSee('Surat Pencairan Dana Kegiatan Mahasiswa');
 
-        // Stepper on WD3 show-surat should show dynamic chain: Mahasiswa -> Kaprodi -> WD3 (Menunggu)
+        // Stepper on WD3 show-surat should show dynamic chain
         $this->actingAs($wd3)
             ->get(route('show-surat-wd3', $surat->id))
             ->assertStatus(200)
@@ -157,9 +181,9 @@ class SuratPencairanDanaTest extends TestCase
 
         $surat->refresh();
         $this->assertEquals($wd2->id, $surat->current_user_id);
-        $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI, User::ROLE_WD3], $surat->data['private']['stepper']);
+        $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI, User::ROLE_STAFF_DEKAN, User::ROLE_WD3], $surat->data['private']['stepper']);
 
-        // 4. WD2 buka surat-masuk & menyetujui -> diteruskan ke Kabag
+        // 5. WD2 buka surat-masuk & menyetujui -> diteruskan ke Kabag
         $this->actingAs($wd2)
             ->get('/wd2/surat-masuk')
             ->assertStatus(200)
@@ -180,9 +204,9 @@ class SuratPencairanDanaTest extends TestCase
 
         $surat->refresh();
         $this->assertEquals($kabag->id, $surat->current_user_id);
-        $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI, User::ROLE_WD3, User::ROLE_WD2], $surat->data['private']['stepper']);
+        $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI, User::ROLE_STAFF_DEKAN, User::ROLE_WD3, User::ROLE_WD2], $surat->data['private']['stepper']);
 
-        // 5. Kabag buka surat-masuk & menyetujui -> diteruskan ke Bendahara
+        // 6. Kabag buka surat-masuk & menyetujui -> diteruskan ke Bendahara
         $this->actingAs($kabag)
             ->get('/kabag/surat-masuk')
             ->assertStatus(200)
@@ -207,9 +231,9 @@ class SuratPencairanDanaTest extends TestCase
         $surat->refresh();
         $this->assertEquals($bendahara->id, $surat->current_user_id);
         $this->assertEquals('diproses', $surat->status);
-        $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI, User::ROLE_WD3, User::ROLE_WD2, User::ROLE_KABAG], $surat->data['private']['stepper']);
+        $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI, User::ROLE_STAFF_DEKAN, User::ROLE_WD3, User::ROLE_WD2, User::ROLE_KABAG], $surat->data['private']['stepper']);
 
-        // 6. Bendahara buka surat-masuk & menyetujui -> status SELESAI
+        // 7. Bendahara buka surat-masuk & menyetujui -> status SELESAI
         $this->actingAs($bendahara)
             ->get('/bendahara/surat-masuk')
             ->assertStatus(200)
@@ -234,7 +258,7 @@ class SuratPencairanDanaTest extends TestCase
         $this->assertEquals('selesai', $surat->status);
         $this->assertEquals('KAS-FKIP/2026/001', $surat->data['nomorBuktiPencairan']);
         $this->assertEquals($mhs->id, $surat->current_user_id);
-        $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI, User::ROLE_WD3, User::ROLE_WD2, User::ROLE_KABAG, User::ROLE_BENDAHARA], $surat->data['private']['stepper']);
+        $this->assertEquals([User::ROLE_MAHASISWA, User::ROLE_KAPRODI, User::ROLE_STAFF_DEKAN, User::ROLE_WD3, User::ROLE_WD2, User::ROLE_KABAG, User::ROLE_BENDAHARA], $surat->data['private']['stepper']);
 
         // Kabag can view approval history with both Cetak and Preview buttons
         $approvalKabag = Approval::where('user_id', $kabag->id)->where('surat_id', $surat->id)->first();

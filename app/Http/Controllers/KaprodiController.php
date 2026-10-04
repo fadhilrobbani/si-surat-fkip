@@ -157,8 +157,8 @@ class KaprodiController extends Controller
             if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana-mahasiswa', 'surat-peminjaman-ruang-mahasiswa'])) {
                 return view('kaprodi.show-surat', [
                     'surat' => $surat,
-                    'daftarPenerima' => User::select('id', 'name', 'username')
-                        ->where('role_id', '=', 10) // WD 3 Kemahasiswaan
+                    'daftarPenerima' => User::select('id', 'name', 'username', 'role_id')
+                        ->where('role_id', '=', User::ROLE_STAFF_DEKAN)
                         ->get()
                 ]);
             }
@@ -178,20 +178,11 @@ class KaprodiController extends Controller
             ]);
         }
 
-        if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana', 'surat-peminjaman-ruang'])) {
+        if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana', 'surat-peminjaman-ruang', 'surat-permohonan-narasumber'])) {
             return view('kaprodi.show-surat', [
                 'surat' => $surat,
-                'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->where('role_id', '=', 9) // WD 2 Keuangan & Umum
-                    ->get()
-            ]);
-        }
-
-        if ($surat->jenisSurat->slug == 'surat-permohonan-narasumber') {
-            return view('kaprodi.show-surat', [
-                'surat' => $surat,
-                'daftarPenerima' => User::select('id', 'name', 'username')
-                    ->where('role_id', '=', 8) // Dekan
+                'daftarPenerima' => User::select('id', 'name', 'username', 'role_id')
+                    ->where('role_id', '=', User::ROLE_STAFF_DEKAN)
                     ->get()
             ]);
         }

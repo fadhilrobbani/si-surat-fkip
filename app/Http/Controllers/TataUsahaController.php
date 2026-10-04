@@ -162,7 +162,7 @@ class TataUsahaController extends Controller
             $surat->status = 'selesai';
             $surat->expired_at = null;
             $data = $surat->data;
-            $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+            $data['tanggal_selesai'] = resolveTanggalSelesai($request);
             $data['catatanTU'] = $request->input('catatan') ?? $request->input('note');
             if ($request->filled('no-surat')) {
                 $data['noSurat'] = $request->input('no-surat');

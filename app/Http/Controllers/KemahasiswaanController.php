@@ -355,7 +355,7 @@ class KemahasiswaanController extends Controller
         $surat->current_user_id = $surat->pengaju_id;
         $surat->expired_at = null;
         $data = $surat->data;
-        $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+        $data['tanggal_selesai'] = resolveTanggalSelesai($request);
         $data['noSurat'] = $request->input('no-surat') ?? str_pad($surat->id, 4, '0', STR_PAD_LEFT);
         $data['note'] = $request->input('note');
         $surat->data = $data;

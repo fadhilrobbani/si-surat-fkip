@@ -130,7 +130,7 @@ class BendaharaController extends Controller
         $surat->status = 'selesai';
 
         $data = $surat->data;
-        $data['tanggal_selesai'] = formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+        $data['tanggal_selesai'] = resolveTanggalSelesai($request);
         $data['catatanBendahara'] = $request->input('note');
         $data['nomorBuktiPencairan'] = $request->input('no_bukti_pencairan');
         if ($request->filled('no-surat')) {

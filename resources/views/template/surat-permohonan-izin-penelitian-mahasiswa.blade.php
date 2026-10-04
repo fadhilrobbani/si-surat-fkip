@@ -21,7 +21,7 @@
         <tr>
             <td>Nomor</td>
             <td>:
-                {{ $surat->data['noSurat'] ?? 'NoSurat' }}/UN30.7/PL/{{ isset($surat->data['tanggal_selesai']) ? \Illuminate\Support\Str::of($surat->data['tanggal_selesai'])->afterLast(' ') : 'Tahun' }}
+                {{ formatNomorSuratDenganFormat($surat->data['noSurat'] ?? null, '/UN30.7/PL/', $surat) }}
             </td>
         </tr>
         <tr>

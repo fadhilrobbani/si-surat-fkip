@@ -94,3 +94,23 @@ if (!function_exists('formatDateToText')) {
         return $formattedDate;
     }
 }
+
+if (!function_exists('resolveTanggalSelesai')) {
+    function resolveTanggalSelesai($request)
+    {
+        $hasField = $request->has('tanggal-surat') || $request->has('tanggal_surat');
+        if ($hasField) {
+            $val = $request->input('tanggal-surat') ?? $request->input('tanggal_surat');
+            if (!empty($val) && trim((string) $val) !== '') {
+                try {
+                    return formatTimestampToOnlyDateIndonesian($val);
+                } catch (\Throwable $e) {
+                    return trim((string) $val);
+                }
+            }
+            return null;
+        }
+
+        return formatTimestampToOnlyDateIndonesian(Carbon::now()->timezone('Asia/Jakarta')->format('Y-m-d\TH:i:s'));
+    }
+}

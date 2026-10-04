@@ -102,7 +102,7 @@
                 </table>
             </td>
             <td style="vertical-align: top; text-align: right; width: 38%;">
-                <p>{{ isset($surat->data['tanggal_selesai']) ? $surat->data['tanggal_selesai'] : (isset($surat->created_at) ? formatTimestampToDateIndonesian($surat->created_at) : '') }}</p>
+                <p>{{ $surat->status == 'selesai' ? formatTanggalSurat($surat->data['tanggal_selesai'] ?? null) : (isset($surat->created_at) ? formatTimestampToDateIndonesian($surat->created_at) : '') }}</p>
             </td>
         </tr>
     </table>

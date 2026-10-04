@@ -189,6 +189,16 @@
                             <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
+
+                    <div class="mb-4">
+                        <label for="tanggal-surat" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Tanggal Surat <span class="text-xs font-normal text-gray-500">(Opsional)</span>
+                        </label>
+                        <input type="date" id="tanggal-surat" name="tanggal-surat"
+                            value="{{ old('tanggal-surat', date('Y-m-d')) }}"
+                            class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Default terisi hari ini. Ubah jika ingin tanggal mundur, atau kosongkan jika penanggalan manual fisik.</p>
+                    </div>
                 @endif
 
                 <div class="mb-4">
