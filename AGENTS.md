@@ -114,6 +114,22 @@ Tabel utama persuratan adalah `surats` dengan skema:
 3. **Surat Permohonan Menjadi Narasumber** (`surat-permohonan-narasumber`):
    $$\text{Staff Prodi} \longrightarrow \text{Kaprodi} \longrightarrow \text{Staff Dekan (Penomoran \& SELESAI)}$$
 
+### C. Alur 3 Surat Kolektif Prodi (Cuti Akademik, Izin Observasi, Penundaan/Penangguhan UKT)
+Ketiga surat ini bersifat **kolektif atas nama Program Studi** — satu dokumen mewakili banyak mahasiswa sekaligus, berkop prodi (kop fakultas + baris JURUSAN & PROGRAM STUDI), dan ditandatangani **Koordinator Prodi**. Karena datanya batch, **titik mulai di sistem adalah Staff Prodi** (mahasiswa menyerahkan datanya ke prodi secara offline); bukan pengajuan per mahasiswa.
+
+Alur seragam ketiganya:
+$$\text{Staff Prodi (input daftar mahasiswa)} \longrightarrow \text{Kaprodi (ttd)} \longrightarrow \text{Staff Dekan (nomor \& tanggal, opsional \& SELESAI)}$$
+
+| Slug | Jenis | Tabel Data Batch |
+|---|---|---|
+| `surat-cuti-mahasiswa` | Surat Permohonan Cuti Akademik Mahasiswa | `data.mahasiswa[]` (nama, npm, programStudi, alasanCuti) |
+| `surat-izin-observasi` | Surat Izin Observasi Mahasiswa (**1 surat per sekolah**) | `data.mahasiswa[]` (nama, npm, programStudi) |
+| `surat-penundaan-pembayaran-ukt` | Surat Permohonan Penundaan/Penangguhan Pembayaran UKT | `data.mahasiswa[]` (nama, npm, hariTanggalUjian, waktu) |
+
+- **Penandatangan PDF**: Koordinator Prodi (nama & NIP dari Kaprodi yang menyetujui). Surat UKT ditujukan (Yth.) ke Dekan, namun tetap ditandatangani Kaprodi.
+- **Nomor Surat**: diisi di Staff Dekan, **opsional**. Bila kosong → titik-titik; bila hanya angka → disambung suffix. Suffix acuan: Cuti `/DST/UN30.7.9/DT.00.00/{tahun}`, Observasi `/UN30.7.10/{kode prodi}/PP/{tahun}`, UKT `/UN30.7.10/{kode prodi}/RT/{tahun}` (segmen kode prodi diisi manual karena tidak tersedia di database — hanya placeholder).
+- **Tanggal Surat**: opsional via `resolveTanggalSelesai()` (kosong → titik-titik).
+
 ---
 
 ## 5. Aturan Penomoran Surat & Standar Cetak PDF (WYSIWYG)
@@ -131,6 +147,9 @@ Tabel utama persuratan adalah `surats` dengan skema:
      - Permohonan Narasumber: `/UN30.7.10/DT.06/{tahun}`
      - Surat Tugas: `/UN30.7/KP/{tahun}`
      - Surat Keluar: `/UN30.7/PP/{tahun}`
+     - Cuti Akademik Kolektif: `/DST/UN30.7.9/DT.00.00/{tahun}`
+     - Izin Observasi Kolektif: `/UN30.7.10/..../PP/{tahun}` (kode prodi manual)
+     - Penundaan/Penangguhan UKT: `/UN30.7.10/..../RT/{tahun}` (kode prodi manual)
 3. **Validasi Strict Format Nomor**:
    - Jika verifikator memilih untuk mengisi nomor surat, input wajib memuat karakter slash (`/`) agar tidak menghasilkan nomor gundul tanpa kode instansi.
 4. **Backward Compatibility Arsip Lama**:

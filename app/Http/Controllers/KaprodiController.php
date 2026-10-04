@@ -178,7 +178,7 @@ class KaprodiController extends Controller
             ]);
         }
 
-        if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana', 'surat-peminjaman-ruang', 'surat-permohonan-narasumber'])) {
+        if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana', 'surat-peminjaman-ruang', 'surat-permohonan-narasumber', 'surat-cuti-mahasiswa', 'surat-izin-observasi', 'surat-penundaan-pembayaran-ukt'])) {
             return view('kaprodi.show-surat', [
                 'surat' => $surat,
                 'daftarPenerima' => User::select('id', 'name', 'username', 'role_id')
@@ -430,7 +430,7 @@ class KaprodiController extends Controller
             return redirect('kaprodi/surat-masuk')->with('success', 'Surat berhasil disetujui');
         }
 
-        if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana', 'surat-peminjaman-ruang', 'surat-permohonan-narasumber'])) {
+        if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana', 'surat-peminjaman-ruang', 'surat-permohonan-narasumber', 'surat-cuti-mahasiswa', 'surat-izin-observasi', 'surat-penundaan-pembayaran-ukt'])) {
             $surat->current_user_id = $request->input('penerima');
             $data = $surat->data;
             if (!isset($data['private'])) {

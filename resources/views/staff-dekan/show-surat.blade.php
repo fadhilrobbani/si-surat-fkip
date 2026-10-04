@@ -252,7 +252,8 @@
         $surat->current_user_id == auth()->user()->id &&
             $surat->status == 'diproses' &&
             $surat->jenisSurat->user_type == 'staff' &&
-            $surat->data['private']['stepper'][count($surat->data['private']['stepper']) - 1] !== 4)
+            ($surat->data['private']['stepper'][count($surat->data['private']['stepper']) - 1] !== 4 ||
+                in_array($surat->jenisSurat->slug, ['surat-cuti-mahasiswa', 'surat-izin-observasi', 'surat-penundaan-pembayaran-ukt'])))
         <form action="{{ route('setujui-surat-staff-staff-dekan', $surat->id) }}" method="POST"
             class="bg-slate-100 mt-4 p-2 rounded-lg w-full">
             @csrf
@@ -271,10 +272,19 @@
                             'surat-keluar',
                             'surat-tugas-from-staff-dekan',
                             'surat-tugas-kelompok-from-staff-dekan',
+                            'surat-cuti-mahasiswa',
+                            'surat-izin-observasi',
+                            'surat-penundaan-pembayaran-ukt',
                         ]);
                         $defaultFormat = null;
                         if ($surat->jenisSurat->slug == 'surat-permohonan-narasumber') {
                             $defaultFormat = '/DST/UN30.7.10/DT.06/' . date('Y');
+                        } elseif ($surat->jenisSurat->slug == 'surat-cuti-mahasiswa') {
+                            $defaultFormat = '/DST/UN30.7.9/DT.00.00/' . date('Y');
+                        } elseif ($surat->jenisSurat->slug == 'surat-izin-observasi') {
+                            $defaultFormat = '/UN30.7.10/..../PP/' . date('Y');
+                        } elseif ($surat->jenisSurat->slug == 'surat-penundaan-pembayaran-ukt') {
+                            $defaultFormat = '/UN30.7.10/..../RT/' . date('Y');
                         } elseif (in_array($surat->jenisSurat->slug, ['surat-tugas', 'surat-tugas-kelompok', 'surat-tugas-from-staff-dekan', 'surat-tugas-kelompok-from-staff-dekan'])) {
                             $defaultFormat = '/DST/UN30.7/KP/' . date('Y');
                         } elseif ($surat->jenisSurat->slug == 'surat-peminjaman-ruang') {
@@ -374,6 +384,7 @@
         $surat->current_user_id == auth()->user()->id &&
             $surat->status == 'diproses' &&
             ($surat->jenisSurat->user_type == 'staff' || in_array($surat->jenisSurat->slug, ['surat-peminjaman-ruang-mahasiswa', 'surat-pencairan-dana-mahasiswa'])) &&
+            !in_array($surat->jenisSurat->slug, ['surat-cuti-mahasiswa', 'surat-izin-observasi', 'surat-penundaan-pembayaran-ukt']) &&
             isset($surat->data['private']['stepper']) &&
             $surat->data['private']['stepper'][count($surat->data['private']['stepper']) - 1] === 4)
         <form action="{{ route('setujui-surat-staff-staff-dekan', $surat->id) }}" method="POST"
@@ -442,9 +453,18 @@
                             'surat-tugas-kelompok',
                             'surat-tugas-from-staff-dekan',
                             'surat-tugas-kelompok-from-staff-dekan',
+                            'surat-cuti-mahasiswa',
+                            'surat-izin-observasi',
+                            'surat-penundaan-pembayaran-ukt',
                         ]);
                         $defaultFormat2 = null;
-                        if (in_array($surat->jenisSurat->slug, ['surat-tugas-from-staff-dekan', 'surat-tugas-kelompok-from-staff-dekan', 'surat-tugas', 'surat-tugas-kelompok'])) {
+                        if ($surat->jenisSurat->slug == 'surat-cuti-mahasiswa') {
+                            $defaultFormat2 = '/DST/UN30.7.9/DT.00.00/' . date('Y');
+                        } elseif ($surat->jenisSurat->slug == 'surat-izin-observasi') {
+                            $defaultFormat2 = '/UN30.7.10/..../PP/' . date('Y');
+                        } elseif ($surat->jenisSurat->slug == 'surat-penundaan-pembayaran-ukt') {
+                            $defaultFormat2 = '/UN30.7.10/..../RT/' . date('Y');
+                        } elseif (in_array($surat->jenisSurat->slug, ['surat-tugas-from-staff-dekan', 'surat-tugas-kelompok-from-staff-dekan', 'surat-tugas', 'surat-tugas-kelompok'])) {
                             $defaultFormat2 = '/DST/UN30.7/KP/' . date('Y');
                         } elseif ($surat->jenisSurat->slug == 'surat-keluar') {
                             $defaultFormat2 = '/UN30.7/PP/' . date('Y');

@@ -143,6 +143,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-permohonan-narasumber', [SuratController::class, 'storeSuratPermohonanNarasumberByStaff'])->name('staff-store-surat-permohonan-narasumber');
         Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-peminjaman-ruang', [SuratController::class, 'storeSuratPeminjamanRuangByStaff'])->name('staff-store-surat-peminjaman-ruang');
         Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-pencairan-dana', [SuratController::class, 'storeSuratPencairanDanaByStaff'])->name('staff-store-surat-pencairan-dana');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-cuti-mahasiswa', [SuratController::class, 'storeSuratCutiMahasiswaByStaff'])->name('staff-store-surat-cuti-mahasiswa');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-izin-observasi', [SuratController::class, 'storeSuratIzinObservasiByStaff'])->name('staff-store-surat-izin-observasi');
+        Route::post('/pengajuan-surat/store/{jenisSurat:slug}/surat-penundaan-pembayaran-ukt', [SuratController::class, 'storeSuratPenundaanPembayaranUktByStaff'])->name('staff-store-surat-penundaan-pembayaran-ukt');
         Route::delete('/pengajuan-surat/destroy/{surat}', [SuratController::class, 'destroy'])->can('staffCanCancelSurat', 'surat')->name('staff-destroy-surat');
         Route::get('/riwayat-pengajuan-surat', [StaffController::class, 'riwayatPengajuanSurat'])->name('staff-riwayat-pengajuan-surat');
         Route::get('/riwayat-pengajuan-surat/show/{surat}', [StaffController::class, 'showDetailPengajuanSuratByStaff'])->can('staffCanViewShowDetailPengajuanSuratByStaff', 'surat')->name('show-detail-pengajuan-surat-staff');

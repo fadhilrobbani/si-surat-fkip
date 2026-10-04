@@ -1,7 +1,38 @@
 @props(['key', 'value'])
 
 @if (is_array($value))
-    @if ($key === 'items' || $key === 'rincian_biaya' || (isset($value[0]) && is_array($value[0]) && (isset($value[0]['uraian']) || isset($value[0]['nominal']))))
+    @if ($key === 'mahasiswa')
+        <div class="overflow-x-auto my-2 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+            <table class="w-full text-xs text-left text-gray-600 dark:text-gray-300">
+                <thead class="bg-gray-100 dark:bg-gray-700 uppercase text-gray-700 dark:text-gray-300 text-[11px]">
+                    <tr>
+                        <th class="px-3 py-2 text-center w-12">No</th>
+                        <th class="px-3 py-2">Nama</th>
+                        <th class="px-3 py-2 w-32">NPM</th>
+                        <th class="px-3 py-2">Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
+                    @foreach ($value as $idx => $mhs)
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                            <td class="px-3 py-2 text-center font-medium text-gray-500">{{ $idx + 1 }}</td>
+                            <td class="px-3 py-2 font-medium text-gray-900 dark:text-white">{{ $mhs['nama'] ?? '-' }}</td>
+                            <td class="px-3 py-2">{{ $mhs['npm'] ?? '-' }}</td>
+                            <td class="px-3 py-2">
+                                @if (!empty($mhs['alasanCuti']))
+                                    {{ $mhs['alasanCuti'] }}
+                                @elseif (!empty($mhs['hariTanggalUjian']) || !empty($mhs['waktu']))
+                                    {{ trim(($mhs['hariTanggalUjian'] ?? '') . ' ' . ($mhs['waktu'] ?? '')) }}
+                                @else
+                                    {{ $mhs['programStudi'] ?? '-' }}
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @elseif ($key === 'items' || $key === 'rincian_biaya' || (isset($value[0]) && is_array($value[0]) && (isset($value[0]['uraian']) || isset($value[0]['nominal']))))
         @php
             $hasMak = false;
             foreach ($value as $it) {

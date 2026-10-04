@@ -125,6 +125,31 @@ graph TD
 
 ---
 
+## 7. Alur 3 Surat Kolektif Prodi (Cuti, Izin Observasi, Penundaan/Penangguhan UKT)
+
+Ketiga surat ini bersifat **kolektif atas nama Program Studi**: satu dokumen mewakili banyak mahasiswa, berkop prodi, dan ditandatangani Koordinator Prodi. Karena datanya batch, titik mulai di sistem adalah **Staff Prodi** (mahasiswa menyerahkan data ke prodi secara offline).
+
+```mermaid
+graph TD
+    A[Staff Prodi - input daftar mahasiswa] -->|Mengajukan| B[Kaprodi]
+    B -->|Tanda Tangan| C[Staff Dekan]
+    C -->|Nomor & Tanggal opsional, Selesai| D((SELESAI))
+```
+
+**Detail Langkah:**
+1. **Staff Prodi (Role 3)**: menginput daftar mahasiswa (batch) dan mengajukan ke Kaprodi.
+2. **Kaprodi (Role 4)**: menyetujui, nama & NIP tersimpan sebagai penandatangan.
+3. **Staff Dekan (Role 14)**: mengisi nomor surat & tanggal (keduanya opsional), lalu menutup alur (`Selesai`).
+
+**Jenis surat:**
+* `surat-cuti-mahasiswa` — Surat Permohonan Cuti Akademik Mahasiswa.
+* `surat-izin-observasi` — Surat Izin Observasi Mahasiswa (satu surat per sekolah).
+* `surat-penundaan-pembayaran-ukt` — Surat Permohonan Penundaan/Penangguhan Pembayaran UKT.
+
+**Catatan:** kode prodi pada nomor surat (mis. `BIO`) tidak tersedia di database sehingga segmen tersebut diisi manual oleh Staff Dekan; tombol auto-fill hanya mengisi suffix stabil.
+
+---
+
 ## Ringkasan Peran Utama (Role ID)
 
 Berikut adalah daftar lengkap ID Role yang digunakan dalam sistem, dikelompokkan berdasarkan fungsinya:

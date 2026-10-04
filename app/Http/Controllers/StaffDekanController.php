@@ -237,6 +237,17 @@ class StaffDekanController extends Controller
         }
 
         if (in_array($surat->jenisSurat->slug, [
+            'surat-cuti-mahasiswa',
+            'surat-izin-observasi',
+            'surat-penundaan-pembayaran-ukt'
+        ])) {
+            return view('staff-dekan.show-surat', [
+                'surat' => $surat,
+                'daftarPenerima' => []
+            ]);
+        }
+
+        if (in_array($surat->jenisSurat->slug, [
             'surat-permohonan-narasumber',
             'surat-peminjaman-ruang',
             'surat-peminjaman-ruang-mahasiswa',
@@ -285,6 +296,49 @@ class StaffDekanController extends Controller
 
     public function setujuiSurat(Request $request, Surat $surat)
     {
+        if (in_array($surat->jenisSurat->slug, [
+            'surat-cuti-mahasiswa',
+            'surat-izin-observasi',
+            'surat-penundaan-pembayaran-ukt'
+        ])) {
+            if ($request->filled('no-surat')) {
+                $request->validate([
+                    'no-surat' => [
+                        'required',
+                        'string',
+                        'max:100',
+                        function ($attribute, $value, $fail) {
+                            if (!str_contains($value, '/')) {
+                                $fail('Nomor surat harus berformat lengkap dengan kode instansi. Gunakan tombol bantuan di bawah kolom.');
+                            }
+                        },
+                    ],
+                ]);
+            }
+
+            $surat->current_user_id = $surat->pengaju_id;
+            $surat->expired_at = null;
+            $data = $surat->data;
+            $data['tanggal_selesai'] = resolveTanggalSelesai($request);
+            $data['noSurat'] = $request->input('no-surat') ?: null;
+            $data['note'] = $request->input('note');
+            if (isset($data['private']['stepper'])) {
+                $data['private']['stepper'][] = auth()->user()->role->id;
+            }
+            $surat->data = $data;
+            $surat->status = 'selesai';
+            $surat->save();
+
+            Approval::create([
+                'user_id' => auth()->user()->id,
+                'surat_id' => $surat->id,
+                'isApproved' => true,
+                'note' => $request->input('note') ?? 'Disetujui dan diselesaikan oleh Staff Dekan',
+            ]);
+
+            return redirect('/staff-dekan/surat-masuk')->with('success', 'Surat berhasil diselesaikan');
+        }
+
         if (in_array($surat->jenisSurat->slug, [
             'surat-permohonan-narasumber',
             'surat-peminjaman-ruang',

@@ -364,6 +364,42 @@ class SuratController extends Controller
             ]);
         }
 
+        if ($jenisSurat->slug == 'surat-cuti-mahasiswa') {
+            return view('staff.formsurat.form-surat-cuti-mahasiswa', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username', 'role_id')
+                    ->whereIn('role_id', [4])
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
+
+        if ($jenisSurat->slug == 'surat-izin-observasi') {
+            return view('staff.formsurat.form-surat-izin-observasi', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username', 'role_id')
+                    ->whereIn('role_id', [4])
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
+
+        if ($jenisSurat->slug == 'surat-penundaan-pembayaran-ukt') {
+            return view('staff.formsurat.form-surat-penundaan-pembayaran-ukt', [
+                'jenisSurat' => $jenisSurat,
+                'daftarProgramStudi' => ProgramStudi::all(),
+                'daftarPenerima' => User::select('id', 'name', 'username', 'role_id')
+                    ->whereIn('role_id', [4])
+                    ->where('program_studi_id', '=', auth()->user()->program_studi_id)
+                    ->orderBy('username', 'asc')
+                    ->get()
+            ]);
+        }
+
         return abort(404);
     }
 
@@ -1831,6 +1867,195 @@ class SuratController extends Controller
 
         $surat->save();
         return redirect('/staff/riwayat-pengajuan-surat')->with('success', 'Surat usulan pencairan dana berhasil diajukan');
+    }
+
+    public function storeSuratCutiMahasiswaByStaff(Request $request, JenisSurat $jenisSurat)
+    {
+        if ($jenisSurat->slug != 'surat-cuti-mahasiswa') {
+            return redirect()->back()->with('error', 'Jenis surat tidak sesuai');
+        }
+
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'penerima' => 'required',
+            'tahun_akademik' => 'required',
+            'lama_cuti' => 'required|numeric|min:1',
+            'berkas_pendukung' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:10240',
+            'mahasiswa' => 'required|array|min:1',
+            'mahasiswa.*.nama' => 'required',
+            'mahasiswa.*.npm' => 'required',
+            'mahasiswa.*.alasan' => 'required',
+        ]);
+
+        $mahasiswa = [];
+        foreach ($request->input('mahasiswa', []) as $m) {
+            if (trim((string) ($m['nama'] ?? '')) === '') {
+                continue;
+            }
+            $mahasiswa[] = [
+                'nama' => trim($m['nama']),
+                'npm' => trim($m['npm'] ?? ''),
+                'programStudi' => $m['program_studi'] ?? (auth()->user()->programStudi->name ?? ''),
+                'alasanCuti' => trim($m['alasan'] ?? ''),
+            ];
+        }
+
+        $surat = new Surat;
+        $surat->pengaju_id = auth()->user()->id;
+        $surat->current_user_id = $request->input('penerima');
+        $surat->status = 'diproses';
+        $surat->jenis_surat_id = $jenisSurat->id;
+        $surat->expired_at = now()->addDays(30);
+        $surat->data = [
+            'nama' => $request->input('name'),
+            'username' => $request->input('username'),
+            'programStudi' => auth()->user()->programStudi->name ?? '',
+            'tahunAkademik' => $request->input('tahun_akademik'),
+            'lamaCuti' => (int) $request->input('lama_cuti'),
+            'mahasiswa' => $mahasiswa,
+            'private' => [
+                'stepper' => [auth()->user()->role->id],
+            ]
+        ];
+
+        $files = [];
+        if ($request->hasFile('berkas_pendukung')) {
+            $files['berkasPendukung'] = $request->file('berkas_pendukung')->store('lampiran');
+        }
+        $surat->files = $files;
+
+        $surat->save();
+        return redirect('/staff/riwayat-pengajuan-surat')->with('success', 'Surat permohonan cuti akademik berhasil diajukan');
+    }
+
+    public function storeSuratIzinObservasiByStaff(Request $request, JenisSurat $jenisSurat)
+    {
+        if ($jenisSurat->slug != 'surat-izin-observasi') {
+            return redirect()->back()->with('error', 'Jenis surat tidak sesuai');
+        }
+
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'penerima' => 'required',
+            'mata_kuliah' => 'required',
+            'tentang' => 'required',
+            'hari_tanggal' => 'required',
+            'pukul' => 'required',
+            'tempat' => 'required',
+            'berkas_pendukung' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:10240',
+            'mahasiswa' => 'required|array|min:1',
+            'mahasiswa.*.nama' => 'required',
+            'mahasiswa.*.npm' => 'required',
+        ]);
+
+        $mahasiswa = [];
+        foreach ($request->input('mahasiswa', []) as $m) {
+            if (trim((string) ($m['nama'] ?? '')) === '') {
+                continue;
+            }
+            $mahasiswa[] = [
+                'nama' => trim($m['nama']),
+                'npm' => trim($m['npm'] ?? ''),
+                'programStudi' => $m['program_studi'] ?? (auth()->user()->programStudi->name ?? ''),
+            ];
+        }
+
+        $surat = new Surat;
+        $surat->pengaju_id = auth()->user()->id;
+        $surat->current_user_id = $request->input('penerima');
+        $surat->status = 'diproses';
+        $surat->jenis_surat_id = $jenisSurat->id;
+        $surat->expired_at = now()->addDays(30);
+        $surat->data = [
+            'nama' => $request->input('name'),
+            'username' => $request->input('username'),
+            'programStudi' => auth()->user()->programStudi->name ?? '',
+            'mataKuliah' => $request->input('mata_kuliah'),
+            'tentang' => $request->input('tentang'),
+            'hariTanggal' => $request->input('hari_tanggal'),
+            'pukul' => $request->input('pukul'),
+            'tempat' => $request->input('tempat'),
+            'mahasiswa' => $mahasiswa,
+            'private' => [
+                'stepper' => [auth()->user()->role->id],
+            ]
+        ];
+
+        $files = [];
+        if ($request->hasFile('berkas_pendukung')) {
+            $files['berkasPendukung'] = $request->file('berkas_pendukung')->store('lampiran');
+        }
+        $surat->files = $files;
+
+        $surat->save();
+        return redirect('/staff/riwayat-pengajuan-surat')->with('success', 'Surat izin observasi berhasil diajukan');
+    }
+
+    public function storeSuratPenundaanPembayaranUktByStaff(Request $request, JenisSurat $jenisSurat)
+    {
+        if ($jenisSurat->slug != 'surat-penundaan-pembayaran-ukt') {
+            return redirect()->back()->with('error', 'Jenis surat tidak sesuai');
+        }
+
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'penerima' => 'required',
+            'nomor_surat_edaran' => 'required',
+            'tanggal_surat_edaran' => 'nullable',
+            'rentang_awal' => 'required',
+            'rentang_akhir' => 'required',
+            'berkas_pendukung' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:10240',
+            'mahasiswa' => 'required|array|min:1',
+            'mahasiswa.*.nama' => 'required',
+            'mahasiswa.*.npm' => 'required',
+            'mahasiswa.*.hari_tanggal_ujian' => 'required',
+            'mahasiswa.*.waktu' => 'required',
+        ]);
+
+        $mahasiswa = [];
+        foreach ($request->input('mahasiswa', []) as $m) {
+            if (trim((string) ($m['nama'] ?? '')) === '') {
+                continue;
+            }
+            $mahasiswa[] = [
+                'nama' => trim($m['nama']),
+                'npm' => trim($m['npm'] ?? ''),
+                'hariTanggalUjian' => trim($m['hari_tanggal_ujian'] ?? ''),
+                'waktu' => trim($m['waktu'] ?? ''),
+            ];
+        }
+
+        $surat = new Surat;
+        $surat->pengaju_id = auth()->user()->id;
+        $surat->current_user_id = $request->input('penerima');
+        $surat->status = 'diproses';
+        $surat->jenis_surat_id = $jenisSurat->id;
+        $surat->expired_at = now()->addDays(30);
+        $surat->data = [
+            'nama' => $request->input('name'),
+            'username' => $request->input('username'),
+            'programStudi' => auth()->user()->programStudi->name ?? '',
+            'nomorSuratEdaran' => $request->input('nomor_surat_edaran'),
+            'tanggalSuratEdaran' => $request->input('tanggal_surat_edaran'),
+            'rentangAwal' => $request->input('rentang_awal'),
+            'rentangAkhir' => $request->input('rentang_akhir'),
+            'mahasiswa' => $mahasiswa,
+            'private' => [
+                'stepper' => [auth()->user()->role->id],
+            ]
+        ];
+
+        $files = [];
+        if ($request->hasFile('berkas_pendukung')) {
+            $files['berkasPendukung'] = $request->file('berkas_pendukung')->store('lampiran');
+        }
+        $surat->files = $files;
+
+        $surat->save();
+        return redirect('/staff/riwayat-pengajuan-surat')->with('success', 'Surat permohonan penundaan/pembayaran UKT berhasil diajukan');
     }
 
     public function storeSuratPengajuanAtkByAkademik(Request $request, JenisSurat $jenisSurat)

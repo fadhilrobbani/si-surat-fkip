@@ -180,6 +180,21 @@ class JenisSuratSeeder extends Seeder
                 'slug' => 'surat-pencairan-dana-mahasiswa',
                 'user_type' => 'mahasiswa'
             ],
+            [
+                'name' => 'Surat Permohonan Cuti Akademik Mahasiswa',
+                'slug' => 'surat-cuti-mahasiswa',
+                'user_type' => 'staff'
+            ],
+            [
+                'name' => 'Surat Izin Observasi Mahasiswa',
+                'slug' => 'surat-izin-observasi',
+                'user_type' => 'staff'
+            ],
+            [
+                'name' => 'Surat Permohonan Penundaan/Penangguhan Pembayaran UKT',
+                'slug' => 'surat-penundaan-pembayaran-ukt',
+                'user_type' => 'staff'
+            ],
 
         ];
 

@@ -121,6 +121,27 @@ class PDFController extends Controller
             ]);
         }
 
+        if ($surat->jenisSurat->slug == 'surat-cuti-mahasiswa') {
+            $pdf = Pdf::loadview('template.surat-cuti-mahasiswa', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+                'tempDir' => public_path(),
+                'chroot' => public_path()
+            ]);
+        }
+
+        if ($surat->jenisSurat->slug == 'surat-izin-observasi') {
+            $pdf = Pdf::loadview('template.surat-izin-observasi', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+                'tempDir' => public_path(),
+                'chroot' => public_path()
+            ]);
+        }
+
+        if ($surat->jenisSurat->slug == 'surat-penundaan-pembayaran-ukt') {
+            $pdf = Pdf::loadview('template.surat-penundaan-pembayaran-ukt', ['surat' => $surat])->setPaper('a4', 'potrait')->setOptions([
+                'tempDir' => public_path(),
+                'chroot' => public_path()
+            ]);
+        }
+
         $isV2 = $surat->created_at ? $surat->created_at->gte('2026-08-25 00:00:00') : true;
         $viewPrefix = $isV2 ? 'template.v2.' : 'template.';
 

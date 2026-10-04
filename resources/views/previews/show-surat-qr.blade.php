@@ -73,7 +73,10 @@
                                 'surat-peminjaman-ruang',
                                 'surat-peminjaman-ruang-mahasiswa',
                                 'surat-pencairan-dana',
-                                'surat-pencairan-dana-mahasiswa'
+                                'surat-pencairan-dana-mahasiswa',
+                                'surat-cuti-mahasiswa',
+                                'surat-izin-observasi',
+                                'surat-penundaan-pembayaran-ukt'
                             ]);
 
                             $namaSigner = $isKaprodiSigned
@@ -271,7 +274,7 @@
 
 
             </div>
-        @elseif ($surat->jenisSurat->user_type == 'staff' && in_array($surat->jenisSurat->slug, ['surat-permohonan-narasumber', 'surat-peminjaman-ruang', 'surat-pencairan-dana']))
+        @elseif ($surat->jenisSurat->user_type == 'staff' && in_array($surat->jenisSurat->slug, ['surat-permohonan-narasumber', 'surat-peminjaman-ruang', 'surat-pencairan-dana', 'surat-cuti-mahasiswa', 'surat-izin-observasi', 'surat-penundaan-pembayaran-ukt']))
             <div class="overflow-x-auto border-2 border-slate-300 rounded-lg">
                 <table class="w-full text-sm text-left text-gray-700 bg-white">
                     <tbody>
