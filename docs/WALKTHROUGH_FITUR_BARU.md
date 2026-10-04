@@ -63,6 +63,23 @@ Dokumen ini berisi dokumentasi perubahan fitur terbaru (3 Jenis Surat Prioritas,
   - **Pencatatan Riwayat di Controller**: Seluruh controller pada alur (`KaprodiController`, `WD3Controller`, `WD2Controller`, `KabagController`, `BendaharaController`, `TataUsahaController`, `DekanController`, `StaffDekanController`) kini otomatis mencatat role ID pengguna saat ini ke array `$data['private']['stepper']` saat menyetujui atau menolak surat.
   - **Toleransi Data di Halaman Surat Masuk**: Menambahkan null-coalescing fallback pada NPM/Email pengaju di semua view `surat-masuk.blade.php` pejabat fakultas agar tidak pernah terjadi error `Undefined array key`.
 
+### F. 3 Surat Kolektif Program Studi (Fitur Terbaru 2026)
+Ketiga surat ini bersifat **kolektif atas nama Program Studi** — satu dokumen mewakili banyak mahasiswa sekaligus, berkop prodi (kop fakultas + baris JURUSAN & PROGRAM STUDI), dan ditandatangani **Koordinator Prodi**. Karena datanya batch, **titik mulai di sistem adalah Staff Prodi** (mahasiswa menyerahkan data ke prodi secara offline), bukan pengajuan per mahasiswa.
+
+Alur seragam: $\text{Staff Prodi (input daftar mahasiswa)} \longrightarrow \text{Kaprodi (ttd)} \longrightarrow \text{Staff Dekan (nomor \& tanggal opsional, SELESAI)}$.
+
+| Slug | Jenis Surat | Data Batch |
+|---|---|---|
+| `surat-cuti-mahasiswa` | Surat Permohonan Cuti Akademik Mahasiswa | `data.mahasiswa[]` (nama, npm, programStudi, alasanCuti) |
+| `surat-izin-observasi` | Surat Izin Observasi Mahasiswa (**1 surat per sekolah**) | `data.mahasiswa[]` (nama, npm, programStudi) |
+| `surat-penundaan-pembayaran-ukt` | Surat Permohonan Penundaan/Penangguhan Pembayaran UKT | `data.mahasiswa[]` (nama, npm, hariTanggalUjian, waktu) |
+
+- **Penandatangan PDF**: Koordinator Prodi (nama & NIP dari Kaprodi yang menyetujui). Surat UKT ditujukan (Yth.) ke Dekan, namun tetap ditandatangani Kaprodi.
+- **Nomor Surat (opsional, di Staff Dekan)**: kosong → titik-titik; hanya angka → disambung suffix. Suffix acuan: Cuti `/DST/UN30.7.9/DT.00.00/{tahun}`, Observasi `/UN30.7.10/{kode prodi}/PP/{tahun}`, UKT `/UN30.7.10/{kode prodi}/RT/{tahun}`. Segmen `{kode prodi}` **diisi manual** oleh Staff Dekan (placeholder), karena kode prodi (mis. `BIO`) tidak tersedia di database.
+- **Tanggal Surat (opsional)**: memakai `resolveTanggalSelesai()`; kosong → titik-titik.
+- **Kop Prodi** (`components/kop-prodi.blade.php`): mengikuti kop fakultas + baris `JURUSAN ...` dan `PROGRAM STUDI ...` (frasa "PROGRAM STUDI" otomatis ditambahkan bila belum ada, dan tidak dobel).
+- **File terkait**: form `resources/views/staff/formsurat/form-surat-{cuti-mahasiswa,izin-observasi,penundaan-pembayaran-ukt}.blade.php`; template `resources/views/template/surat-{cuti-mahasiswa,izin-observasi,penundaan-pembayaran-ukt}.blade.php`.
+
 ---
 
 ## 2. Langkah Update di Server Production
@@ -289,6 +306,12 @@ graph TD
         DK1 -->|Setujui| SD1[Staff Dekan]
         SD1 -->|Terbitkan Nomor / Selesaikan| S3[SELESAI / Cetak Surat]
     end
+
+    subgraph Alur_3_Surat_Kolektif_Prodi
+        SP1[Staff Prodi - input daftar mahasiswa] -->|Ajukan| KP1[Koordinator Prodi]
+        KP1 -->|Tanda Tangan| SD2[Staff Dekan]
+        SD2 -->|Nomor & Tanggal opsional| S4[SELESAI / Cetak Surat]
+    end
 ```
 
 ---
@@ -333,9 +356,17 @@ Anda tidak perlu lagi menguji alur surat secara manual dari akun ke akun. Cukup 
 4. **Render Template PDF** (`tests/Feature/SuratPdfPreviewTest.php`):
    - Memastikan ketiga dokumen PDF (Narasumber, Ruang, Dana) berhasil dirender oleh DomPDF dengan status HTTP 200 tanpa error.
 5. **Smoke Test Form Lama & Uji Regresi Surat Tugas** (`tests/Feature/LegacySuratRegressionTest.php`):
-   - Smoke test memastikan 13 form surat mahasiswa lama terbuka dengan normal (HTTP 200).
-   - Smoke test memastikan 7 form surat staf lama terbuka dengan normal (HTTP 200).
+   - Smoke test memastikan seluruh form surat mahasiswa lama terbuka dengan normal (HTTP 200).
+   - Smoke test memastikan seluruh form surat staf (termasuk 3 surat kolektif baru) terbuka dengan normal (HTTP 200).
    - Regression test memastikan fitur pengosongan nomor surat tidak merusak alur persetujuan Surat Tugas lama (diuji baik nomor surat diisi maupun dikosongkan).
+6. **Surat Kolektif Prodi** (`tests/Feature/SuratKolektifProdiTest.php`):
+   - Uji form & submit 3 surat kolektif (Cuti, Izin Observasi, Penundaan/Penangguhan UKT) dengan data batch `mahasiswa[]`.
+   - Uji rantai Staff Prodi $\rightarrow$ Kaprodi $\rightarrow$ Staff Dekan dan finalisasi dengan nomor & tanggal opsional.
+   - Uji render PDF ketiga surat.
+7. **Riwayat Persetujuan Surat Batch** (`tests/Feature/SuratKolektifShowApprovalTest.php`):
+   - Memastikan halaman `riwayat-persetujuan/show` Kaprodi & Staff Dekan mampu merender data batch `mahasiswa[]` tanpa error `html_entity_decode`.
+8. **Kompatibilitas Dekan/WD** (`tests/Feature/DekanWdShowSuratCompatibilityTest.php`):
+   - Memastikan halaman `show-surat` & `show-approval` Dekan/WD tetap merender field teks ber-HTML (mis. `paragrafAwal` Surat Keluar) secara mentah (backward compatible) sekaligus aman terhadap field bertipe array.
 
 ---
 
@@ -363,6 +394,11 @@ Anda tidak perlu lagi menguji alur surat secara manual dari akun ke akun. Cukup 
 | **18. Tombol Periksa Singkat & Perbaikan 404 Lampiran PDF Bendahara** | 1. Tombol *"Periksa & Cairkan"* di inbox surat masuk bendahara terlalu panjang.<br>2. Tombol *"Lihat Dokumen PDF"* di bendahara menghasilkan 404 Not Found karena menggunakan path `asset('storage/...')` alih-alih signed route. | 1. Teks tombol dipersingkat menjadi **"Periksa"**.<br>2. Route `show-file-bendahara` didaftarkan di `routes/web.php` dan link dokumen PDF diubah menggunakan `URL::signedRoute('show-file-bendahara', ...)` sehingga seluruh berkas lampiran aman dibuka oleh Bendahara. |
 | **19. Format Nomor Surat Keluar pada Staff Dekan** | Pengisian nomor surat keluar di Staff Dekan belum memiliki panduan format dinamis dan tombol auto-fill seperti surat tugas, serta perlu smart rendering agar tidak merusak arsip lama. | 1. Label dan validasi form di `StaffDekanController` disesuaikan per jenis surat.<br>2. Tombol auto-fill `[📋 Gunakan Format: /UN30.7/PP/2026]` diaktifkan pada form verifikasi Staff Dekan.<br>3. Template cetak `surat-keluar.blade.php` (dan `v2`) diberi logika cerdas: nomor lama tanpa slash otomatis diberi kode instansi, nomor baru dengan slash dicetak utuh tanpa dobel suffix, dan nomor kosong dicetak titik-titik panjang. |
 | **20. Penambahan Panel / Resource Bendahara di Filament Admin** | Role baru `bendahara` (ID: 22) belum memiliki Filament Resource di dashboard admin, sehingga akun Bendahara belum dapat dikelola melalui panel admin Filament (`/admin`). | 1. Dibuat model proxy `App\Models\Bendahara` yang meng-extend `App\Models\User`.<br>2. Dibuat `App\Filament\Resources\BendaharaResource` lengkap dengan sub-pages `ListBendaharas`, `CreateBendahara`, dan `EditBendahara`.<br>3. Terdaftar di menu sidebar admin pada navigasi grup **"Manajemen Akun"** (`slug: akun-bendahara`, sort order: 23, icon: `heroicon-o-banknotes`).<br>4. Menyediakan fitur CRUD penuh (username, email, nama, NIP, kata sandi terkonfirmasi, role ID ter-assign otomatis) dengan query terisolasi khusus role Bendahara.<br>5. Dilengkapi unit/feature test komprehensif (`tests/Feature/BendaharaFilamentResourceTest.php`) dengan hasil uji 100% PASS. |
+| **21. Penambahan 3 Surat Kolektif Program Studi (Cuti, Izin Observasi, Penundaan/Penangguhan UKT)** | Sistem belum memiliki jenis surat untuk Cuti Akademik, Izin Observasi, dan Penundaan/Penangguhan UKT yang bersifat **kolektif atas nama Prodi** (satu dokumen untuk banyak mahasiswa). Alur "mahasiswa → staff prodi → staff dekan" tidak dapat diterapkan per-mahasiswa karena datanya batch. | 1. **Titik mulai = Staff Prodi**: Ditambahkan 3 slug `user_type => 'staff'` (`surat-cuti-mahasiswa`, `surat-izin-observasi`, `surat-penundaan-pembayaran-ukt`) karena mahasiswa menyerahkan data ke prodi secara offline, lalu Staff Prodi menginput daftar mahasiswa.<br>2. **Alur seragam**: Staff Prodi (input batch) $\rightarrow$ Kaprodi (ttd) $\rightarrow$ Staff Dekan (nomor & tanggal opsional, SELESAI).<br>3. **Form & Controller**: 3 form Alpine.js builder daftar mahasiswa + 3 method store yang menyimpan `data.mahasiswa[]`; routes terdaftar di blok staff.<br>4. **Template PDF**: `surat-cuti-mahasiswa`, `surat-izin-observasi`, `surat-penundaan-pembayaran-ukt` (kop prodi, tabel batch, ttd Koordinator Prodi + QR); Observasi = 1 surat per sekolah; UKT punya halaman lampiran daftar nama.<br>5. **Nomor & tanggal opsional** di Staff Dekan, dengan auto-fill suffix stabil; segmen kode prodi (mis. `BIO`) diisi manual karena tidak ada di database.<br>6. Feature test baru (`tests/Feature/SuratKolektifProdiTest.php`). |
+| **22. Error `html_entity_decode(): Argument #1 must be of type string, array given` di Riwayat Persetujuan Staff Dekan** | `resources/views/staff-dekan/show-approval.blade.php` terlewat saat migrasi komponen data generik, sehingga masih memanggil `html_entity_decode($value)`. Saat `$value` berupa array (mis. `mahasiswa[]` pada surat kolektif baru), terjadi fatal error. | Mengganti blok inline lama dengan komponen `<x-surat-data-row :key="$key" :value="$value" />` yang aman terhadap array, menyamakan dengan view riwayat persetujuan lain (kaprodi/staff/wd2/wd3). Ditambah regresi `tests/Feature/SuratKolektifShowApprovalTest.php`. |
+| **23. Kop Prodi Belum Menampilkan Frasa "PROGRAM STUDI" & Prefix "Bengkulu," Tidak Konsisten** | 1. `components/kop-prodi.blade.php` hanya menampilkan nama prodi mentah (mis. `S1 PENDIDIKAN BIOLOGI`) tanpa frasa "PROGRAM STUDI".<br>2. Template `surat-izin-observasi` menuliskan prefix "Bengkulu, " pada tanggal pojok kanan atas, sedangkan surat kolektif lain tidak. | 1. Baris prodi di kop memakai `Str::upper(Str::start($prodiName, 'Program Studi '))` sehingga menjadi `PROGRAM STUDI S1 PENDIDIKAN BIOLOGI` (idempoten, tidak dobel bila sudah berprefix).<br>2. Prefix "Bengkulu, " dihapus dari template `surat-izin-observasi` agar hanya menampilkan tanggal, konsisten dengan Cuti & UKT. |
+| **24. Standardisasi Keamanan Array pada Halaman Dekan & WD (Backward Compatible)** | `dekan/show-surat`, `dekan/show-approval`, `wd/show-surat`, dan `wd/show-approval` masih memanggil `html_entity_decode($value)` yang berisiko fatal bila suatu jenis surat menyimpan field bertipe array. Standardisasi naif akan mengubah rendering field teks ber-HTML (mis. `paragrafAwal` Surat Keluar) menjadi ter-escape — berpotensi merusak arsip lama. | Ditambahkan guard: bila `$value` array → dirender via `<x-surat-data-row>`, bila scalar → tetap dirender mentah via `html_entity_decode((string) $value)` (perilaku lama dipertahankan 100%). Dikunci dengan regresi `tests/Feature/DekanWdShowSuratCompatibilityTest.php` yang membuktikan HTML tetap mentah dan array tidak error. |
+| **25. Blok Tanda Tangan pada Halaman Lampiran Kosong (Tanpa QR)** | Surat Penundaan/Penangguhan UKT punya dua halaman: halaman utama dan halaman lampiran daftar nama mahasiswa. Blok tanda tangan Koordinator Prodi di halaman lampiran (`<div class="parent">`) dibiarkan kosong sehingga lampiran tercetak tanpa QR verifikasi, padahal status surat sudah `selesai`. | Menambahkan gambar QR (`QrCode::format('svg')`) ke `<div class="parent">` pada blok tanda tangan halaman lampiran, dibungkus `@if ($surat->status == 'selesai')` agar konsisten dengan halaman utama dan tidak muncul sebelum surat sah. Dikunci dengan regresi di `tests/Feature/SuratKolektifProdiTest.php` (`test_ukt_attachment_page_signature_block_has_qr_when_selesai` & `..._has_no_qr_when_not_selesai`). |
 
 
 

@@ -285,4 +285,57 @@ class SuratKolektifProdiTest extends TestCase
             $this->assertEquals('application/pdf', $response->headers->get('content-type'), "PDF failed for {$slug}");
         }
     }
+
+    public function test_ukt_attachment_page_signature_block_has_qr_when_selesai()
+    {
+        $staff = $this->staff();
+        $jenisSurat = JenisSurat::where('slug', 'surat-penundaan-pembayaran-ukt')->first();
+
+        $surat = Surat::create([
+            'pengaju_id' => $staff->id,
+            'current_user_id' => $staff->id,
+            'jenis_surat_id' => $jenisSurat->id,
+            'status' => 'selesai',
+            'data' => [
+                'nama' => $staff->name,
+                'nomorSuratEdaran' => '11308/UN30/AK/2026',
+                'tanggalSuratEdaran' => '30 Juni 2026',
+                'rentangAwal' => '3 Juli 2026',
+                'rentangAkhir' => '4 Agustus 2026',
+                'mahasiswa' => [['nama' => 'Kuntum Khaira Ummah', 'npm' => 'A1D022058', 'hariTanggalUjian' => 'Senin, 6 Juli 2026', 'waktu' => '08.00-10.00']],
+                'private' => ['stepper' => [User::ROLE_STAFF, User::ROLE_KAPRODI, User::ROLE_STAFF_DEKAN]],
+            ],
+        ]);
+
+        $html = view('template.surat-penundaan-pembayaran-ukt', ['surat' => $surat])->render();
+
+        // Setelah page_break (halaman lampiran) harus ada blok tanda tangan ber-QR, bukan kosong.
+        $lampiran = substr($html, strpos($html, 'page_break'));
+        $this->assertStringContainsString('tandatangan', $lampiran, 'Blok tanda tangan lampiran hilang.');
+        $this->assertStringContainsString('data:image/svg', $lampiran, 'QR tidak terpasang pada blok tanda tangan lampiran UKT.');
+    }
+
+    public function test_ukt_attachment_signature_block_has_no_qr_when_not_selesai()
+    {
+        $staff = $this->staff();
+        $jenisSurat = JenisSurat::where('slug', 'surat-penundaan-pembayaran-ukt')->first();
+
+        $surat = Surat::create([
+            'pengaju_id' => $staff->id,
+            'current_user_id' => $staff->id,
+            'jenis_surat_id' => $jenisSurat->id,
+            'status' => 'diproses',
+            'data' => [
+                'nama' => $staff->name,
+                'mahasiswa' => [['nama' => 'Kuntum Khaira Ummah', 'npm' => 'A1D022058', 'hariTanggalUjian' => 'Senin, 6 Juli 2026', 'waktu' => '08.00-10.00']],
+                'private' => ['stepper' => [User::ROLE_STAFF]],
+            ],
+        ]);
+
+        $html = view('template.surat-penundaan-pembayaran-ukt', ['surat' => $surat])->render();
+        $lampiran = substr($html, strpos($html, 'page_break'));
+
+        $this->assertStringContainsString('tandatangan', $lampiran);
+        $this->assertStringNotContainsString('data:image/svg', $lampiran, 'QR tidak boleh muncul sebelum surat selesai.');
+    }
 }

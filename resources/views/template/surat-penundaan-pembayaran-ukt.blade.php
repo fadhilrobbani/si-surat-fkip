@@ -146,6 +146,10 @@
             <p>Koordinator Prodi,</p>
         </div>
         <div class="parent">
+            @if ($surat->status == 'selesai')
+                <img class="ttd" src="data:image/svg;base64, {!! base64_encode(QrCode::format('svg')->size(90)->generate($url)) !!}"
+                    style="position: absolute; bottom: 20px;">
+            @endif
         </div>
         <div>
             <p>{{ $namaKaprodi }}</p>
