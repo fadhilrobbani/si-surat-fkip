@@ -2,6 +2,18 @@
     $authUser = auth()->user();
     $step = [];
     $avatar = 'https://ui-avatars.com/api/?name=' . $surat->pengaju->username . '&background=random';
+
+    $kaprodiSignedSlugs = [
+        'surat-permohonan-narasumber',
+        'surat-peminjaman-ruang',
+        'surat-peminjaman-ruang-mahasiswa',
+        'surat-pencairan-dana',
+        'surat-pencairan-dana-mahasiswa',
+        'surat-cuti-mahasiswa',
+        'surat-izin-observasi',
+        'surat-penundaan-pembayaran-ukt',
+    ];
+    $needsKaprodiSigner = in_array($surat->jenisSurat->slug, $kaprodiSignedSlugs);
 @endphp
 
 <x-layout :authUser='$authUser'>
@@ -173,7 +185,7 @@
                 <form action="{{ route('setujui-surat-kaprodi', $surat->id) }}" method="POST">
                     @csrf
                     @method('put')
-                    <x-modal-send :daftarPenerima='$daftarPenerima' />
+                    <x-modal-send :daftarPenerima='$daftarPenerima' :signerName="$needsKaprodiSigner ? $authUser->name : null" :signerNip="$needsKaprodiSigner ? $authUser->nip : null" />
                     <button
                         class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
                         data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
@@ -197,6 +209,11 @@
             class="bg-slate-100 rounded-lg w-full">
             @csrf
             @method('put')
+
+            @if ($needsKaprodiSigner)
+                @include('kaprodi.partials.signer-fields', ['authUser' => $authUser])
+            @endif
+
             {{-- <div class=" flex flex-col gap-4 mt-10 items-center justify-center">
 
 
@@ -219,7 +236,7 @@
                         class="text-white w-full p-2 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Preview</button></a>
                 <div class="flex flex-col sm:flex-row">
 
-                    <x-modal-send :daftarPenerima='$daftarPenerima' />
+                    <x-modal-send :daftarPenerima='$daftarPenerima' :signerName="$needsKaprodiSigner ? $authUser->name : null" :signerNip="$needsKaprodiSigner ? $authUser->nip : null" />
                     <button type="button"
                         class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
                         data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
@@ -245,6 +262,11 @@
             class="bg-slate-100 rounded-lg w-full">
             @csrf
             @method('put')
+
+            @if ($needsKaprodiSigner)
+                @include('kaprodi.partials.signer-fields', ['authUser' => $authUser])
+            @endif
+
             {{-- <div class=" flex flex-col gap-4 mt-10 items-center justify-center">
 
 
@@ -270,7 +292,7 @@
 
                 <div class="flex flex-col sm:flex-row">
 
-                    <x-modal-send :daftarPenerima='$daftarPenerima' />
+                    <x-modal-send :daftarPenerima='$daftarPenerima' :signerName="$needsKaprodiSigner ? $authUser->name : null" :signerNip="$needsKaprodiSigner ? $authUser->nip : null" />
                     <button type="button"
                         class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
                         data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
@@ -320,7 +342,7 @@
 
                 <div class="flex flex-col sm:flex-row">
 
-                    <x-modal-send :daftarPenerima='$daftarPenerima' />
+                    <x-modal-send :daftarPenerima='$daftarPenerima' :signerName="$needsKaprodiSigner ? $authUser->name : null" :signerNip="$needsKaprodiSigner ? $authUser->nip : null" />
                     <button type="button"
                         class="hover:bg-green-600 cursor-pointer rounded-lg text-center bg-green-500 p-2 text-white m-2"
                         data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
@@ -339,5 +361,24 @@
     </form>
 
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('[data-modal-target="authentication-modal"]').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var nama = document.getElementById('nama_kaprodi');
+                    var nip = document.getElementById('nip_kaprodi');
+                    var targetNama = document.getElementById('modal-signer-name');
+                    var targetNip = document.getElementById('modal-signer-nip');
+                    if (nama && targetNama) {
+                        targetNama.textContent = nama.value ? nama.value : '-';
+                    }
+                    if (nip && targetNip) {
+                        targetNip.textContent = nip.value ? nip.value : '-';
+                    }
+                });
+            });
+        });
+    </script>
 
 </x-layout>

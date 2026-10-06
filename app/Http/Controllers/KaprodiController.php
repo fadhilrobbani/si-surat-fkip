@@ -79,6 +79,87 @@ class KaprodiController extends Controller
         return redirect('/kaprodi/profile')->with('success', 'Sukses mengupdate data');
     }
 
+    /**
+     * Cek apakah nama akun masih placeholder bawaan (mis. "Kaprodi S1 ...").
+     */
+    private function isKaprodiPlaceholderName(?string $name): bool
+    {
+        $name = trim((string) $name);
+        return $name === '' || preg_match('/^Kaprodi\b/i', $name) === 1;
+    }
+
+    /**
+     * Cek apakah NIP masih kosong / hanya titik-titik.
+     */
+    private function isKaprodiPlaceholderNip(?string $nip): bool
+    {
+        $nip = trim((string) $nip);
+        return $nip === '' || trim($nip, '.') === '';
+    }
+
+    /**
+     * Hard-block: pastikan Nama & NIP penandatangan valid sebelum Kaprodi menyetujui.
+     */
+    private function validateKaprodiSigner(Request $request): void
+    {
+        $request->validate([
+            'nama_kaprodi' => [
+                'required',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    if ($this->isKaprodiPlaceholderName($value)) {
+                        $fail('Nama penandatangan belum valid. Mohon isi nama lengkap & gelar Anda (bukan "Kaprodi ...").');
+                    }
+                },
+            ],
+            'nip_kaprodi' => [
+                'required',
+                'string',
+                'max:50',
+                function ($attribute, $value, $fail) {
+                    if ($this->isKaprodiPlaceholderNip($value)) {
+                        $fail('NIP penandatangan belum valid. Mohon isi NIP Anda.');
+                    }
+                },
+            ],
+        ]);
+    }
+
+    /**
+     * Ambil Nama & NIP penandatangan dari input (fallback ke akun), dan
+     * opsional simpan ke profil akun bila user mencentang "simpan_ke_profil".
+     *
+     * @return array{0: string, 1: string} [nama, nip]
+     */
+    private function resolveKaprodiSigner(Request $request): array
+    {
+        $user = auth()->user();
+        $nama = trim((string) $request->input('nama_kaprodi', ''));
+        $nip = trim((string) $request->input('nip_kaprodi', ''));
+
+        if ($nama === '') {
+            $nama = (string) $user->name;
+        }
+        if ($nip === '') {
+            $nip = (string) ($user->nip ?: $user->username);
+        }
+
+        if ($request->boolean('simpan_ke_profil')) {
+            $updates = [];
+            if ($nama !== (string) $user->name) {
+                $updates['name'] = $nama;
+            }
+            if ($nip !== (string) $user->nip) {
+                $updates['nip'] = $nip;
+            }
+            if (!empty($updates)) {
+                $user->update($updates);
+            }
+        }
+
+        return [$nama, $nip];
+    }
 
     public function index()
     {
@@ -374,8 +455,16 @@ class KaprodiController extends Controller
             $data['private']['nipWD1'] =  $wd1->nip;
         }
 
-        $data['private']['namaKaprodi'] = auth()->user()->name;
-        $data['private']['nipKaprodi'] = auth()->user()->nip ?: auth()->user()->username;
+        if ($isKaprodiSigned) {
+            $this->validateKaprodiSigner($request);
+            [$namaKaprodi, $nipKaprodi] = $this->resolveKaprodiSigner($request);
+        } else {
+            $namaKaprodi = auth()->user()->name;
+            $nipKaprodi = auth()->user()->nip ?: auth()->user()->username;
+        }
+
+        $data['private']['namaKaprodi'] = $namaKaprodi;
+        $data['private']['nipKaprodi'] = $nipKaprodi;
         $data['private']['deskripsiKaprodi'] = 'Koordinator Program Studi';
 
         if (isset($data['private']['stepper'])) {
@@ -431,13 +520,16 @@ class KaprodiController extends Controller
         }
 
         if (in_array($surat->jenisSurat->slug, ['surat-pencairan-dana', 'surat-peminjaman-ruang', 'surat-permohonan-narasumber', 'surat-cuti-mahasiswa', 'surat-izin-observasi', 'surat-penundaan-pembayaran-ukt'])) {
+            $this->validateKaprodiSigner($request);
+            [$namaKaprodi, $nipKaprodi] = $this->resolveKaprodiSigner($request);
+
             $surat->current_user_id = $request->input('penerima');
             $data = $surat->data;
             if (!isset($data['private'])) {
                 $data['private'] = [];
             }
-            $data['private']['namaKaprodi'] = auth()->user()->name;
-            $data['private']['nipKaprodi'] = auth()->user()->nip ?: auth()->user()->username;
+            $data['private']['namaKaprodi'] = $namaKaprodi;
+            $data['private']['nipKaprodi'] = $nipKaprodi;
             $data['private']['deskripsiKaprodi'] = 'Koordinator Program Studi';
             if (isset($data['private']['stepper'])) {
                 $data['private']['stepper'][] = auth()->user()->role->id;

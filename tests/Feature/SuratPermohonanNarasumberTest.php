@@ -91,6 +91,8 @@ class SuratPermohonanNarasumberTest extends TestCase
         $this->actingAs($kaprodi)
             ->put('/kaprodi/surat-staff-disetujui/' . $surat->id, [
                 'penerima' => $staffDekan->id,
+                'nama_kaprodi' => 'Dr. Budi Santoso, M.Pd.',
+                'nip_kaprodi' => '198001012000011001',
             ])
             ->assertRedirect('/kaprodi/surat-masuk');
 

@@ -1,4 +1,4 @@
-@props(['daftarPenerima'])
+@props(['daftarPenerima', 'signerName' => null, 'signerNip' => null])
 
 <div id="authentication-modal" tabindex="-1" aria-hidden="true"
     class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -28,6 +28,15 @@
                         @endforeach
                     </select>
                 </div>
+
+                @if (!is_null($signerName))
+                    <div class="rounded-lg border border-slate-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm">
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Anda menyetujui sebagai:</p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-100"><span id="modal-signer-name">{{ $signerName }}</span></p>
+                        <p class="text-gray-700 dark:text-gray-300">NIP <span id="modal-signer-nip">{{ $signerNip }}</span></p>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Pastikan nama &amp; NIP ini benar &mdash; akan tercetak pada surat.</p>
+                    </div>
+                @endif
 
                 <button type="submit"
                     class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Kirim</button>
