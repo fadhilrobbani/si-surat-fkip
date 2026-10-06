@@ -234,9 +234,16 @@
                             Tanggal Surat <span class="text-xs font-normal text-gray-500">(Opsional)</span>
                         </label>
                         <input type="date" id="tanggal-surat" name="tanggal-surat"
-                            value="{{ old('tanggal-surat', date('Y-m-d')) }}"
+                            value="{{ old('tanggal-surat') }}"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                        <p class="mt-1 text-xs text-gray-500">Default terisi hari ini. Ubah jika ingin tanggal mundur, atau kosongkan jika penanggalan manual fisik.</p>
+                        <div class="mt-1.5">
+                            <button type="button"
+                                onclick="document.getElementById('tanggal-surat').value='{{ date('Y-m-d') }}'"
+                                class="text-xs inline-flex items-center gap-1 font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded border border-blue-200 transition">
+                                📅 Isi Hari Ini
+                            </button>
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500">Biarkan kosong bila penanggalan manual fisik (akan dicetak titik-titik). Klik tombol untuk mengisi tanggal hari ini.</p>
                     </div>
 
                     <div class="mb-4">

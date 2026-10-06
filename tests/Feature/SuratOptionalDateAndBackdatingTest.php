@@ -318,4 +318,42 @@ class SuratOptionalDateAndBackdatingTest extends TestCase
         $qrResponse->assertStatus(200)
             ->assertSee('Waktu Verifikasi Sistem:');
     }
+
+    public function test_date_input_defaults_to_empty_with_quick_fill_button()
+    {
+        $staff = User::where('role_id', User::ROLE_STAFF)->first();
+        $staffDekan = User::where('role_id', User::ROLE_STAFF_DEKAN)->first();
+        $jenisSurat = JenisSurat::where('slug', 'surat-permohonan-narasumber')->first();
+
+        $surat = Surat::create([
+            'pengaju_id' => $staff->id,
+            'current_user_id' => $staffDekan->id,
+            'jenis_surat_id' => $jenisSurat->id,
+            'status' => 'diproses',
+            'data' => [
+                'nama' => $staff->name,
+                'namaNarasumber' => 'Dr. Jane Doe',
+                'namaKegiatan' => 'Kuliah Umum',
+                'private' => ['stepper' => [User::ROLE_STAFF, User::ROLE_KAPRODI, User::ROLE_DEKAN]],
+            ],
+        ]);
+
+        $response = $this->actingAs($staffDekan)
+            ->get(route('show-surat-staff-dekan', $surat->id));
+
+        $response->assertStatus(200);
+
+        // Default tidak lagi memaksa "hari ini"; tombol isi cepat tersedia.
+        $response->assertSee('Isi Hari Ini');
+        $response->assertSee("document.getElementById('tanggal-surat').value='" . date('Y-m-d') . "'", false);
+
+        // Input tanggal default kosong (bukan tanggal hari ini).
+        $this->assertMatchesRegularExpression(
+            '/id="tanggal-surat"\s+name="tanggal-surat"\s+value=""/',
+            $response->getContent()
+        );
+
+        // Teks bantuan lama yang membingungkan sudah tidak dipakai.
+        $response->assertDontSee('Default hari ini. Ubah jika ingin tanggal mundur');
+    }
 }
