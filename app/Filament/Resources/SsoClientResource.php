@@ -65,6 +65,11 @@ class SsoClientResource extends Resource
                             ->helperText('Matikan untuk menonaktifkan seluruh akses aplikasi ini tanpa menghapus klien.')
                             ->default(true),
 
+                        Forms\Components\Toggle::make('skip_consent')
+                            ->label('Lewati layar persetujuan')
+                            ->helperText('Aktifkan hanya untuk aplikasi resmi FKIP. Pengguna langsung kembali ke aplikasi setelah login tanpa layar "Izinkan akses".')
+                            ->default(false),
+
                         Forms\Components\Toggle::make('require_email_verified')
                             ->label('Wajib email terverifikasi')
                             ->helperText('Jika aktif, akun tanpa verifikasi email ditolak saat authorize.')

@@ -353,4 +353,67 @@ class SsoMahasiswaTest extends TestCase
         $tokenResponse->assertStatus(200);
         $this->assertArrayHasKey('access_token', $tokenResponse->json());
     }
+    protected function authorizeQuery(OAuthClient $client): string
+    {
+        return http_build_query([
+            'client_id' => $client->getKey(),
+            'redirect_uri' => $client->redirect,
+            'response_type' => 'code',
+            'scope' => 'profile',
+            'state' => 'test-state',
+            'code_challenge' => $this->codeChallenge(),
+            'code_challenge_method' => 'S256',
+        ]);
+    }
+
+    /** @test */
+    public function first_party_client_skips_consent_screen()
+    {
+        $client = $this->makeClient([User::ROLE_MAHASISWA], ['skip_consent' => true]);
+        $mahasiswa = $this->makeMahasiswa();
+
+        $location = $this->actingAs($mahasiswa)
+            ->get('/oauth/authorize?'.$this->authorizeQuery($client))
+            ->assertRedirect()
+            ->headers->get('Location');
+
+        $this->assertStringStartsWith($client->redirect, $location);
+        parse_str((string) parse_url($location, PHP_URL_QUERY), $params);
+        $this->assertNotEmpty($params['code'] ?? null);
+        $this->assertSame('test-state', $params['state'] ?? null);
+    }
+
+    /** @test */
+    public function client_without_skip_consent_still_shows_consent_screen()
+    {
+        $client = $this->makeClient([User::ROLE_MAHASISWA]);
+        $mahasiswa = $this->makeMahasiswa();
+
+        $this->actingAs($mahasiswa)
+            ->get('/oauth/authorize?'.$this->authorizeQuery($client))
+            ->assertOk()
+            ->assertViewIs('oauth.authorize');
+    }
+
+    /** @test */
+    public function login_page_from_sso_uses_client_branded_view()
+    {
+        $client = $this->makeClient([User::ROLE_MAHASISWA]);
+
+        $this->get('/oauth/authorize?'.$this->authorizeQuery($client))->assertRedirect();
+
+        $this->get('/')
+            ->assertOk()
+            ->assertViewIs('auth.sso-login')
+            ->assertSee($client->name)
+            ->assertSee('https://skripsi.test', false);
+    }
+
+    /** @test */
+    public function regular_login_page_is_unchanged()
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertViewIs('auth.login');
+    }
 }

@@ -25,7 +25,18 @@ class OAuthClient extends Client
         'revoked' => 'bool',
         'is_active' => 'bool',
         'require_email_verified' => 'bool',
+        'skip_consent' => 'bool',
     ];
+
+    /**
+     * Klien pihak pertama yang ditandai admin melewati layar persetujuan;
+     * pengguna langsung dikembalikan ke aplikasi setelah login. Klien tetap
+     * dapat memaksa consent dengan parameter prompt=consent.
+     */
+    public function skipsAuthorization(): bool
+    {
+        return (bool) $this->skip_consent;
+    }
 
     /**
      * Role e-Surat yang diizinkan login ke aplikasi ini.

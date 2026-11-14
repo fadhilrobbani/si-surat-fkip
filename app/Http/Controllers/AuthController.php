@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\OAuthClient;
 use Illuminate\Support\Str;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
@@ -14,9 +15,54 @@ use Illuminate\Auth\Events\PasswordReset;
 
 class AuthController extends Controller
 {
-    public function login()
+    public function login(Request $request)
     {
+        $klienSso = $this->klienSsoDariIntended($request);
+
+        if ($klienSso !== null) {
+            return view('auth.sso-login', [
+                'client' => $klienSso,
+                'kembaliUrl' => $this->asalRedirect($klienSso->redirect),
+            ]);
+        }
+
         return view('auth.login');
+    }
+
+    /**
+     * Klien SSO aktif bila pengguna sampai di halaman login karena diarahkan
+     * oleh /oauth/authorize. Login biasa e-Surat mengembalikan null.
+     */
+    private function klienSsoDariIntended(Request $request): ?OAuthClient
+    {
+        $intended = (string) $request->session()->get('url.intended', '');
+
+        if (! str_contains($intended, '/oauth/authorize')) {
+            return null;
+        }
+
+        parse_str((string) parse_url($intended, PHP_URL_QUERY), $query);
+        $clientId = $query['client_id'] ?? null;
+
+        if (! is_string($clientId) || $clientId === '') {
+            return null;
+        }
+
+        $client = OAuthClient::query()->find($clientId);
+
+        return $client && $client->is_active && ! $client->revoked ? $client : null;
+    }
+
+    /** Origin aplikasi klien (skema + host + port) untuk tautan "kembali". */
+    private function asalRedirect(string $redirect): ?string
+    {
+        $bagian = parse_url($redirect);
+
+        if (! isset($bagian['scheme'], $bagian['host'])) {
+            return null;
+        }
+
+        return $bagian['scheme'].'://'.$bagian['host'].(isset($bagian['port']) ? ':'.$bagian['port'] : '');
     }
 
     public function create()

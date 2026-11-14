@@ -56,6 +56,7 @@ class SsoClientSeeder extends Seeder
             'revoked' => false,
             'is_active' => true,
             'require_email_verified' => false,
+            'skip_consent' => true,
             'scopes' => ['profile', 'email'],
             'grant_types' => ['authorization_code', 'refresh_token'],
             'user_id' => null,
