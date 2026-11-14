@@ -176,6 +176,15 @@ class AuthController extends Controller
         if (auth()->attempt($request->only($login_type, 'password'))) {
             // dd('login');
             $request->session()->regenerate();
+
+            // Jika user sampai di halaman login karena diarahkan oleh endpoint
+            // SSO (/oauth/authorize), kembalikan ke sana agar mahasiswa tidak
+            // perlu menekan tombol SSO dua kali.
+            $intended = $request->session()->pull('url.intended');
+            if ($intended && str_contains($intended, '/oauth/authorize')) {
+                return redirect()->to($intended);
+            }
+
             if (auth()->user()->role_id == 1) {
                 return redirect()->back()->withError('Unauthorized');
             } elseif (auth()->user()->role_id == 2) {

@@ -281,3 +281,5 @@ Jika membutuhkan rincian teknis yang sangat spesifik, rujuk dokumen berikut:
 - **[`docs/GUIDE_ADDING_NEW_ROLE.md`](docs/GUIDE_ADDING_NEW_ROLE.md)**: Panduan langkah demi langkah saat menambahkan role baru di sistem.
 - **[`docs/GUIDE_ADDING_NEW_MAHASISWA_LETTER.md`](docs/GUIDE_ADDING_NEW_MAHASISWA_LETTER.md)**: Panduan menambahkan jenis surat khusus mahasiswa.
 - **[`docs/MIGRATION_STORAGE_R2.md`](docs/MIGRATION_STORAGE_R2.md)**: Arsitektur Cloudflare R2 dan penggunaan command migrasi storage.
+- **[`docs/SSO_MAHASISWA_OAUTH.md`](docs/SSO_MAHASISWA_OAUTH.md)**: Arsitektur SSO mahasiswa berbasis Laravel Passport 12 (OAuth2 + PKCE), allowlist role dinamis, consent screen, kontrak `userinfo`, dan panduan integrasi Sistem Bimbingan Skripsi.
+- **[`docs/SSO_CLIENT_INTEGRATION.md`](docs/SSO_CLIENT_INTEGRATION.md)**: Panduan sisi klien (Laravel 13) — skema `user_identities`, aturan provisioning, matriks test, anti-pattern, dan troubleshooting. Berikan dokumen ini ke AI/developer repo Sistem Bimbingan Skripsi.

@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
-use Livewire\Livewire;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
+use Livewire\Livewire;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -40,6 +40,54 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+
+            $this->registerOAuthRoutes();
+        });
+    }
+
+    /**
+     * Route OAuth2 yang dibutuhkan SSO saja.
+     *
+     * Passport::ignoreRoutes() dipanggil di AuthServiceProvider karena route
+     * bawaan paket menyertakan manajemen klien (/oauth/clients) untuk semua
+     * user login — celah yang tidak diperlukan di sini. Hanya endpoint berikut
+     * yang dibuka.
+     */
+    protected function registerOAuthRoutes(): void
+    {
+        Route::group([
+            'prefix' => config('passport.path', 'oauth'),
+            'namespace' => 'Laravel\Passport\Http\Controllers',
+        ], function () {
+            // Authorization Code Grant (+ PKCE)
+            Route::post('/token', [
+                'uses' => 'AccessTokenController@issueToken',
+                'as' => 'passport.token',
+                'middleware' => 'throttle',
+            ]);
+
+            Route::get('/authorize', [
+                'uses' => 'AuthorizationController@authorize',
+                'as' => 'passport.authorizations.authorize',
+                'middleware' => 'web',
+            ]);
+
+            Route::middleware(['web'])->group(function () {
+                Route::post('/token/refresh', [
+                    'uses' => 'TransientTokenController@refresh',
+                    'as' => 'passport.token.refresh',
+                ]);
+
+                Route::post('/authorize', [
+                    'uses' => 'ApproveAuthorizationController@approve',
+                    'as' => 'passport.authorizations.approve',
+                ]);
+
+                Route::delete('/authorize', [
+                    'uses' => 'DenyAuthorizationController@deny',
+                    'as' => 'passport.authorizations.deny',
+                ]);
+            });
         });
     }
 }
