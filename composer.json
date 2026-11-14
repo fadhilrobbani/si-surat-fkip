@@ -30,7 +30,6 @@
         "barryvdh/laravel-debugbar": "^3.9",
         "beyondcode/laravel-query-detector": "^1.7",
         "fakerphp/faker": "^1.9.1",
-        "laravel-lang/common": "^6.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
