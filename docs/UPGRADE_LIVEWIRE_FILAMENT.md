@@ -80,8 +80,21 @@ Password database ada di `.env` server (`DB_PASSWORD`).
 
 ```bash
 php artisan down
+
+# cek perubahan lokal di server
+git status --short
+```
+
+Bila `git status` menampilkan file di luar `vendor/` (mis. `public/...`, `config/...`), **berhenti** dan periksa dulu dengan `git diff <file>`: bisa jadi ada edit langsung di server yang perlu diselamatkan.
+
+Bila yang berubah **hanya file `vendor/`** (biasanya `vendor/composer/autoload_*.php`, `installed.json`, `installed.php`, karena dulu pernah `composer install` di server), buang perubahannya. Aman, karena vendor sudah dibackup di langkah 2 dan akan dipasang ulang di langkah 4:
+
+```bash
+git checkout -- vendor
 git pull origin main
 ```
+
+Tanpa langkah ini pull gagal dengan pesan `Your local changes to the following files would be overwritten by merge: vendor/composer/...`.
 
 Setelah ini `vendor/` terhapus sebagian. **Itu normal.** Jangan jalankan `php artisan` apa pun sampai langkah 4 selesai.
 
@@ -211,6 +224,7 @@ php artisan up
 | Gejala | Penyebab | Perbaikan |
 |---|---|---|
 | Situs 500, `vendor/autoload.php: No such file` | Langkah 4 belum dikerjakan | Kerjakan langkah 4 |
+| `git pull` gagal `Your local changes ... would be overwritten by merge: vendor/composer/...` | `vendor/` pernah diubah `composer` di server saat masih dilacak git | `git checkout -- vendor`, lalu `git pull origin main` (langkah 3) |
 | `git pull`/`checkout` gagal `Permission denied` | Ada file milik root atau user lain | `sudo chown -R www-data:www-data .`, `git checkout -f main`, ulangi |
 | Login admin terpental tanpa pesan | Filament masih 3.0 (dipasang dengan `composer update`, atau lock file tidak ikut) | Ulangi langkah 4 dengan `composer install` |
 | Admin tampil tanpa style | `public/build` belum diunggah, atau di-build dengan vendor lama | Ulangi A1 dan langkah 6 |
