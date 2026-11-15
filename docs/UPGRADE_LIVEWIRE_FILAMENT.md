@@ -92,6 +92,7 @@ Cara membaca hasilnya:
 | `??` | File tidak dilacak git (mis. `.htaccess` dan `index.php` di root, `default.php`, `public/build.zip`, `public/ca_dompdf_img_*`) | **Biarkan.** `git pull` tidak menyentuhnya. Jangan dihapus: `.htaccess`/`index.php` di root dipakai hosting untuk mengarahkan domain ke `public/` |
 | ` D vendor/...` | File vendor sudah hilang dari disk (biasanya paket dev yang terhapus saat dulu `composer install --no-dev`) | Aman, ikut dibereskan perintah di bawah |
 | ` M vendor/...` | File vendor berubah karena dulu `composer install` di server | Aman, ikut dibereskan perintah di bawah |
+| ` M` hanya pada file `.gitignore` di `storage/` dan `bootstrap/cache/` | Biasanya hanya izin file (chmod) yang berubah. Cek dengan `git diff storage/logs/.gitignore`: bila isinya cuma `old mode`/`new mode`, aman | `git checkout -- storage bootstrap/cache` (hanya mengembalikan file `.gitignore`; log, sesi, dan file unggahan tidak tersentuh) |
 | ` M`/` D` di luar `vendor/` | Ada edit langsung di server | **Berhenti.** Periksa dengan `git diff <file>` dan selamatkan dulu bila perlu |
 
 Untuk melihat hanya baris yang perlu diperiksa (selain `??` dan `vendor/`):
