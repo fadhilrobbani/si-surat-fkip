@@ -24,8 +24,8 @@ git checkout main && git pull
 
 docker exec -u sail si-surat-fkip-laravel.test-1 composer install   # tema Filament butuh vendor/ terbaru
 rm -f public/hot            # file ini tidak boleh ikut terunggah
-npm ci
-npm run build
+pnpm install --frozen-lockfile
+pnpm run build
 ```
 
 Hasilnya ada di `public/build/` (folder `assets/` + `manifest.json`). Diunggah di langkah 6.
