@@ -113,10 +113,14 @@ Pilih **salah satu**.
 **4a. Server punya composer**
 
 ```bash
-composer install --no-dev --optimize-autoloader --no-interaction
+composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
+php artisan package:discover --ansi
+php artisan filament:upgrade
 ```
 
 Pakai `install`, **jangan** `update`.
+
+`--no-scripts` wajib di shared hosting: fungsi `proc_open` dimatikan, sehingga composer tidak bisa menjalankan script `post-autoload-dump` dan berhenti dengan error `The Process class relies on proc_open`. Dua perintah `php artisan` di bawahnya menjalankan script itu secara manual.
 
 **4b. Server tidak punya composer** (pakai `vendor.zip` dari A2)
 
@@ -225,6 +229,7 @@ php artisan up
 |---|---|---|
 | Situs 500, `vendor/autoload.php: No such file` | Langkah 4 belum dikerjakan | Kerjakan langkah 4 |
 | `git pull` gagal `Your local changes ... would be overwritten by merge: vendor/composer/...` | `vendor/` pernah diubah `composer` di server saat masih dilacak git | `git checkout -- vendor`, lalu `git pull origin main` (langkah 3) |
+| `composer install` berhenti `The Process class relies on proc_open` | Hosting mematikan `proc_open`, script composer gagal (paket sudah terpasang) | Jalankan manual `php artisan package:discover --ansi` dan `php artisan filament:upgrade`; berikutnya pakai `--no-scripts` (langkah 4a) |
 | `git pull`/`checkout` gagal `Permission denied` | Ada file milik root atau user lain | `sudo chown -R www-data:www-data .`, `git checkout -f main`, ulangi |
 | Login admin terpental tanpa pesan | Filament masih 3.0 (dipasang dengan `composer update`, atau lock file tidak ikut) | Ulangi langkah 4 dengan `composer install` |
 | Admin tampil tanpa style | `public/build` belum diunggah, atau di-build dengan vendor lama | Ulangi A1 dan langkah 6 |
