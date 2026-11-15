@@ -12,7 +12,7 @@
         "barryvdh/laravel-dompdf": "^2.0",
         "cyberwizard/dbsafeguard": "dev-main",
         "diglactic/laravel-breadcrumbs": "^8.1",
-        "filament/filament": "3.0-stable",
+        "filament/filament": "^3.3",
         "guzzlehttp/guzzle": "^7.2",
         "laravel-lang/locales": "^2.5",
         "laravel/framework": "^10.10",
