@@ -109,12 +109,12 @@ ESURAT_REDIRECT_URI=http://localhost:8001/auth/esurat/callback
 
 ```env
 # .env (Sistem Skripsi) — PRODUCTION, baru dipakai saat rilis
-APP_URL=https://skripsi.fkipunib.ac.id
+APP_URL=https://eskripsi.fkip.unib.ac.id
 
-ESURAT_BASE_URL=https://esurat.fkipunib.ac.id
+ESURAT_BASE_URL=https://esurat.fkip.unib.ac.id
 ESURAT_CLIENT_ID=<dari klien "Sistem Bimbingan Skripsi (Production)">
 ESURAT_CLIENT_SECRET=<secret pasangannya>
-ESURAT_REDIRECT_URI=https://skripsi.fkipunib.ac.id/auth/esurat/callback
+ESURAT_REDIRECT_URI=https://eskripsi.fkip.unib.ac.id/auth/esurat/callback
 ```
 
 > **Satu environment = satu klien OAuth = satu secret.** Jangan memakai klien staging untuk production, atau sebaliknya.
@@ -621,7 +621,7 @@ Kalau script ini lulus tetapi klien gagal, masalahnya ada di sisi klien (biasany
 4. Setelah login, `users.password` = NULL, `user_identities.provider_uuid` = UUID.
 5. Admin nonaktifkan akun → login SSO berikutnya ditolak.
 6. Login dosen lewat form lokal → berhasil, tidak tersentuh SSO.
-7. `ESURAT_BASE_URL` di `.env` **tidak** mengandung `esurat.fkipunib.ac.id` selama masih tahap pengembangan.
+7. `ESURAT_BASE_URL` di `.env` **tidak** mengandung `esurat.fkip.unib.ac.id` selama masih tahap pengembangan.
 
 ---
 

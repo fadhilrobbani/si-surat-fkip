@@ -457,7 +457,7 @@ Karena itu: **satu environment = satu klien = satu secret**. Nama klien dibedaka
 |---|---|---|
 | Local (dev e-Surat) | `Sistem Bimbingan Skripsi (Local)` | `http://localhost:8001/auth/esurat/callback` |
 | Staging | `Sistem Bimbingan Skripsi (Staging)` | `https://staging-skripsi.fkipunib.my.id/auth/esurat/callback` |
-| Production | `Sistem Bimbingan Skripsi (Production)` | `https://skripsi.fkipunib.ac.id/auth/esurat/callback` |
+| Production | `Sistem Bimbingan Skripsi (Production)` | `https://eskripsi.fkip.unib.ac.id/auth/esurat/callback` |
 
 Nilai ini dibaca oleh `SsoClientSeeder` dari `.env`, bukan hardcode.
 
@@ -706,7 +706,7 @@ Tujuan: memindahkan SSO ke production **saat** aplikasi klien sudah layak rilis.
 # .env production e-Surat
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://esurat.fkipunib.ac.id
+APP_URL=https://esurat.fkip.unib.ac.id
 SESSION_SECURE_COOKIE=true
 ```
 
@@ -726,7 +726,7 @@ php artisan optimize
 ```bash
 # .env production e-Surat
 SSO_CLIENT_NAME="Sistem Bimbingan Skripsi (Production)"
-SSO_SKRIPSI_REDIRECT_URI=https://skripsi.fkipunib.ac.id/auth/esurat/callback
+SSO_SKRIPSI_REDIRECT_URI=https://eskripsi.fkip.unib.ac.id/auth/esurat/callback
 ```
 
 ```bash
@@ -766,7 +766,7 @@ Karena semua perubahan aditif, rollback aman dan cepat:
 |---|---|---|
 | Local (dev) | ✅ aktif, siap diuji | `Sistem Bimbingan Skripsi (Local)` — id `2`, redirect `http://localhost:8001/auth/esurat/callback` |
 | Staging (`staging-esurat.fkipunib.my.id`) | ⬜ belum dideploy | Buat di Tahap 2 |
-| Production (`esurat.fkipunib.ac.id`) | ⬜ belum boleh | Klien id `1` ada tetapi **`is_active = false`** dengan sengaja |
+| Production (`esurat.fkip.unib.ac.id`) | ⬜ belum boleh | Klien id `1` ada tetapi **`is_active = false`** dengan sengaja |
 
 > Klien id `1` menunjuk ke `https://skripsi.fkip.unib.ac.id` (production). Ia **dinonaktifkan** agar tidak ada yang tidak sengaja memakainya saat masih tahap pengembangan. Aktifkan hanya pada Tahap 4, dan periksa dulu `redirect` + secret-nya.
 
