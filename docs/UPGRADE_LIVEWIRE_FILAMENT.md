@@ -67,8 +67,14 @@ Bila ada yang kurang, pasang dulu. **Jangan lanjut** sebelum lengkap.
 ```bash
 git rev-parse HEAD > ~/esurat-commit-lama.txt      # commit lama, untuk rollback
 cp -a vendor ~/vendor-lama                         # vendor lama, untuk rollback
-mysqldump --single-transaction -u USER -p NAMA_DB > ~/backup-esurat-$(date +%F).sql
+# staging (user dan nama database sama)
+mysqldump --single-transaction -u u716715624_esurat_staging -p u716715624_esurat_staging > ~/backup-esurat-staging-$(date +%F).sql
+
+# production: hapus akhiran _staging
+mysqldump --single-transaction -u u716715624_esurat -p u716715624_esurat > ~/backup-esurat-$(date +%F).sql
 ```
+
+Password database ada di `.env` server (`DB_PASSWORD`).
 
 ### Langkah 3. Maintenance lalu tarik kode
 
