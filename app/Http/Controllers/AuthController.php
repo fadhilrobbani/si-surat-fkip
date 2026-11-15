@@ -19,6 +19,17 @@ class AuthController extends Controller
     {
         $klienSso = $this->klienSsoDariIntended($request);
 
+        // Tanpa penanda `sso` berarti e-Surat dibuka langsung. Buang tujuan
+        // /oauth/authorize yang tertinggal dari percobaan SSO sebelumnya agar
+        // tampilan dan redirect setelah login kembali ke e-Surat.
+        if ($klienSso === null || $request->query('sso') !== (string) $klienSso->getKey()) {
+            if (str_contains((string) $request->session()->get('url.intended', ''), '/oauth/authorize')) {
+                $request->session()->forget('url.intended');
+            }
+
+            $klienSso = null;
+        }
+
         if ($klienSso !== null) {
             return view('auth.sso-login', [
                 'client' => $klienSso,

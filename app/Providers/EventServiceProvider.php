@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -25,7 +26,16 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // AuthenticateSession (panel admin) mencocokkan hash password di
+        // session dengan user yang login. Laravel 10 tidak memperbaruinya
+        // saat login, jadi berganti akun di browser yang sama (mis. mahasiswa
+        // via SSO lalu admin) membuat hash lama tidak cocok dan admin
+        // di-logout diam-diam. Segarkan hash setiap login berhasil.
+        Event::listen(function (Login $event): void {
+            if (request()->hasSession()) {
+                request()->session()->put('password_hash_'.$event->guard, $event->user->getAuthPassword());
+            }
+        });
     }
 
     /**

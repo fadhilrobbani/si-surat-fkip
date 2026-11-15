@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -26,5 +27,21 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Guest yang diarahkan login oleh /oauth/authorize diberi penanda `sso`
+     * di URL login. Hanya penanda ini yang memunculkan halaman login SSO;
+     * `url.intended` saja tidak cukup karena bisa tertinggal di session.
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        $clientId = $request->is('oauth/authorize') ? $request->query('client_id') : null;
+
+        if ($request->expectsJson() || ! is_string($clientId) || $clientId === '') {
+            return parent::unauthenticated($request, $exception);
+        }
+
+        return redirect()->guest(route('login', ['sso' => $clientId]));
     }
 }

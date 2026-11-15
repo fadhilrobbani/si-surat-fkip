@@ -400,9 +400,10 @@ class SsoMahasiswaTest extends TestCase
     {
         $client = $this->makeClient([User::ROLE_MAHASISWA]);
 
-        $this->get('/oauth/authorize?'.$this->authorizeQuery($client))->assertRedirect();
+        $this->get('/oauth/authorize?'.$this->authorizeQuery($client))
+            ->assertRedirect(route('login', ['sso' => $client->getKey()]));
 
-        $this->get('/')
+        $this->get(route('login', ['sso' => $client->getKey()]))
             ->assertOk()
             ->assertViewIs('auth.sso-login')
             ->assertSee($client->name)
@@ -415,5 +416,27 @@ class SsoMahasiswaTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertViewIs('auth.login');
+    }
+
+    /** @test */
+    public function opening_esurat_directly_after_abandoned_sso_shows_regular_login()
+    {
+        $client = $this->makeClient([User::ROLE_MAHASISWA]);
+
+        $this->get('/oauth/authorize?'.$this->authorizeQuery($client))->assertRedirect();
+
+        $this->get('/')
+            ->assertOk()
+            ->assertViewIs('auth.login')
+            ->assertSessionMissing('url.intended');
+
+        $mahasiswa = $this->makeMahasiswa(['email' => 'langsung.mhs@example.com']);
+
+        $redirect = $this->post('/login', [
+            'username' => $mahasiswa->email,
+            'password' => 'password',
+        ])->headers->get('Location');
+
+        $this->assertStringNotContainsString('/oauth/authorize', (string) $redirect);
     }
 }
