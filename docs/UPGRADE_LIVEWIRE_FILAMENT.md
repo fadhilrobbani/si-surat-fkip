@@ -85,7 +85,24 @@ php artisan down
 git status --short
 ```
 
-Bila `git status` menampilkan file di luar `vendor/` (mis. `public/...`, `config/...`), **berhenti** dan periksa dulu dengan `git diff <file>`: bisa jadi ada edit langsung di server yang perlu diselamatkan.
+Cara membaca hasilnya:
+
+| Awalan | Arti | Tindakan |
+|---|---|---|
+| `??` | File tidak dilacak git (mis. `.htaccess` dan `index.php` di root, `default.php`, `public/build.zip`, `public/ca_dompdf_img_*`) | **Biarkan.** `git pull` tidak menyentuhnya. Jangan dihapus: `.htaccess`/`index.php` di root dipakai hosting untuk mengarahkan domain ke `public/` |
+| ` D vendor/...` | File vendor sudah hilang dari disk (biasanya paket dev yang terhapus saat dulu `composer install --no-dev`) | Aman, ikut dibereskan perintah di bawah |
+| ` M vendor/...` | File vendor berubah karena dulu `composer install` di server | Aman, ikut dibereskan perintah di bawah |
+| ` M`/` D` di luar `vendor/` | Ada edit langsung di server | **Berhenti.** Periksa dengan `git diff <file>` dan selamatkan dulu bila perlu |
+
+Untuk melihat hanya baris yang perlu diperiksa (selain `??` dan `vendor/`):
+
+```bash
+git status --short | grep -v '^??' | grep -v ' vendor/'
+```
+
+Bila perintah ini **tidak menampilkan apa-apa**, lanjut.
+
+`public/ca_dompdf_img_*` adalah file sementara dompdf saat mencetak PDF; boleh dihapus kapan saja (`rm -f public/ca_dompdf_img_*`), tetapi tidak wajib untuk update ini.
 
 Bila yang berubah **hanya file `vendor/`** (biasanya `vendor/composer/autoload_*.php`, `installed.json`, `installed.php`, karena dulu pernah `composer install` di server), buang perubahannya. Aman, karena vendor sudah dibackup di langkah 2 dan akan dipasang ulang di langkah 4:
 
