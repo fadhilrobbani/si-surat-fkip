@@ -8,7 +8,7 @@ Update kali ini membawa tiga perubahan sekaligus:
 2. **Filament 3.0 → 3.3**: wajib, karena Livewire sudah 3.8. Tanpa ini login admin terpental.
 3. **`vendor/` tidak lagi disimpan di git.** Akibatnya, `git pull` akan **menghapus folder `vendor/` di server**, dan situs mati sampai `vendor/` dipasang ulang (langkah 4).
 
-> Di bawah, `www-data` adalah contoh user pemilik aplikasi di server dan `php8.3-fpm` contoh nama service PHP. Ganti sesuai server kamu.
+> Server e-Surat adalah **shared hosting** (user `u716715624`, PHP 8.3 di `/opt/alt/php83`). Tidak ada `sudo`, `chown`, maupun `systemctl`, dan semua file aplikasi sudah milik user kamu sendiri, jadi perintah semacam itu memang tidak diperlukan. Pengaturan PHP (ekstensi, restart) dilakukan dari hPanel.
 
 ---
 
@@ -98,13 +98,7 @@ Tanpa langkah ini pull gagal dengan pesan `Your local changes to the following f
 
 Setelah ini `vendor/` terhapus sebagian. **Itu normal.** Jangan jalankan `php artisan` apa pun sampai langkah 4 selesai.
 
-Bila pull gagal `Permission denied`, ada file milik user lain. Perbaiki lalu ulangi:
-
-```bash
-sudo chown -R www-data:www-data .
-git checkout -f main
-git pull origin main
-```
+Bila pull gagal `Permission denied`, ada file yang bukan milik user hosting (jarang terjadi di shared hosting). Jangan coba `sudo`; hubungi support hosting untuk mengembalikan kepemilikan file ke user `u716715624`, lalu jalankan `git checkout -f main` dan ulangi pull.
 
 ### Langkah 4. Pasang ulang vendor
 
@@ -179,10 +173,10 @@ php artisan db:seed --class=SsoClientSeeder --force
 php artisan filament:upgrade
 php artisan optimize:clear
 php artisan optimize
-sudo chown -R www-data:www-data storage bootstrap/cache
-sudo systemctl reload php8.3-fpm
 php artisan up
 ```
+
+Bila perubahan belum terasa (OPcache), restart PHP dari hPanel: **Advanced → PHP Configuration**, ubah lalu simpan pengaturan apa saja (atau pilih ulang versi PHP 8.3).
 
 ### Langkah 9. Cek hasil
 
@@ -212,8 +206,6 @@ mv vendor ~/vendor-gagal                          # singkirkan vendor baru dulu,
 git reset --hard $(cat ~/esurat-commit-lama.txt)
 rm -rf vendor && cp -a ~/vendor-lama vendor
 php artisan optimize:clear
-sudo chown -R www-data:www-data storage bootstrap/cache
-sudo systemctl reload php8.3-fpm
 php artisan up
 ```
 
@@ -230,15 +222,15 @@ php artisan up
 | Situs 500, `vendor/autoload.php: No such file` | Langkah 4 belum dikerjakan | Kerjakan langkah 4 |
 | `git pull` gagal `Your local changes ... would be overwritten by merge: vendor/composer/...` | `vendor/` pernah diubah `composer` di server saat masih dilacak git | `git checkout -- vendor`, lalu `git pull origin main` (langkah 3) |
 | `composer install` berhenti `The Process class relies on proc_open` | Hosting mematikan `proc_open`, script composer gagal (paket sudah terpasang) | Jalankan manual `php artisan package:discover --ansi` dan `php artisan filament:upgrade`; berikutnya pakai `--no-scripts` (langkah 4a) |
-| `git pull`/`checkout` gagal `Permission denied` | Ada file milik root atau user lain | `sudo chown -R www-data:www-data .`, `git checkout -f main`, ulangi |
+| `git pull`/`checkout` gagal `Permission denied` | Ada file milik root atau user lain | Minta support hosting mengembalikan kepemilikan ke user hosting, lalu `git checkout -f main` dan ulangi |
 | Login admin terpental tanpa pesan | Filament masih 3.0 (dipasang dengan `composer update`, atau lock file tidak ikut) | Ulangi langkah 4 dengan `composer install` |
 | Admin tampil tanpa style | `public/build` belum diunggah, atau di-build dengan vendor lama | Ulangi A1 dan langkah 6 |
 | Semua halaman tanpa CSS, request ke `localhost:5173` | `public/hot` ikut terunggah | Hapus `public/hot` di server |
 | `Unable to locate file in Vite manifest` | `manifest.json` tidak ikut | Unggah ulang seluruh `public/build` |
-| 500 `storage/framework/views ... Permission denied` | Artisan dijalankan sebagai root | `sudo chown -R www-data:www-data storage bootstrap/cache` |
+| 500 `storage/framework/views ... Permission denied` | Izin folder salah | `chmod -R u+rwX storage bootstrap/cache`, lalu `php artisan optimize:clear` |
 | `composer install` gagal `requires ext-...` | Ekstensi PHP kurang | Pasang ekstensi (langkah 1) |
 | SSO 500 di `/oauth/token`, "invalid key" | `passport:keys` belum dijalankan | Langkah 7 |
-| Perubahan tidak terasa | Cache | `php artisan optimize:clear`, reload PHP-FPM |
+| Perubahan tidak terasa | Cache | `php artisan optimize:clear`, restart PHP dari hPanel |
 
 ---
 
