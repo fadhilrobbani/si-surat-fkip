@@ -325,7 +325,7 @@ class AkademikFakultasController extends Controller
                 'note' => $request->input('note'),
             ]);
 
-            Mail::to($surat->pengaju->email)->send(new LegalisirDikirim($surat));
+            \App\Services\EmailNotifikasi::kirim($surat->pengaju->email, new LegalisirDikirim($surat));
 
             return redirect('/akademik-fakultas/surat-masuk')->with('success', 'Surat berhasil disetujui');
         }
@@ -379,7 +379,7 @@ class AkademikFakultasController extends Controller
                 'note' => $request->input('note'),
             ]);
 
-            Mail::to($surat->pengaju->email)->send(new LegalisirDiambil($surat));
+            \App\Services\EmailNotifikasi::kirim($surat->pengaju->email, new LegalisirDiambil($surat));
 
 
             return redirect('/akademik-fakultas/surat-masuk')->with('success', 'Surat berhasil disetujui');
@@ -437,7 +437,7 @@ class AkademikFakultasController extends Controller
             'isApproved' => true,
             'note' => $request->input('note'),
         ]);
-        Mail::to($surat->pengaju->email)->send(new SuratMahasiswa($surat));
+        \App\Services\EmailNotifikasi::kirim($surat->pengaju->email, new SuratMahasiswa($surat));
         return redirect('/akademik-fakultas/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 

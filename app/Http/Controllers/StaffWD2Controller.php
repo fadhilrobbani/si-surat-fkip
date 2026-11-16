@@ -299,7 +299,7 @@ class StaffWD2Controller extends Controller
             'isApproved' => true,
             'note' => $request->input('note'),
         ]);
-        Mail::to($surat->pengaju->email)->send(new SuratStaff($surat));
+        \App\Services\EmailNotifikasi::kirim($surat->pengaju->email, new SuratStaff($surat));
         return redirect('/staff-wd2/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 

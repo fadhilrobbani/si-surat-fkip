@@ -270,7 +270,7 @@ class StaffNilaiController extends Controller
             'isApproved' => true,
             'note' => $request->input('note'),
         ]);
-        Mail::to($surat->data['email'] ? $surat->data['email'] : $surat->pengaju->email)->send(new SuratStaff($surat));
+        \App\Services\EmailNotifikasi::kirim($surat->data['email'] ? $surat->data['email'] : $surat->pengaju->email, new SuratStaff($surat));
         return redirect('/staff-nilai/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 

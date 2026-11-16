@@ -282,7 +282,7 @@ class PengirimLegalisirController extends Controller
             'isApproved' => true,
             'note' => $request->input('note'),
         ]);
-        Mail::to($surat->pengaju->email)->send(new SuratStaff($surat));
+        \App\Services\EmailNotifikasi::kirim($surat->pengaju->email, new SuratStaff($surat));
         return redirect('/pengirim-legalisir/pengajuan-terbaru')->with('success', 'Surat berhasil disetujui');
     }
 

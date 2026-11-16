@@ -28,6 +28,21 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
+        // Hemat kuota SMTP: batasi permintaan link reset password.
+        // Per IP longgar karena mahasiswa sering berbagi IP jaringan kampus.
+        RateLimiter::for('verification', function (Request $request) {
+            return Limit::perHour(3)->by('verif:'.$request->user()?->id)->response(fn () => back()
+                ->withErrors('Terlalu banyak permintaan email verifikasi. Silakan coba lagi dalam 1 jam.'));
+        });
+        RateLimiter::for('forgot-password', function (Request $request) {
+            $tolak = fn () => back()->withInput($request->only('email'))
+                ->withErrors(['email' => 'Terlalu banyak permintaan reset password. Silakan coba lagi dalam 1 jam.']);
+
+            return [
+                Limit::perHour(3)->by('email:'.strtolower((string) $request->input('email')))->response($tolak),
+                Limit::perHour(40)->by('ip:'.$request->ip())->response($tolak),
+            ];
+        });
         // Livewire::setUpdateRoute(function ($handle) {
         //     $url =  'appname/public/livewire/update';
         //     return Route::post($url, $handle);

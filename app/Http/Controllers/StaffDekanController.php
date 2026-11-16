@@ -508,7 +508,7 @@ class StaffDekanController extends Controller
                 'isApproved' => true,
                 'note' => $request->input('note'),
             ]);
-            Mail::to($surat->pengaju->email)->send(new SuratStaff($surat));
+            \App\Services\EmailNotifikasi::kirim($surat->pengaju->email, new SuratStaff($surat));
             return redirect('/staff-dekan/surat-masuk')->with('success', 'Surat berhasil disetujui');
         } else if ($surat->data['private']['stepper'][count($surat->data['private']['stepper']) - 1] === 4) { //kalau surat bukan tipe staff dekan dan bukan diakhir siklus
             // if (!auth()->user()->tandatangan) {
@@ -676,7 +676,7 @@ class StaffDekanController extends Controller
                 'isApproved' => true,
                 'note' => $request->input('note'),
             ]);
-            Mail::to($surat->pengaju->email)->send(new SuratStaff($surat));
+            \App\Services\EmailNotifikasi::kirim($surat->pengaju->email, new SuratStaff($surat));
             return redirect('/staff-dekan/surat-masuk')->with('success', 'Surat berhasil disetujui');
         }
     }

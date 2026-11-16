@@ -11,6 +11,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\RateLimiter;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Illuminate\Auth\Events\PasswordReset;
 
 class AuthController extends Controller
@@ -83,8 +85,19 @@ class AuthController extends Controller
         ]);
     }
 
+    /** Pesan saat SMTP menolak kirim (umumnya kuota harian hosting habis). */
+    private const PESAN_KUOTA_EMAIL = 'Layanan email sedang mencapai batas pengiriman harian. Silakan coba lagi dalam 24 jam.';
+
     public function store(Request $request)
     {
+        // Hanya pendaftaran yang berhasil (yang mengirim email) dihitung,
+        // supaya salah ketik formulir di IP kampus bersama tidak ikut terblokir.
+        $kunciDaftar = 'register:'.$request->ip();
+        if (RateLimiter::tooManyAttempts($kunciDaftar, 10)) {
+            return back()->withInput($request->except('password', 'password_confirmation'))
+                ->withErrors('Terlalu banyak pendaftaran dari jaringan Anda. Silakan coba lagi dalam 1 jam.');
+        }
+
         $programStudiKode = ProgramStudi::pluck('kode');
         $formFields = $request->validate([
             // 'username' => 'required|unique:users,username|starts_with:foo,bar',
@@ -117,8 +130,16 @@ class AuthController extends Controller
             'password' => bcrypt($request->input('password')),
             'role_id' => 2,
         ]);
-        event(new Registered($user));
+        RateLimiter::hit($kunciDaftar, 3600);
         auth()->login($user);
+
+        try {
+            event(new Registered($user));
+        } catch (TransportExceptionInterface $e) {
+            report($e);
+            return redirect('/')->with('success', 'Berhasil mendaftarkan akun, tetapi email verifikasi belum terkirim. '.self::PESAN_KUOTA_EMAIL);
+        }
+
         return redirect('/')->with('success', 'Berhasil mendaftarkan akun');
     }
 
@@ -128,10 +149,17 @@ class AuthController extends Controller
         return redirect('');
     }
 
-    public function emailVerification(User $user)
+    public function emailVerification()
     {
-        $user->sendEmailVerificationNotification();
-        return back()->with('success', 'Email Verifikasi telah dikirim!');
+        // Selalu akun yang sedang login; {user} di URL tidak dipercaya.
+        try {
+            auth()->user()->sendEmailVerificationNotification();
+        } catch (TransportExceptionInterface $e) {
+            report($e);
+            return back()->withErrors(self::PESAN_KUOTA_EMAIL);
+        }
+
+        return back()->with('success', 'Email verifikasi telah dikirim. Jika tidak ada di Kotak Masuk, cek folder Spam/Promosi.');
     }
 
     public function forgotPasswordPage()
@@ -148,12 +176,15 @@ class AuthController extends Controller
             }
         }
 
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+        try {
+            $status = Password::sendResetLink($request->only('email'));
+        } catch (TransportExceptionInterface $e) {
+            report($e);
+            return back()->withInput($request->only('email'))->withErrors(['email' => self::PESAN_KUOTA_EMAIL]);
+        }
 
         return $status === Password::RESET_LINK_SENT
-            ? back()->with(['success' => __($status)])
+            ? back()->with(['success' => 'Link reset password telah dikirim ke email Anda. Pengiriman bisa memakan waktu beberapa menit; jika tidak ada di Kotak Masuk, cek folder Spam/Promosi. Mohon tidak mengirim ulang berulang kali (maksimal 3 kali per jam).'])
             : back()->withErrors(['email' => __($status)]);
     }
 

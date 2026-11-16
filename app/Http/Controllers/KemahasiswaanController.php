@@ -303,7 +303,7 @@ class KemahasiswaanController extends Controller
                 'note' => $request->input('note'),
             ]);
 
-            Mail::to($surat->pengaju->email)->send(new LegalisirDikirim($surat));
+            \App\Services\EmailNotifikasi::kirim($surat->pengaju->email, new LegalisirDikirim($surat));
 
             return redirect('/kemahasiswaan/surat-masuk')->with('success', 'Surat berhasil disetujui');
         }
@@ -340,7 +340,7 @@ class KemahasiswaanController extends Controller
                 'note' => $request->input('note'),
             ]);
 
-            Mail::to($surat->pengaju->email)->send(new LegalisirDiambil($surat));
+            \App\Services\EmailNotifikasi::kirim($surat->pengaju->email, new LegalisirDiambil($surat));
 
             return redirect('/kemahasiswaan/surat-masuk')->with('success', 'Surat berhasil disetujui');
         }
@@ -369,7 +369,7 @@ class KemahasiswaanController extends Controller
             'note' => $request->input('note'),
         ]);
 
-        Mail::to($surat->pengaju->email)->send(new SuratMahasiswa($surat));
+        \App\Services\EmailNotifikasi::kirim($surat->pengaju->email, new SuratMahasiswa($surat));
         return redirect('/kemahasiswaan/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }
 

@@ -135,16 +135,16 @@ class UnitKerjasamaController extends Controller
         $surat->penerima = $penerima;
 
         if ($surat->pengaju->role->name == 'mahasiswa') {
-            Mail::to($surat->penerima->email)->send(new SuratMahasiswa($surat));
+            \App\Services\EmailNotifikasi::kirim($surat->penerima->email, new SuratMahasiswa($surat));
         } else {
-            Mail::to($surat->penerima->email)->send(new SuratStaff($surat));
+            \App\Services\EmailNotifikasi::kirim($surat->penerima->email, new SuratStaff($surat));
         }
         //cek jika user id 17 maka surat dinyatakan selesai
         if ($surat->current_user_id == 17) {
             $surat->status = 'selesai';
             $surat->save();
             //kirim email ke pengaju
-            Mail::to($surat->pengaju->email)->send(new SuratMahasiswa($surat));
+            \App\Services\EmailNotifikasi::kirim($surat->pengaju->email, new SuratMahasiswa($surat));
         }
         return redirect('/unit-kerjasama/surat-masuk')->with('success', 'Surat berhasil disetujui');
     }

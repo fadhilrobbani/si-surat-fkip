@@ -122,4 +122,11 @@ return [
         ],
     ],
 
+    /*
+    | Email notifikasi alur surat (disetujui/selesai/legalisir). Default mati
+    | untuk menghemat kuota SMTP harian; pengguna memantau status di sistem.
+    | Email reset password & verifikasi tidak terpengaruh.
+    */
+    'notifikasi_surat' => env('MAIL_NOTIFIKASI_SURAT', false),
+
 ];

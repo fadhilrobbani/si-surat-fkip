@@ -164,9 +164,9 @@ class BendaharaController extends Controller
         // Kirim email notifikasi jika ada mailer aktif
         try {
             if ($surat->pengaju->role_id == User::ROLE_MAHASISWA) {
-                Mail::to($surat->pengaju->email)->send(new SuratMahasiswa($surat));
+                \App\Services\EmailNotifikasi::kirim($surat->pengaju->email, new SuratMahasiswa($surat));
             } else {
-                Mail::to($surat->pengaju->email)->send(new SuratStaff($surat));
+                \App\Services\EmailNotifikasi::kirim($surat->pengaju->email, new SuratStaff($surat));
             }
         } catch (\Exception $e) {
             // Abaikan jika mailer offline

@@ -79,10 +79,10 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     return redirect('/home');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
-Route::post('/email/verification-notification/{user}', [AuthController::class, 'emailVerification'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+Route::post('/email/verification-notification/{user}', [AuthController::class, 'emailVerification'])->middleware(['auth', 'throttle:verification'])->name('verification.send');
 
 Route::get('/forgot-password', [AuthController::class, 'forgotPasswordPage'])->name('password.request');
-Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name('password.email');
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:forgot-password')->name('password.email');
 Route::get('/reset-password/{token}', [AuthController::class, 'resetPasswordPage'])->name('password.reset');
 
 
