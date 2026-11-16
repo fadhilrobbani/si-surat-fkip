@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Listeners\CatatEmailKeluar;
+use App\Models\EmailLog;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -18,14 +20,26 @@ class EmailNotifikasi
     public static function kirim($penerima, Mailable $mailable): void
     {
         if (! config('mail.notifikasi_surat')) {
+            // Dicatat agar dashboard bisa menunjukkan berapa kuota yang dihemat.
+            EmailLog::catat([
+                'kategori' => 'notifikasi_surat',
+                'status' => 'dilewati',
+                'subjek' => class_basename($mailable),
+                'penerima' => mb_substr(is_string($penerima) ? $penerima : (string) json_encode($penerima), 0, 255),
+            ]);
+
             return;
         }
+
+        CatatEmailKeluar::$kategori = 'notifikasi_surat';
 
         try {
             Mail::to($penerima)->send($mailable);
         } catch (TransportExceptionInterface $e) {
             report($e);
             session()->flash('deleted', self::PESAN_GAGAL);
+        } finally {
+            CatatEmailKeluar::$kategori = null;
         }
     }
 }

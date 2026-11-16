@@ -129,4 +129,8 @@ return [
     */
     'notifikasi_surat' => env('MAIL_NOTIFIKASI_SURAT', false),
 
+    // Batas kirim email harian dari hosting (untuk persentase di dashboard
+    // Statistik Email). Kosongkan bila tidak diketahui.
+    'kuota_harian' => env('MAIL_KUOTA_HARIAN'),
+
 ];
