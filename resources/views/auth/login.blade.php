@@ -37,6 +37,7 @@
                 <input type="text" id="username" name="username" placeholder="Masukkan email atau username"
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                     value="{{ old('username') }}" required>
+                <p class="mt-1 text-xs text-slate-500">Mahasiswa: gunakan email yang didaftarkan (bukan NPM).</p>
                 @error('username')
                     <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                 @enderror

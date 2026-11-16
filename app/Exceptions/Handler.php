@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -26,6 +27,17 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        // Halaman login yang terbuka melewati umur sesi menghasilkan 419;
+        // kembalikan ke form login dengan pesan, bukan halaman error.
+        // (TokenMismatchException sudah diubah Laravel menjadi HttpException 419.)
+        $this->renderable(function (HttpException $e, $request) {
+            if ($e->getStatusCode() === 419 && $request->routeIs('authLogin')) {
+                return redirect()->route('login')
+                    ->withInput($request->only('username'))
+                    ->withErrors('Sesi halaman kedaluwarsa, silakan coba login lagi.');
+            }
         });
     }
 

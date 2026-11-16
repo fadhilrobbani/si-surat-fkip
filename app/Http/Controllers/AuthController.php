@@ -188,154 +188,86 @@ class AuthController extends Controller
             : back()->withErrors(['email' => [__($status)]]);
     }
 
+    /** Prefix dashboard per role_id. Satu-satunya peta role → halaman awal. */
+    private const DASHBOARD = [
+        1 => '/admin',
+        2 => '/mahasiswa',
+        3 => '/staff',
+        4 => '/kaprodi',
+        5 => '/wd',
+        6 => '/akademik',
+        7 => '/staff-nilai',
+        8 => '/dekan',
+        9 => '/wd2',
+        10 => '/wd3',
+        11 => '/staff-wd1',
+        12 => '/staff-wd2',
+        13 => '/staff-wd3',
+        14 => '/staff-dekan',
+        15 => '/pengirim-legalisir',
+        16 => '/akademik-fakultas',
+        17 => '/kabag',
+        18 => '/kemahasiswaan',
+        19 => '/tata-usaha',
+        20 => '/unit-kerjasama',
+        21 => '/lab-pmipa',
+        22 => '/bendahara',
+    ];
+
     public function authenticate(Request $request)
     {
-        // $user = User::where('username', $request->input('username'))->where('role_id', '!=', 1)->first();
-        $user = User::where(function ($query) use ($request) {
-            $usernameOrEmail = $request->input('username');
-            $query->where('username', $usernameOrEmail)
-                ->orWhere('email', $usernameOrEmail);
-        })
-            ->where('role_id', '!=', 1)
-            ->first();
-
-
-        if (!$user) {
-            return back()->withErrors(['username' => 'Username/Email salah atau tidak terdaftar'])->withInput();
-        }
-
-        if ($user->role->id == 2) {
-            $user = User::where('email', $request->input('username'))->where('role_id', '!=', 1)->first();
-            if (!$user) {
-
-                return back()->withErrors(['email' => 'Email yang anda masukkan salah atau tidak terdaftar'])->withInput();
-            }
-        }
-
-        $this->validate($request, [
-            'username'    => 'required',
+        $request->validate([
+            'username' => 'required',
             'password' => 'required',
         ]);
 
-        $login_type = filter_var($request->input('username'), FILTER_VALIDATE_EMAIL)
-            ? 'email'
-            : 'username';
+        $identifier = $request->input('username');
+        $isEmail = filter_var($identifier, FILTER_VALIDATE_EMAIL) !== false;
+        $loginType = $isEmail ? 'email' : 'username';
 
-        $request->merge([
-            $login_type => $request->input('username')
-        ]);
+        $user = User::where($loginType, $identifier)->where('role_id', '!=', 1)->first();
 
-        // $credentials = $request->validate([
-        //     'username' => 'required',
-        //     'password' => 'required'
-        // ]);
-
-        if (auth()->attempt($request->only($login_type, 'password'))) {
-            // dd('login');
-            $request->session()->regenerate();
-
-            // Jika user sampai di halaman login karena diarahkan oleh endpoint
-            // SSO (/oauth/authorize), kembalikan ke sana agar mahasiswa tidak
-            // perlu menekan tombol SSO dua kali.
-            $intended = $request->session()->pull('url.intended');
-            if ($intended && str_contains($intended, '/oauth/authorize')) {
-                return redirect()->to($intended);
-            }
-
-            if (auth()->user()->role_id == 1) {
-                return redirect()->back()->withError('Unauthorized');
-            } elseif (auth()->user()->role_id == 2) {
-                return redirect('/mahasiswa')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 3) {
-                return redirect('/staff')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 4) {
-                return redirect('/kaprodi')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 5) {
-                return redirect('/wd')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 6) {
-                return redirect('/akademik')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 7) {
-                return redirect('/staff-nilai')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 8) {
-                return redirect('/dekan')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 9) {
-                return redirect('/wd2')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 10) {
-                return redirect('/wd3')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 11) {
-                return redirect('/staff-wd1')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 12) {
-                return redirect('/staff-wd2')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 13) {
-                return redirect('/staff-wd3')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 14) {
-                return redirect('/staff-dekan')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 15) {
-                return redirect('/pengirim-legalisir')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 16) {
-                return redirect('/akademik-fakultas')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 17) {
-                return redirect('/kabag')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 18) {
-                return redirect('/kemahasiswaan')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 19) {
-                return redirect('/tata-usaha')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 20) {
-                return redirect('/unit-kerjasama')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 21) {
-                return redirect('/lab-pmipa')->with('success', 'Anda berhasil login');
-            } elseif (auth()->user()->role_id == 22) {
-                return redirect('/bendahara')->with('success', 'Anda berhasil login');
-            }
+        if (! $user) {
+            return back()->withErrors(['username' => 'Username/Email salah atau tidak terdaftar'])->withInput();
         }
 
-        return back()->withErrors('Username atau password tidak sesuai, silahkan coba lagi')->withInput();
+        // NPM bukan identifier login mahasiswa (bisa duplikat); wajib email.
+        if ($user->role_id == 2 && ! $isEmail) {
+            return back()->withErrors(['username' => 'Mahasiswa wajib login menggunakan email yang didaftarkan, bukan NPM.'])->withInput();
+        }
+
+        if (! auth()->attempt([$loginType => $identifier, 'password' => $request->input('password')])) {
+            return back()->withErrors('Username atau password tidak sesuai, silahkan coba lagi')->withInput();
+        }
+
+        $request->session()->regenerate();
+
+        // Jika user sampai di halaman login karena diarahkan oleh endpoint
+        // SSO (/oauth/authorize), kembalikan ke sana agar mahasiswa tidak
+        // perlu menekan tombol SSO dua kali.
+        $intended = $request->session()->pull('url.intended');
+        if ($intended && str_contains($intended, '/oauth/authorize')) {
+            return redirect()->to($intended);
+        }
+
+        $tujuan = self::DASHBOARD[auth()->user()->role_id] ?? null;
+        if ($tujuan === null || auth()->user()->role_id == 1) {
+            auth()->logout();
+            return back()->withErrors('Akun Anda tidak memiliki akses ke halaman ini.')->withInput();
+        }
+
+        return redirect($tujuan)->with('success', 'Anda berhasil login');
     }
 
     public function home()
     {
         if (auth()->check()) {
-            if (auth()->user()->role_id == 1) {
-                return redirect('/admin');
-            } elseif (auth()->user()->role_id == 2) {
-                return redirect('/mahasiswa');
-            } elseif (auth()->user()->role_id == 3) {
-                return redirect('/staff');
-            } elseif (auth()->user()->role_id == 4) {
-                return redirect('/kaprodi');
-            } elseif (auth()->user()->role_id == 5) {
-                return redirect('/wd');
-            } elseif (auth()->user()->role_id == 6) {
-                return redirect('/akademik');
-            } elseif (auth()->user()->role_id == 7) {
-                return redirect('/staff-nilai');
-            } elseif (auth()->user()->role_id == 8) {
-                return redirect('/dekan');
-            } elseif (auth()->user()->role_id == 9) {
-                return redirect('/wd2');
-            } elseif (auth()->user()->role_id == 10) {
-                return redirect('/wd3');
-            } elseif (auth()->user()->role_id == 11) {
-                return redirect('/staff-wd1');
-            } elseif (auth()->user()->role_id == 12) {
-                return redirect('/staff-wd2');
-            } elseif (auth()->user()->role_id == 13) {
-                return redirect('/staff-wd3');
-            } elseif (auth()->user()->role_id == 14) {
-                return redirect('/staff-dekan');
-            } elseif (auth()->user()->role_id == 15) {
-                return redirect('/pengirim-legalisir');
-            } elseif (auth()->user()->role_id == 18) {
-                return redirect('/kemahasiswaan');
-            } elseif (auth()->user()->role_id == 19) {
-                return redirect('/tata-usaha');
-            } elseif (auth()->user()->role_id == 20) {
-                return redirect('/unit-kerjasama');
-            } elseif (auth()->user()->role_id == 21) {
-                return redirect('/lab-pmipa');
-            } elseif (auth()->user()->role_id == 22) {
-                return redirect('/bendahara');
+            $tujuan = self::DASHBOARD[auth()->user()->role_id] ?? null;
+            if ($tujuan !== null) {
+                return redirect($tujuan);
             }
+            // Role tanpa dashboard: keluarkan agar tidak loop / -> /home -> /.
+            auth()->logout();
         }
         return redirect('/');
     }
